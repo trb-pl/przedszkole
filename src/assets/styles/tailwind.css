@@ -20,11 +20,10 @@
   --color-brand-yellow: #F5C41F;
   --color-brand-forest: #415D43;
 
-  --font-sans:
-    'var(--aw-font-sans, ui-sans-serif)', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans: 'filson-pro', system-ui, sans-serif;
   --font-serif: 'var(--aw-font-serif, ui-serif)', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-heading: 'var(--aw-font-heading, ui-sans-serif)', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'filson-pro', system-ui, sans-serif;
+  --font-display: 'filson-soft', 'filson-pro', system-ui, sans-serif;
 
   --animate-fade: fadeInUp 1s both;
 
