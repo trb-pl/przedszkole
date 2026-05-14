@@ -13,6 +13,13 @@
   --color-default: var(--aw-color-text-default);
   --color-muted: var(--aw-color-text-muted);
 
+  --color-brand-cream: #FCF6F0;
+  --color-brand-navy: #2D346F;
+  --color-brand-teal: #34BBA8;
+  --color-brand-coral: #F2795D;
+  --color-brand-yellow: #F5C41F;
+  --color-brand-forest: #415D43;
+
   --font-sans:
     'var(--aw-font-sans, ui-sans-serif)', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
