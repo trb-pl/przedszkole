@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import heroImage from '~/assets/images/hero-koloroweprzedszkole.jpg';
+import koloroweLogo from '~/assets/images/kolorowe.svg?raw';
 ---
 
 <section class="relative min-h-screen overflow-hidden">
@@ -20,10 +21,8 @@ import heroImage from '~/assets/images/hero-koloroweprzedszkole.jpg';
   <div class="relative z-10 flex flex-col items-center justify-center h-screen px-6 gap-8 text-center text-brand-cream">
 
     <!-- Typography composition -->
-    <div class="flex flex-col items-center -gap-4 sm:-gap-6">
-      <span class="font-display italic text-[clamp(2.5rem,8vw,8rem)] leading-none text-brand-cream">
-        kolorowe
-      </span>
+    <div class="flex flex-col items-center gap-4 sm:gap-6">
+      <div class="w-[60vw] sm:w-[55vw] md:w-[50vw] lg:w-[45vw] max-w-[700px]" set:html={koloroweLogo} />
       <h1 class="font-sans font-bold uppercase text-[clamp(3rem,14vw,12rem)] leading-none tracking-tight text-brand-cream">
         PRZEDSZKOLE
       </h1>
