@@ -26,7 +26,7 @@ const { language, textDirection } = I18N;
 ---
 
 <!doctype html>
-<html lang={language} dir={textDirection} class="2xl:text-[20px] snap-y snap-mandatory overflow-y-scroll h-screen">
+<html lang={language} dir={textDirection} class="2xl:text-[20px] md:snap-y md:snap-mandatory md:overflow-y-scroll md:h-screen">
   <head>
     <CommonMeta />
     <Favicons />
@@ -36,6 +36,7 @@ const { language, textDirection } = I18N;
     <SiteVerification />
     <Analytics />
 
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="https://use.typekit.net/sni5mcg.css" />
 
     <link rel="preconnect" href="https://images.unsplash.com" />

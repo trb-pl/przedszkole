@@ -13,51 +13,74 @@ const slides = [
 ];
 ---
 
-<section id="wartosci" class="relative min-h-screen overflow-hidden snap-start">
+<section id="wartosci" class="md:snap-start">
 
-  <!-- Track -->
-  <div id="wartosci-track" class="flex h-full transition-transform duration-500 ease-in-out">
-    {slides.map((slide) => (
-      <div class="relative min-w-full min-h-screen flex items-center justify-center">
-        <Image src={slide.img} alt={slide.alt} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-        <div class="absolute inset-0 bg-black/50"></div>
-        <div class="relative z-10 max-w-3xl mx-auto px-8 py-24 text-center text-brand-cream flex flex-col gap-6">
-          <h2 class="font-sans font-bold uppercase tracking-widest text-[clamp(1.8rem,4vw,3.5rem)] leading-tight">
+  <!-- Desktop: fullscreen slider -->
+  <div class="hidden md:block relative min-h-screen overflow-hidden">
+
+    <div id="wartosci-track" class="flex h-full transition-transform duration-500 ease-in-out">
+      {slides.map((slide) => (
+        <div class="relative min-w-full min-h-screen flex items-center justify-center">
+          <Image src={slide.img} alt={slide.alt} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+          <div class="absolute inset-0 bg-black/50"></div>
+          <div class="relative z-10 max-w-3xl mx-auto px-8 py-24 text-center text-brand-cream flex flex-col gap-6">
+            <h2 class="font-sans font-bold uppercase tracking-widest text-[clamp(1.8rem,4vw,3.5rem)] leading-tight">
+              {slide.title}
+            </h2>
+            <p class="font-sans text-lg md:text-xl leading-relaxed">
+              {slide.body}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Arrow left -->
+    <button id="wartosci-prev" aria-label="Poprzedni slajd"
+      class="absolute left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-brand-cream/15 hover:bg-brand-cream/35 text-brand-cream flex items-center justify-center transition-all duration-200 backdrop-blur-sm opacity-60 hover:opacity-100">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+
+    <!-- Arrow right -->
+    <button id="wartosci-next" aria-label="Następny slajd"
+      class="absolute right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-brand-cream/15 hover:bg-brand-cream/35 text-brand-cream flex items-center justify-center transition-all duration-200 backdrop-blur-sm opacity-60 hover:opacity-100">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+
+    <!-- Dots -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
+      {slides.map((_, i) => (
+        <button
+          class="wartosci-dot w-2.5 h-2.5 rounded-full bg-brand-cream/40 transition-all duration-300"
+          data-index={i}
+          aria-label={`Slajd ${i + 1}`}
+        />
+      ))}
+    </div>
+
+  </div>
+
+  <!-- Mobile: cards -->
+  <div class="block md:hidden bg-brand-navy py-16 px-6">
+    <h2 class="font-sans italic text-[clamp(1.8rem,8vw,2.5rem)] text-brand-cream text-center mb-10">
+      Nasze wartości
+    </h2>
+    <div class="flex flex-col gap-6 max-w-lg mx-auto">
+      {slides.map((slide) => (
+        <div class="flex flex-col gap-4 bg-brand-cream/10 border border-brand-cream/15 rounded-2xl px-7 py-7">
+          <h3 class="font-sans font-bold uppercase tracking-widest text-brand-teal text-xs">
             {slide.title}
-          </h2>
-          <p class="font-sans text-lg md:text-xl leading-relaxed">
+          </h3>
+          <p class="font-sans text-base leading-relaxed text-brand-cream/85">
             {slide.body}
           </p>
         </div>
-      </div>
-    ))}
-  </div>
-
-  <!-- Arrow left -->
-  <button id="wartosci-prev" aria-label="Poprzedni slajd"
-    class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-brand-cream/15 hover:bg-brand-cream/35 text-brand-cream hidden md:flex items-center justify-center transition-all duration-200 backdrop-blur-sm opacity-60 hover:opacity-100">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-    </svg>
-  </button>
-
-  <!-- Arrow right -->
-  <button id="wartosci-next" aria-label="Następny slajd"
-    class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-brand-cream/15 hover:bg-brand-cream/35 text-brand-cream hidden md:flex items-center justify-center transition-all duration-200 backdrop-blur-sm opacity-60 hover:opacity-100">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-    </svg>
-  </button>
-
-  <!-- Dots -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
-    {slides.map((_, i) => (
-      <button
-        class="wartosci-dot w-2.5 h-2.5 rounded-full bg-brand-cream/40 transition-all duration-300"
-        data-index={i}
-        aria-label={`Slajd ${i + 1}`}
-      />
-    ))}
+      ))}
+    </div>
   </div>
 
 </section>
@@ -84,17 +107,17 @@ const slides = [
 
   let touchStartX = 0;
   let touchStartY = 0;
-  const section = document.getElementById('wartosci');
-  section?.addEventListener('touchstart', (e) => {
+  const sliderEl = track?.parentElement;
+  sliderEl?.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
   }, { passive: true });
-  section?.addEventListener('touchmove', (e) => {
+  sliderEl?.addEventListener('touchmove', (e) => {
     const diffX = Math.abs(touchStartX - e.touches[0].clientX);
     const diffY = Math.abs(touchStartY - e.touches[0].clientY);
     if (diffX > diffY) e.preventDefault();
   }, { passive: false });
-  section?.addEventListener('touchend', (e) => {
+  sliderEl?.addEventListener('touchend', (e) => {
     const diff = touchStartX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
   });

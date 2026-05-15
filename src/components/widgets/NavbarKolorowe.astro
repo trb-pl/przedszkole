@@ -57,6 +57,13 @@ import logoUrl from '~/assets/images/logo.svg?url';
     }
   });
 
+  document.querySelector<HTMLAnchorElement>('header a[href="/"]')?.addEventListener('click', (e) => {
+    if (window.location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
   const toggle = document.getElementById('mobile-menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   toggle?.addEventListener('click', () => {
