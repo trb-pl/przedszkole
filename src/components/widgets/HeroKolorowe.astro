@@ -2,17 +2,30 @@
 import { Image } from 'astro:assets';
 import heroImage from '~/assets/images/hero-koloroweprzedszkole.jpg';
 import koloroweLogo from '~/assets/images/kolorowe.svg?raw';
+import posterImage from '~/assets/images/hero-mobile-poster.jpg';
 ---
 
 <section class="relative min-h-screen overflow-hidden">
-  <!-- Background image -->
+  <!-- Background image (desktop) -->
   <Image
     src={heroImage}
     alt="Kolorowe Przedszkole — Saska Kępa, Warszawa od 1991 roku"
-    class="absolute inset-0 w-full h-full object-cover"
+    class="absolute inset-0 w-full h-full object-cover hidden md:block"
     loading="eager"
     fetchpriority="high"
   />
+
+  <!-- Background video (mobile) -->
+  <video
+    class="absolute inset-0 w-full h-full object-cover block md:hidden"
+    autoplay
+    muted
+    loop
+    playsinline
+    poster={posterImage.src}
+  >
+    <source src="/videos/hero-mobile.mp4" type="video/mp4" />
+  </video>
 
   <!-- Overlay -->
   <div class="absolute inset-0 bg-black/25"></div>
@@ -30,7 +43,7 @@ import koloroweLogo from '~/assets/images/kolorowe.svg?raw';
 
     <!-- Tagline -->
     <p class="font-sans text-2xl sm:text-3xl md:text-4xl text-brand-cream/95 max-w-3xl mt-8">
-      Budujemy bezpieczny pomost między domem a szkołą.
+      między domem a szkołą od 1991 roku
     </p>
 
     <!-- Sub-tagline -->
