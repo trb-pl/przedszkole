@@ -1,0 +1,66 @@
+---
+const pytania = [
+  {
+    q: 'Od ilu lat działa Kolorowe Przedszkole?',
+    a: 'Kolorowe Przedszkole działa od 1991 roku i jest jednym z najstarszych niepublicznych przedszkoli w Warszawie. Przez ponad 30 lat wypracowaliśmy model opieki, który łączy profesjonalizm z domowym ciepłem – w dwóch lokalizacjach na Saskiej Kępie i Gocławiu.',
+  },
+  {
+    q: 'Gdzie znajduje się przedszkole?',
+    a: 'Prowadzimy dwie lokalizacje w Warszawie: na Saskiej Kępie oraz na Gocławiu – obie w dzielnicy Praga Południe. Każda z nich ma własny ogród i pełną infrastrukturę.',
+  },
+  {
+    q: 'Czy jest sala integracji sensorycznej (SI)?',
+    a: 'Tak. Sala SI to jeden z naszych wyróżników – specjalnie wyposażone pomieszczenie wspierające wszechstronny rozwój zmysłów dziecka. Korzystają z niej wszystkie grupy w ramach codziennego programu.',
+  },
+  {
+    q: 'Czy macie własną kuchnię i domowe obiady?',
+    a: 'Tak – gotujemy na miejscu każdego dnia. Nie korzystamy z cateringu. Domowe obiady to część naszej filozofii: dziecko powinno jeść to, co ugotowałaby mama.',
+  },
+  {
+    q: 'Czy przedszkole uczy języka angielskiego?',
+    a: 'Tak, język angielski jest stałym elementem programu w obu lokalizacjach. Zajęcia prowadzone są regularnie, w grupach dostosowanych do wieku i możliwości dzieci.',
+  },
+  {
+    q: 'Jak wygląda rekrutacja na rok 2026/2027?',
+    a: 'Rekrutacja odbywa się przez formularz kontaktowy na stronie lub telefonicznie. Zachęcamy do kontaktu jak najwcześniej – liczba miejsc jest ograniczona, a zainteresowanie duże jest każdego roku.',
+  },
+];
+---
+
+<section id="faq" class="bg-brand-sand">
+  <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+
+    <!-- Eyebrow -->
+    <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">
+      Pytania i odpowiedzi
+    </p>
+
+    <!-- Nagłówek -->
+    <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight mb-4">
+      Najczęściej zadawane pytania
+    </h2>
+    <p class="font-sans text-lg text-brand-navy/70 mb-12">
+      Odpowiedzi na pytania, które słyszymy najczęściej od rodziców.
+    </p>
+
+    <!-- Lista pytań -->
+    <div class="divide-y divide-brand-navy/10">
+      {pytania.map((item, i) => (
+        <details class="group py-5" open={i === 0}>
+          <summary class="flex justify-between items-start cursor-pointer gap-4 list-none">
+            <span class="font-sans text-brand-navy font-semibold text-lg leading-snug group-open:text-brand-teal transition-colors duration-200">
+              {item.q}
+            </span>
+            <span class="flex-shrink-0 mt-1 text-brand-teal text-2xl font-light transition-transform duration-200 group-open:rotate-45">
+              +
+            </span>
+          </summary>
+          <p class="font-sans mt-4 text-brand-navy/75 leading-relaxed text-base">
+            {item.a}
+          </p>
+        </details>
+      ))}
+    </div>
+
+  </div>
+</section>

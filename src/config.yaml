@@ -1,6 +1,6 @@
 site:
-  name: AstroWind
-  site: 'https://astrowind.vercel.app'
+  name: Kolorowe Przedszkole
+  site: 'https://koloroweprzedszkole.com'
   base: '/'
   trailingSlash: false
 
@@ -9,26 +9,26 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: '%s — AstroWind'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+    default: Kolorowe Przedszkole
+    template: '%s — Kolorowe Przedszkole'
+  description: "Prywatne przedszkole na Saskiej Kępie i Gocławiu, działające od 1991 roku. Domowe obiady, ogród, język angielski, sala SI. Rekrutacja 2026/2027."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: AstroWind
+    site_name: Kolorowe Przedszkole
     images:
       - url: '~/assets/images/default.png'
         width: 1200
         height: 628
     type: website
   twitter:
-    handle: '@arthelokyo'
-    site: '@arthelokyo'
+    handle: '@koloroweprzedszkole'
+    site: '@koloroweprzedszkole'
     cardType: summary_large_image
 
 i18n:
-  language: en
+  language: pl
   textDirection: ltr
 
 apps:

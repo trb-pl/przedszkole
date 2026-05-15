@@ -9,11 +9,29 @@ import SekcjaWartosci from '~/components/widgets/SekcjaWartosci.astro';
 import SekcjaKuchnia from '~/components/widgets/SekcjaKuchnia.astro';
 import SekcjaLokalizacje from '~/components/widgets/SekcjaLokalizacje.astro';
 import SekcjaOpinie from '~/components/widgets/SekcjaOpinie.astro';
+import SekcjaFAQ from '~/components/widgets/SekcjaFAQ.astro';
 import SekcjaCTA from '~/components/widgets/SekcjaCTA.astro';
+import SchemaFAQ from '~/components/seo/SchemaFAQ.astro';
 
 const metadata = {
-  title: 'Kolorowe Przedszkole — Saska Kępa, Warszawa',
+  title: 'Kolorowe Przedszkole – Saska Kępa i Gocław | Od 1991 roku',
+  description: 'Prywatne przedszkole na Saskiej Kępie i Gocławiu, działające od 1991 roku. Domowe obiady, ogród, język angielski, sala SI. Rekrutacja 2026/2027.',
+  canonical: 'https://koloroweprzedszkole.com/',
   ignoreTitleTemplate: true,
+  openGraph: {
+    title: 'Kolorowe Przedszkole – Saska Kępa i Gocław',
+    description: 'Jedno z najstarszych niepublicznych przedszkoli w Warszawie. Dwie lokalizacje, domowa kuchnia, ogród i sala integracji sensorycznej SI.',
+    type: 'website',
+    url: 'https://koloroweprzedszkole.com/',
+    images: [
+      {
+        url: 'https://koloroweprzedszkole.com/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Kolorowe Przedszkole – Saska Kępa i Gocław, od 1991 roku',
+      },
+    ],
+  },
 };
 ---
 
@@ -26,5 +44,7 @@ const metadata = {
   <SekcjaKuchnia />
   <SekcjaLokalizacje />
   <SekcjaOpinie />
+  <SekcjaFAQ />
   <SekcjaCTA />
+  <SchemaFAQ />
 </Layout>
