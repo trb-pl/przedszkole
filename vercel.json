@@ -1,14 +1,6 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "has": [{ "type": "host", "value": "przedszkole-one.vercel.app" }],
-      "destination": "https://koloroweprzedszkole.com/$1",
-      "permanent": true
-    }
-  ],
   "headers": [
     {
       "source": "/_astro/(.*)",
