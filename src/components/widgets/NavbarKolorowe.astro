@@ -22,8 +22,8 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
       <img src={logoUrl} alt="Kolorowe Przedszkole" class="h-9 w-auto" />
     </a>
 
-    <!-- Desktop nav -->
-    <nav class="hidden md:flex items-center gap-6" aria-label="Nawigacja główna">
+    <!-- Desktop nav — center -->
+    <nav class="hidden md:flex items-center gap-6 absolute left-1/2 -translate-x-1/2" aria-label="Nawigacja główna">
 
       <!-- O Nas dropdown -->
       <div class="relative group/onas">
@@ -76,14 +76,15 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
         </svg>
       </a>
 
-      <!-- REKRUTACJA CTA -->
-      <a
-        href="/rekrutacja"
-        class="bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-5 py-2.5 rounded-lg transition-colors duration-200 hover:bg-brand-coral"
-      >
-        Rekrutacja
-      </a>
     </nav>
+
+    <!-- REKRUTACJA CTA — prawy koniec -->
+    <a
+      href="/rekrutacja"
+      class="hidden md:inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-xs px-3.5 py-1.5 rounded-md transition-colors duration-200 hover:bg-brand-coral"
+    >
+      Rekrutacja
+    </a>
 
     <!-- Mobile hamburger -->
     <button id="mobile-menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Otwórz menu" aria-expanded="false">
