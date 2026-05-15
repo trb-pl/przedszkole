@@ -1,0 +1,39 @@
+---
+import { Image } from 'astro:assets';
+import kadraImage from '~/assets/images/kadra.jpg';
+---
+
+<section id="kadra" class="min-h-screen flex flex-col md:grid md:grid-cols-2 overflow-hidden">
+
+  <!-- Photo: right on desktop, first on mobile -->
+  <div class="relative min-h-[50vh] md:min-h-screen overflow-hidden order-1 md:order-2">
+    <Image
+      src={kadraImage}
+      alt="Kadra Kolorowego Przedszkola"
+      class="absolute inset-0 w-full h-full object-cover rounded-none"
+      loading="lazy"
+    />
+  </div>
+
+  <!-- Text: left on desktop, second on mobile -->
+  <div class="flex flex-col justify-center gap-8 px-8 py-24 sm:px-16 lg:px-20 xl:px-28 bg-brand-cream order-2 md:order-1">
+    <h2 class="font-sans italic text-[clamp(2.8rem,4vw,5rem)] leading-tight text-brand-navy">
+      Siła pokoleń,
+    </h2>
+
+    <div class="font-sans text-lg md:text-xl leading-relaxed text-brand-navy/85 flex flex-col gap-4">
+      <p>Dobór kadry to jedno z najważniejszych zadań w prowadzeniu przedszkola.</p>
+      <p>Od początku wiedziałam, że to ludzie tworzą atmosferę miejsca – ich podejście, obecność, sposób, w jaki słuchają dzieci i są obok nich na co dzień.</p>
+      <p>Wielu z nas pracuje tu od lat. Dzięki tej ciągłości dzieci czują się bezpiecznie, znają swoje rytuały i tych samych, życzliwych dorosłych, którzy są z nimi każdego dnia.</p>
+      <p>To <strong>wspólna misja trwająca od pokoleń</strong>.</p>
+    </div>
+
+    <a
+      href="tel:605657366"
+      class="self-start inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-4 rounded-lg transition-colors duration-200 hover:bg-brand-navy"
+    >
+      ZADZWOŃ
+    </a>
+  </div>
+
+</section>
