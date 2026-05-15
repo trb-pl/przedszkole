@@ -1,0 +1,168 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: 'Kontakt — Kolorowe Przedszkole Saska Kępa, Gocław',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+
+  <!-- Header -->
+  <section class="bg-brand-sand pt-24 pb-12">
+    <div class="max-w-4xl mx-auto px-6 text-center flex flex-col gap-3">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">
+        Kolorowe Przedszkole
+      </p>
+      <h1 class="font-sans italic text-[clamp(2.5rem,5vw,4rem)] text-brand-navy leading-tight">
+        Skontaktuj się z nami
+      </h1>
+      <p class="font-sans text-lg text-brand-navy/70 max-w-xl mx-auto">
+        Chętnie odpowiemy na wszystkie pytania dotyczące rekrutacji i życia w Kolorowym Przedszkolu.
+      </p>
+    </div>
+  </section>
+
+  <!-- Lokalizacje -->
+  <section class="bg-brand-cream py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Lotaryńska -->
+        <div class="flex flex-col gap-5 bg-white rounded-2xl p-8 shadow-sm border border-brand-navy/5">
+          <div>
+            <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-2">
+              Lokalizacja 1
+            </p>
+            <h2 class="font-sans font-bold text-2xl text-brand-navy">Lotaryńska 18</h2>
+            <p class="font-sans italic text-brand-teal">Prawdziwie domowe przedszkole</p>
+          </div>
+          <div class="font-sans text-brand-navy/75 flex flex-col gap-2 text-base">
+            <p>ul. Lotaryńska 18<br />03-974 Warszawa</p>
+            <a href="tel:605657366" class="hover:text-brand-teal transition-colors duration-200">+48 605 657 366</a>
+            <a href="mailto:przedszkole@kolorowe.eu" class="hover:text-brand-teal transition-colors duration-200">przedszkole@kolorowe.eu</a>
+          </div>
+          <div class="rounded-xl overflow-hidden h-48">
+            <iframe
+              src="https://www.google.com/maps?q=ul.+Lotaryńska+18,+03-974+Warszawa&output=embed"
+              width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade" title="Mapa — Lotaryńska 18">
+            </iframe>
+          </div>
+          <a href="tel:605657366"
+            class="self-start inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-6 py-3 rounded-lg transition-colors duration-200 hover:bg-brand-coral hover:text-brand-cream">
+            Zadzwoń
+          </a>
+        </div>
+
+        <!-- Zakopiańska -->
+        <div class="flex flex-col gap-5 bg-white rounded-2xl p-8 shadow-sm border border-brand-navy/5">
+          <div>
+            <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-2">
+              Lokalizacja 2
+            </p>
+            <h2 class="font-sans font-bold text-2xl text-brand-navy">Zakopiańska 8</h2>
+            <p class="font-sans italic text-brand-teal">Zaczarowany ogród</p>
+          </div>
+          <div class="font-sans text-brand-navy/75 flex flex-col gap-2 text-base">
+            <p>ul. Zakopiańska 8<br />03-977 Warszawa</p>
+            <a href="tel:605657366" class="hover:text-brand-teal transition-colors duration-200">+48 605 657 366</a>
+            <a href="mailto:przedszkole@kolorowe.eu" class="hover:text-brand-teal transition-colors duration-200">przedszkole@kolorowe.eu</a>
+          </div>
+          <div class="rounded-xl overflow-hidden h-48">
+            <iframe
+              src="https://www.google.com/maps?q=ul.+Zakopiańska+8,+03-977+Warszawa&output=embed"
+              width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade" title="Mapa — Zakopiańska 8">
+            </iframe>
+          </div>
+          <a href="tel:605657366"
+            class="self-start inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-6 py-3 rounded-lg transition-colors duration-200 hover:bg-brand-coral hover:text-brand-cream">
+            Zadzwoń
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Formularz -->
+  <section class="bg-brand-sand py-16">
+    <div class="max-w-2xl mx-auto px-6">
+
+      <div class="flex flex-col gap-3 text-center mb-10">
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">
+          Napisz do nas
+        </p>
+        <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.8rem)] text-brand-navy">
+          Masz pytanie?
+        </h2>
+        <p class="font-sans text-brand-navy/70">
+          Odpiszemy tak szybko jak to możliwe — zazwyczaj tego samego dnia.
+        </p>
+      </div>
+
+      <form
+        action="https://api.web3forms.com/submit"
+        method="POST"
+        class="flex flex-col gap-5"
+        id="kontakt-form"
+      >
+        <input type="hidden" name="access_key" value="TUTAJ_WKLEJ_KLUCZ_WEB3FORMS" />
+        <input type="hidden" name="subject" value="Wiadomość ze strony Kolorowe Przedszkole" />
+        <input type="hidden" name="redirect" value="https://przedszkole-one.vercel.app/kontakt?sukces=1" />
+        <input type="checkbox" name="botcheck" class="hidden" />
+
+        <div class="flex flex-col gap-1.5">
+          <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for="imie">Imię i nazwisko</label>
+          <input
+            type="text" id="imie" name="name" required placeholder="Jan Kowalski"
+            class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for="email">Email</label>
+          <input
+            type="email" id="email" name="email" required placeholder="jan@example.com"
+            class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for="telefon">Telefon <span class="text-brand-navy/40 normal-case tracking-normal font-normal">(opcjonalnie)</span></label>
+          <input
+            type="tel" id="telefon" name="phone" placeholder="+48 600 000 000"
+            class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for="wiadomosc">Wiadomość</label>
+          <textarea
+            id="wiadomosc" name="message" required rows="5" placeholder="W czym możemy pomóc?"
+            class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200 resize-none"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-4 rounded-lg transition-colors duration-200 hover:bg-brand-coral cursor-pointer"
+        >
+          Wyślij wiadomość
+        </button>
+
+      </form>
+
+      <!-- Sukces -->
+      {Astro.url.searchParams.get('sukces') === '1' && (
+        <div class="mt-6 bg-brand-teal/10 border border-brand-teal/30 rounded-xl px-6 py-4 text-center">
+          <p class="font-sans text-brand-teal font-semibold">Wiadomość wysłana! Odezwiemy się wkrótce.</p>
+        </div>
+      )}
+
+    </div>
+  </section>
+
+</Layout>
