@@ -35,7 +35,7 @@ const slides = [
 
   <!-- Arrow left -->
   <button id="wartosci-prev" aria-label="Poprzedni slajd"
-    class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-brand-cream/20 hover:bg-brand-cream/40 text-brand-cream flex items-center justify-center transition-colors duration-200 backdrop-blur-sm">
+    class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-brand-cream/15 hover:bg-brand-cream/35 text-brand-cream hidden md:flex items-center justify-center transition-all duration-200 backdrop-blur-sm opacity-60 hover:opacity-100">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
     </svg>
@@ -43,7 +43,7 @@ const slides = [
 
   <!-- Arrow right -->
   <button id="wartosci-next" aria-label="Następny slajd"
-    class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-brand-cream/20 hover:bg-brand-cream/40 text-brand-cream flex items-center justify-center transition-colors duration-200 backdrop-blur-sm">
+    class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-brand-cream/15 hover:bg-brand-cream/35 text-brand-cream hidden md:flex items-center justify-center transition-all duration-200 backdrop-blur-sm opacity-60 hover:opacity-100">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
     </svg>
@@ -81,6 +81,14 @@ const slides = [
   document.getElementById('wartosci-prev')?.addEventListener('click', () => goTo(current - 1));
   document.getElementById('wartosci-next')?.addEventListener('click', () => goTo(current + 1));
   dots.forEach(dot => dot.addEventListener('click', (e) => goTo(Number((e.currentTarget as HTMLElement).dataset.index))));
+
+  let touchStartX = 0;
+  const section = document.getElementById('wartosci');
+  section?.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  section?.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
+  });
 
   goTo(0);
 </script>
