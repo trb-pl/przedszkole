@@ -1,0 +1,30 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: 'Kuchnia Kolorowego Przedszkola — Domowe obiady na Saskiej Kępie',
+  description: 'Własna kuchnia w Kolorowym Przedszkolu na Saskiej Kępie. Gotujemy na miejscu każdego dnia — świeże, zbilansowane posiłki bez cateringu. Obsługujemy alergie i diety wykluczeniowe.',
+  canonical: 'https://koloroweprzedszkole.com/o-nas/kuchnia',
+  ignoreTitleTemplate: true,
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Kuchnia Kolorowego Przedszkola — Domowe obiady na Saskiej Kępie',
+    description: 'Własna kuchnia w Kolorowym Przedszkolu na Saskiej Kępie. Gotujemy na miejscu każdego dnia — świeże, zbilansowane posiłki bez cateringu. Obsługujemy alergie i diety wykluczeniowe.',
+    type: 'website',
+    url: 'https://koloroweprzedszkole.com/o-nas/kuchnia',
+    site_name: 'Kolorowe Przedszkole',
+  },
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="bg-brand-warm pt-24 pb-20">
+    <div class="max-w-3xl mx-auto px-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>
+      <h1 class="font-sans italic text-[clamp(2.2rem,5vw,3.5rem)] text-brand-navy leading-tight mb-6">
+        Kuchnia
+      </h1>
+      <p class="font-sans text-lg text-brand-navy/60">Treść tej strony jest w przygotowaniu.</p>
+    </div>
+  </section>
+</Layout>
