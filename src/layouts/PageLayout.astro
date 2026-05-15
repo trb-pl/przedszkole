@@ -2,8 +2,6 @@
 import Layout from '~/layouts/Layout.astro';
 import NavbarKolorowe from '~/components/widgets/NavbarKolorowe.astro';
 import FooterKolorowe from '~/components/widgets/FooterKolorowe.astro';
-import Announcement from '~/components/widgets/Announcement.astro';
-
 import type { MetaData } from '~/types';
 
 export interface Props {
@@ -14,9 +12,6 @@ const { metadata } = Astro.props;
 ---
 
 <Layout metadata={metadata}>
-  <slot name="announcement">
-    <Announcement />
-  </slot>
   <slot name="header">
     <NavbarKolorowe />
   </slot>
