@@ -4,62 +4,75 @@ import lotarynska from '~/assets/images/lotarynska.jpg';
 import zakopianska from '~/assets/images/zakopianska.jpg';
 ---
 
-<section id="lokalizacje" class="flex flex-col md:grid md:grid-cols-2 min-h-screen snap-start">
+<section id="lokalizacje" class="min-h-screen bg-brand-cream snap-start flex items-center">
+  <div class="max-w-6xl mx-auto px-6 py-20 w-full">
 
-  <!-- Lotaryńska 18 -->
-  <div class="relative min-h-[70vh] md:min-h-screen flex items-end overflow-hidden">
-    <Image
-      src={lotarynska}
-      alt="Kolorowe Przedszkole — Lotaryńska 18, Warszawa"
-      class="absolute inset-0 w-full h-full object-cover"
-      loading="lazy"
-    />
-    <div class="absolute inset-0 bg-black/50"></div>
-    <div class="relative z-10 px-8 py-10 md:px-10 md:py-12 flex flex-col gap-4 text-brand-cream">
-      <h2 class="font-sans font-bold text-[clamp(2rem,3.5vw,3rem)] leading-tight">
-        Lotaryńska 18
-      </h2>
-      <p class="font-sans italic text-lg md:text-xl text-brand-cream/90">
-        Prawdziwie domowe przedszkole.
-      </p>
-      <p class="font-sans text-base md:text-lg leading-relaxed text-brand-cream/80 max-w-md">
-        Rodzinny dom Cioci Oli i wujka Tomka, to tu w 1991 roku powstało Kolorowe Przedszkole. Ciepło domowego ogniska sprawia, że najmłodsze dzieci czują się tu bardzo bezpiecznie i komfortowo.
-      </p>
-      <a
-        href="tel:605657366"
-        class="self-start inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-7 py-3 rounded-lg transition-colors duration-200 hover:bg-brand-cream hover:text-brand-navy mt-2"
-      >
-        Zadzwoń
-      </a>
+    <!-- Section header -->
+    <h2 class="font-sans italic text-[clamp(1.8rem,3vw,3rem)] text-brand-navy text-center mb-12">
+      Nasze lokalizacje
+    </h2>
+
+    <!-- Cards grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+
+      <!-- Lotaryńska 18 -->
+      <div class="flex flex-col gap-5">
+        <div class="overflow-hidden rounded-2xl aspect-[4/3]">
+          <Image
+            src={lotarynska}
+            alt="Kolorowe Przedszkole — Lotaryńska 18, Warszawa"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        <div class="flex flex-col gap-3">
+          <h3 class="font-sans font-bold text-2xl md:text-3xl text-brand-navy">
+            Lotaryńska 18
+          </h3>
+          <p class="font-sans italic text-brand-teal text-lg">
+            Prawdziwie domowe przedszkole.
+          </p>
+          <p class="font-sans text-base md:text-lg leading-relaxed text-brand-navy/75">
+            Rodzinny dom Cioci Oli i wujka Tomka, to tu w 1991 roku powstało Kolorowe Przedszkole. Ciepło domowego ogniska sprawia, że najmłodsze dzieci czują się tu bardzo bezpiecznie i komfortowo.
+          </p>
+          <a
+            href="tel:605657366"
+            class="self-start inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-7 py-3 rounded-lg transition-colors duration-200 hover:bg-brand-navy mt-1"
+          >
+            Zadzwoń
+          </a>
+        </div>
+      </div>
+
+      <!-- Zakopiańska 8 -->
+      <div class="flex flex-col gap-5">
+        <div class="overflow-hidden rounded-2xl aspect-[4/3]">
+          <Image
+            src={zakopianska}
+            alt="Kolorowe Przedszkole — Zakopiańska 8, Warszawa"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        <div class="flex flex-col gap-3">
+          <h3 class="font-sans font-bold text-2xl md:text-3xl text-brand-navy">
+            Zakopiańska 8
+          </h3>
+          <p class="font-sans italic text-brand-teal text-lg">
+            Zaczarowany ogród.
+          </p>
+          <p class="font-sans text-base md:text-lg leading-relaxed text-brand-navy/75">
+            Willa w sercu Saskiej Kępy z gigantycznym ogrodem to istny raj dla starszej grupy. Do dyspozycji dzieci ponad 1200m² placu zabaw, przestronne i widne sale, sala do zajęć Integracji Sensorycznej (SI), oraz gabinet psychologiczno-logopedyczny.
+          </p>
+          <a
+            href="tel:605657366"
+            class="self-start inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-7 py-3 rounded-lg transition-colors duration-200 hover:bg-brand-navy mt-1"
+          >
+            Zadzwoń
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
-
-  <!-- Zakopiańska 8 -->
-  <div class="relative min-h-[70vh] md:min-h-screen flex items-end overflow-hidden">
-    <Image
-      src={zakopianska}
-      alt="Kolorowe Przedszkole — Zakopiańska 8, Warszawa"
-      class="absolute inset-0 w-full h-full object-cover"
-      loading="lazy"
-    />
-    <div class="absolute inset-0 bg-black/50"></div>
-    <div class="relative z-10 px-8 py-10 md:px-10 md:py-12 flex flex-col gap-4 text-brand-cream">
-      <h2 class="font-sans font-bold text-[clamp(2rem,3.5vw,3rem)] leading-tight">
-        Zakopiańska 8
-      </h2>
-      <p class="font-sans italic text-lg md:text-xl text-brand-cream/90">
-        Zaczarowany ogród.
-      </p>
-      <p class="font-sans text-base md:text-lg leading-relaxed text-brand-cream/80 max-w-md">
-        Willa w sercu Saskiej Kępy z gigantycznym ogrodem to istny raj dla starszej grupy. Do dyspozycji dzieci ponad 1200m² placu zabaw, przestronne i widne sale, sala do zajęć Integracji Sensorycznej (SI), oraz gabinet psychologiczno-logopedyczny.
-      </p>
-      <a
-        href="tel:605657366"
-        class="self-start inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-7 py-3 rounded-lg transition-colors duration-200 hover:bg-brand-cream hover:text-brand-navy mt-2"
-      >
-        Zadzwoń
-      </a>
-    </div>
-  </div>
-
 </section>
