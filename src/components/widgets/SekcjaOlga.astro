@@ -3,40 +3,44 @@ import { Image } from 'astro:assets';
 import olgaImage from '~/assets/images/olga.jpg';
 ---
 
-<section id="olga" class="min-h-screen flex flex-col md:grid md:grid-cols-2 overflow-hidden">
+<section id="olga" class="bg-brand-cream">
+  <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
 
-  <!-- Photo: full left half -->
-  <div class="relative min-h-[50vh] md:min-h-screen overflow-hidden">
-    <Image
-      src={olgaImage}
-      alt="Olga Trębicka — założycielka Kolorowego Przedszkola"
-      class="absolute inset-0 w-full h-full object-cover rounded-none"
-      loading="lazy"
-    />
-  </div>
+      <!-- Photo -->
+      <div class="rounded-2xl overflow-hidden aspect-[4/3]">
+        <Image
+          src={olgaImage}
+          alt="Olga Trębicka — założycielka Kolorowego Przedszkola"
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
 
-  <!-- Text: right half -->
-  <div class="flex flex-col justify-center gap-8 px-8 py-24 sm:px-16 lg:px-20 xl:px-28 bg-brand-cream">
-    <h2 class="font-sans italic text-[clamp(2.8rem,4vw,5rem)] leading-tight text-brand-navy">
-      Dzień dobry,
-    </h2>
+      <!-- Text -->
+      <div class="flex flex-col gap-8">
+        <h2 class="font-sans italic text-[clamp(2.8rem,4vw,5rem)] leading-tight text-brand-navy">
+          Dzień dobry,
+        </h2>
 
-    <div class="font-sans text-lg md:text-xl leading-relaxed text-brand-navy/85 flex flex-col gap-4">
-      <p>Wiem, że wybór przedszkola to niełatwa decyzja.</p>
-      <p>W 1991 roku ja również szukałam wyjątkowego miejsca dla mojego dziecka. Postanowiłam je stworzyć sama, od tego czasu każdego roku, razem z mężem i córką, otwieramy drzwi naszego domu dla wielu rodzin.</p>
+        <div class="font-sans text-lg md:text-xl leading-relaxed text-brand-navy/85 flex flex-col gap-4">
+          <p>Wiem, że wybór przedszkola to niełatwa decyzja.</p>
+          <p>W 1991 roku ja również szukałam wyjątkowego miejsca dla mojego dziecka. Postanowiłam je stworzyć sama, od tego czasu każdego roku, razem z mężem i córką, otwieramy drzwi naszego domu dla wielu rodzin.</p>
+        </div>
+
+        <p class="font-sans italic text-xl md:text-2xl text-brand-navy leading-snug">
+          Serdecznie Zapraszam,<br />
+          Olga Trębicka
+        </p>
+
+        <a
+          href="tel:605657366"
+          class="self-start inline-block border-2 border-brand-navy text-brand-navy font-sans font-bold uppercase tracking-wider text-sm px-8 py-4 rounded-lg transition-colors duration-200 hover:bg-brand-navy hover:text-brand-cream"
+        >
+          Zadzwoń
+        </a>
+      </div>
+
     </div>
-
-    <p class="font-sans italic text-xl md:text-2xl text-brand-navy leading-snug">
-      Serdecznie Zapraszam,<br />
-      Olga Trębicka
-    </p>
-
-    <a
-      href="tel:605657366"
-      class="self-start inline-block border-2 border-brand-navy text-brand-navy font-sans font-bold uppercase tracking-wider text-sm px-8 py-4 rounded-lg transition-colors duration-200 hover:bg-brand-navy hover:text-brand-cream"
-    >
-      Zadzwoń
-    </a>
   </div>
-
 </section>
