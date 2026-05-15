@@ -13,7 +13,7 @@ tags:
   - przedszkole
   - 3-latek
 metadata:
-  canonical: https://koloroweprzedszkole.com/adaptacja-w-przedszkolu-saska-kepa
+  canonical: https://koloroweprzedszkole.com/porady/adaptacja-w-przedszkolu-saska-kepa
 ---
 
 Gotowość przedszkolna to moment, w którym dziecko potrafi komunikować swoje potrzeby i znosi krótką rozłąkę z rodzicem. W Kolorowym Przedszkolu — prywatnym przedszkolu na Saskiej Kępie, tuż przy Gocławiu — proces adaptacji trwa zazwyczaj od 5 do 14 dni. Zaczynamy od krótkich, wspólnych wizyt z rodzicem, by stopniowo wydłużać czas samodzielnej zabawy malucha w naszym zaczarowanym ogrodzie. Od 1991 roku wiemy, że kluczem do sukcesu jest spokój, empatia i brak pośpiechu.

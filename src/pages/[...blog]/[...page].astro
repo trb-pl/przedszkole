@@ -42,6 +42,45 @@ const metadata = {
       <Headline subtitle="Praktyczne porady dla rodziców przedszkolaków — z perspektywy ponad 30 lat doświadczenia.">
         Porady
       </Headline>
+      <!-- Kafelki tematyczne -->
+      {currentPage === 1 && (
+        <div class="mb-14">
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-5">O czym piszemy?</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a href="/porady/adaptacja-w-przedszkolu-saska-kepa"
+               class="bg-white rounded-xl p-5 border border-brand-navy/5 hover:border-brand-teal/30 hover:shadow-sm transition-all block">
+              <p class="font-sans font-bold text-brand-navy mb-2">Adaptacja i rozwój</p>
+              <p class="font-sans text-sm text-brand-navy/60 leading-relaxed">Jak przygotować dziecko na przedszkole, ile trwa adaptacja, jak radzić sobie z płaczem przy rozstaniu.</p>
+            </a>
+            <a href="/porady/ile-kosztuje-prywatne-przedszkole-goclaw"
+               class="bg-white rounded-xl p-5 border border-brand-navy/5 hover:border-brand-teal/30 hover:shadow-sm transition-all block">
+              <p class="font-sans font-bold text-brand-navy mb-2">Koszty i rekrutacja</p>
+              <p class="font-sans text-sm text-brand-navy/60 leading-relaxed">Cennik prywatnych przedszkoli na Pradze Południe, co obejmuje czesne, wpisowe i dotacje z urzędu dzielnicy.</p>
+            </a>
+            <a href="/porady/przedszkole-z-wlasna-kuchnia-praga-poludnie"
+               class="bg-white rounded-xl p-5 border border-brand-navy/5 hover:border-brand-teal/30 hover:shadow-sm transition-all block">
+              <p class="font-sans font-bold text-brand-navy mb-2">Wyżywienie</p>
+              <p class="font-sans text-sm text-brand-navy/60 leading-relaxed">Domowe obiady vs. catering, jak karmić wybredne dziecko, alergie pokarmowe w przedszkolu.</p>
+            </a>
+            <a href="/porady/od-ilu-lat-przyjmuja-do-przedszkola-saska-kepa"
+               class="bg-white rounded-xl p-5 border border-brand-navy/5 hover:border-brand-teal/30 hover:shadow-sm transition-all block">
+              <p class="font-sans font-bold text-brand-navy mb-2">Gotowość przedszkolna</p>
+              <p class="font-sans text-sm text-brand-navy/60 leading-relaxed">Od ilu lat do przedszkola, jak rozpoznać gotowość 2,5-latka, czy maluch musi być odpieluchowany.</p>
+            </a>
+            <a href="/porady/przedszkole-z-ogrodem-goclaw-saska-kepa"
+               class="bg-white rounded-xl p-5 border border-brand-navy/5 hover:border-brand-teal/30 hover:shadow-sm transition-all block">
+              <p class="font-sans font-bold text-brand-navy mb-2">Ogród i ruch</p>
+              <p class="font-sans text-sm text-brand-navy/60 leading-relaxed">Własny plac zabaw, codzienna aktywność na dworze, jak radzimy sobie ze smogiem na Pradze Południe.</p>
+            </a>
+            <a href="/porady/angielski-w-przedszkolu-praga-poludnie"
+               class="bg-white rounded-xl p-5 border border-brand-navy/5 hover:border-brand-teal/30 hover:shadow-sm transition-all block">
+              <p class="font-sans font-bold text-brand-navy mb-2">Język angielski</p>
+              <p class="font-sans text-sm text-brand-navy/60 leading-relaxed">Naturalna nauka przez zabawę, piosenki i codzienne sytuacje — bez kart pracy i odpytywania.</p>
+            </a>
+          </div>
+        </div>
+      )}
+
       <BlogList posts={page.data} />
       <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
     </div>
