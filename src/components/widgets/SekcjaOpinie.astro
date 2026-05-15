@@ -1,0 +1,59 @@
+---
+const opinie = [
+  {
+    tekst: 'Za co kocham przedszkole? Za wszystkich nauczycieli i pracowników, zabawy na powietrzu przy każdej pogodzie, odpowiedni balans pomiędzy zabawą a nauką, za kreatywne prace plastyczne które dziecko każdego dnia przynosi do domu, oraz za wzruszające i wspaniałe uroczystości na Boże Narodzenie, oraz Zakończenie Roku.',
+    autor: 'Paulina',
+    podpis: 'Mama Zosi',
+  },
+  {
+    tekst: 'Jestem zachwycona poziomem opieki w Kolorowym Przedszkolu. Nauczyciele tworzą ciepłą, bezpieczną przestrzeń, w której dzieci mogą eksplorować świat. Program edukacyjny jest doskonale zbalansowany, łącząc naukę z zabawą. Moja córka codziennie wraca do domu pełna nowych doświadczeń i z uśmiechem na twarzy.',
+    autor: 'Gosia',
+    podpis: 'Mama Kasi',
+  },
+  {
+    tekst: 'Wybór Kolorowego Przedszkola to najlepsza decyzja, jaką podjęliśmy dla naszego syna. Bogactwo zajęć artystycznych, sportowych i językowych zachwyca nas każdego dnia. Szczególnie cenimy sobie regularną komunikację z wychowawcami oraz czyste, przestronne i inspirujące otoczenie, które sprzyja harmonijnemu rozwojowi dzieci.',
+    autor: 'Michał',
+    podpis: 'Tata Antka',
+  },
+  {
+    tekst: 'Kolorowe Przedszkole wyróżnia się nowoczesnym podejściem do edukacji wczesnoszkolnej. Doceniam szczególnie małe grupy, które pozwalają na indywidualne traktowanie każdego dziecka. Nauczyciele są wyjątkowo cierpliwi i kreatywni, a różnorodność zajęć dodatkowych sprawia, że dzieci z radością uczestniczą w codziennych aktywnościach.',
+    autor: 'Marzena',
+    podpis: 'Mama Asi',
+  },
+];
+---
+
+<section id="opinie" class="min-h-screen bg-brand-navy snap-start flex items-center">
+  <div class="max-w-6xl mx-auto px-6 py-20 w-full">
+
+    <!-- Header -->
+    <h2 class="font-sans italic text-[clamp(1.8rem,3vw,3rem)] text-brand-cream text-center mb-12">
+      Co mówią rodzice
+    </h2>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+      {opinie.map((opinia) => (
+        <div class="flex flex-col gap-4 bg-brand-cream/10 border border-brand-cream/15 rounded-2xl px-7 py-7">
+          <!-- Quote mark -->
+          <span class="font-sans text-5xl leading-none text-brand-teal select-none">"</span>
+          <!-- Text -->
+          <p class="font-sans text-base md:text-lg leading-relaxed text-brand-cream/85 flex-1">
+            {opinia.tekst}
+          </p>
+          <!-- Stars + author -->
+          <div class="flex flex-col gap-1 mt-2">
+            <span class="text-brand-yellow text-lg tracking-wide">★★★★★</span>
+            <p class="font-sans font-bold text-brand-cream text-sm uppercase tracking-wider">
+              {opinia.autor}
+            </p>
+            <p class="font-sans italic text-brand-cream/60 text-sm">
+              {opinia.podpis}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
