@@ -104,14 +104,11 @@ const metadata = {
       </div>
 
       <form
-        action="https://api.web3forms.com/submit"
-        method="POST"
         class="flex flex-col gap-5"
         id="kontakt-form"
       >
         <input type="hidden" name="access_key" value="e1446f91-1e54-4f44-870e-1c86f83256ed" />
         <input type="hidden" name="subject" value="Wiadomość ze strony Kolorowe Przedszkole" />
-        <input type="hidden" name="redirect" value="https://przedszkole-one.vercel.app/kontakt?sukces=1" />
         <input type="checkbox" name="botcheck" class="hidden" />
 
         <div class="flex flex-col gap-1.5">
@@ -156,13 +153,54 @@ const metadata = {
       </form>
 
       <!-- Sukces -->
-      {Astro.url.searchParams.get('sukces') === '1' && (
-        <div class="mt-6 bg-brand-teal/10 border border-brand-teal/30 rounded-xl px-6 py-4 text-center">
-          <p class="font-sans text-brand-teal font-semibold">Wiadomość wysłana! Odezwiemy się wkrótce.</p>
-        </div>
-      )}
+      <div id="form-sukces" class="hidden mt-2 bg-brand-teal/10 border border-brand-teal/30 rounded-xl px-6 py-6 text-center flex flex-col gap-2">
+        <p class="font-sans text-2xl">✓</p>
+        <p class="font-sans text-brand-teal font-semibold text-lg">Wiadomość wysłana!</p>
+        <p class="font-sans text-brand-navy/70 text-sm">Odezwiemy się tak szybko jak to możliwe.</p>
+      </div>
+
+      <!-- Błąd -->
+      <div id="form-blad" class="hidden mt-2 bg-brand-coral/10 border border-brand-coral/30 rounded-xl px-6 py-4 text-center">
+        <p class="font-sans text-brand-coral font-semibold">Coś poszło nie tak. Spróbuj ponownie lub zadzwoń: +48 605 657 366</p>
+      </div>
 
     </div>
   </section>
 
 </Layout>
+
+<script>
+  const form = document.getElementById('kontakt-form') as HTMLFormElement;
+  const sukces = document.getElementById('form-sukces');
+  const blad = document.getElementById('form-blad');
+  const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Wysyłanie…';
+
+    const data = new FormData(form);
+    const json = Object.fromEntries(data.entries());
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(json),
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        form.classList.add('hidden');
+        sukces?.classList.remove('hidden');
+      } else {
+        throw new Error('Web3Forms error');
+      }
+    } catch {
+      blad?.classList.remove('hidden');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Wyślij wiadomość';
+    }
+  });
+</script>
