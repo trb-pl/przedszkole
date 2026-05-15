@@ -64,21 +64,41 @@ const slides = [
 
   </div>
 
-  <!-- Mobile: cards -->
-  <div class="block md:hidden bg-brand-navy py-16 px-6">
-    <h2 class="font-sans italic text-[clamp(1.8rem,8vw,2.5rem)] text-brand-cream text-center mb-10">
+  <!-- Mobile: photo card slider -->
+  <div class="block md:hidden bg-brand-cream py-16 px-6">
+    <h2 class="font-sans italic text-[clamp(1.8rem,8vw,2.5rem)] text-brand-navy text-center mb-10">
       Nasze wartości
     </h2>
-    <div class="flex flex-col gap-6 max-w-lg mx-auto">
-      {slides.map((slide) => (
-        <div class="flex flex-col gap-4 bg-brand-cream/10 border border-brand-cream/15 rounded-2xl px-7 py-7">
-          <h3 class="font-sans font-bold uppercase tracking-widest text-brand-teal text-xs">
-            {slide.title}
-          </h3>
-          <p class="font-sans text-base leading-relaxed text-brand-cream/85">
-            {slide.body}
-          </p>
-        </div>
+
+    <div class="overflow-hidden">
+      <div id="wartosci-mobile-track" class="flex transition-transform duration-500 ease-in-out">
+        {slides.map((slide) => (
+          <div class="min-w-full px-1">
+            <div class="flex flex-col gap-5 bg-white border border-brand-navy/10 rounded-2xl overflow-hidden shadow-sm">
+              <div class="aspect-[4/3] overflow-hidden">
+                <Image src={slide.img} alt={slide.alt} class="w-full h-full object-cover" loading="lazy" />
+              </div>
+              <div class="flex flex-col gap-3 px-6 pb-7">
+                <h3 class="font-sans font-bold uppercase tracking-widest text-brand-teal text-xs">
+                  {slide.title}
+                </h3>
+                <p class="font-sans text-base leading-relaxed text-brand-navy/75">
+                  {slide.body}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="flex justify-center gap-3 mt-6">
+      {slides.map((_, i) => (
+        <button
+          class="wartosci-mobile-dot w-2.5 h-2.5 rounded-full bg-brand-navy/30 transition-all duration-300"
+          data-index={i}
+          aria-label={`Slajd ${i + 1}`}
+        />
       ))}
     </div>
   </div>
@@ -123,4 +143,40 @@ const slides = [
   });
 
   goTo(0);
+
+  // Mobile slider
+  const mobileTrack = document.getElementById('wartosci-mobile-track');
+  const mobileDots = document.querySelectorAll('.wartosci-mobile-dot');
+  let mobileCurrent = 0;
+
+  function mobileGoTo(index: number) {
+    mobileCurrent = (index + total) % total;
+    (mobileTrack as HTMLElement).style.transform = `translateX(-${mobileCurrent * 100}%)`;
+    mobileDots.forEach((dot, i) => {
+      dot.classList.toggle('bg-brand-navy', i === mobileCurrent);
+      dot.classList.toggle('bg-brand-navy/30', i !== mobileCurrent);
+      dot.classList.toggle('scale-125', i === mobileCurrent);
+    });
+  }
+
+  mobileDots.forEach(dot => dot.addEventListener('click', (e) => mobileGoTo(Number((e.currentTarget as HTMLElement).dataset.index))));
+
+  let mobileTouchStartX = 0;
+  let mobileTouchStartY = 0;
+  const mobileSlider = mobileTrack?.parentElement;
+  mobileSlider?.addEventListener('touchstart', (e) => {
+    mobileTouchStartX = e.touches[0].clientX;
+    mobileTouchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  mobileSlider?.addEventListener('touchmove', (e) => {
+    const diffX = Math.abs(mobileTouchStartX - e.touches[0].clientX);
+    const diffY = Math.abs(mobileTouchStartY - e.touches[0].clientY);
+    if (diffX > diffY) e.preventDefault();
+  }, { passive: false });
+  mobileSlider?.addEventListener('touchend', (e) => {
+    const diff = mobileTouchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) mobileGoTo(diff > 0 ? mobileCurrent + 1 : mobileCurrent - 1);
+  });
+
+  mobileGoTo(0);
 </script>
