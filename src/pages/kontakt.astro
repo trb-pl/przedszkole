@@ -33,10 +33,9 @@ const metadata = {
         <div class="flex flex-col gap-5 bg-white rounded-2xl p-8 shadow-sm border border-brand-navy/5">
           <div>
             <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-2">
-              Lokalizacja 1
+              Prawdziwie domowe przedszkole
             </p>
             <h2 class="font-sans font-bold text-2xl text-brand-navy">Lotaryńska 18</h2>
-            <p class="font-sans italic text-brand-teal">Prawdziwie domowe przedszkole</p>
           </div>
           <div class="font-sans text-brand-navy/75 flex flex-col gap-2 text-base">
             <p>ul. Lotaryńska 18<br />03-974 Warszawa</p>
@@ -60,10 +59,9 @@ const metadata = {
         <div class="flex flex-col gap-5 bg-white rounded-2xl p-8 shadow-sm border border-brand-navy/5">
           <div>
             <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-2">
-              Lokalizacja 2
+              Zaczarowany ogród
             </p>
             <h2 class="font-sans font-bold text-2xl text-brand-navy">Zakopiańska 8</h2>
-            <p class="font-sans italic text-brand-teal">Zaczarowany ogród</p>
           </div>
           <div class="font-sans text-brand-navy/75 flex flex-col gap-2 text-base">
             <p>ul. Zakopiańska 8<br />03-977 Warszawa</p>
@@ -120,7 +118,15 @@ const metadata = {
         </div>
 
         <div class="flex flex-col gap-1.5">
-          <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for="email">Email</label>
+          <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for="telefon">Nr telefonu</label>
+          <input
+            type="tel" id="telefon" name="phone" required placeholder="+48 600 000 000"
+            class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for="email">E-mail</label>
           <input
             type="email" id="email" name="email" required placeholder="jan@example.com"
             class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200"
@@ -128,19 +134,11 @@ const metadata = {
         </div>
 
         <div class="flex flex-col gap-1.5">
-          <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for="telefon">Telefon <span class="text-brand-navy/40 normal-case tracking-normal font-normal">(opcjonalnie)</span></label>
+          <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for="wiek">Wiek dziecka</label>
           <input
-            type="tel" id="telefon" name="phone" placeholder="+48 600 000 000"
+            type="text" id="wiek" name="wiek_dziecka" required placeholder="np. 3 lata"
             class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200"
           />
-        </div>
-
-        <div class="flex flex-col gap-1.5">
-          <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for="wiadomosc">Wiadomość</label>
-          <textarea
-            id="wiadomosc" name="message" required rows="5" placeholder="W czym możemy pomóc?"
-            class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200 resize-none"
-          ></textarea>
         </div>
 
         <button
