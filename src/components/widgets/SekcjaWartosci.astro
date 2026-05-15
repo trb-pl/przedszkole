@@ -1,0 +1,67 @@
+---
+import { Image } from 'astro:assets';
+import serce from '~/assets/images/wartosci-serce.jpg';
+import dom from '~/assets/images/wartosci-dom.jpg';
+import wiedza from '~/assets/images/wartosci-wiedza.jpg';
+import natura from '~/assets/images/wartosci-natura.jpg';
+---
+
+<section id="wartosci">
+
+  <!-- 1: Z SERCEM DO DZIECKA — coral -->
+  <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <Image src={serce} alt="Z sercem do dziecka" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+    <div class="absolute inset-0 bg-brand-coral/70"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-8 py-24 text-center text-brand-cream flex flex-col gap-6">
+      <h2 class="font-sans font-bold uppercase tracking-widest text-[clamp(1.8rem,4vw,3.5rem)] leading-tight">
+        Z sercem do dziecka
+      </h2>
+      <p class="font-sans text-lg md:text-xl leading-relaxed">
+        Uczymy nazywać i wyrażać emocje, szanując indywidualność każdego malucha. Wspieramy samodzielność i odpowiedzialność poprzez podejmowanie decyzji adekwatnych do wieku. Nasz zespół pedagogów stale się rozwija, by mądrze towarzyszyć dzieciom i rodzicom w zmieniającym się świecie.
+      </p>
+    </div>
+  </div>
+
+  <!-- 2: JAK W DOMU — yellow -->
+  <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <Image src={dom} alt="Jak w domu" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+    <div class="absolute inset-0 bg-brand-yellow/70"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-8 py-24 text-center text-brand-navy flex flex-col gap-6">
+      <h2 class="font-sans font-bold uppercase tracking-widest text-[clamp(1.8rem,4vw,3.5rem)] leading-tight">
+        Jak w domu
+      </h2>
+      <p class="font-sans text-lg md:text-xl leading-relaxed">
+        Tworzymy kameralne grupy, dopasowane do tempa rozwoju i potrzeb dzieci. Dbamy o przestrzeń na swobodną zabawę i odpoczynek, ceniąc wartość nudy i spontaniczności. Nasze przedszkole działa w sercu Saskiej Kępy, a rodzinne ciepło i bezpieczeństwo budujemy razem z dziećmi i ich bliskimi.
+      </p>
+    </div>
+  </div>
+
+  <!-- 3: W ŚWIECIE WIEDZY — teal -->
+  <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <Image src={wiedza} alt="W świecie wiedzy" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+    <div class="absolute inset-0 bg-brand-teal/70"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-8 py-24 text-center text-brand-cream flex flex-col gap-6">
+      <h2 class="font-sans font-bold uppercase tracking-widest text-[clamp(1.8rem,4vw,3.5rem)] leading-tight">
+        W świecie wiedzy
+      </h2>
+      <p class="font-sans text-lg md:text-xl leading-relaxed">
+        Inspirujemy się metodami Montessori, Steinera, Korczaka i Pikler, tworząc nowoczesne podejście do pracy z dziećmi. Rozwijamy kreatywność przez sztukę – malowanie, śpiew, taniec oraz wizyty w teatrze i na koncertach. Języki obce (angielski i niemiecki) towarzyszą dzieciom codziennie w naturalny sposób. Realizujemy podstawę programową, wspierając indywidualne talenty bez uśredniania tempa rozwoju.
+      </p>
+    </div>
+  </div>
+
+  <!-- 4: W ZGODZIE Z NATURĄ — forest -->
+  <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <Image src={natura} alt="W zgodzie z naturą" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+    <div class="absolute inset-0 bg-brand-forest/70"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-8 py-24 text-center text-brand-cream flex flex-col gap-6">
+      <h2 class="font-sans font-bold uppercase tracking-widest text-[clamp(1.8rem,4vw,3.5rem)] leading-tight">
+        W zgodzie z naturą
+      </h2>
+      <p class="font-sans text-lg md:text-xl leading-relaxed">
+        Dbamy o ogródek warzywny i wspólnie gotujemy z jego plonów. Jemy zdrowo i lokalnie, a wszystkie posiłki przygotowujemy na miejscu z ekologicznych produktów. Spędzamy dużo czasu na świeżym powietrzu, bawiąc się wodą, chodząc boso po trawie i wspinając się na drzewa, niezależnie od pogody. Dbamy też o sprawność fizyczną – jeździmy na basen, gramy w piłkę, ćwiczymy gimnastykę i korzystamy z naszej sali do integracji sensorycznej.
+      </p>
+    </div>
+  </div>
+
+</section>
