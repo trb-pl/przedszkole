@@ -1,0 +1,28 @@
+<section class="bg-brand-navy">
+  <div class="max-w-4xl mx-auto px-6 py-16 flex flex-col items-center gap-8 text-center">
+
+    <!-- Stats row -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
+      {[
+        { liczba: '1991',  opis: 'rok założenia'      },
+        { liczba: '2',     opis: 'lokalizacje'         },
+        { liczba: '3–6',   opis: 'lat — przyjmujemy'  },
+        { liczba: 'małe',  opis: 'kameralne grupy'     },
+      ].map(({ liczba, opis }) => (
+        <div class="flex flex-col gap-1">
+          <span class="font-sans font-bold text-3xl md:text-4xl text-brand-teal">{liczba}</span>
+          <span class="font-sans text-xs uppercase tracking-widest text-brand-cream/50">{opis}</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Divider -->
+    <div class="w-12 h-px bg-brand-cream/20"></div>
+
+    <!-- SEO paragraph -->
+    <p class="font-sans text-base md:text-lg leading-relaxed text-brand-cream/80 max-w-2xl">
+      Szukasz przedszkola na Saskiej Kępie lub Gocławiu? Kolorowe Przedszkole działa w dwóch lokalizacjach na warszawskiej Pradze-Południe&nbsp;— przy ul. Lotaryńskiej&nbsp;18 (Saska Kępa&nbsp;/ Gocław) oraz Zakopiańskiej&nbsp;8 (Saska Kępa). Do naszych kameralnych grup przyjmujemy dzieci od&nbsp;3.&nbsp;roku&nbsp;życia.
+    </p>
+
+  </div>
+</section>
