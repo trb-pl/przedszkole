@@ -2,7 +2,7 @@
 publishDate: 2026-05-15T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Angielski w przedszkolu na Pradze Południe — jak maluchy uczą się języka przez zabawę?"
-excerpt: "Jak wygląda nauka angielskiego w Kolorowym Przedszkolu na Saskiej Kępie i Gocławiu? Naturalna metoda, bez kart pracy i odpytywania — przez piosenki, gry i codzienne sytuacje."
+excerpt: "Jak wygląda nauka angielskiego w Kolorowym Przedszkolu na Saskiej Kępie? Naturalna metoda, bez kart pracy i odpytywania — przez piosenki, gry i codzienne sytuacje."
 image: https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80
 category: Porady
 tags:
@@ -15,7 +15,7 @@ metadata:
   canonical: https://koloroweprzedszkole.com/porady/angielski-w-przedszkolu-praga-poludnie
 ---
 
-Dzieci w wieku przedszkolnym przyswajają języki obce w sposób intuicyjny — o ile nauka odbywa się przez zabawę, nie przez siedzenie w ławkach. W Kolorowym Przedszkolu na Saskiej Kępie i Gocławiu wprowadzamy język angielski naturalnie, podczas codziennych aktywności, piosenek i gier ruchowych w naszym zaczarowanym ogrodzie.
+Dzieci w wieku przedszkolnym przyswajają języki obce w sposób intuicyjny — o ile nauka odbywa się przez zabawę, nie przez siedzenie w ławkach. W Kolorowym Przedszkolu na Saskiej Kępie wprowadzamy język angielski naturalnie, podczas codziennych aktywności, piosenek i gier ruchowych w naszym zaczarowanym ogrodzie.
 
 ## Czym różni się naturalna nauka od tradycyjnych zajęć językowych?
 

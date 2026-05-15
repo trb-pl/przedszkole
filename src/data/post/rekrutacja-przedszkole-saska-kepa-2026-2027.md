@@ -2,7 +2,7 @@
 publishDate: 2026-05-15T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Kiedy zapisać dziecko do przedszkola? Wolne miejsca Saska Kępa i Gocław 2026/2027"
-excerpt: "Rekrutacja do prywatnych przedszkoli na Saskiej Kępie i Gocławiu na rok 2026/2027. Kiedy ruszają zapisy, jak wygląda proces i czy są jeszcze wolne miejsca w Kolorowym Przedszkolu."
+excerpt: "Rekrutacja do prywatnych przedszkoli na Saskiej Kępie na rok 2026/2027. Kiedy ruszają zapisy, jak wygląda proces i czy są jeszcze wolne miejsca w Kolorowym Przedszkolu."
 image: https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80
 category: Porady
 tags:
@@ -15,7 +15,7 @@ metadata:
   canonical: https://koloroweprzedszkole.com/porady/rekrutacja-przedszkole-saska-kepa-2026-2027
 ---
 
-Rekrutacja na rok przedszkolny 2026/2027 do placówek niepublicznych w Warszawie rusza zazwyczaj w pierwszym kwartale roku — największe zainteresowanie przypada na **luty, marzec i kwiecień**. W Kolorowym Przedszkolu na Saskiej Kępie i Gocławiu prowadzimy zapisy ciągłe. Oznacza to, że jeśli dysponujemy wolnymi miejscami, przyjmujemy dzieci w trakcie całego roku szkolnego.
+Rekrutacja na rok przedszkolny 2026/2027 do placówek niepublicznych w Warszawie rusza zazwyczaj w pierwszym kwartale roku — największe zainteresowanie przypada na **luty, marzec i kwiecień**. W Kolorowym Przedszkolu na Saskiej Kępie prowadzimy zapisy ciągłe. Oznacza to, że jeśli dysponujemy wolnymi miejscami, przyjmujemy dzieci w trakcie całego roku szkolnego.
 
 ## Do kiedy trwa rekrutacja do przedszkoli niepublicznych w Warszawie?
 

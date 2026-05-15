@@ -2,7 +2,7 @@
 publishDate: 2026-05-15T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Od ilu lat przyjmują do przedszkola na Saskiej Kępie? Zasady 2026"
-excerpt: "Kolorowe Przedszkole na Saskiej Kępie i Gocławiu przyjmuje dzieci od 2,5 roku życia. Jak rozpoznać gotowość przedszkolną, czy maluch musi być odpieluchowany i jak wygląda adaptacja."
+excerpt: "Kolorowe Przedszkole na Saskiej Kępie przyjmuje dzieci od 2,5 roku życia. Jak rozpoznać gotowość przedszkolną, czy maluch musi być odpieluchowany i jak wygląda adaptacja."
 image: https://images.unsplash.com/photo-1543248939-ff40856f65d4?auto=format&fit=crop&w=1200&q=80
 category: Porady
 tags:
@@ -15,7 +15,7 @@ metadata:
   canonical: https://koloroweprzedszkole.com/porady/od-ilu-lat-przyjmuja-do-przedszkola-saska-kepa
 ---
 
-W Kolorowym Przedszkolu na Saskiej Kępie i Gocławiu przyjmujemy dzieci **od ukończenia 2,5 roku życia**. Od 1991 roku obserwujemy, że jest to optymalny wiek na rozpoczęcie naturalnego i łagodnego procesu socjalizacji. Gotowość przedszkolna to moment, w którym dziecko potrafi komunikować swoje podstawowe potrzeby, nawiązuje pierwsze relacje z rówieśnikami i znosi krótką rozłąkę z rodzicem.
+W Kolorowym Przedszkolu na Saskiej Kępie przyjmujemy dzieci **od ukończenia 2,5 roku życia**. Od 1991 roku obserwujemy, że jest to optymalny wiek na rozpoczęcie naturalnego i łagodnego procesu socjalizacji. Gotowość przedszkolna to moment, w którym dziecko potrafi komunikować swoje podstawowe potrzeby, nawiązuje pierwsze relacje z rówieśnikami i znosi krótką rozłąkę z rodzicem.
 
 ## Jak rozpoznać gotowość przedszkolną u 2,5-latka?
 

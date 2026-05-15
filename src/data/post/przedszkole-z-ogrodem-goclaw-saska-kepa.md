@@ -1,8 +1,8 @@
 ---
 publishDate: 2026-05-15T00:00:00Z
 author: Kolorowe Przedszkole
-title: "Przedszkole z dużym ogrodem na Gocławiu i Saskiej Kępie — dlaczego codzienny ruch to podstawa?"
-excerpt: "Własny ogród w przedszkolu na Pradze Południe. Jak Kolorowe Przedszkole na Gocławiu i Saskiej Kępie organizuje codzienną aktywność na świeżym powietrzu — i co robi w dni smogowe."
+title: "Przedszkole z dużym ogrodem na Saskiej Kępie — dlaczego codzienny ruch to podstawa?"
+excerpt: "Własny ogród w przedszkolu na Pradze Południe. Jak Kolorowe Przedszkole na Saskiej Kępie organizuje codzienną aktywność na świeżym powietrzu — i co robi w dni smogowe."
 image: https://images.unsplash.com/photo-1575783970733-1aaedde1db74?auto=format&fit=crop&w=1200&q=80
 category: Porady
 tags:
@@ -15,7 +15,7 @@ metadata:
   canonical: https://koloroweprzedszkole.com/porady/przedszkole-z-ogrodem-goclaw-saska-kepa
 ---
 
-Zaczarowany ogród to serce Kolorowego Przedszkola i nasz największy atut w gęstej zabudowie Gocławia i Saskiej Kępy. Dysponujemy własnym, ogrodzonym i bezpiecznym placem zabaw bezpośrednio przy budynku przedszkola. Dzieci spędzają na świeżym powietrzu minimum godzinę dziennie, co buduje odporność, rozwija motorykę dużą i wspiera naturalną integrację sensoryczną.
+Zaczarowany ogród to serce Kolorowego Przedszkola i nasz największy atut w gęstej zabudowie Saskiej Kępy. Dysponujemy własnym, ogrodzonym i bezpiecznym placem zabaw bezpośrednio przy budynku przedszkola. Dzieci spędzają na świeżym powietrzu minimum godzinę dziennie, co buduje odporność, rozwija motorykę dużą i wspiera naturalną integrację sensoryczną.
 
 ## Jak często dzieci wychodzą na plac zabaw?
 
