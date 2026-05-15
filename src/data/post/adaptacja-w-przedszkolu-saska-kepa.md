@@ -4,7 +4,7 @@ updateDate: 2026-05-15T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Adaptacja w przedszkolu na Saskiej Kępie — jak przygotować 3-latka?"
 excerpt: "Jak wygląda adaptacja dziecka w prywatnym przedszkolu? Praktyczny przewodnik z Kolorowego Przedszkola na Saskiej Kępie — 5 kroków, wyprawka, porady dla rodziców."
-image: https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=1200&q=80
+image: /Kolorowe_przedszkole_adaptacja_dziecka.jpg
 category: Porady
 tags:
   - adaptacja
