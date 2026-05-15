@@ -13,12 +13,12 @@ export interface Props {
 const { post, url } = Astro.props;
 ---
 
-<!-- Header hero sekcja -->
-<section class="bg-brand-sand pt-24 pb-12">
-  <div class="max-w-3xl mx-auto px-6">
+<!-- Cały artykuł na bg-brand-cream, header z większym paddingiem top -->
+<article class="bg-brand-cream">
 
-    <!-- Meta -->
-    <div class="flex items-center gap-2 font-sans text-xs font-bold uppercase tracking-widest text-brand-teal mb-4">
+  <!-- Nagłówek -->
+  <header class="max-w-3xl mx-auto px-6 pt-28 pb-10">
+    <div class="flex items-center gap-2 font-sans text-xs font-bold uppercase tracking-widest text-brand-teal mb-5">
       <time datetime={String(post.publishDate)}>{getFormattedDate(post.publishDate)}</time>
       {post.category && (
         <>
@@ -34,25 +34,20 @@ const { post, url } = Astro.props;
       )}
     </div>
 
-    <!-- Tytuł -->
     <h1 class="font-sans italic text-[clamp(2rem,4vw,3.2rem)] leading-tight text-brand-navy mb-6">
       {post.title}
     </h1>
 
-    <!-- Excerpt -->
     {post.excerpt && (
-      <p class="font-sans text-xl text-brand-navy/65 leading-relaxed">
+      <p class="font-sans text-xl text-brand-navy/60 leading-relaxed">
         {post.excerpt}
       </p>
     )}
+  </header>
 
-  </div>
-</section>
-
-<!-- Zdjęcie -->
-{post.image && (
-  <section class="bg-brand-cream py-10">
-    <div class="max-w-3xl mx-auto px-6">
+  <!-- Zdjęcie — pełna szerokość max-w-3xl, bez własnego tła -->
+  {post.image && (
+    <div class="max-w-3xl mx-auto px-6 pb-10">
       <div class="rounded-2xl overflow-hidden aspect-[16/9]">
         <Image
           src={post.image}
@@ -68,23 +63,21 @@ const { post, url } = Astro.props;
         />
       </div>
     </div>
-  </section>
-)}
+  )}
 
-<!-- Treść artykułu -->
-<section class="bg-brand-cream pb-16">
-  <div class="max-w-3xl mx-auto px-6">
-    <div
-      class="prose prose-lg max-w-none
-        prose-headings:font-sans prose-headings:font-bold prose-headings:text-brand-navy prose-headings:italic
-        prose-p:font-sans prose-p:text-brand-navy/75 prose-p:leading-relaxed
-        prose-a:text-brand-teal prose-a:no-underline hover:prose-a:text-brand-coral
-        prose-strong:text-brand-navy
-        prose-li:font-sans prose-li:text-brand-navy/75
-        prose-hr:border-brand-navy/10
-        prose-blockquote:border-brand-teal prose-blockquote:text-brand-navy/70
-        mt-8"
-    >
+  <!-- Treść -->
+  <div class="max-w-3xl mx-auto px-6 pb-20">
+    <div class="prose prose-lg max-w-none
+      prose-headings:font-sans prose-headings:font-bold prose-headings:text-brand-navy prose-headings:not-italic
+      prose-h2:text-2xl prose-h3:text-xl
+      prose-p:font-sans prose-p:text-brand-navy/75 prose-p:leading-relaxed
+      prose-a:text-brand-teal prose-a:no-underline hover:prose-a:text-brand-coral
+      prose-strong:text-brand-navy prose-strong:font-bold
+      prose-li:font-sans prose-li:text-brand-navy/75
+      prose-ul:my-4 prose-ol:my-4
+      prose-hr:border-brand-navy/10
+      prose-blockquote:border-l-4 prose-blockquote:border-brand-teal prose-blockquote:text-brand-navy/60 prose-blockquote:not-italic
+    ">
       <slot />
     </div>
 
@@ -95,11 +88,11 @@ const { post, url } = Astro.props;
       </div>
     )}
 
-    <!-- Powrót + CTA -->
-    <div class="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <!-- Nawigacja dół -->
+    <div class="mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <a
         href="/blog"
-        class="font-sans text-sm font-bold uppercase tracking-wider text-brand-navy/50 hover:text-brand-teal transition-colors duration-200"
+        class="font-sans text-sm font-bold uppercase tracking-wider text-brand-navy/40 hover:text-brand-teal transition-colors duration-200"
       >
         ← Wszystkie porady
       </a>
@@ -111,4 +104,5 @@ const { post, url } = Astro.props;
       </a>
     </div>
   </div>
-</section>
+
+</article>

@@ -37,17 +37,13 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <section class="bg-brand-sand pt-24 pb-4">
+  <div class="bg-brand-sand pt-24 pb-16">
     <div class="max-w-4xl mx-auto px-6">
       <Headline subtitle="Praktyczne porady dla rodziców przedszkolaków — z perspektywy ponad 30 lat doświadczenia.">
         Porady
       </Headline>
-    </div>
-  </section>
-  <section class="bg-brand-cream py-16">
-    <div class="max-w-4xl mx-auto px-6">
       <BlogList posts={page.data} />
       <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
     </div>
-  </section>
+  </div>
 </Layout>
