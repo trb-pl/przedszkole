@@ -11,7 +11,7 @@ metadata:
   title:
     default: Kolorowe Przedszkole
     template: '%s — Kolorowe Przedszkole'
-  description: "Prywatne przedszkole na Saskiej Kępie i Gocławiu, działające od 1991 roku. Domowe obiady, ogród, język angielski, sala SI. Rekrutacja 2026/2027."
+  description: "Prywatne przedszkole na Saskiej Kępie, tuż przy Gocławiu, działające od 1991 roku. Domowe obiady, ogród, język angielski, sala SI. Rekrutacja 2026/2027."
   robots:
     index: true
     follow: true
