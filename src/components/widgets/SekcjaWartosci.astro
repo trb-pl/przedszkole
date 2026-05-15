@@ -4,64 +4,83 @@ import serce from '~/assets/images/wartosci-serce.jpg';
 import dom from '~/assets/images/wartosci-dom.jpg';
 import wiedza from '~/assets/images/wartosci-wiedza.jpg';
 import natura from '~/assets/images/wartosci-natura.jpg';
+
+const slides = [
+  { img: serce,  alt: 'Z sercem do dziecka', title: 'Z sercem do dziecka', body: 'Uczymy nazywać i wyrażać emocje, szanując indywidualność każdego malucha. Wspieramy samodzielność i odpowiedzialność poprzez podejmowanie decyzji adekwatnych do wieku. Nasz zespół pedagogów stale się rozwija, by mądrze towarzyszyć dzieciom i rodzicom w zmieniającym się świecie.' },
+  { img: dom,    alt: 'Jak w domu',           title: 'Jak w domu',           body: 'Tworzymy kameralne grupy, dopasowane do tempa rozwoju i potrzeb dzieci. Dbamy o przestrzeń na swobodną zabawę i odpoczynek, ceniąc wartość nudy i spontaniczności. Nasze przedszkole działa w sercu Saskiej Kępy, a rodzinne ciepło i bezpieczeństwo budujemy razem z dziećmi i ich bliskimi.' },
+  { img: wiedza, alt: 'W świecie wiedzy',     title: 'W świecie wiedzy',     body: 'Inspirujemy się metodami Montessori, Steinera, Korczaka i Pikler, tworząc nowoczesne podejście do pracy z dziećmi. Rozwijamy kreatywność przez sztukę – malowanie, śpiew, taniec oraz wizyty w teatrze i na koncertach. Języki obce (angielski i niemiecki) towarzyszą dzieciom codziennie w naturalny sposób. Realizujemy podstawę programową, wspierając indywidualne talenty bez uśredniania tempa rozwoju.' },
+  { img: natura, alt: 'W zgodzie z naturą',   title: 'W zgodzie z naturą',   body: 'Dbamy o ogródek warzywny i wspólnie gotujemy z jego plonów. Jemy zdrowo i lokalnie, a wszystkie posiłki przygotowujemy na miejscu z ekologicznych produktów. Spędzamy dużo czasu na świeżym powietrzu, bawiąc się wodą, chodząc boso po trawie i wspinając się na drzewa, niezależnie od pogody. Dbamy też o sprawność fizyczną – jeździmy na basen, gramy w piłkę, ćwiczymy gimnastykę i korzystamy z naszej sali do integracji sensorycznej.' },
+];
 ---
 
-<section id="wartosci">
+<section id="wartosci" class="relative min-h-screen overflow-hidden">
 
-  <!-- 1: Z SERCEM DO DZIECKA — coral -->
-  <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <Image src={serce} alt="Z sercem do dziecka" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-    <div class="absolute inset-0 bg-brand-coral/70"></div>
-    <div class="relative z-10 max-w-3xl mx-auto px-8 py-24 text-center text-brand-cream flex flex-col gap-6">
-      <h2 class="font-sans font-bold uppercase tracking-widest text-[clamp(1.8rem,4vw,3.5rem)] leading-tight">
-        Z sercem do dziecka
-      </h2>
-      <p class="font-sans text-lg md:text-xl leading-relaxed">
-        Uczymy nazywać i wyrażać emocje, szanując indywidualność każdego malucha. Wspieramy samodzielność i odpowiedzialność poprzez podejmowanie decyzji adekwatnych do wieku. Nasz zespół pedagogów stale się rozwija, by mądrze towarzyszyć dzieciom i rodzicom w zmieniającym się świecie.
-      </p>
-    </div>
+  <!-- Track -->
+  <div id="wartosci-track" class="flex h-full transition-transform duration-500 ease-in-out">
+    {slides.map((slide) => (
+      <div class="relative min-w-full min-h-screen flex items-center justify-center">
+        <Image src={slide.img} alt={slide.alt} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="relative z-10 max-w-3xl mx-auto px-8 py-24 text-center text-brand-cream flex flex-col gap-6">
+          <h2 class="font-sans font-bold uppercase tracking-widest text-[clamp(1.8rem,4vw,3.5rem)] leading-tight">
+            {slide.title}
+          </h2>
+          <p class="font-sans text-lg md:text-xl leading-relaxed">
+            {slide.body}
+          </p>
+        </div>
+      </div>
+    ))}
   </div>
 
-  <!-- 2: JAK W DOMU — yellow -->
-  <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <Image src={dom} alt="Jak w domu" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-    <div class="absolute inset-0 bg-brand-yellow/70"></div>
-    <div class="relative z-10 max-w-3xl mx-auto px-8 py-24 text-center text-brand-navy flex flex-col gap-6">
-      <h2 class="font-sans font-bold uppercase tracking-widest text-[clamp(1.8rem,4vw,3.5rem)] leading-tight">
-        Jak w domu
-      </h2>
-      <p class="font-sans text-lg md:text-xl leading-relaxed">
-        Tworzymy kameralne grupy, dopasowane do tempa rozwoju i potrzeb dzieci. Dbamy o przestrzeń na swobodną zabawę i odpoczynek, ceniąc wartość nudy i spontaniczności. Nasze przedszkole działa w sercu Saskiej Kępy, a rodzinne ciepło i bezpieczeństwo budujemy razem z dziećmi i ich bliskimi.
-      </p>
-    </div>
-  </div>
+  <!-- Arrow left -->
+  <button id="wartosci-prev" aria-label="Poprzedni slajd"
+    class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-brand-cream/20 hover:bg-brand-cream/40 text-brand-cream flex items-center justify-center transition-colors duration-200 backdrop-blur-sm">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
 
-  <!-- 3: W ŚWIECIE WIEDZY — teal -->
-  <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <Image src={wiedza} alt="W świecie wiedzy" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-    <div class="absolute inset-0 bg-brand-teal/70"></div>
-    <div class="relative z-10 max-w-3xl mx-auto px-8 py-24 text-center text-brand-cream flex flex-col gap-6">
-      <h2 class="font-sans font-bold uppercase tracking-widest text-[clamp(1.8rem,4vw,3.5rem)] leading-tight">
-        W świecie wiedzy
-      </h2>
-      <p class="font-sans text-lg md:text-xl leading-relaxed">
-        Inspirujemy się metodami Montessori, Steinera, Korczaka i Pikler, tworząc nowoczesne podejście do pracy z dziećmi. Rozwijamy kreatywność przez sztukę – malowanie, śpiew, taniec oraz wizyty w teatrze i na koncertach. Języki obce (angielski i niemiecki) towarzyszą dzieciom codziennie w naturalny sposób. Realizujemy podstawę programową, wspierając indywidualne talenty bez uśredniania tempa rozwoju.
-      </p>
-    </div>
-  </div>
+  <!-- Arrow right -->
+  <button id="wartosci-next" aria-label="Następny slajd"
+    class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-brand-cream/20 hover:bg-brand-cream/40 text-brand-cream flex items-center justify-center transition-colors duration-200 backdrop-blur-sm">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
 
-  <!-- 4: W ZGODZIE Z NATURĄ — forest -->
-  <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <Image src={natura} alt="W zgodzie z naturą" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-    <div class="absolute inset-0 bg-brand-forest/70"></div>
-    <div class="relative z-10 max-w-3xl mx-auto px-8 py-24 text-center text-brand-cream flex flex-col gap-6">
-      <h2 class="font-sans font-bold uppercase tracking-widest text-[clamp(1.8rem,4vw,3.5rem)] leading-tight">
-        W zgodzie z naturą
-      </h2>
-      <p class="font-sans text-lg md:text-xl leading-relaxed">
-        Dbamy o ogródek warzywny i wspólnie gotujemy z jego plonów. Jemy zdrowo i lokalnie, a wszystkie posiłki przygotowujemy na miejscu z ekologicznych produktów. Spędzamy dużo czasu na świeżym powietrzu, bawiąc się wodą, chodząc boso po trawie i wspinając się na drzewa, niezależnie od pogody. Dbamy też o sprawność fizyczną – jeździmy na basen, gramy w piłkę, ćwiczymy gimnastykę i korzystamy z naszej sali do integracji sensorycznej.
-      </p>
-    </div>
+  <!-- Dots -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
+    {slides.map((_, i) => (
+      <button
+        class="wartosci-dot w-2.5 h-2.5 rounded-full bg-brand-cream/40 transition-all duration-300"
+        data-index={i}
+        aria-label={`Slajd ${i + 1}`}
+      />
+    ))}
   </div>
 
 </section>
+
+<script>
+  const track = document.getElementById('wartosci-track');
+  const dots = document.querySelectorAll('.wartosci-dot');
+  let current = 0;
+  const total = 4;
+
+  function goTo(index: number) {
+    current = (index + total) % total;
+    (track as HTMLElement).style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('bg-brand-cream', i === current);
+      dot.classList.toggle('bg-brand-cream/40', i !== current);
+      dot.classList.toggle('scale-125', i === current);
+    });
+  }
+
+  document.getElementById('wartosci-prev')?.addEventListener('click', () => goTo(current - 1));
+  document.getElementById('wartosci-next')?.addEventListener('click', () => goTo(current + 1));
+  dots.forEach(dot => dot.addEventListener('click', (e) => goTo(Number((e.currentTarget as HTMLElement).dataset.index))));
+
+  goTo(0);
+</script>
