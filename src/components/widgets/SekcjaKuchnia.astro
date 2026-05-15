@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets';
+import obiadyImage from '~/assets/images/domowe-obiady.jpg';
+---
+
+<section class="bg-brand-sand">
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <div class="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
+
+      <!-- Photo -->
+      <div class="w-full md:w-2/5 shrink-0">
+        <div class="rounded-2xl overflow-hidden aspect-[4/3]">
+          <Image
+            src={obiadyImage}
+            alt="Domowe obiady w Kolorowym Przedszkolu na Saskiej Kępie"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="flex flex-col gap-5">
+        <h2 class="font-sans italic text-[clamp(1.5rem,2.5vw,2.2rem)] text-brand-navy leading-tight">
+          Domowa kuchnia, której nie wstydzimy się pokazać
+        </h2>
+        <div class="font-sans text-base md:text-lg leading-relaxed text-brand-navy/75 flex flex-col gap-4">
+          <p>Jedzenie to dla nas nie dodatek do dnia w przedszkolu — to jedna z najważniejszych rzeczy, jakie dajemy dzieciom. Dlatego stawiamy na domowe obiady, gotowane od podstaw, z produktów od lokalnych, sprawdzonych dostawców.</p>
+          <p>Warzywa zbieramy też z własnego ogródka warzywnego — dzieci widzą, jak rośnie pietruszka, marchewka czy pomidor, zanim trafią na talerz.</p>
+          <p>Każdy posiłek układamy tak, żeby był zdrowy, zbilansowany i dopasowany do potrzeb małego dziecka — bez polepszaczy, bez kompromisów, bez „byle szybciej".</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
