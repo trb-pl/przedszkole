@@ -1,0 +1,44 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: 'Rekrutacja 2026/2027 — Kolorowe Przedszkole Saska Kępa',
+  description: 'Zapisy do Kolorowego Przedszkola na Saskiej Kępie na rok 2026/2027. Miejsca są ograniczone — skontaktuj się z nami jak najwcześniej. Przyjmujemy dzieci od 2,5 roku życia.',
+  canonical: 'https://koloroweprzedszkole.com/rekrutacja',
+  ignoreTitleTemplate: true,
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Rekrutacja 2026/2027 — Kolorowe Przedszkole Saska Kępa',
+    description: 'Zapisy do Kolorowego Przedszkola na Saskiej Kępie na rok 2026/2027. Miejsca są ograniczone — skontaktuj się z nami jak najwcześniej. Przyjmujemy dzieci od 2,5 roku życia.',
+    type: 'website',
+    url: 'https://koloroweprzedszkole.com/rekrutacja',
+    site_name: 'Kolorowe Przedszkole',
+  },
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="bg-brand-warm pt-24 pb-20">
+    <div class="max-w-3xl mx-auto px-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">Kolorowe Przedszkole</p>
+      <h1 class="font-sans italic text-[clamp(2.2rem,5vw,3.5rem)] text-brand-navy leading-tight mb-6">
+        Rekrutacja 2026/2027
+      </h1>
+      <p class="font-sans text-lg text-brand-navy/60 mb-8">Treść tej strony jest w przygotowaniu.</p>
+      <div class="flex flex-wrap gap-4">
+        <a
+          href="tel:605657366"
+          class="inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-coral"
+        >
+          Zadzwoń
+        </a>
+        <a
+          href="/kontakt"
+          class="inline-block border-2 border-brand-navy text-brand-navy font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-navy hover:text-brand-cream"
+        >
+          Napisz do nas
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

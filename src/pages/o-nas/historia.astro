@@ -1,0 +1,30 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: 'Historia Kolorowego Przedszkola — Od 1991 roku | Saska Kępa',
+  description: 'Poznaj historię Kolorowego Przedszkola na Saskiej Kępie. Od 1991 roku budujemy bezpieczny pomost między domem a szkołą dla rodzin z Saskiej Kępy i Gocławia.',
+  canonical: 'https://koloroweprzedszkole.com/o-nas/historia',
+  ignoreTitleTemplate: true,
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Historia Kolorowego Przedszkola — Od 1991 roku | Saska Kępa',
+    description: 'Poznaj historię Kolorowego Przedszkola na Saskiej Kępie. Od 1991 roku budujemy bezpieczny pomost między domem a szkołą dla rodzin z Saskiej Kępy i Gocławia.',
+    type: 'website',
+    url: 'https://koloroweprzedszkole.com/o-nas/historia',
+    site_name: 'Kolorowe Przedszkole',
+  },
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="bg-brand-warm pt-24 pb-20">
+    <div class="max-w-3xl mx-auto px-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>
+      <h1 class="font-sans italic text-[clamp(2.2rem,5vw,3.5rem)] text-brand-navy leading-tight mb-6">
+        Historia Kolorowego Przedszkola
+      </h1>
+      <p class="font-sans text-lg text-brand-navy/60">Treść tej strony jest w przygotowaniu.</p>
+    </div>
+  </section>
+</Layout>
