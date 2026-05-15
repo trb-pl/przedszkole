@@ -24,7 +24,8 @@ const currentPage = page.currentPage ?? 1;
 // const allTags = await findTags();
 
 const metadata = {
-  title: `Porady dla rodziców${currentPage > 1 ? ` — strona ${currentPage}` : ''} — Kolorowe Przedszkole`,
+  title: `Porady dla rodziców${currentPage > 1 ? ` — strona ${currentPage}` : ''}`,
+  ignoreTitleTemplate: false,
   description: 'Praktyczne porady dla rodziców przedszkolaków z Saskiej Kępy i Gocławia. Adaptacja, wyprawka, rozwój dziecka — z perspektywy Kolorowego Przedszkola.',
   robots: {
     index: blogListRobots?.index && currentPage === 1,

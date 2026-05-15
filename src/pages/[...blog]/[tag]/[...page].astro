@@ -20,10 +20,10 @@ const { page, tag } = Astro.props as Props;
 const currentPage = page.currentPage ?? 1;
 
 const metadata = {
-  title: `Posts by tag '${tag.title}'${currentPage > 1 ? ` — Page ${currentPage} ` : ''}`,
+  title: `Wpisy z tagiem: ${tag.title}${currentPage > 1 ? ` — strona ${currentPage}` : ''}`,
   robots: {
-    index: blogTagRobots?.index,
-    follow: blogTagRobots?.follow,
+    index: false,
+    follow: true,
   },
 };
 ---
