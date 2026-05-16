@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 
-import imgHero    from '~/assets/images/domowe-obiady.jpg';
 import imgTatiana from '~/assets/images/kuchnia-tatiana.jpg';
 import imgZupa    from '~/assets/images/kuchnia-zupa.jpg';
 import imgKanapki from '~/assets/images/kuchnia-kanapki.jpg';
@@ -62,15 +61,14 @@ const faqItems = [
     }))
   })} />
 
-  <!-- ─── 1. Hero — dark navy jak misja-i-wartości ────────── -->
+  <!-- ─── 1. Hero — identyczny z misja-i-wartości ─────────── -->
   <section class="relative bg-brand-navy pt-32 pb-24 overflow-hidden">
-    <div class="absolute inset-0 bg-brand-navy/60 z-10"></div>
-    <Image
-      src={imgHero}
-      alt="Domowe obiady w Kolorowym Przedszkolu na Saskiej Kępie"
-      class="absolute inset-0 w-full h-full object-cover"
-      widths={[800, 1200, 1600]}
-      sizes="100vw"
+    <div class="absolute inset-0 bg-brand-navy/70 z-10"></div>
+    <img
+      src="https://placehold.co/1600x700/2D346F/34BBA8?text=Kuchnia"
+      alt=""
+      aria-hidden="true"
+      class="absolute inset-0 w-full h-full object-cover opacity-20"
     />
     <div class="relative z-20 max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>
@@ -180,7 +178,7 @@ const faqItems = [
             Ryż z kurczakiem i warzywami w azjatyckim stylu to jeden z największych hitów.
           </p>
         </div>
-        <div class="md:w-1/2 rounded-2xl overflow-hidden aspect-[4/3] md:aspect-auto">
+        <div class="md:w-1/2 overflow-hidden aspect-[4/3] md:aspect-auto">
           <Image
             src={imgZupa}
             alt="Zupa gotowana na wywarze w Kolorowym Przedszkolu"
@@ -195,10 +193,10 @@ const faqItems = [
   </section>
 
   <!-- ─── 6. Ogródek — text left, image right ──────────────── -->
-  <section class="bg-brand-warm py-20 overflow-hidden">
+  <section class="bg-brand-warm overflow-hidden">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row-reverse items-stretch">
 
-      <div class="md:w-1/2 aspect-[4/3] md:aspect-auto overflow-hidden md:rounded-l-2xl">
+      <div class="md:w-1/2 aspect-[4/3] md:aspect-auto overflow-hidden">
         <Image
           src={imgNatura}
           alt="Ogród warzywny przy Kolorowym Przedszkolu na Zakopiańskiej"
