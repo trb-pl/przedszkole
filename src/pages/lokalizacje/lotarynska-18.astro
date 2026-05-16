@@ -1,30 +1,376 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 
+import imgDlaKogo   from '~/assets/images/lotarynska-1.jpg';
+import imgAdaptacja from '~/assets/images/lotarynska-2.jpg';
+import imgProgram   from '~/assets/images/lotarynska-3.jpg';
+import imgOgrod     from '~/assets/images/lotarynska-4.jpg';
+
 const metadata = {
-  title: 'Kolorowe Przedszkole — Lotaryńska 18, Saska Kępa, Warszawa',
-  description: 'Kolorowe Przedszkole przy ul. Lotaryńskiej 18 na Saskiej Kępie w Warszawie. Prawdziwie domowa atmosfera, kameralne grupy, ogród. Blisko Gocławia i Pragi-Południe.',
+  title: 'Lotaryńska 18 – Kolorowe Przedszkole | Dzieci od 2,5 roku',
+  description: 'Prawdziwie domowe przedszkole w Warszawie — ul. Lotaryńska 18, Saska Kępa. Kameralna grupa 12 dzieci od 2,5 roku. Gordonki, rytmika, taniec, native speaker. Otwarte 7:30–17:00.',
   canonical: 'https://koloroweprzedszkole.com/lokalizacje/lotarynska-18',
   ignoreTitleTemplate: true,
   robots: { index: true, follow: true },
   openGraph: {
-    title: 'Kolorowe Przedszkole — Lotaryńska 18, Saska Kępa, Warszawa',
-    description: 'Kolorowe Przedszkole przy ul. Lotaryńskiej 18 na Saskiej Kępie w Warszawie. Prawdziwie domowa atmosfera, kameralne grupy, ogród. Blisko Gocławia i Pragi-Południe.',
+    title: 'Lotaryńska 18 – Kolorowe Przedszkole | Dzieci od 2,5 roku',
+    description: 'Prawdziwie domowe przedszkole w Warszawie — ul. Lotaryńska 18, Saska Kępa. Kameralna grupa 12 dzieci od 2,5 roku. Gordonki, rytmika, taniec, native speaker. Otwarte 7:30–17:00.',
     type: 'website',
     url: 'https://koloroweprzedszkole.com/lokalizacje/lotarynska-18',
     site_name: 'Kolorowe Przedszkole',
   },
 };
+
+const zajecia = [
+  { emoji: '🇬🇧', name: 'Angielski — native speaker',  desc: 'Ciocia Mariana mówi do dzieci wyłącznie po angielsku — 2h każdego dnia' },
+  { emoji: '🎵', name: 'Gordonki',                      desc: 'Umuzykalnianie metodą prof. E.E. Gordona — raz w tygodniu z Ciocią Justyną' },
+  { emoji: '🎶', name: 'Rytmika',                       desc: 'Muzyka i ruch w zabawie — dwa razy w tygodniu z Ciocią Małgosią' },
+  { emoji: '💃', name: 'Taniec',                        desc: 'Swobodny ruch przy muzyce — raz w tygodniu z Ciocią Weroniką' },
+  { emoji: '🎨', name: 'Zajęcia dydaktyczne',           desc: 'Plastyka, zabawy sensoryczne, czytanie — codziennie z Ciocią Julią, Kasią i Eleną' },
+];
+
+const faqItems = [
+  {
+    q: 'Od jakiego wieku przyjmujecie dzieci na Lotaryńskiej?',
+    a: 'Na Lotaryńskiej przyjmujemy dzieci od 2,5 roku życia. To nasza kameralna, najbardziej domowa lokalizacja — jedna grupa, maksymalnie 12 dzieci. Idealna dla maluchów, które stawiają pierwszy krok poza domem.',
+  },
+  {
+    q: 'Ile dzieci jest w grupie na Lotaryńskiej?',
+    a: 'Jedna grupa, maksymalnie 12 dzieci. Dzięki temu każde dziecko jest naprawdę zauważone — opiekunki znają je z imienia, wiedzą co lubi, czego się boi i jak potrzebuje się adaptować.',
+  },
+  {
+    q: 'Jak wygląda adaptacja?',
+    a: 'Adaptacja jest indywidualnie dopasowana do dziecka i rodziców. Nie ma jednego schematu ani sztywnego harmonogramu. Rozmawiamy z rodzicami, obserwujemy dziecko i razem ustalamy tempo wejścia do grupy — krok po kroku, bez pośpiechu.',
+  },
+  {
+    q: 'Jakie zajęcia dodatkowe są na Lotaryńskiej?',
+    a: 'W tygodniowym programie są: gordonki (umuzykalnianie metodą Gordona — raz w tygodniu), rytmika (dwa razy w tygodniu), taniec (raz w tygodniu) oraz zajęcia z native speakerem języka angielskiego przez 2 godziny każdego dnia. Wszystkie zajęcia wchodzą w skład standardowego programu — bez dodatkowych opłat.',
+  },
+  {
+    q: 'Co to są gordonki?',
+    a: 'Gordonki to potoczna nazwa zajęć umuzykalniających według metody prof. Edwina E. Gordona. Polegają na śpiewankach, rytmiczankach i ruchu przy żywej muzyce. Wczesny kontakt z muzyką tą metodą wspiera nie tylko słuch muzyczny, ale też koncentrację, koordynację i rozwój mowy — szczególnie ważne u dzieci 2–3-letnich.',
+  },
+  {
+    q: 'Czy na Lotaryńskiej są domowe obiady?',
+    a: 'Tak. Gotujemy na miejscu każdego dnia — śniadanie, obiad i podwieczorek, ze świeżych składników, bez cateringu. Ciocia Kasia piecze z dziećmi ciasta jako stały element tygodniowego programu.',
+  },
+  {
+    q: 'Jakie są godziny otwarcia?',
+    a: 'Przedszkole przy ul. Lotaryńskiej 18 jest otwarte od poniedziałku do piątku w godzinach 7:30–17:00.',
+  },
+  {
+    q: 'Jak mogę zapisać dziecko?',
+    a: 'Przez formularz na stronie /rekrutacja lub telefonicznie: 605 657 366. Zachęcamy do kontaktu jak najwcześniej — w grupie jest 12 miejsc i co roku kończą się przed wakacjami.',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
-  <section class="bg-brand-warm pt-24 pb-20">
-    <div class="max-w-3xl mx-auto px-6">
+
+  <!-- JSON-LD schema -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ChildCare",
+    "name": "Kolorowe Przedszkole — Lotaryńska 18",
+    "description": "Kameralne, domowe przedszkole na Saskiej Kępie dla dzieci od 2,5 roku życia. Jedna grupa, 12 dzieci, gordonki, rytmika, native speaker, ogród.",
+    "url": "https://koloroweprzedszkole.com/lokalizacje/lotarynska-18",
+    "telephone": "+48605657366",
+    "email": "przedszkole@kolorowe.eu",
+    "openingHours": "Mo-Fr 07:30-17:00",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "ul. Lotaryńska 18",
+      "postalCode": "03-974",
+      "addressLocality": "Warszawa",
+      "addressRegion": "Masovian Voivodeship",
+      "addressCountry": "PL"
+    },
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "Kolorowe Przedszkole",
+      "url": "https://koloroweprzedszkole.com"
+    }
+  })} />
+
+  <!-- ─── Hero ──────────────────────────────────────────────── -->
+  <section class="relative bg-brand-navy pt-32 pb-24 overflow-hidden">
+    <div class="absolute inset-0 bg-brand-navy/70 z-10"></div>
+    <img
+      src="https://placehold.co/1600x700/2D346F/34BBA8?text=Lotary%C5%84ska+18"
+      alt="Kolorowe Przedszkole — Lotaryńska 18, Saska Kępa, Warszawa"
+      loading="eager"
+      class="absolute inset-0 w-full h-full object-cover opacity-20"
+    />
+    <div class="relative z-20 max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">Lokalizacje</p>
-      <h1 class="font-sans italic text-[clamp(2.2rem,5vw,3.5rem)] text-brand-navy leading-tight mb-6">
-        Lotaryńska 18 — Prawdziwie domowe przedszkole
+      <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4rem)] text-brand-cream leading-tight mb-6">
+        Lotaryńska 18 — Prawdziwie domowe przedszkole na Saskiej Kępie
       </h1>
-      <p class="font-sans text-lg text-brand-navy/60">Treść tej strony jest w przygotowaniu.</p>
+      <p class="font-sans text-lg text-brand-cream/75 max-w-xl mx-auto leading-relaxed">
+        Kameralna grupa 12 dzieci od 2,5 roku życia. Tu w 1991 roku wszystko się zaczęło.
+      </p>
     </div>
   </section>
+
+  <!-- ─── Intro ─────────────────────────────────────────────── -->
+  <section class="bg-brand-cream py-20">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="font-sans text-xl text-brand-navy/80 leading-relaxed mb-6">
+        <strong class="text-brand-navy">Nasza filozofia kuchni:</strong> gotować tak, jak gotuje się w domu — ze świeżych składników, od lokalnych dostawców, bez kompromisów. Śniadanie, obiad i podwieczorek, każdego dnia, przygotowane na miejscu przez Ciocię Tatianę.
+      </p>
+      <p class="font-sans text-lg text-brand-navy/60 leading-relaxed">
+        Lotaryńska 18 to nasza pierwsza placówka — otwarta w 1991 roku. Jedna kameralna grupa, maksymalnie 12 dzieci. Miejsce, gdzie każde dziecko jest naprawdę znane i widziane.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── Sekcja 1: Dla kogo? ───────────────────────────────── -->
+  <section class="bg-brand-warm overflow-hidden">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch">
+      <div class="md:w-1/2 aspect-[4/3] md:aspect-auto overflow-hidden">
+        <Image
+          src={imgDlaKogo}
+          alt="Kameralna, domowa sala w Kolorowym Przedszkolu na Lotaryńskiej"
+          class="w-full h-full object-cover"
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
+        <div>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Dla kogo?</p>
+          <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-5">
+            Dla dzieci, które potrzebują prawdziwego domu
+          </h2>
+          <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
+            Lotaryńska to nasza pierwsza, najmniejsza i najbardziej kameralna placówka. Tworzymy tu jedną grupę — maksymalnie 12 dzieci w wieku od 2,5 do 3 lat. Jeśli Twoje dziecko jest wrażliwe, potrzebuje czasu na adaptację, nie lubi tłoku i hałasu dużych budynków — to właśnie to miejsce jest dla niego. Małe, ciepłe, bezpieczne pomieszczenia nie przytłaczają. Dziecko nie gubi się w tłumie. Każdy dorosły zna je po imieniu.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Sekcja 2: Adaptacja ──────────────────────────────── -->
+  <section class="bg-brand-warm overflow-hidden">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row-reverse items-stretch">
+      <div class="md:w-1/2 aspect-[4/3] md:aspect-auto overflow-hidden">
+        <Image
+          src={imgAdaptacja}
+          alt="Opiekunka i dziecko podczas adaptacji w Kolorowym Przedszkolu"
+          class="w-full h-full object-cover"
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
+        <div>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Adaptacja</p>
+          <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-5">
+            Adaptacja dopasowana do dziecka — i do rodziców
+          </h2>
+          <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
+            Wiemy, że pierwsze rozstanie z mamą lub tatą to nie tylko wyzwanie dla dziecka — to też trudny moment dla całej rodziny. Dlatego adaptacja na Lotaryńskiej nie wygląda tak samo dla każdego. Rozmawiamy z rodzicami, obserwujemy dziecko i wspólnie układamy plan wejścia do grupy — krok po kroku, bez pośpiechu, bez sztucznych terminów.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Sekcja 3: Program i metody ──────────────────────── -->
+  <section class="bg-brand-warm overflow-hidden">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch">
+      <div class="md:w-1/2 aspect-[4/3] md:aspect-auto overflow-hidden">
+        <Image
+          src={imgProgram}
+          alt="Dzieci podczas zajęć metodą Montessori w Kolorowym Przedszkolu"
+          class="w-full h-full object-cover"
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
+        <div>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Program i metody</p>
+          <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-5">
+            Program MEN wzbogacony o Montessori, Pikler i Korczaka
+          </h2>
+          <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
+            Realizujemy podstawę programową MEN, wzbogaconą o elementy metod Montessori, Pikler i Korczaka — podejście, które stawia na indywidualne tempo dziecka, jego autonomię i poczucie bezpieczeństwa. Każde dziecko jest tu traktowane indywidualnie. Nie ma jednego wzorca, do którego wszyscy muszą dorosnąć — jest uważność na to, czego każde dziecko potrzebuje właśnie teraz.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Sekcja 4: Zajęcia — icon grid ───────────────────── -->
+  <section class="bg-brand-cream py-20">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Zajęcia w tygodniu</p>
+        <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight">
+          Co się dzieje każdego tygodnia?
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {zajecia.map((z) => (
+          <div class="bg-brand-warm rounded-2xl px-5 py-6 flex flex-col gap-2 border border-brand-navy/6 hover:border-brand-teal/40 transition-colors duration-200">
+            <span class="text-3xl" role="img" aria-hidden="true">{z.emoji}</span>
+            <p class="font-sans font-bold text-brand-navy text-sm leading-snug">{z.name}</p>
+            <p class="font-sans text-brand-navy/55 text-xs leading-snug">{z.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Sekcja 5: Ogród i spacery ───────────────────────── -->
+  <section class="bg-brand-warm overflow-hidden">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch">
+      <div class="md:w-1/2 aspect-[4/3] md:aspect-auto overflow-hidden">
+        <Image
+          src={imgOgrod}
+          alt="Dzieci na placu zabaw Kolorowego Przedszkola przy Lotaryńskiej"
+          class="w-full h-full object-cover"
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
+        <div>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Ogród i spacery</p>
+          <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-5">
+            Na zewnątrz każdego dnia — niezależnie od pogody
+          </h2>
+          <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
+            Na Lotaryńskiej jest ogród z placem zabaw zaprojektowanym z myślą o najmłodszych dzieciach — bezpiecznym i dostosowanym do możliwości 2–3-latków. Wychodzimy na zewnątrz codziennie, niezależnie od pogody. Deszcz, wiatr, przymrozek — dzieci mają kurtki i kalosze. Kontakt ze świeżym powietrzem i naturą jest dla nas tak samo ważny jak zajęcia w środku.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Sekcja 6: Gotowanie i ogród ─────────────────────── -->
+  <section class="bg-brand-warm overflow-hidden">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row-reverse items-stretch">
+      <div class="md:w-1/2 aspect-[4/3] md:aspect-auto overflow-hidden">
+        <img
+          src="https://placehold.co/800x500/E8F7F4/2D346F?text=Gotowanie"
+          alt="Dzieci pieczące ciasto z Ciocią Kasią w Kolorowym Przedszkolu"
+          loading="lazy"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
+        <div>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Gotowanie i ogród</p>
+          <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-5">
+            Ciasto z Ciocią Kasią i kwiatki w doniczkach
+          </h2>
+          <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
+            Przy Lotaryńskiej gotujemy razem z dziećmi. Ciocia Kasia regularnie piecze z dziećmi ciasta — mieszają, wąchają, próbują, uczestniczą. To nie jednorazowy event, ale stały, rytualny element tygodnia. Sadzimy też kwiaty i warzywa. Dzieci uczą się, że jedzenie nie pochodzi „ze sklepu", ale rośnie — i że można o nie dbać własnymi rękami.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Sekcja 7: Przestrzeń ─────────────────────────────── -->
+  <section class="bg-brand-warm overflow-hidden">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch">
+      <div class="md:w-1/2 aspect-[4/3] md:aspect-auto overflow-hidden">
+        <img
+          src="https://placehold.co/800x500/E8F7F4/2D346F?text=Przestrze%C5%84"
+          alt="Sala do zajęć rytmicznych w Kolorowym Przedszkolu na Lotaryńskiej"
+          loading="lazy"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
+        <div>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Przestrzeń</p>
+          <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-5">
+            Małe, ciepłe sale — każda ze swoim celem
+          </h2>
+          <ul class="font-sans text-brand-navy/70 text-base leading-relaxed space-y-4">
+            <li>
+              <strong class="text-brand-navy">Sala do zajęć rytmicznych</strong> — wyposażona specjalnie pod muzykę i ruch. Tu odbywają się gordonki, rytmika i taniec.
+            </li>
+            <li>
+              <strong class="text-brand-navy">Sala do leżakowania</strong> — spokojna, oddzielna, dla dzieci potrzebujących prawdziwego odpoczynku w ciągu dnia.
+            </li>
+            <li>
+              <strong class="text-brand-navy">Ogród z placem zabaw</strong> — dostosowany do możliwości 2–3-latków, bezpieczny i dostępny codziennie.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ──────────────────────────────────────────────── -->
+  <section class="bg-brand-navy py-24">
+    <div class="max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Lotaryńska 18</p>
+      <blockquote class="font-sans italic text-[clamp(1.5rem,3vw,2.2rem)] text-brand-cream leading-snug">
+        „Małe dziecko nie potrzebuje dużego przedszkola. Potrzebuje dorosłego, który je zna."
+      </blockquote>
+      <p class="font-sans text-brand-cream/60 text-base leading-relaxed max-w-lg">
+        Jedna grupa, dwanaście dzieci, kilka opiekunek, które znają każde dziecko z imienia.
+        Taka jest Lotaryńska — od 1991 roku.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 mt-2">
+        <a
+          href="/rekrutacja"
+          class="inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-coral"
+        >
+          Rekrutacja 2026/2027
+        </a>
+        <a
+          href="tel:605657366"
+          class="inline-block border-2 border-brand-cream/40 text-brand-cream font-sans font-semibold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:border-brand-teal hover:text-brand-teal"
+        >
+          Zadzwoń i umów wizytę
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ──────────────────────────────────────────────── -->
+  <section class="bg-brand-warm py-20">
+    <div class="max-w-3xl mx-auto px-6">
+
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Pytania i odpowiedzi</p>
+      <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight mb-4">
+        Najczęściej zadawane pytania
+      </h2>
+      <p class="font-sans text-lg text-brand-navy/60 mb-12">
+        Odpowiedzi na pytania, które słyszymy najczęściej od rodziców.
+      </p>
+
+      <div class="divide-y divide-brand-navy/10">
+        {faqItems.map((item, i) => (
+          <details class="group py-5" open={i === 0}>
+            <summary class="flex justify-between items-start cursor-pointer gap-4 list-none">
+              <span class="font-sans text-brand-navy font-semibold text-lg leading-snug group-open:text-brand-teal transition-colors duration-200">
+                {item.q}
+              </span>
+              <span class="flex-shrink-0 mt-1 text-brand-teal text-2xl font-light transition-transform duration-200 group-open:rotate-45">
+                +
+              </span>
+            </summary>
+            <p class="font-sans mt-4 text-brand-navy/75 leading-relaxed text-base">
+              {item.a}
+            </p>
+          </details>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
 </Layout>
