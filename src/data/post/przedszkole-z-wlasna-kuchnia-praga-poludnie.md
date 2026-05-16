@@ -3,7 +3,7 @@ publishDate: 2026-05-15T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Przedszkole z własną kuchnią na Pradze Południe — dlaczego warto zrezygnować z cateringu?"
 excerpt: "Domowe obiady vs. catering w przedszkolu. Jak Kolorowe Przedszkole na Saskiej Kępie radzi sobie z alergiami pokarmowymi i dietami wykluczeniowymi — bez dopłat."
-image: https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80
+image: ~/assets/images/porady-kuchnia-kanapki.jpg
 category: Porady
 tags:
   - wyżywienie
