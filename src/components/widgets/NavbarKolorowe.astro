@@ -151,57 +151,62 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
 </header>
 
 <script>
-  // Scroll effect
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 10) {
-      navbar?.classList.add('shadow-md');
-      navbar?.classList.remove('bg-brand-cream/90', 'backdrop-blur-sm');
-      navbar?.classList.add('bg-brand-cream');
-    } else {
-      navbar?.classList.remove('shadow-md', 'bg-brand-cream');
-      navbar?.classList.add('bg-brand-cream/90', 'backdrop-blur-sm');
+  function initNavbar() {
+    // Scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) {
+        navbar?.classList.add('shadow-md');
+        navbar?.classList.remove('bg-brand-cream/90', 'backdrop-blur-sm');
+        navbar?.classList.add('bg-brand-cream');
+      } else {
+        navbar?.classList.remove('shadow-md', 'bg-brand-cream');
+        navbar?.classList.add('bg-brand-cream/90', 'backdrop-blur-sm');
+      }
+    });
+
+    // Smooth scroll to top on logo click
+    document.querySelector<HTMLAnchorElement>('header a[href="/"]')?.addEventListener('click', (e) => {
+      if (window.location.pathname === '/') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    // Mobile menu toggle
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    toggle?.addEventListener('click', () => {
+      const isOpen = mobileMenu?.classList.contains('hidden');
+      mobileMenu?.classList.toggle('hidden', !isOpen);
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    // Mobile accordion
+    function setupAccordion(toggleId: string, menuId: string, chevronId: string) {
+      const btn = document.getElementById(toggleId);
+      const menu = document.getElementById(menuId);
+      const chevron = document.getElementById(chevronId);
+      btn?.addEventListener('click', () => {
+        const open = !menu?.classList.contains('hidden');
+        menu?.classList.toggle('hidden', open);
+        chevron?.classList.toggle('rotate-180', !open);
+        btn.setAttribute('aria-expanded', String(!open));
+      });
     }
-  });
 
-  // Smooth scroll to top on logo click
-  document.querySelector<HTMLAnchorElement>('header a[href="/"]')?.addEventListener('click', (e) => {
-    if (window.location.pathname === '/') {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  });
+    setupAccordion('mobile-onas-toggle', 'mobile-onas-menu', 'mobile-onas-chevron');
+    setupAccordion('mobile-lok-toggle',  'mobile-lok-menu',  'mobile-lok-chevron');
 
-  // Mobile menu toggle
-  const toggle = document.getElementById('mobile-menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  toggle?.addEventListener('click', () => {
-    const isOpen = mobileMenu?.classList.contains('hidden');
-    mobileMenu?.classList.toggle('hidden', !isOpen);
-    toggle.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  // Mobile accordion — O Nas
-  function setupAccordion(toggleId: string, menuId: string, chevronId: string) {
-    const btn = document.getElementById(toggleId);
-    const menu = document.getElementById(menuId);
-    const chevron = document.getElementById(chevronId);
-    btn?.addEventListener('click', () => {
-      const open = !menu?.classList.contains('hidden');
-      menu?.classList.toggle('hidden', open);
-      chevron?.classList.toggle('rotate-180', !open);
-      btn.setAttribute('aria-expanded', String(!open));
+    // Close mobile menu on any link click
+    mobileMenu?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu?.classList.add('hidden');
+        toggle?.setAttribute('aria-expanded', 'false');
+      });
     });
   }
 
-  setupAccordion('mobile-onas-toggle', 'mobile-onas-menu', 'mobile-onas-chevron');
-  setupAccordion('mobile-lok-toggle',  'mobile-lok-menu',  'mobile-lok-chevron');
-
-  // Close mobile menu on any link click (except accordion toggles)
-  mobileMenu?.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu?.classList.add('hidden');
-      toggle?.setAttribute('aria-expanded', 'false');
-    });
-  });
+  // Fires on first load AND after every View Transitions navigation
+  document.addEventListener('astro:page-load', initNavbar);
 </script>
