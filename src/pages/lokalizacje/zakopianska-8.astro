@@ -1,54 +1,46 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import SekcjaZajecia from '~/components/widgets/SekcjaZajecia.astro';
 
 const metadata = {
   title: 'Zakopiańska 8 – Kolorowe Przedszkole | Saska Kępa',
-  description: 'Willa z ogrodem 1200m² na Saskiej Kępie. Grupy 4-, 5- i 6-latków, zerówka, sala SI, psycholog na miejscu, native speaker 4h dziennie. Otwarte 7:30–17:15.',
+  description: 'Willa z ogrodem 1200m² na Saskiej Kępie. Grupy 4-, 5- i 6-latków, zerówka, sala SI, psycholog na miejscu, native speaker. Otwarte 7:30–17:15.',
   canonical: 'https://koloroweprzedszkole.com/lokalizacje/zakopianska-8',
   ignoreTitleTemplate: true,
   robots: { index: true, follow: true },
   openGraph: {
     title: 'Zakopiańska 8 – Kolorowe Przedszkole | Saska Kępa',
-    description: 'Willa z ogrodem 1200m² na Saskiej Kępie. Grupy 4-, 5- i 6-latków, zerówka, sala SI, psycholog na miejscu, native speaker 4h dziennie. Otwarte 7:30–17:15.',
+    description: 'Willa z ogrodem 1200m² na Saskiej Kępie. Grupy 4-, 5- i 6-latków, zerówka, sala SI, psycholog na miejscu, native speaker. Otwarte 7:30–17:15.',
     type: 'website',
     url: 'https://koloroweprzedszkole.com/lokalizacje/zakopianska-8',
     site_name: 'Kolorowe Przedszkole',
   },
 };
 
-const angielskiItems = [
-  { emoji: '🗣️', name: 'Native speaker — 4h dziennie',     desc: 'Przebywa z dziećmi w obu grupach — rozmawia, bawi się i czyta wyłącznie po angielsku' },
-  { emoji: '📚', name: 'Lekcja angielskiego — codziennie', desc: 'Każda grupa ma 30-minutowe zajęcia strukturyzowane niezależnie od native speakera' },
-];
-
 const faqItems = [
   {
     q: 'Dla jakich dzieci jest Zakopiańska?',
-    a: 'Na Zakopiańskiej przyjmujemy dzieci w wieku 4 lat (grupa młodsza) oraz 5- i 6-latków, w tym dzieci realizujące roczne przygotowanie przedszkolne (zerówka). To nasza większa, bogatsza w zajęcia lokalizacja — z salą SI, psychologiem na miejscu i szerszym programem językowym.',
+    a: 'Na Zakopiańskiej przyjmujemy dzieci w wieku 4 lat (grupa młodsza) oraz 5- i 6-latków, w tym dzieci realizujące roczne przygotowanie przedszkolne — zerówkę. To nasza starsza lokalizacja z bogatszym programem zajęć, salą SI i psychologiem na miejscu każdego dnia.',
   },
   {
-    q: 'Do której godziny jest czynne przedszkole?',
-    a: 'Zakopiańska jest otwarta od 7:30 do 17:15. To świadoma decyzja — wierzymy, że każde dziecko powinno mieć swoje popołudnie z rodziną, we własnym domu i własnym rytmie.',
+    q: 'Do której godziny jest czynne przedszkole na Zakopiańskiej?',
+    a: 'Kolorowe Przedszkole na Zakopiańskiej jest otwarte od 7:30 do 17:15. Wierzymy, że każde dziecko powinno mieć swoje popołudnie — z rodziną, we własnym domu i własnym rytmie.',
   },
   {
-    q: 'Ile godzin angielskiego dziennie?',
-    a: 'Łącznie ponad 4,5 godziny. Native speaker przebywa z dziećmi 4 godziny dziennie w obu grupach, a niezależnie od tego każda grupa ma codziennie 30-minutowe zajęcia strukturyzowane z języka angielskiego. Angielski to u nas część dnia, nie osobny przedmiot.',
+    q: 'Jak wygląda nauka angielskiego?',
+    a: 'Dzieci mają stały kontakt z ciociami mówiącymi wyłącznie po angielsku przez większość dnia — w naturalnych, codziennych sytuacjach. Dodatkowo każda grupa ma codziennie 30-minutowe zajęcia strukturyzowane z języka angielskiego prowadzone przez nauczyciela.',
   },
   {
     q: 'Czy jest psycholog na miejscu?',
-    a: 'Tak — Natalia, psycholog, pracuje u nas na co dzień jako stała część zespołu. Zna dzieci z codziennych obserwacji i jest dostępna dla rodziców. Wizyta nie wymaga skierowania ani oczekiwania.',
+    a: 'Tak — Natalia, psycholog, pracuje u nas na co dzień jako stała część zespołu. Zna dzieci z codziennych obserwacji, współpracuje z wychowawczyniami i jest dostępna dla rodziców bez skierowania i bez oczekiwania.',
   },
   {
     q: 'Co to jest sala SI i kto z niej korzysta?',
-    a: 'Sala Integracji Sensorycznej (SI) to specjalnie wyposażona przestrzeń wspierająca rozwój zmysłów — równowagę, koordynację i przetwarzanie bodźców. Korzystają z niej wszystkie grupy w ramach regularnego tygodniowego programu, bez dodatkowych opłat.',
+    a: 'Sala Integracji Sensorycznej (SI) to specjalnie wyposażona przestrzeń wspierająca rozwój zmysłów — równowagę, koordynację i przetwarzanie bodźców. Korzystają z niej wszystkie grupy w ramach regularnego programu tygodniowego, bez dodatkowych opłat.',
   },
   {
     q: 'Czy logopeda jest w czesnym?',
-    a: 'Zajęcia z logopedą (Ciocia Lena, 2 razy w tygodniu) są płatne osobno, jako zajęcie dodatkowe. Psycholog Natalia pracuje natomiast na co dzień w ramach standardowej opieki.',
-  },
-  {
-    q: 'Jakie zajęcia wchodzą w czesne?',
-    a: 'W standardowej opłacie miesięcznej są: przygotowanie do szkoły i zerówka (dla 5- i 6-latków), rytmika 2 razy w tygodniu, gimnastyka 2 razy w tygodniu, taniec raz w tygodniu oraz codzienne zajęcia dydaktyczne.',
+    a: 'Zajęcia z logopedą (Ciocia Lena, 2 razy w tygodniu) są płatne osobno. Natalia, psycholog, pracuje natomiast na co dzień w ramach standardowej opieki — bez dodatkowych opłat.',
   },
   {
     q: 'Jak mogę zapisać dziecko?',
@@ -64,7 +56,7 @@ const faqItems = [
     "@context": "https://schema.org",
     "@type": "ChildCare",
     "name": "Kolorowe Przedszkole — Zakopiańska 8",
-    "description": "Willa z ogrodem 1200m² na Saskiej Kępie. Dwie kameralne grupy, sala SI, psycholog na miejscu, native speaker 4h dziennie.",
+    "description": "Willa z ogrodem ponad 1200m² na Saskiej Kępie. Dwie kameralne grupy, sala SI, psycholog na miejscu, stały kontakt z native speakerami.",
     "url": "https://koloroweprzedszkole.com/lokalizacje/zakopianska-8",
     "telephone": "+48605657366",
     "email": "przedszkole@kolorowe.eu",
@@ -100,7 +92,7 @@ const faqItems = [
       </h1>
       <p class="font-sans text-lg text-brand-cream/75 max-w-xl mx-auto leading-relaxed">
         Zaczarowany ogród na Saskiej Kępie.
-        Willa, przestronne sale i ponad 1200 m² dla dzieci.
+        Ponad 1200 m² przestrzeni dla dzieci.
       </p>
     </div>
   </section>
@@ -110,12 +102,12 @@ const faqItems = [
     <div class="max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans text-xl text-brand-navy/80 leading-relaxed mb-6">
         <strong class="text-brand-navy">Nasze miejsce:</strong> willa w sercu Saskiej Kępy z ogrodem, w którym dzieci
-        mają przestrzeń do prawdziwego dzieciństwa — od 1991 roku.
+        mają przestrzeń do prawdziwego dzieciństwa.
       </p>
       <p class="font-sans text-lg text-brand-navy/60 leading-relaxed">
         Sala integracji sensorycznej, psycholog na miejscu każdego dnia, zerówka
-        i native speaker przez większą część dnia. To nasza starsza, bogatsza
-        w zajęcia lokalizacja.
+        i stały kontakt z ciociami mówiącymi wyłącznie po angielsku.
+        To nasza starsza, bogatsza w zajęcia lokalizacja.
       </p>
     </div>
   </section>
@@ -135,13 +127,10 @@ const faqItems = [
         <div class="flex flex-col gap-5">
           <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Dla kogo?</p>
           <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight">
-            Dla dzieci gotowych na więcej
+            Willa z ogrodem dla starszych grup
           </h2>
           <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
-            Na Zakopiańskiej działają dwie kameralne grupy — dla dzieci w wieku 4 lat oraz dla 5- i 6-latków, w tym oddział zerówki przygotowujący do szkoły.
-          </p>
-          <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
-            Trafiają tu dzieci, które są gotowe na więcej: więcej przestrzeni, więcej zajęć, więcej kontaktów z rówieśnikami. Ale „więcej" nie oznacza tu tłoku — grupy pozostają kameralne, a każde dziecko jest tu znane i zauważone.
+            Na Zakopiańskiej działają dwie kameralne grupy — dla 4-latków oraz dla 5- i 6-latków z oddziałem zerówki. Przestronne sale, ogród i bogaty program zajęć — w grupach, gdzie każde dziecko jest znane i zauważone.
           </p>
         </div>
       </div>
@@ -166,112 +155,45 @@ const faqItems = [
             Każde dziecko powinno mieć swoje popołudnie
           </h2>
           <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
-            Zakopiańska jest otwarta od poniedziałku do piątku, <strong class="text-brand-navy">w godzinach 7:30–17:15</strong>.
+            Kolorowe Przedszkole na Zakopiańskiej jest otwarte od poniedziałku do piątku, w godzinach 7:30–17:15.
           </p>
           <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
-            Każde dziecko powinno mieć swoje popołudnie. Czas, który należy do niego i do rodziny — nie do planu zajęć. Dlatego Zakopiańska kończy dzień o 17:15.
+            Każde dziecko powinno mieć swoje popołudnie. Czas, który należy do niego i do rodziny — nie do planu zajęć. Dlatego Kolorowe Przedszkole na Zakopiańskiej kończy dzień o 17:15.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── Sekcja 3: Kadra ──────────────────────────────────── -->
+  <!-- ─── Sekcja 3: Angielski ──────────────────────────────── -->
   <section class="bg-brand-warm">
     <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div class="rounded-2xl overflow-hidden aspect-[4/3]">
           <img
-            src="https://placehold.co/800x500/E8F7F4/2D346F?text=Kadra"
-            alt="Opiekunki z dziećmi w Kolorowym Przedszkolu na Zakopiańskiej"
+            src="https://placehold.co/800x500/E8F7F4/2D346F?text=Angielski"
+            alt="Dzieci podczas zajęć z języka angielskiego w Kolorowym Przedszkolu"
             loading="lazy"
             class="w-full h-full object-cover"
           />
         </div>
         <div class="flex flex-col gap-5">
-          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Kadra</p>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Język angielski</p>
           <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight">
-            Kto się tu zajmuje dziećmi?
-          </h2>
-          <div class="flex flex-col gap-4">
-            <div>
-              <h3 class="font-sans font-bold text-brand-navy text-base mb-1">Grupa 4-latków</h3>
-              <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
-                Opiekę nad młodszą grupą sprawują Ciocia Dominika i Ciocia Marianna.
-              </p>
-            </div>
-            <div>
-              <h3 class="font-sans font-bold text-brand-navy text-base mb-1">Grupa 5- i 6-latków (z zerówką)</h3>
-              <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
-                Starsza grupa na czas zajęć dydaktycznych i języka angielskiego dzieli się na mniejsze podgrupy. Zajęcia zerówkowe prowadzi Ciocia Agnieszka, zajęcia dydaktyczne z 5-latkami — Ciocia Ola. W grupie pomaga również Ciocia Daria.
-              </p>
-            </div>
-            <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
-              Natalia, psycholog — pracuje u nas na co dzień, nie jako pomoc doraźna, ale jako stała część zespołu. Zna dzieci z codziennych obserwacji, współpracuje z wychowawczyniami i jest dostępna dla rodziców bez skierowania i bez kolejki.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Sekcja 4: Angielski — icon grid ─────────────────── -->
-  <section class="bg-brand-cream py-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="text-center mb-12">
-        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Język angielski</p>
-        <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight">
-          Angielski — immersja, nie lekcje
-        </h2>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-        {angielskiItems.map((z) => (
-          <div class="bg-brand-warm rounded-2xl px-5 py-6 flex flex-col gap-2 border border-brand-navy/6 hover:border-brand-teal/40 transition-colors duration-200">
-            <span class="text-3xl" role="img" aria-hidden="true">{z.emoji}</span>
-            <p class="font-sans font-bold text-brand-navy text-sm leading-snug">{z.name}</p>
-            <p class="font-sans text-brand-navy/55 text-xs leading-snug">{z.desc}</p>
-          </div>
-        ))}
-      </div>
-      <p class="font-sans text-brand-navy/70 text-base leading-relaxed text-center max-w-2xl mx-auto mt-8">
-        Łącznie ponad 4,5 godziny angielskiego każdego dnia, w dwóch formach, które się uzupełniają. Nie ma tu „zajęć z angielskiego" — jest język jako część dnia.
-      </p>
-    </div>
-  </section>
-
-  <!-- ─── Sekcja 5: W czesnym ──────────────────────────────── -->
-  <section class="bg-brand-warm">
-    <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-        <div class="rounded-2xl overflow-hidden aspect-[4/3]">
-          <img
-            src="https://placehold.co/800x500/E8F7F4/2D346F?text=Program"
-            alt="Dzieci podczas zajęć rytmiki w Kolorowym Przedszkolu"
-            loading="lazy"
-            class="w-full h-full object-cover"
-          />
-        </div>
-        <div class="flex flex-col gap-5">
-          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">W czesnym</p>
-          <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight">
-            Co jest w czesnym?
+            Angielski — język, nie lekcja
           </h2>
           <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
-            Poniższe zajęcia wchodzą w skład standardowej opłaty miesięcznej:
+            W Kolorowym Przedszkolu na Zakopiańskiej dzieci mają stały kontakt z ciociami mówiącymi wyłącznie po angielsku — przez większość dnia, w naturalnych, codziennych sytuacjach.
           </p>
-          <ul class="font-sans text-brand-navy/70 text-base leading-relaxed space-y-4">
-            <li><strong class="text-brand-navy">Przygotowanie do szkoły / zerówka</strong> — dla grupy 5- i 6-latków</li>
-            <li><strong class="text-brand-navy">Rytmika</strong> — 2 razy w tygodniu</li>
-            <li><strong class="text-brand-navy">Gimnastyka</strong> — 2 razy w tygodniu</li>
-            <li><strong class="text-brand-navy">Taniec</strong> — raz w tygodniu</li>
-            <li><strong class="text-brand-navy">Zajęcia dydaktyczne</strong> — codziennie</li>
-          </ul>
+          <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
+            Niezależnie od tego każda grupa ma codziennie 30-minutowe zajęcia z języka angielskiego prowadzone przez nauczyciela.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── Sekcja 6: Sala SI ────────────────────────────────── -->
+  <!-- ─── Sekcja 4: Sala SI ────────────────────────────────── -->
   <section class="bg-brand-cream">
     <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
@@ -292,44 +214,49 @@ const faqItems = [
             Przy Zakopiańskiej 8 mamy własną, w pełni wyposażoną salę do zajęć Integracji Sensorycznej (SI). Korzystają z niej wszystkie grupy w ramach regularnego programu tygodniowego.
           </p>
           <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
-            Sala SI to specjalnie przygotowana przestrzeń, która wspiera wszechstronny rozwój zmysłów dziecka — równowagę, koordynację, przetwarzanie bodźców dotykowych i proprioceptywnych. Dla wielu dzieci to jedno z ulubionych miejsc w przedszkolu.
+            Sala SI to specjalnie przygotowana przestrzeń wspierająca wszechstronny rozwój zmysłów dziecka — równowagę, koordynację oraz przetwarzanie bodźców dotykowych i proprioceptywnych. Dla wielu dzieci to jedno z ulubionych miejsc w przedszkolu.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── Sekcja 7: Zajęcia dodatkowe ─────────────────────── -->
+  <!-- ─── Sekcja 5: Psycholog ──────────────────────────────── -->
   <section class="bg-brand-warm">
     <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div class="rounded-2xl overflow-hidden aspect-[4/3]">
           <img
-            src="https://placehold.co/800x500/E8F7F4/2D346F?text=Zaj%C4%99cia"
-            alt="Dzieci podczas zajęć dodatkowych w Kolorowym Przedszkolu"
+            src="https://placehold.co/800x500/E8F7F4/2D346F?text=Psycholog"
+            alt="Kolorowe Przedszkole — wsparcie psychologiczne na miejscu"
             loading="lazy"
             class="w-full h-full object-cover"
           />
         </div>
         <div class="flex flex-col gap-5">
-          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Zajęcia dodatkowe</p>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Psycholog</p>
           <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight">
-            Zajęcia dodatkowe — płatne osobno
+            Psycholog — na miejscu, nie od święta
           </h2>
           <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
-            Dla chętnych dzieci oferujemy bogaty wachlarz zajęć, które można dołączyć do programu za dodatkową opłatą.
+            Natalia, psycholog, pracuje u nas na co dzień — nie jako pomoc doraźna, ale jako stała część zespołu. Zna dzieci z codziennych obserwacji, współpracuje z wychowawczyniami i jest dostępna dla rodziców.
           </p>
-          <ul class="font-sans text-brand-navy/70 text-base leading-relaxed space-y-3">
-            <li>🤖 <strong class="text-brand-navy">Robotyka</strong></li>
-            <li>🤸 <strong class="text-brand-navy">Akrobatyka</strong></li>
-            <li>🏊 <strong class="text-brand-navy">Basen</strong></li>
-            <li>♟️ <strong class="text-brand-navy">Szachy</strong></li>
-            <li>🥋 <strong class="text-brand-navy">Judo</strong></li>
-            <li>🩰 <strong class="text-brand-navy">Balet</strong></li>
-            <li>💬 <strong class="text-brand-navy">Logopeda</strong> — Ciocia Lena prowadzi zajęcia 2 razy w tygodniu</li>
-          </ul>
+          <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
+            Wizyta nie wymaga skierowania ani oczekiwania.
+          </p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ─── Sekcja 6: Zajęcia w programie (grid) ─────────────── -->
+  <SekcjaZajecia />
+  <section class="bg-brand-cream pb-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <p class="font-sans text-brand-navy/70 text-base leading-relaxed text-center">
+        Zajęcia dodatkowe (robotyka, akrobatyka, basen, szachy, judo, balet) są płatne osobno.
+        Logopeda — Ciocia Lena, 2 razy w tygodniu — również dostępna za dodatkową opłatą.
+      </p>
     </div>
   </section>
 
