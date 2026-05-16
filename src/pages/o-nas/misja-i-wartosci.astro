@@ -1,30 +1,268 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 
+import imgSerce   from '~/assets/images/wartosci-serce.jpg';
+import imgDom     from '~/assets/images/wartosci-dom.jpg';
+import imgWiedza  from '~/assets/images/wartosci-wiedza.jpg';
+import imgNatura  from '~/assets/images/wartosci-natura.jpg';
+
 const metadata = {
-  title: 'Misja i Wartości — Kolorowe Przedszkole Saska Kępa',
-  description: 'Poznaj misję i wartości Kolorowego Przedszkola na Saskiej Kępie. Inspirujemy się metodami Montessori, Steinera, Korczaka i Pikler — z myślą o harmonijnym rozwoju każdego dziecka.',
+  title: 'Misja i wartości Kolorowego Przedszkola | Saska Kępa od 1991',
+  description: 'Poznaj misję i wartości Kolorowego Przedszkola na Saskiej Kępie. Bezpieczeństwo, domowa atmosfera, Montessori, Pikler, własna kuchnia i angielski przez immersję — od 1991 roku.',
   canonical: 'https://koloroweprzedszkole.com/o-nas/misja-i-wartosci',
   ignoreTitleTemplate: true,
   robots: { index: true, follow: true },
   openGraph: {
-    title: 'Misja i Wartości — Kolorowe Przedszkole Saska Kępa',
-    description: 'Poznaj misję i wartości Kolorowego Przedszkola na Saskiej Kępie. Inspirujemy się metodami Montessori, Steinera, Korczaka i Pikler — z myślą o harmonijnym rozwoju każdego dziecka.',
+    title: 'Misja i wartości Kolorowego Przedszkola | Saska Kępa od 1991',
+    description: 'Poznaj misję i wartości Kolorowego Przedszkola na Saskiej Kępie. Bezpieczeństwo, domowa atmosfera, Montessori, Pikler, własna kuchnia i angielski przez immersję — od 1991 roku.',
     type: 'website',
     url: 'https://koloroweprzedszkole.com/o-nas/misja-i-wartosci',
     site_name: 'Kolorowe Przedszkole',
   },
 };
+
+const wartosci = [
+  {
+    img: imgSerce,
+    alt: 'Opiekunka przytulająca dziecko — bezpieczeństwo i bliskość w Kolorowym Przedszkolu',
+    eyebrow: 'Wartość 1',
+    title: 'Bezpieczeństwo i bliskość',
+    body: 'Dziecko, które czuje się bezpiecznie, ma odwagę odkrywać świat. Dlatego starannie dobieramy kadrę i dbamy o stałość opiekunek w grupach — ta sama twarz każdego ranka to fundament zaufania. Budujemy relacje, a nie tylko zajmujemy się dziećmi.',
+    flip: false,
+  },
+  {
+    img: imgDom,
+    alt: 'Ciepłe, domowe wnętrze sali w Kolorowym Przedszkolu na Saskiej Kępie',
+    eyebrow: 'Wartość 2',
+    title: 'Dom, nie instytucja',
+    body: 'Małe grupy, domowe obiady gotowane na miejscu, ogrody przy obu lokalizacjach — tworzymy przestrzeń, w której dziecko czuje się jak u siebie. Przedszkole ma być przedłużeniem domu, nie jego przeciwieństwem.',
+    flip: true,
+  },
+  {
+    img: imgWiedza,
+    alt: 'Dzieci podczas zajęć w sali Montessori w Kolorowym Przedszkolu',
+    eyebrow: 'Wartość 3',
+    title: 'Ciekawość i samodzielność',
+    body: 'Czerpiemy z pedagogiki Marii Montessori i filozofii Emmi Pikler — szanujemy tempo każdego dziecka i nie poganiamy. Nasze zadanie to przygotować otoczenie i wycofać się, żeby ciekawość mogła zadziałać. Dzieci, które same odkrywają, zapamiętują na całe życie.',
+    flip: false,
+  },
+  {
+    img: imgNatura,
+    alt: 'Dzieci w ogrodzie Kolorowego Przedszkola na Saskiej Kępie — kontakt z przyrodą',
+    eyebrow: 'Wartość 4',
+    title: 'Natura i rytm dnia',
+    body: 'Oba nasze ogrody to nie dekoracja — to sala lekcyjna bez sufitu. Codzienne wychodzenie na zewnątrz, ogródek warzywny, obserwowanie pór roku: natura uczy cierpliwości, uważności i odpowiedzialności lepiej niż niejedna karta pracy.',
+    flip: true,
+  },
+];
+
+const zajecia = [
+  { emoji: '🗣️', name: 'Angielski przez immersję', desc: 'Ciocie anglojęzyczne przez cały dzień' },
+  { emoji: '🎨', name: 'Plastyka i ceramika',       desc: 'Twórcze zajęcia w każdej grupie wiekowej' },
+  { emoji: '🎵', name: 'Rytmika i muzyka',          desc: 'Ruch, śpiew i poczucie rytmu od maluszka' },
+  { emoji: '🧠', name: 'Sala SI',                   desc: 'Integracja sensoryczna każdego dnia' },
+  { emoji: '🌱', name: 'Ogród i przyroda',          desc: 'Ogródek warzywny i codzienny pobyt na dworze' },
+  { emoji: '🗨️', name: 'Logopedia',                 desc: 'Regularne zajęcia z dyplomowanym logopedą' },
+  { emoji: '🎭', name: 'Drama i teatrzyk',          desc: 'Śmiałość i ekspresja przez zabawę w teatr' },
+  { emoji: '🍲', name: 'Gotowanie z dziećmi',       desc: 'Lekcje przy garze — smak i nauka w jednym' },
+];
+
+const faqItems = [
+  {
+    q: 'Jaką filozofię pedagogiczną stosuje Kolorowe Przedszkole?',
+    a: 'Czerpiemy z pedagogiki Marii Montessori i filozofii Emmi Pikler. Szanujemy indywidualne tempo każdego dziecka, stawiamy na samodzielność i ciekawość zamiast poganiania i rywalizacji. Środowisko przygotowane przez nauczycielkę — dziecko odkrywa samo.',
+  },
+  {
+    q: 'Czy zajęcia z języka angielskiego są wliczone w czesne?',
+    a: 'Tak. W Kolorowym Przedszkolu nie ma oddzielnych "lekcji angielskiego" — mamy opiekunki, które mówią do dzieci wyłącznie po angielsku przez cały dzień. To immersja językowa, a nie dodatkowy moduł. Jest wliczona w podstawowe czesne.',
+  },
+  {
+    q: 'Jakie zajęcia dodatkowe oferuje przedszkole?',
+    a: 'W programie mamy rytmikę, plastykę, ceramikę, dramę, gotowanie z dziećmi oraz codzienne wyjścia do ogrodu. Sala Integracji Sensorycznej (SI) jest dostępna dla wszystkich grup. Logopeda i psycholog pracują na miejscu — bez konieczności dowożenia dziecka na zewnętrzne wizyty.',
+  },
+  {
+    q: 'Czy w przedszkolu jest psycholog?',
+    a: 'Tak. Przy lokalizacji na Zakopiańskiej 8 działa gabinet psychologiczno-logopedyczny. Psycholog jest dostępny dla dzieci wymagających wsparcia oraz dla rodziców — konsultacje są możliwe po wcześniejszym umówieniu.',
+  },
+  {
+    q: 'Czy jest logopeda na miejscu w przedszkolu?',
+    a: 'Tak. Dyplomowany logopeda prowadzi regularne zajęcia z dziećmi w obu lokalizacjach. Wczesna interwencja logopedyczna jest częścią naszego programu — obserwujemy wszystkie dzieci i reagujemy zanim problem się utrwali.',
+  },
+  {
+    q: 'Jak duże są grupy w Kolorowym Przedszkolu?',
+    a: 'Dbamy o małe grupy — to jeden z filarów naszego podejścia. Mała grupa pozwala opiekunce naprawdę poznać każde dziecko, dostosować tempo pracy i budować trwałe relacje. Liczebność grup podajemy na indywidualne zapytanie.',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
-  <section class="bg-brand-warm pt-24 pb-20">
-    <div class="max-w-3xl mx-auto px-6">
+
+  <!-- FAQPage schema (inline, dotyczy tej strony) -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a,
+      }
+    }))
+  })} />
+
+  <!-- ─── Hero ─────────────────────────────────────────────── -->
+  <section class="relative bg-brand-navy pt-32 pb-24 overflow-hidden">
+    <div class="absolute inset-0 bg-brand-navy/70 z-10"></div>
+    <img
+      src="https://placehold.co/1600x700/2D346F/34BBA8?text=Misja+i+warto%C5%9Bci"
+      alt=""
+      aria-hidden="true"
+      class="absolute inset-0 w-full h-full object-cover opacity-20"
+    />
+    <div class="relative z-20 max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>
-      <h1 class="font-sans italic text-[clamp(2.2rem,5vw,3.5rem)] text-brand-navy leading-tight mb-6">
-        Misja i Wartości
+      <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4rem)] text-brand-cream leading-tight mb-6">
+        Misja i wartości
       </h1>
-      <p class="font-sans text-lg text-brand-navy/60">Treść tej strony jest w przygotowaniu.</p>
+      <p class="font-sans text-lg text-brand-cream/75 max-w-xl mx-auto leading-relaxed">
+        Przez ponad 30 lat na Saskiej Kępie wypracowaliśmy model opieki, który łączy profesjonalizm z domowym ciepłem.
+        Oto co nas napędza.
+      </p>
     </div>
   </section>
+
+  <!-- ─── Intro ─────────────────────────────────────────────── -->
+  <section class="bg-brand-cream py-20">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="font-sans text-xl text-brand-navy/80 leading-relaxed mb-6">
+        <strong class="text-brand-navy">Nasza misja:</strong> być bezpiecznym pomostem między domem a szkołą —
+        miejscem, gdzie dziecko rośnie w swoim tempie, a rodzic ma poczucie, że zostawia je w dobrych rękach.
+      </p>
+      <p class="font-sans text-lg text-brand-navy/60 leading-relaxed">
+        Nie ścigamy się z podstawą programową. Wierzymy, że dziecko, które czuje się kochane i bezpieczne,
+        samo z siebie zaczyna być ciekawe świata — i to jest najlepsza gotowość szkolna.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── 4 wartości (alternating) ─────────────────────────── -->
+  {wartosci.map((w) => (
+    <section class="bg-brand-warm overflow-hidden">
+      <div class={`max-w-6xl mx-auto flex flex-col ${w.flip ? 'md:flex-row-reverse' : 'md:flex-row'} items-stretch`}>
+
+        <!-- Zdjęcie -->
+        <div class="md:w-1/2 aspect-[4/3] md:aspect-auto relative overflow-hidden">
+          <Image
+            src={w.img}
+            alt={w.alt}
+            class="w-full h-full object-cover"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+
+        <!-- Tekst -->
+        <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
+          <div>
+            <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">{w.eyebrow}</p>
+            <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-5">
+              {w.title}
+            </h2>
+            <p class="font-sans text-brand-navy/70 text-lg leading-relaxed">
+              {w.body}
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  ))}
+
+  <!-- ─── Zajęcia (card grid) ──────────────────────────────── -->
+  <section class="bg-brand-cream py-20">
+    <div class="max-w-5xl mx-auto px-6">
+
+      <div class="text-center mb-12">
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Co robimy razem</p>
+        <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight">
+          Zajęcia w programie
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {zajecia.map((z) => (
+          <div class="bg-brand-warm rounded-2xl px-5 py-6 flex flex-col gap-2 border border-brand-navy/6 hover:border-brand-teal/40 transition-colors duration-200">
+            <span class="text-3xl" role="img" aria-hidden="true">{z.emoji}</span>
+            <p class="font-sans font-bold text-brand-navy text-sm leading-snug">{z.name}</p>
+            <p class="font-sans text-brand-navy/55 text-xs leading-snug">{z.desc}</p>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── Filozofia + CTA ───────────────────────────────────── -->
+  <section class="bg-brand-navy py-24">
+    <div class="max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Filozofia</p>
+      <blockquote class="font-sans italic text-[clamp(1.5rem,3vw,2.2rem)] text-brand-cream leading-snug">
+        „Pomóż mi zrobić to samodzielnie."
+      </blockquote>
+      <p class="font-sans text-brand-cream/60 text-base leading-relaxed max-w-lg">
+        Zasada Marii Montessori, która od ponad 30 lat wyznacza rytm naszej pracy.
+        Dzieci w Kolorowym Przedszkolu nie wykonują poleceń — odkrywają, eksperymentują i uczą się przez działanie.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 mt-4">
+        <a
+          href="/rekrutacja"
+          class="inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-coral"
+        >
+          Rekrutacja 2026/2027
+        </a>
+        <a
+          href="/kontakt"
+          class="inline-block border-2 border-brand-cream/40 text-brand-cream font-sans font-semibold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:border-brand-teal hover:text-brand-teal"
+        >
+          Zadaj pytanie
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ───────────────────────────────────────────────── -->
+  <section class="bg-brand-warm py-20">
+    <div class="max-w-3xl mx-auto px-6">
+
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">FAQ</p>
+      <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight mb-4">
+        Pytania o naszą filozofię
+      </h2>
+      <p class="font-sans text-lg text-brand-navy/60 mb-12">
+        Odpowiedzi na pytania, które słyszymy najczęściej od rodziców planujących zapisanie dziecka.
+      </p>
+
+      <div class="divide-y divide-brand-navy/10">
+        {faqItems.map((item, i) => (
+          <details class="group py-5" open={i === 0}>
+            <summary class="flex justify-between items-start cursor-pointer gap-4 list-none">
+              <span class="font-sans text-brand-navy font-semibold text-lg leading-snug group-open:text-brand-teal transition-colors duration-200">
+                {item.q}
+              </span>
+              <span class="flex-shrink-0 mt-1 text-brand-teal text-2xl font-light transition-transform duration-200 group-open:rotate-45">
+                +
+              </span>
+            </summary>
+            <p class="font-sans mt-4 text-brand-navy/75 leading-relaxed text-base">
+              {item.a}
+            </p>
+          </details>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
 </Layout>
