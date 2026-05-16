@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 
-import imgHero    from '~/assets/images/kuchnia-hero.jpg';
+import imgHero    from '~/assets/images/domowe-obiady.jpg';
 import imgTatiana from '~/assets/images/kuchnia-tatiana.jpg';
 import imgZupa    from '~/assets/images/kuchnia-zupa.jpg';
 import imgKanapki from '~/assets/images/kuchnia-kanapki.jpg';
@@ -62,35 +62,28 @@ const faqItems = [
     }))
   })} />
 
-  <!-- ─── 1. Hero — tekst na brand-warm (jak historia) ─────── -->
-  <section class="bg-brand-warm pt-24 pb-16">
-    <div class="max-w-3xl mx-auto px-6 text-center">
+  <!-- ─── 1. Hero — dark navy jak misja-i-wartości ────────── -->
+  <section class="relative bg-brand-navy pt-32 pb-24 overflow-hidden">
+    <div class="absolute inset-0 bg-brand-navy/60 z-10"></div>
+    <Image
+      src={imgHero}
+      alt="Domowe obiady w Kolorowym Przedszkolu na Saskiej Kępie"
+      class="absolute inset-0 w-full h-full object-cover"
+      widths={[800, 1200, 1600]}
+      sizes="100vw"
+    />
+    <div class="relative z-20 max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>
-      <h1 class="font-sans italic text-[clamp(2.2rem,5vw,3.5rem)] text-brand-navy leading-tight mb-5">
+      <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4rem)] text-brand-cream leading-tight mb-6">
         Kuchnia Kolorowego Przedszkola
       </h1>
-      <p class="font-sans text-lg text-brand-navy/60 max-w-xl mx-auto leading-relaxed">
+      <p class="font-sans text-lg text-brand-cream/75 max-w-xl mx-auto leading-relaxed">
         Gotujemy każdego dnia — od podstaw, bez cateringu, bez kompromisów.
       </p>
     </div>
   </section>
 
-  <!-- ─── 2. Hero image — pełna szerokość, zaokrąglona ─────── -->
-  <section class="bg-brand-warm pb-0">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="w-full overflow-hidden rounded-2xl aspect-[21/9]">
-        <Image
-          src={imgHero}
-          alt="Domowe obiady w Kolorowym Przedszkolu na Saskiej Kępie"
-          class="w-full h-full object-cover"
-          widths={[800, 1200, 1600]}
-          sizes="(max-width: 1200px) 100vw, 1200px"
-        />
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── 3. Opening statement ─────────────────────────────── -->
+  <!-- ─── 2. Opening statement ─────────────────────────────── -->
   <section class="bg-brand-warm py-20">
     <div class="max-w-2xl mx-auto px-6 text-center">
       <p class="font-sans italic text-[clamp(1.4rem,2.5vw,2rem)] text-brand-navy leading-relaxed mb-5">
@@ -173,38 +166,35 @@ const faqItems = [
         ))}
       </div>
 
-      <!-- Callout -->
-      <div class="bg-brand-teal/10 border border-brand-teal/30 rounded-2xl px-7 py-5 mb-6">
-        <p class="font-sans text-brand-navy text-base leading-relaxed">
-          🍝 <strong class="text-brand-teal">Klasyki, które zawsze znikają z talerzy:</strong><br />
-          Makaron z twarogiem i truskawkami · Pierogi z białym serkiem i śmietanką
-        </p>
+      <!-- Callout + zdjęcie zupy -->
+      <div class="flex flex-col md:flex-row gap-6 items-stretch mb-2">
+        <div class="flex flex-col gap-4 md:w-1/2">
+          <div class="bg-brand-teal/10 border border-brand-teal/30 rounded-2xl px-7 py-5">
+            <p class="font-sans text-brand-navy text-base leading-relaxed">
+              🍝 <strong class="text-brand-teal">Klasyki, które zawsze znikają z talerzy:</strong><br />
+              Makaron z twarogiem i truskawkami · Pierogi z białym serkiem i śmietanką
+            </p>
+          </div>
+          <p class="font-sans text-brand-navy/60 text-base leading-relaxed">
+            Dzieci poznają też kuchnie świata: jemy hummus, sos boloński, chaczapuri.
+            Ryż z kurczakiem i warzywami w azjatyckim stylu to jeden z największych hitów.
+          </p>
+        </div>
+        <div class="md:w-1/2 rounded-2xl overflow-hidden aspect-[4/3] md:aspect-auto">
+          <Image
+            src={imgZupa}
+            alt="Zupa gotowana na wywarze w Kolorowym Przedszkolu"
+            class="w-full h-full object-cover"
+            widths={[640, 960]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
       </div>
-
-      <p class="font-sans text-brand-navy/60 text-base leading-relaxed text-center max-w-xl mx-auto">
-        Dzieci poznają też kuchnie świata: jemy hummus, sos boloński, chaczapuri.
-        Ryż z kurczakiem i warzywami w azjatyckim stylu to jeden z największych hitów.
-      </p>
 
     </div>
   </section>
 
-  <!-- ─── 6. Zupa — pełna szerokość, zaokrąglona ───────────── -->
-  <section class="bg-brand-warm pb-0">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="w-full overflow-hidden rounded-2xl aspect-[21/9]">
-        <Image
-          src={imgZupa}
-          alt="Zupa gotowana na wywarze w Kolorowym Przedszkolu"
-          class="w-full h-full object-cover"
-          widths={[800, 1200, 1600]}
-          sizes="(max-width: 1200px) 100vw, 1200px"
-        />
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── 7. Ogródek — text left, image right ──────────────── -->
+  <!-- ─── 6. Ogródek — text left, image right ──────────────── -->
   <section class="bg-brand-warm py-20 overflow-hidden">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row-reverse items-stretch">
 
@@ -244,7 +234,7 @@ const faqItems = [
     </div>
   </section>
 
-  <!-- ─── 8. Alergie + Menu na tablicy ─────────────────────── -->
+  <!-- ─── 7. Alergie + Menu na tablicy ─────────────────────── -->
   <section class="bg-brand-cream py-20">
     <div class="max-w-4xl mx-auto px-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -276,7 +266,7 @@ const faqItems = [
     </div>
   </section>
 
-  <!-- ─── 9. Dzieci w kuchni — image left, text right ─────── -->
+  <!-- ─── 8. Dzieci w kuchni — image left, text right ─────── -->
   <section class="bg-brand-warm overflow-hidden">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch">
 
@@ -331,7 +321,7 @@ const faqItems = [
     </div>
   </section>
 
-  <!-- ─── 10. CTA — brand-warm, NIE navy (żeby nie zlewać ze stopką) -->
+  <!-- ─── 9. CTA — brand-warm, nie navy ───────────────────── -->
   <section class="bg-brand-cream py-20">
     <div class="max-w-xl mx-auto px-6 text-center flex flex-col items-center gap-5">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Dlaczego to ważne</p>
