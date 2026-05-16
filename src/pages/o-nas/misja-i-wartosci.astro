@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
+import SekcjaZajecia from '~/components/widgets/SekcjaZajecia.astro';
 
 import imgSerce   from '~/assets/images/wartosci-serce.jpg';
 import imgDom     from '~/assets/images/wartosci-dom.jpg';
@@ -57,41 +58,38 @@ const wartosci = [
   },
 ];
 
-const zajecia = [
-  { emoji: '🗣️', name: 'Angielski przez immersję', desc: 'Ciocie anglojęzyczne przez cały dzień' },
-  { emoji: '🎨', name: 'Plastyka i ceramika',       desc: 'Twórcze zajęcia w każdej grupie wiekowej' },
-  { emoji: '🎵', name: 'Rytmika i muzyka',          desc: 'Ruch, śpiew i poczucie rytmu od maluszka' },
-  { emoji: '🧠', name: 'Sala SI',                   desc: 'Integracja sensoryczna każdego dnia' },
-  { emoji: '🌱', name: 'Ogród i przyroda',          desc: 'Ogródek warzywny i codzienny pobyt na dworze' },
-  { emoji: '🗨️', name: 'Logopedia',                 desc: 'Regularne zajęcia z dyplomowanym logopedą' },
-  { emoji: '🎭', name: 'Drama i teatrzyk',          desc: 'Śmiałość i ekspresja przez zabawę w teatr' },
-  { emoji: '🍲', name: 'Gotowanie z dziećmi',       desc: 'Lekcje przy garze — smak i nauka w jednym' },
-];
-
 const faqItems = [
   {
-    q: 'Jaką filozofię pedagogiczną stosuje Kolorowe Przedszkole?',
-    a: 'Czerpiemy z pedagogiki Marii Montessori i filozofii Emmi Pikler. Szanujemy indywidualne tempo każdego dziecka, stawiamy na samodzielność i ciekawość zamiast poganiania i rywalizacji. Środowisko przygotowane przez nauczycielkę — dziecko odkrywa samo.',
+    q: 'Jakie metody pedagogiczne stosuje Kolorowe Przedszkole?',
+    a: 'Inspirujemy się czterema metodami: Montessori, Steinera, Korczaka i Pikler. Nie stosujemy żadnej z nich w sposób wyłączny — łączymy elementy każdej z nich, dobierając to, co najlepiej odpowiada potrzebom konkretnych dzieci i grup.',
   },
   {
-    q: 'Czy zajęcia z języka angielskiego są wliczone w czesne?',
-    a: 'Tak. W Kolorowym Przedszkolu nie ma oddzielnych "lekcji angielskiego" — mamy opiekunki, które mówią do dzieci wyłącznie po angielsku przez cały dzień. To immersja językowa, a nie dodatkowy moduł. Jest wliczona w podstawowe czesne.',
+    q: 'Czy program w przedszkolu jest ustandaryzowany?',
+    a: 'Realizujemy podstawę programową wychowania przedszkolnego wymaganą przez MEN. Nasze podejście metodyczne wykracza poza minimum — stawiamy na samodzielność, kreatywność i indywidualne tempo rozwoju każdego dziecka.',
   },
   {
-    q: 'Jakie zajęcia dodatkowe oferuje przedszkole?',
-    a: 'W programie mamy rytmikę, plastykę, ceramikę, dramę, gotowanie z dziećmi oraz codzienne wyjścia do ogrodu. Sala Integracji Sensorycznej (SI) jest dostępna dla wszystkich grup. Logopeda i psycholog pracują na miejscu — bez konieczności dowożenia dziecka na zewnętrzne wizyty.',
+    q: 'Czy jest sala integracji sensorycznej (SI)?',
+    a: 'Tak. Sala SI znajduje się w lokalizacji przy Zakopiańskiej 8 i jest dostępna dla wszystkich grup w ramach regularnego programu tygodniowego. To specjalnie wyposażone pomieszczenie wspierające wszechstronny rozwój zmysłów dziecka.',
   },
   {
     q: 'Czy w przedszkolu jest psycholog?',
-    a: 'Tak. Przy lokalizacji na Zakopiańskiej 8 działa gabinet psychologiczno-logopedyczny. Psycholog jest dostępny dla dzieci wymagających wsparcia oraz dla rodziców — konsultacje są możliwe po wcześniejszym umówieniu.',
+    a: 'Tak — psycholog pracuje u nas na etacie. To nie jest pomoc doraźna: nasz psycholog zna dzieci z codziennych obserwacji i współpracuje z nauczycielami na bieżąco. Rodzice mogą umówić się na rozmowę w każdej chwili.',
   },
   {
-    q: 'Czy jest logopeda na miejscu w przedszkolu?',
-    a: 'Tak. Dyplomowany logopeda prowadzi regularne zajęcia z dziećmi w obu lokalizacjach. Wczesna interwencja logopedyczna jest częścią naszego programu — obserwujemy wszystkie dzieci i reagujemy zanim problem się utrwali.',
+    q: 'Czy jest logopeda na miejscu?',
+    a: 'Tak. Logopeda prowadzi regularne zajęcia w przedszkolu — dzieci nie muszą czekać w kolejce do poradni. Wczesna interwencja logopedyczna to jeden z elementów naszego podejścia do wszechstronnego rozwoju.',
   },
   {
-    q: 'Jak duże są grupy w Kolorowym Przedszkolu?',
-    a: 'Dbamy o małe grupy — to jeden z filarów naszego podejścia. Mała grupa pozwala opiekunce naprawdę poznać każde dziecko, dostosować tempo pracy i budować trwałe relacje. Liczebność grup podajemy na indywidualne zapytanie.',
+    q: 'Jak przedszkole podchodzi do dzieci z trudnościami w adaptacji?',
+    a: 'Każde dziecko adaptuje się inaczej i w swoim tempie. Pracujemy indywidualnie, utrzymujemy bliski kontakt z rodzicami na etapie adaptacji i w razie potrzeby korzystamy ze wsparcia psychologa i logopedy, którzy są częścią naszego zespołu.',
+  },
+  {
+    q: 'Czy oferujecie zajęcia sportowe?',
+    a: 'Tak. W programie mamy judo, balet, akrobatykę i basen — raz w tygodniu jedziemy na pływalnię w małych grupach. Wszystkie zajęcia sportowe odbywają się w godzinach przedszkolnych lub zaraz po nich, bez dodatkowych dojazdów (poza basenem).',
+  },
+  {
+    q: 'Czy możemy odwiedzić przedszkole przed podjęciem decyzji?',
+    a: 'Tak — zapraszamy na spacer po placówce po wcześniejszym umówieniu się telefonicznie lub mailowo.',
   },
 ];
 ---
@@ -181,28 +179,7 @@ const faqItems = [
   ))}
 
   <!-- ─── Zajęcia (card grid) ──────────────────────────────── -->
-  <section class="bg-brand-cream py-20">
-    <div class="max-w-5xl mx-auto px-6">
-
-      <div class="text-center mb-12">
-        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Co robimy razem</p>
-        <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight">
-          Zajęcia w programie
-        </h2>
-      </div>
-
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {zajecia.map((z) => (
-          <div class="bg-brand-warm rounded-2xl px-5 py-6 flex flex-col gap-2 border border-brand-navy/6 hover:border-brand-teal/40 transition-colors duration-200">
-            <span class="text-3xl" role="img" aria-hidden="true">{z.emoji}</span>
-            <p class="font-sans font-bold text-brand-navy text-sm leading-snug">{z.name}</p>
-            <p class="font-sans text-brand-navy/55 text-xs leading-snug">{z.desc}</p>
-          </div>
-        ))}
-      </div>
-
-    </div>
-  </section>
+  <SekcjaZajecia />
 
   <!-- ─── Filozofia + CTA ───────────────────────────────────── -->
   <section class="bg-brand-navy py-24">

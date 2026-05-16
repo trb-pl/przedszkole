@@ -1,0 +1,41 @@
+---
+const zajecia = [
+  { emoji: '🗣️', name: 'Angielski przez immersję', desc: 'Ciocie anglojęzyczne przez cały dzień' },
+  { emoji: '🎨', name: 'Plastyka i ceramika',       desc: 'Twórcze zajęcia w każdej grupie wiekowej' },
+  { emoji: '🎵', name: 'Rytmika i muzyka',          desc: 'Ruch, śpiew i poczucie rytmu od maluszka' },
+  { emoji: '🧠', name: 'Sala SI',                   desc: 'Integracja sensoryczna każdego dnia' },
+  { emoji: '🌱', name: 'Ogród i przyroda',          desc: 'Ogródek warzywny i codzienny pobyt na dworze' },
+  { emoji: '💬', name: 'Logopedia',                 desc: 'Regularne zajęcia z dyplomowanym logopedą' },
+  { emoji: '🎭', name: 'Drama i teatrzyk',          desc: 'Śmiałość i ekspresja przez zabawę w teatr' },
+  { emoji: '🍲', name: 'Gotowanie z dziećmi',       desc: 'Lekcje przy garze — smak i nauka w jednym' },
+  { emoji: '🥋', name: 'Judo',                      desc: 'Koncentracja, szacunek i kontrola własnego ciała' },
+  { emoji: '🩰', name: 'Balet',                     desc: 'Rytm, koordynacja i praca z muzyką' },
+  { emoji: '🤸', name: 'Akrobatyka',                desc: 'Sprawność, odwaga i zaufanie do siebie' },
+  { emoji: '♟️', name: 'Szachy',                    desc: 'Logiczne myślenie i cierpliwość, dostosowane do wieku' },
+  { emoji: '🤖', name: 'Robotyka',                  desc: 'Pierwsze kroki w myśleniu algorytmicznym przez zabawę' },
+  { emoji: '🏊', name: 'Basen',                     desc: 'Raz w tygodniu jeździmy na pływalnię, w małych grupach' },
+];
+---
+
+<section class="bg-brand-cream py-20">
+  <div class="max-w-5xl mx-auto px-6">
+
+    <div class="text-center mb-12">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Co robimy razem</p>
+      <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight">
+        Zajęcia w programie
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {zajecia.map((z) => (
+        <div class="bg-brand-warm rounded-2xl px-5 py-6 flex flex-col gap-2 border border-brand-navy/6 hover:border-brand-teal/40 transition-colors duration-200">
+          <span class="text-3xl" role="img" aria-hidden="true">{z.emoji}</span>
+          <p class="font-sans font-bold text-brand-navy text-sm leading-snug">{z.name}</p>
+          <p class="font-sans text-brand-navy/55 text-xs leading-snug">{z.desc}</p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
