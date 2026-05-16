@@ -1,4 +1,7 @@
 ---
+interface Props { bg?: string; }
+const { bg = 'bg-brand-cream' } = Astro.props;
+
 const zajecia = [
   { emoji: '🗣️', name: 'Angielski przez rozmowę',   desc: 'Ciocie anglojęzyczne przez cały dzień' },
   { emoji: '🎵', name: 'Rytmika i muzyka',          desc: 'Ruch, śpiew i poczucie rytmu od maluszka' },
@@ -15,7 +18,7 @@ const zajecia = [
 ];
 ---
 
-<section class="bg-brand-cream py-20">
+<section class={`${bg} py-20`}>
   <div class="max-w-5xl mx-auto px-6">
 
     <div class="text-center mb-12">
