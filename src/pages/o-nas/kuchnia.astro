@@ -1,30 +1,365 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 
+import imgHero     from '~/assets/images/kuchnia-hero.jpg';
+import imgTatiana  from '~/assets/images/kuchnia-tatiana.jpg';
+import imgZupa     from '~/assets/images/kuchnia-zupa.jpg';
+import imgKanapki  from '~/assets/images/kuchnia-kanapki.jpg';
+import imgJablka   from '~/assets/images/kuchnia-jablka.jpg';
+import imgNatura   from '~/assets/images/wartosci-natura.jpg';
+
 const metadata = {
-  title: 'Kuchnia Kolorowego Przedszkola — Domowe obiady na Saskiej Kępie',
-  description: 'Własna kuchnia w Kolorowym Przedszkolu na Saskiej Kępie. Gotujemy na miejscu każdego dnia — świeże, zbilansowane posiłki bez cateringu. Obsługujemy alergie i diety wykluczeniowe.',
+  title: 'Kuchnia Kolorowego Przedszkola — domowe obiady na Saskiej Kępie',
+  description: 'Ciocia Tatiana gotuje każdego dnia od podstaw. Lokalne produkty z Mazowsza, własny ogródek warzywny, menu bez cateringu. Kuchnia Kolorowego Przedszkola na Saskiej Kępie.',
   canonical: 'https://koloroweprzedszkole.com/o-nas/kuchnia',
   ignoreTitleTemplate: true,
   robots: { index: true, follow: true },
   openGraph: {
-    title: 'Kuchnia Kolorowego Przedszkola — Domowe obiady na Saskiej Kępie',
-    description: 'Własna kuchnia w Kolorowym Przedszkolu na Saskiej Kępie. Gotujemy na miejscu każdego dnia — świeże, zbilansowane posiłki bez cateringu. Obsługujemy alergie i diety wykluczeniowe.',
+    title: 'Kuchnia Kolorowego Przedszkola — domowe obiady na Saskiej Kępie',
+    description: 'Ciocia Tatiana gotuje każdego dnia od podstaw. Lokalne produkty z Mazowsza, własny ogródek warzywny, menu bez cateringu.',
     type: 'website',
     url: 'https://koloroweprzedszkole.com/o-nas/kuchnia',
     site_name: 'Kolorowe Przedszkole',
   },
 };
+
+const warzywa = ['marchewka','lubczyk','szczypiorek','zielony groszek','pigwa','sałata','pomidorki koktajlowe'];
+
+const faqItems = [
+  {
+    q: 'Czy Kolorowe Przedszkole korzysta z cateringu?',
+    a: 'Nie. Gotujemy na miejscu każdego dnia — od podstaw, ze świeżych składników. Śniadanie, obiad i podwieczorek przygotowuje Ciocia Tatiana, doświadczona kucharka.',
+  },
+  {
+    q: 'Skąd pochodzą produkty używane w kuchni przedszkola?',
+    a: 'Warzywa, owoce, jaja i mięso kupujemy od lokalnych rolników z województwa mazowieckiego — od lat u tych samych, sprawdzonych dostawców. Część warzyw pochodzi z własnego ogródka przy Zakopiańskiej 8.',
+  },
+  {
+    q: 'Czy przedszkole uwzględnia alergie pokarmowe?',
+    a: 'Tak. Jeśli dziecko ma alergię lub nietolerancję pokarmową, dostosowujemy menu indywidualnie. Każde dziecko je bezpiecznie i smacznie — bez poczucia, że dostaje coś innego niż reszta grupy.',
+  },
+  {
+    q: 'Czy rodzice mogą sprawdzić co dziecko je w przedszkolu?',
+    a: 'Tak. Menu planujemy co tydzień z wyprzedzeniem i wywieszamy na tablicy ogłoszeń. Rodzice wiedzą, co dziecko jadło i co będzie jadło.',
+  },
+  {
+    q: 'Czy dzieci gotują w przedszkolu?',
+    a: 'Tak. Starsze grupy robią sobie kanapki na śniadanie samodzielnie, ze świeżych składników. Regularnie odbywają się zajęcia, podczas których pieczemy razem zdrowe ciastka. Na Wielkanoc dzieci robią mazurek — prawdziwy, z masą i bakaliami.',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
-  <section class="bg-brand-warm pt-24 pb-20">
-    <div class="max-w-3xl mx-auto px-6">
+
+  <!-- FAQPage schema -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": { "@type": "Answer", "text": item.a }
+    }))
+  })} />
+
+  <!-- ─── 1. Hero ──────────────────────────────────────────── -->
+  <section class="relative bg-brand-navy overflow-hidden">
+    <div class="absolute inset-0 bg-brand-navy/55 z-10"></div>
+    <Image
+      src={imgHero}
+      alt="Domowe obiady w Kolorowym Przedszkolu na Saskiej Kępie"
+      class="absolute inset-0 w-full h-full object-cover"
+      widths={[800, 1200, 1600]}
+      sizes="100vw"
+    />
+    <div class="relative z-20 max-w-3xl mx-auto px-6 pt-36 pb-28 text-center">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>
-      <h1 class="font-sans italic text-[clamp(2.2rem,5vw,3.5rem)] text-brand-navy leading-tight mb-6">
-        Kuchnia
+      <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4rem)] text-brand-cream leading-tight mb-5">
+        Kuchnia Kolorowego Przedszkola
       </h1>
-      <p class="font-sans text-lg text-brand-navy/60">Treść tej strony jest w przygotowaniu.</p>
+      <p class="font-sans text-lg text-brand-cream/80 max-w-xl mx-auto leading-relaxed">
+        Gotujemy każdego dnia — od podstaw, bez cateringu, bez kompromisów
+      </p>
     </div>
   </section>
+
+  <!-- ─── 2. Opening statement ─────────────────────────────── -->
+  <section class="bg-brand-cream py-20">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <p class="font-sans italic text-[clamp(1.4rem,2.5vw,2rem)] text-brand-navy leading-relaxed mb-5">
+        W Kolorowym Przedszkolu nie ma cateringu. Nigdy nie było.
+      </p>
+      <p class="font-sans text-lg text-brand-navy/65 leading-relaxed">
+        Każdego ranka Ciocia Tatiana wchodzi do kuchni i gotuje — od podstaw, ze świeżych składników, na cały dzień.
+        Śniadanie, obiad, podwieczorek.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── 3. Ciocia Tatiana — image left, text right ───────── -->
+  <section class="bg-brand-warm overflow-hidden">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch">
+
+      <div class="md:w-1/2 aspect-[4/3] md:aspect-auto relative overflow-hidden">
+        <Image
+          src={imgTatiana}
+          alt="Ciocia Tatiana w kuchni Kolorowego Przedszkola"
+          class="w-full h-full object-cover"
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+      </div>
+
+      <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
+        <div>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Serce kuchni</p>
+          <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-5">
+            Ciocia Tatiana i Ciocia Ola
+          </h2>
+          <p class="font-sans text-brand-navy/70 text-lg leading-relaxed mb-4">
+            Doświadczona kucharka, która od lat jest sercem przedszkolnej kuchni. Dzieci ją uwielbiają — i nie tylko za jedzenie. Kadra zresztą też.
+          </p>
+          <p class="font-sans text-brand-navy/70 text-lg leading-relaxed mb-4">
+            Gotuje tak, jak gotuje się w domu: z głową, z sercem i bez kompromisów. Wie, które dziecko nie je cebuli, które potrzebuje diety bezglutenowej, a które zje wszystko, byle było ciepłe.
+          </p>
+          <p class="font-sans text-brand-navy/70 text-lg leading-relaxed">
+            Kuchnię regularnie dogląda też Ciocia Ola — założycielka przedszkola. Nie dlatego, że musi. Dlatego, że gotowanie to jej prywatna pasja, wyniesiona z mazureckiego domu rodzinnego. W kuchni Kolorowego Przedszkola czuć to na każdym kroku — i na każdym talerzu.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 4. Menu section ───────────────────────────────────── -->
+  <section class="bg-brand-navy py-20">
+    <div class="max-w-4xl mx-auto px-6">
+
+      <div class="text-center mb-12">
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Codziennie na talerzu</p>
+        <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-cream leading-tight mb-5">
+          Co jest na talerzu
+        </h2>
+        <p class="font-sans text-lg text-brand-cream/60 max-w-xl mx-auto leading-relaxed">
+          Zależy nam na klasycznej, dobrej kuchni polskiej — pełnej warzyw, pożywnych zup i solidnych dań głównych.
+          Bez polepszaczy, bez gotowych mieszanek, bez skrótów.
+        </p>
+      </div>
+
+      <!-- Menu grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        {[
+          { emoji: '🥣', name: 'Zupy gotowane na wywarze',    desc: 'Barszcz, żurek, rosół, krupnik — każdego dnia inna' },
+          { emoji: '🥩', name: 'Dania mięsne i rybne',        desc: 'Mięso i ryby od sprawdzonych, lokalnych dostawców' },
+          { emoji: '🥬', name: 'Warzywa i owoce',             desc: 'Od mazowieckich rolników — od lat tych samych' },
+          { emoji: '🥚', name: 'Jaja od lokalnych hodowców',  desc: 'Świeże, od sprawdzonych dostawców z regionu' },
+        ].map((item) => (
+          <div class="bg-brand-cream/8 rounded-2xl px-6 py-5 flex items-start gap-4 border border-brand-cream/10">
+            <span class="text-3xl mt-0.5" role="img" aria-hidden="true">{item.emoji}</span>
+            <div>
+              <p class="font-sans font-bold text-brand-cream text-sm leading-snug mb-1">{item.name}</p>
+              <p class="font-sans text-brand-cream/55 text-xs leading-snug">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Callout box -->
+      <div class="bg-brand-teal/15 border border-brand-teal/30 rounded-2xl px-7 py-5 mb-8">
+        <p class="font-sans text-brand-cream text-base leading-relaxed">
+          🍝 <strong class="text-brand-teal">Klasyki, które zawsze znikają z talerzy:</strong><br />
+          Makaron z twarogiem i truskawkami · Pierogi z białym serkiem i śmietanką
+        </p>
+      </div>
+
+      <div class="max-w-xl mx-auto">
+        <Image
+          src={imgZupa}
+          alt="Zupa gotowana na wywarze w Kolorowym Przedszkolu"
+          class="w-full rounded-2xl object-cover aspect-[16/9]"
+          widths={[640, 960]}
+          sizes="(max-width: 768px) 100vw, 640px"
+        />
+      </div>
+
+      <p class="font-sans text-brand-cream/65 text-lg leading-relaxed text-center max-w-xl mx-auto mt-8">
+        Dzieci poznają też kuchnie świata: jemy hummus, sos boloński, chaczapuri.
+        Ryż z kurczakiem i warzywami w azjatyckim stylu to jeden z największych hitów — znika z talerzy w kilka minut.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ─── 5. Ogródek — text left, image right ──────────────── -->
+  <section class="bg-brand-warm overflow-hidden">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row-reverse items-stretch">
+
+      <div class="md:w-1/2 aspect-[4/3] md:aspect-auto relative overflow-hidden">
+        <Image
+          src={imgNatura}
+          alt="Ogród warzywny przy Kolorowym Przedszkolu na Zakopiańskiej"
+          class="w-full h-full object-cover"
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+      </div>
+
+      <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
+        <div>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Zakopiańska 8</p>
+          <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-5">
+            Własny ogródek
+          </h2>
+          <p class="font-sans text-brand-navy/70 text-lg leading-relaxed mb-6">
+            Przy Zakopiańskiej 8 mamy ogródek warzywny, z którego część składników trafia prosto do kuchni.
+          </p>
+
+          <!-- Pill badges -->
+          <div class="flex flex-wrap gap-2 mb-6">
+            {warzywa.map((w) => (
+              <span class="font-sans text-xs font-semibold text-brand-teal bg-brand-teal/10 border border-brand-teal/25 px-3 py-1.5 rounded-full">
+                {w}
+              </span>
+            ))}
+          </div>
+
+          <p class="font-sans text-brand-navy/70 text-lg leading-relaxed">
+            Dzieci same sadzą, podlewają i zbierają. Wiedzą, jak smakuje pomidor prosto z krzaka — i że smakuje zupełnie inaczej niż ten ze sklepu.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 6. Alergie + Menu na tablicy — dwie karty ───────── -->
+  <section class="bg-brand-cream py-20">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Karta: Alergie -->
+        <div class="bg-brand-warm rounded-2xl px-8 py-8 border border-brand-navy/6">
+          <span class="text-3xl mb-4 block" role="img" aria-hidden="true">🌿</span>
+          <h3 class="font-sans font-bold text-brand-navy text-xl mb-4 leading-snug">Alergie i diety</h3>
+          <p class="font-sans text-brand-navy/65 text-base leading-relaxed mb-3">
+            Każde dziecko jest inne — także przy stole.
+          </p>
+          <p class="font-sans text-brand-navy/65 text-base leading-relaxed">
+            Jeśli Twoje dziecko ma alergię pokarmową lub nietolerancję, dostosowujemy menu indywidualnie.
+            Ciocia Tatiana wie, co przygotować i jak zadbać o to, żeby dziecko jadło bezpiecznie i smacznie —
+            bez poczucia, że dostaje „coś innego".
+          </p>
+        </div>
+
+        <!-- Karta: Menu na tablicy -->
+        <div class="bg-brand-warm rounded-2xl px-8 py-8 border border-brand-navy/6">
+          <span class="text-3xl mb-4 block" role="img" aria-hidden="true">📋</span>
+          <h3 class="font-sans font-bold text-brand-navy text-xl mb-4 leading-snug">Menu na tablicy</h3>
+          <p class="font-sans text-brand-navy/65 text-base leading-relaxed mb-3">
+            Każdego tygodnia planujemy menu z wyprzedzeniem i wywieszamy je na tablicy ogłoszeń.
+          </p>
+          <p class="font-sans text-brand-navy/65 text-base leading-relaxed">
+            Rodzice wiedzą, co dziecko jadło i co będzie jadło — bez niespodzianek.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 7. Dzieci w kuchni — image left, text right ─────── -->
+  <section class="bg-brand-warm overflow-hidden">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch">
+
+      <!-- Zdjęcia (stacked) -->
+      <div class="md:w-1/2 flex flex-col">
+        <div class="flex-1 overflow-hidden">
+          <Image
+            src={imgKanapki}
+            alt="Dzieci robiące kanapki w Kolorowym Przedszkolu"
+            class="w-full h-full object-cover"
+            widths={[640, 960]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+        <div class="flex-1 overflow-hidden">
+          <Image
+            src={imgJablka}
+            alt="Pieczenie i gotowanie z dziećmi w Kolorowym Przedszkolu"
+            class="w-full h-full object-cover"
+            widths={[640, 960]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+      </div>
+
+      <!-- Tekst -->
+      <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
+        <div>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Samodzielność przy stole</p>
+          <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-8">
+            Dzieci w kuchni
+          </h2>
+
+          <p class="font-sans text-brand-navy/65 text-base leading-relaxed mb-6">
+            Jedzenie to nie tylko to, co ląduje na talerzu. To też umiejętność — i przyjemność.
+          </p>
+
+          <div class="flex flex-col gap-5">
+            <div>
+              <p class="font-sans font-bold text-brand-navy text-base leading-snug mb-1">
+                Starsze grupy robią sobie kanapki na śniadanie
+              </p>
+              <p class="font-sans text-brand-navy/60 text-sm leading-relaxed">
+                Same, ze świeżych składników, według własnego gustu. Jeden woli samą szynkę, drugi koniecznie
+                z ogórkiem i bez masła. Każdy decyduje.
+              </p>
+            </div>
+            <div>
+              <p class="font-sans font-bold text-brand-navy text-base leading-snug mb-1">
+                Regularnie pieczemy razem zdrowe ciastka
+              </p>
+              <p class="font-sans text-brand-navy/60 text-sm leading-relaxed">
+                To stały element programu, nie jednorazowa atrakcja.
+              </p>
+            </div>
+            <div>
+              <p class="font-sans font-bold text-brand-navy text-base leading-snug mb-1">
+                Na Wielkanoc dzieci robią mazurek
+              </p>
+              <p class="font-sans text-brand-navy/60 text-sm leading-relaxed">
+                Prawdziwy, z masą, z bakaliami. I są z siebie bardzo dumne.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 8. Closing + CTA ─────────────────────────────────── -->
+  <section class="bg-brand-navy py-24">
+    <div class="max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Dlaczego to ważne</p>
+      <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.5rem)] text-brand-cream leading-snug">
+        Kuchnia to część wychowania
+      </h2>
+      <p class="font-sans text-brand-cream/65 text-lg leading-relaxed max-w-xl">
+        Dziecko, które je dobrze, ma energię. Dziecko, które widzi jak rośnie marchewka i samo ją zbiera,
+        rozumie skąd pochodzi jedzenie. Dziecko, które samo zrobi kanapkę, jest odrobinę bardziej samodzielne.
+      </p>
+      <p class="font-sans text-brand-cream/65 text-lg leading-relaxed max-w-xl">
+        Kuchnia w Kolorowym Przedszkolu to nie zaplecze. To część wychowania.
+      </p>
+      <a
+        href="tel:605657366"
+        class="mt-4 inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-coral"
+      >
+        Zadzwoń i umów wizytę
+      </a>
+    </div>
+  </section>
+
 </Layout>
