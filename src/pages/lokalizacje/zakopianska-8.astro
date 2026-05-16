@@ -1,6 +1,12 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 import SekcjaZajecia from '~/components/widgets/SekcjaZajecia.astro';
+
+import imgDlaKogo    from '~/assets/images/zakopianska-1.jpg';
+import imgFilozofia  from '~/assets/images/zakopianska-filozofia.jpg';
+import imgAngielski  from '~/assets/images/zakopianska-angielski.jpg';
+import imgPsycholog  from '~/assets/images/zakopianska-psycholog.jpg';
 
 const metadata = {
   title: 'Zakopiańska 8 – Kolorowe Przedszkole | Saska Kępa',
@@ -107,7 +113,7 @@ const faqItems = [
       <p class="font-sans text-lg text-brand-navy/60 leading-relaxed">
         Sala integracji sensorycznej, psycholog na miejscu każdego dnia, zerówka
         i stały kontakt z ciociami mówiącymi wyłącznie po angielsku.
-        To nasza starsza, bogatsza w zajęcia lokalizacja.
+        To świat naszych 4–6 latków!
       </p>
     </div>
   </section>
@@ -117,11 +123,13 @@ const faqItems = [
     <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div class="rounded-2xl overflow-hidden aspect-[4/3]">
-          <img
-            src="https://placehold.co/800x500/E8F7F4/2D346F?text=Dla+kogo%3F"
+          <Image
+            src={imgDlaKogo}
             alt="Dzieci w Kolorowym Przedszkolu na Zakopiańskiej"
-            loading="lazy"
             class="w-full h-full object-cover"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            loading="lazy"
           />
         </div>
         <div class="flex flex-col gap-5">
@@ -142,11 +150,13 @@ const faqItems = [
     <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div class="rounded-2xl overflow-hidden aspect-[4/3] md:order-2">
-          <img
-            src="https://placehold.co/800x500/E8F7F4/2D346F?text=Filozofia"
+          <Image
+            src={imgFilozofia}
             alt="Dzieci bawiące się w ogrodzie Kolorowego Przedszkola"
-            loading="lazy"
             class="w-full h-full object-cover"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            loading="lazy"
           />
         </div>
         <div class="flex flex-col gap-5 md:order-1">
@@ -170,11 +180,13 @@ const faqItems = [
     <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div class="rounded-2xl overflow-hidden aspect-[4/3]">
-          <img
-            src="https://placehold.co/800x500/E8F7F4/2D346F?text=Angielski"
+          <Image
+            src={imgAngielski}
             alt="Dzieci podczas zajęć z języka angielskiego w Kolorowym Przedszkolu"
-            loading="lazy"
             class="w-full h-full object-cover"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            loading="lazy"
           />
         </div>
         <div class="flex flex-col gap-5">
@@ -226,11 +238,13 @@ const faqItems = [
     <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div class="rounded-2xl overflow-hidden aspect-[4/3]">
-          <img
-            src="https://placehold.co/800x500/E8F7F4/2D346F?text=Psycholog"
+          <Image
+            src={imgPsycholog}
             alt="Kolorowe Przedszkole — wsparcie psychologiczne na miejscu"
-            loading="lazy"
             class="w-full h-full object-cover"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            loading="lazy"
           />
         </div>
         <div class="flex flex-col gap-5">
