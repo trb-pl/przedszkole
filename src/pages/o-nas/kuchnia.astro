@@ -9,20 +9,18 @@ import imgKanapki from '~/assets/images/kuchnia-kanapki.jpg';
 
 const metadata = {
   title: 'Kuchnia Kolorowego Przedszkola — domowe obiady na Saskiej Kępie',
-  description: 'Ciocia Tatiana gotuje każdego dnia od podstaw. Lokalne produkty z Mazowsza, własny ogródek warzywny, menu bez cateringu. Kuchnia Kolorowego Przedszkola na Saskiej Kępie.',
+  description: 'Gotujemy każdego dnia od podstaw — bez cateringu, bez kompromisów. Własny ogródek, lokalni dostawcy z Mazowsza, domowe obiady i dzieci w kuchni. Saska Kępa od 1991.',
   canonical: 'https://koloroweprzedszkole.com/o-nas/kuchnia',
   ignoreTitleTemplate: true,
   robots: { index: true, follow: true },
   openGraph: {
     title: 'Kuchnia Kolorowego Przedszkola — domowe obiady na Saskiej Kępie',
-    description: 'Ciocia Tatiana gotuje każdego dnia od podstaw. Lokalne produkty z Mazowsza, własny ogródek warzywny, menu bez cateringu.',
+    description: 'Gotujemy każdego dnia od podstaw — bez cateringu, bez kompromisów. Własny ogródek, lokalni dostawcy z Mazowsza, domowe obiady i dzieci w kuchni. Saska Kępa od 1991.',
     type: 'website',
     url: 'https://koloroweprzedszkole.com/o-nas/kuchnia',
     site_name: 'Kolorowe Przedszkole',
   },
 };
-
-const warzywa = ['marchewka','lubczyk','szczypiorek','zielony groszek','pigwa','sałata','pomidorki koktajlowe'];
 
 const sekcje = [
   {
@@ -30,23 +28,23 @@ const sekcje = [
     alt: 'Ciocia Tatiana w kuchni Kolorowego Przedszkola',
     eyebrow: 'Przez żołądek do serca',
     title: 'Gotuje się tu jak w domu',
-    body: 'Ciocia Tatiana to doświadczona kucharka, która od lat jest sercem przedszkolnej kuchni. Dzieci ją uwielbiają — i nie tylko za jedzenie. Kadra zresztą też.\n\nGotuje tak, jak gotuje się w domu: z głową, z sercem i bez kompromisów. Wie, które dziecko nie je cebuli, które potrzebuje diety bezglutenowej, a które zje wszystko, byle było ciepłe.\n\nKuchnię regularnie dogląda też Ciocia Ola — założycielka przedszkola. Nie dlatego, że musi. Dlatego, że gotowanie to jej prywatna pasja, wyniesiona z mazureckiego domu rodzinnego. W kuchni Kolorowego Przedszkola czuć to na każdym kroku — i na każdym talerzu.',
+    body: 'Ciocia Tatiana to doświadczona kucharka, która od lat jest sercem przedszkolnej kuchni. Dzieci ją uwielbiają — i nie tylko za jedzenie. Kuchnię regularnie dogląda też Ciocia Ola, dla której gotowanie to prywatna pasja wyniesiona z mazureckiego domu rodzinnego.',
     flip: false,
   },
   {
     img: imgZupa,
     alt: 'Zupa gotowana na wywarze w Kolorowym Przedszkolu',
     eyebrow: 'Codziennie na talerzu',
-    title: 'Co jest na talerzu',
-    body: 'Zależy nam na klasycznej, dobrej kuchni polskiej — pełnej warzyw, pożywnych zup i solidnych dań głównych. Bez polepszaczy, bez gotowych mieszanek, bez skrótów.\n\nGotujemy zupy na wywarze — barszcz, żurek, rosół, krupnik. Mięso i ryby od sprawdzonych, lokalnych dostawców. Warzywa i owoce od mazowieckich rolników — od lat tych samych. Jaja od lokalnych hodowców.\n\nKlasyki, które zawsze znikają z talerzy: makaron z twarogiem i truskawkami, pierogi z białym serkiem i śmietanką. Dzieci poznają też kuchnie świata — jemy hummus, sos boloński, chaczapuri. Ryż z kurczakiem i warzywami w azjatyckim stylu to jeden z największych hitów.',
+    title: 'Polska kuchnia bez kompromisów',
+    body: 'Zupy gotowane na wywarze, mięso i ryby od lokalnych dostawców, warzywa od mazowieckich rolników — od lat tych samych. Nie może zabraknąć makaronu z twarogiem i truskawkami ani pierogów z białym serkiem. Dzieci poznają też kuchnie świata: hummus, sos boloński, chaczapuri i ryż z kurczakiem w azjatyckim stylu.',
     flip: true,
   },
   {
     img: imgOgrodek,
     alt: 'Ogródek warzywny Kolorowego Przedszkola — podlewanie roślin',
-    eyebrow: 'Zakopiańska 8',
+    eyebrow: 'Z ogrodu na talerz',
     title: 'Własny ogródek',
-    body: 'Przy Zakopiańskiej 8 mamy ogródek warzywny, z którego część składników trafia prosto do kuchni. Rośnie tam marchewka, lubczyk, szczypiorek, zielony groszek, pigwa, sałata i pomidorki koktajlowe.\n\nDzieci same sadzą, podlewają i zbierają. Wiedzą, jak smakuje pomidor prosto z krzaka — i że smakuje zupełnie inaczej niż ten ze sklepu.',
+    body: 'Przy Zakopiańskiej 8 rośnie marchewka, lubczyk, szczypiorek, zielony groszek, pigwa, sałata i pomidorki koktajlowe. Dzieci same sadzą, podlewają i zbierają — i wiedzą, że pomidor prosto z krzaka smakuje zupełnie inaczej niż ten ze sklepu. Część plonów trafia prosto do kuchni Cioci Tatiany.',
     flip: false,
   },
   {
@@ -54,7 +52,7 @@ const sekcje = [
     alt: 'Dzieci robiące kanapki w Kolorowym Przedszkolu',
     eyebrow: 'Samodzielność przy stole',
     title: 'Dzieci w kuchni',
-    body: 'Jedzenie to nie tylko to, co ląduje na talerzu. To też umiejętność — i przyjemność.\n\nStarsze grupy robią sobie kanapki na śniadanie same, ze świeżych składników, według własnego gustu. Jeden woli samą szynkę, drugi koniecznie z ogórkiem i bez masła. Każdy decyduje.\n\nRegularnie pieczemy razem zdrowe ciastka — to stały element programu, nie jednorazowa atrakcja. Na Wielkanoc dzieci robią mazurek: prawdziwy, z masą, z bakaliami. I są z siebie bardzo dumne.',
+    body: 'Starsze grupy robią sobie kanapki na śniadanie same — każdy według własnego gustu. Regularnie pieczemy razem zdrowe ciastka, a na Wielkanoc dzieci robią mazurek: prawdziwy, z masą i bakaliami. Przy stole uczymy tyle samo co przy tablicy.',
     flip: true,
   },
 ];
@@ -73,7 +71,7 @@ const faqItems = [
     a: 'Tak. Jeśli dziecko ma alergię lub nietolerancję pokarmową, dostosowujemy menu indywidualnie. Ciocia Tatiana wie, co przygotować i jak zadbać o to, żeby dziecko jadło bezpiecznie i smacznie — bez poczucia, że dostaje coś innego niż reszta grupy.',
   },
   {
-    q: 'Czy mogę sprawdzić co dziecko je w przedszkolu?',
+    q: 'Czy rodzice mogą sprawdzić co dziecko je w przedszkolu?',
     a: 'Tak. Menu planujemy co tydzień z wyprzedzeniem i wywieszamy na tablicy ogłoszeń. Rodzice wiedzą, co dziecko jadło i co będzie jadło — bez niespodzianek.',
   },
   {
@@ -96,7 +94,7 @@ const faqItems = [
     }))
   })} />
 
-  <!-- ─── Hero ── identyczny z misja-i-wartości ─────────────── -->
+  <!-- ─── Hero ──────────────────────────────────────────────── -->
   <section class="relative bg-brand-navy pt-32 pb-24 overflow-hidden">
     <div class="absolute inset-0 bg-brand-navy/70 z-10"></div>
     <img
@@ -116,17 +114,13 @@ const faqItems = [
   <!-- ─── Intro ─────────────────────────────────────────────── -->
   <section class="bg-brand-cream py-20">
     <div class="max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans italic text-[clamp(1.4rem,2.5vw,2rem)] text-brand-navy leading-relaxed mb-5">
+      <p class="font-sans italic text-[clamp(1.4rem,2.5vw,2rem)] text-brand-navy leading-relaxed">
         W Kolorowym Przedszkolu nie ma cateringu. Nigdy nie było.
-      </p>
-      <p class="font-sans text-lg text-brand-navy/60 leading-relaxed">
-        Gotujemy tak, jak gotuje się w domu — z głową, z sercem i bez kompromisów.
-        Śniadanie, obiad i podwieczorek, każdego dnia, ze świeżych składników.
       </p>
     </div>
   </section>
 
-  <!-- ─── 4 sekcje alternating ── identycznie jak misja ─────── -->
+  <!-- ─── 4 sekcje alternating ─────────────────────────────── -->
   {sekcje.map((s) => (
     <section class="bg-brand-warm overflow-hidden">
       <div class={`max-w-6xl mx-auto flex flex-col ${s.flip ? 'md:flex-row-reverse' : 'md:flex-row'} items-stretch`}>
@@ -147,11 +141,9 @@ const faqItems = [
             <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-5">
               {s.title}
             </h2>
-            {s.body.split('\n\n').map((para) => (
-              <p class="font-sans text-brand-navy/70 text-base leading-relaxed mb-4 last:mb-0">
-                {para}
-              </p>
-            ))}
+            <p class="font-sans text-brand-navy/70 text-base leading-relaxed">
+              {s.body}
+            </p>
           </div>
         </div>
 
@@ -159,10 +151,10 @@ const faqItems = [
     </section>
   ))}
 
-  <!-- ─── CTA ───────────────────────────────────────────────── -->
+  <!-- ─── CTA ──────────────────────────────────────────────── -->
   <section class="bg-brand-navy py-24">
     <div class="max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
-      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Dlaczego to ważne</p>
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Filozofia kuchni</p>
       <blockquote class="font-sans italic text-[clamp(1.5rem,3vw,2.2rem)] text-brand-cream leading-snug">
         „Kuchnia to nie zaplecze. To część wychowania."
       </blockquote>
@@ -170,22 +162,30 @@ const faqItems = [
         Dziecko, które je dobrze, ma energię. Dziecko, które widzi jak rośnie marchewka i samo ją zbiera,
         rozumie skąd pochodzi jedzenie. Dziecko, które samo zrobi kanapkę, jest odrobinę bardziej samodzielne.
       </p>
-      <a
-        href="tel:605657366"
-        class="mt-2 inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-coral"
-      >
-        Zadzwoń i umów wizytę
-      </a>
+      <div class="flex flex-col sm:flex-row gap-4 mt-2">
+        <a
+          href="/rekrutacja"
+          class="inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-coral"
+        >
+          Rekrutacja 2026/2027
+        </a>
+        <a
+          href="/kontakt"
+          class="inline-block border-2 border-brand-cream/40 text-brand-cream font-sans font-semibold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:border-brand-teal hover:text-brand-teal"
+        >
+          Zadaj pytanie
+        </a>
+      </div>
     </div>
   </section>
 
-  <!-- ─── FAQ ───────────────────────────────────────────────── -->
+  <!-- ─── FAQ ──────────────────────────────────────────────── -->
   <section class="bg-brand-warm py-20">
     <div class="max-w-3xl mx-auto px-6">
 
-      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Pytania i odpowiedzi</p>
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">FAQ</p>
       <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight mb-4">
-        Najczęściej zadawane pytania
+        Pytania o kuchnię
       </h2>
       <p class="font-sans text-lg text-brand-navy/60 mb-12">
         Odpowiedzi na pytania, które słyszymy najczęściej od rodziców.
