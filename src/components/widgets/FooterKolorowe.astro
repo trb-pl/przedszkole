@@ -5,10 +5,10 @@ import logoUrl from '~/assets/images/logo.svg?url';
 <footer id="kontakt" class="bg-brand-navy">
   <div class="max-w-6xl mx-auto px-6 py-16">
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-8">
 
       <!-- Col 1: Logo + opis -->
-      <div class="flex flex-col gap-4">
+      <div class="col-span-2 md:col-span-1 flex flex-col gap-4">
         <a href="/">
           <img src={logoUrl} alt="Kolorowe Przedszkole" class="h-10 w-auto brightness-0 invert" />
         </a>
@@ -29,18 +29,30 @@ import logoUrl from '~/assets/images/logo.svg?url';
         </a>
       </div>
 
-      <!-- Col 2: Nawigacja -->
+      <!-- Col 2: O Nas -->
       <div class="flex flex-col gap-3">
         <h3 class="font-sans font-bold text-xs uppercase tracking-widest text-brand-cream/40 mb-1">
-          Menu
+          O Nas
         </h3>
-        <a href="#olga"        class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">O Nas</a>
-        <a href="#lokalizacje" class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">Lokalizacje</a>
-        <a href="/porady"        class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">Porady</a>
-        <a href="/kontakt"     class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">Kontakt</a>
+        <a href="/o-nas/historia"         class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">Historia</a>
+        <a href="/o-nas/kadra"            class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">Kadra</a>
+        <a href="/o-nas/misja-i-wartosci" class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">Misja i wartości</a>
+        <a href="/o-nas/kuchnia"          class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">Kuchnia</a>
+        <a href="/porady"                 class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">Porady</a>
+        <a href="/kontakt"                class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">Kontakt</a>
+        <a href="/rekrutacja"             class="font-sans text-sm text-brand-teal hover:text-brand-cream transition-colors duration-200">Rekrutacja</a>
       </div>
 
-      <!-- Col 3: Kontakt -->
+      <!-- Col 3: Lokalizacje -->
+      <div class="flex flex-col gap-3">
+        <h3 class="font-sans font-bold text-xs uppercase tracking-widest text-brand-cream/40 mb-1">
+          Lokalizacje
+        </h3>
+        <a href="/lokalizacje/lotarynska-18" class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">Lotaryńska 18</a>
+        <a href="/lokalizacje/zakopianska-8" class="font-sans text-sm text-brand-cream/70 hover:text-brand-cream transition-colors duration-200">Zakopiańska 8</a>
+      </div>
+
+      <!-- Col 4: Kontakt -->
       <div class="flex flex-col gap-3">
         <h3 class="font-sans font-bold text-xs uppercase tracking-widest text-brand-cream/40 mb-1">
           Kontakt
