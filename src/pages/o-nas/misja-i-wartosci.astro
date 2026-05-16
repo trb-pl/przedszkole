@@ -146,34 +146,34 @@ const faqItems = [
   </section>
 
   <!-- ─── 4 wartości (alternating) ─────────────────────────── -->
-  {wartosci.map((w) => (
-    <section class="bg-brand-warm overflow-hidden">
-      <div class={`max-w-6xl mx-auto flex flex-col ${w.flip ? 'md:flex-row-reverse' : 'md:flex-row'} items-stretch`}>
+  {wartosci.map((w, i) => (
+    <section class={i % 2 === 0 ? 'bg-brand-warm' : 'bg-brand-cream'}>
+      <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
 
-        <!-- Zdjęcie -->
-        <div class="md:w-1/2 aspect-[4/3] md:aspect-auto relative overflow-hidden">
-          <Image
-            src={w.img}
-            alt={w.alt}
-            class="w-full h-full object-cover"
-            widths={[640, 960, 1280]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-        </div>
+          <!-- Zdjęcie -->
+          <div class={`rounded-2xl overflow-hidden aspect-[4/3] ${w.flip ? 'md:order-2' : ''}`}>
+            <Image
+              src={w.img}
+              alt={w.alt}
+              class="w-full h-full object-cover"
+              widths={[640, 960, 1280]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </div>
 
-        <!-- Tekst -->
-        <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
-          <div>
-            <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">{w.eyebrow}</p>
-            <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-5">
+          <!-- Tekst -->
+          <div class={`flex flex-col gap-5 ${w.flip ? 'md:order-1' : ''}`}>
+            <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">{w.eyebrow}</p>
+            <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight">
               {w.title}
             </h2>
             <p class="font-sans text-brand-navy/70 text-lg leading-relaxed">
               {w.body}
             </p>
           </div>
-        </div>
 
+        </div>
       </div>
     </section>
   ))}
