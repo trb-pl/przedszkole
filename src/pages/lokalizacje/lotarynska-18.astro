@@ -2,10 +2,11 @@
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 
-import imgDlaKogo   from '~/assets/images/lotarynska-5.jpg';
-import imgAdaptacja from '~/assets/images/lotarynska-2.jpg';
-import imgProgram   from '~/assets/images/lotarynska-3.jpg';
-import imgOgrod     from '~/assets/images/lotarynska-4.jpg';
+import imgDlaKogo    from '~/assets/images/lotarynska-5.jpg';
+import imgAdaptacja  from '~/assets/images/lotarynska-adaptacja.jpg';
+import imgProgram    from '~/assets/images/lotarynska-6.jpg';
+import imgOgrod      from '~/assets/images/lotarynska-3.jpg';
+import imgPrzestrzen from '~/assets/images/lotarynska-2.jpg';
 
 const metadata = {
   title: 'Lotaryńska 18 – Kolorowe Przedszkole | Dzieci od 2,5 roku',
@@ -287,11 +288,13 @@ const faqItems = [
   <section class="bg-brand-warm overflow-hidden">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch">
       <div class="md:w-1/2 aspect-[4/3] md:aspect-auto overflow-hidden">
-        <img
-          src="https://placehold.co/800x500/E8F7F4/2D346F?text=Przestrze%C5%84"
+        <Image
+          src={imgPrzestrzen}
           alt="Sala do zajęć rytmicznych w Kolorowym Przedszkolu na Lotaryńskiej"
-          loading="lazy"
           class="w-full h-full object-cover"
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          loading="lazy"
         />
       </div>
       <div class="md:w-1/2 flex items-center px-8 py-14 md:px-14 md:py-20 bg-brand-warm">
