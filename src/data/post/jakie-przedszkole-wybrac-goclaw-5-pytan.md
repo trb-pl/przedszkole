@@ -2,7 +2,7 @@
 publishDate: 2026-04-24T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Jakie przedszkole prywatne na Gocławiu wybrać? 5 pytań przed podpisaniem umowy"
-excerpt: "Jak wybrać dobre prywatne przedszkole na Gocławiu i Saskiej Kępie? Checklista 5 pytań, które warto zadać dyrekcji na spotkaniu rekrutacyjnym — od kadry po ukryte koszty."
+excerpt: "Jak wybrać prywatne przedszkole na Gocławiu i Saskiej Kępie? 5 pytań, które warto zadać dyrekcji — od kadry po ukryte koszty."
 image: ~/assets/images/porady-umowa.jpg
 category: Porady
 tags:

@@ -1,43 +1,96 @@
 ---
-// Schema.org structured data — Organization + WebSite (site-wide, every page)
+// Schema.org structured data — site-wide on every page.
+// Uses ChildCare (which is a subtype of LocalBusiness) so we get both
+// the "private kindergarten" semantic and the local-business signals
+// (geo coordinates, opening hours, telephone) that Google needs for
+// rich results in Search and Maps.
+//
+// GPS coordinates below are approximate (~5–15m). Refine from Google
+// Maps if you need pixel-perfect Maps pins.
 ---
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": "ChildCare",
+  "@id": "https://koloroweprzedszkole.com/#organization",
   "name": "Kolorowe Przedszkole",
+  "alternateName": "Kolorowe Przedszkole na Saskiej Kępie",
   "url": "https://koloroweprzedszkole.com",
   "logo": "https://koloroweprzedszkole.com/logo.svg",
+  "image": "https://koloroweprzedszkole.com/og-image.jpg",
   "foundingDate": "1991",
+  "founder": {
+    "@type": "Person",
+    "name": "Olga Trębicka"
+  },
   "description": "Prywatne niepubliczne przedszkole na Saskiej Kępie w Warszawie, działające od 1991 roku. Dwie lokalizacje: ul. Lotaryńska 18 i ul. Zakopiańska 8. Sala integracji sensorycznej, domowe obiady, język angielski, metody Montessori, Steinera, Korczaka i Pikler.",
   "telephone": "+48605657366",
   "email": "przedszkole@kolorowe.eu",
+  "priceRange": "$$",
+  "currenciesAccepted": "PLN",
+  "areaServed": [
+    { "@type": "Place", "name": "Saska Kępa, Warszawa" },
+    { "@type": "Place", "name": "Gocław, Warszawa" },
+    { "@type": "Place", "name": "Praga-Południe, Warszawa" }
+  ],
   "sameAs": [
     "https://www.instagram.com/koloroweprzedszkole"
   ],
-  "location": [
+  "department": [
     {
-      "@type": "Place",
-      "name": "Kolorowe Przedszkole — Lotaryńska",
+      "@type": "ChildCare",
+      "@id": "https://koloroweprzedszkole.com/lokalizacje/lotarynska-18#location",
+      "name": "Kolorowe Przedszkole — Lotaryńska 18",
+      "url": "https://koloroweprzedszkole.com/lokalizacje/lotarynska-18",
+      "telephone": "+48605657366",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "ul. Lotaryńska 18",
         "postalCode": "03-974",
         "addressLocality": "Warszawa",
+        "addressRegion": "mazowieckie",
         "addressCountry": "PL"
-      }
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "52.2425",
+        "longitude": "21.0689"
+      },
+      "openingHoursSpecification": [{
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+        "opens": "07:30",
+        "closes": "17:00"
+      }],
+      "hasMap": "https://www.google.com/maps?q=ul.+Lotaryńska+18,+03-974+Warszawa"
     },
     {
-      "@type": "Place",
-      "name": "Kolorowe Przedszkole — Zakopiańska",
+      "@type": "ChildCare",
+      "@id": "https://koloroweprzedszkole.com/lokalizacje/zakopianska-8#location",
+      "name": "Kolorowe Przedszkole — Zakopiańska 8",
+      "url": "https://koloroweprzedszkole.com/lokalizacje/zakopianska-8",
+      "telephone": "+48605657366",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "ul. Zakopiańska 8",
         "postalCode": "03-977",
         "addressLocality": "Warszawa",
+        "addressRegion": "mazowieckie",
         "addressCountry": "PL"
-      }
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "52.2371",
+        "longitude": "21.0759"
+      },
+      "openingHoursSpecification": [{
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+        "opens": "07:30",
+        "closes": "17:15"
+      }],
+      "hasMap": "https://www.google.com/maps?q=ul.+Zakopiańska+8,+03-977+Warszawa"
     }
   ]
 }
@@ -47,7 +100,11 @@
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": "https://koloroweprzedszkole.com/#website",
   "name": "Kolorowe Przedszkole",
-  "url": "https://koloroweprzedszkole.com"
+  "alternateName": "Kolorowe Przedszkole — Saska Kępa",
+  "url": "https://koloroweprzedszkole.com",
+  "inLanguage": "pl-PL",
+  "publisher": { "@id": "https://koloroweprzedszkole.com/#organization" }
 }
 </script>

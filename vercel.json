@@ -36,7 +36,14 @@
 
     { "source": "/feed",             "destination": "/porady", "permanent": true },
     { "source": "/feed/:type*",      "destination": "/porady", "permanent": true },
-    { "source": "/comments/feed",    "destination": "/",       "permanent": true }
+    { "source": "/comments/feed",    "destination": "/",       "permanent": true },
+
+    { "source": "/about",            "destination": "/o-nas/historia", "permanent": true },
+    { "source": "/contact",          "destination": "/kontakt",        "permanent": true },
+    { "source": "/services",         "destination": "/",               "permanent": true },
+    { "source": "/pricing",          "destination": "/porady/ile-kosztuje-prywatne-przedszkole-goclaw", "permanent": true },
+    { "source": "/homes/:slug*",     "destination": "/",               "permanent": true },
+    { "source": "/landing/:slug*",   "destination": "/",               "permanent": true }
   ],
 
   "headers": [

@@ -2,7 +2,7 @@
 publishDate: 2026-04-02T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Od ilu lat przyjmują do przedszkola na Saskiej Kępie? Zasady 2026"
-excerpt: "Kolorowe Przedszkole na Saskiej Kępie przyjmuje dzieci od 2,5 roku życia. Jak rozpoznać gotowość przedszkolną, czy maluch musi być odpieluchowany i jak wygląda adaptacja."
+excerpt: "Kolorowe Przedszkole przyjmuje dzieci od 2,5 roku. Jak rozpoznać gotowość przedszkolną, czy maluch musi być odpieluchowany i jak wygląda adaptacja."
 image: ~/assets/images/porady-wiek-25.png
 category: Porady
 tags:
