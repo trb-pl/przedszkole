@@ -70,43 +70,6 @@ const sekcje = [
   },
 ];
 
-const milestones = [
-  {
-    year: '1991',
-    title: 'Początki przy Lotaryńskiej',
-    body: ['Olga Trębicka otwiera pierwsze Kolorowe Przedszkole w swoim domu przy ul. Lotaryńskiej 18 na Saskiej Kępie. Pierwsza grupa: dwanaścioro dzieci. I jedna ogromna pasja do wychowania.'],
-  },
-  {
-    year: '1997',
-    title: 'Pierwsze rozszerzenie',
-    body: ['Rosnące zainteresowanie rodziców sprawia, że otwieramy drugą grupę. Remontujemy kolejne sale, powiększamy ogród i zatrudniamy pierwszą logopedę.'],
-  },
-  {
-    year: '2004',
-    title: 'Montessori, Pikler, Korczak',
-    body: ['Cały zespół pedagogiczny przechodzi intensywne szkolenia. Wdrażamy elementy pedagogiki Marii Montessori, filozofii Emmi Pikler i myśli Janusza Korczaka. Szacunek do indywidualnego tempa dziecka staje się fundamentem naszej pracy — i pozostaje nim do dziś.'],
-  },
-  {
-    year: '2009',
-    title: 'Własna kuchnia',
-    body: ['Rezygnujemy z zewnętrznego cateringu i otwieramy własną kuchnię. Od tej pory każdy posiłek jest przygotowywany na miejscu, ze świeżych składników. Bez kompromisów.'],
-  },
-  {
-    year: '2018',
-    title: 'Angielski przez cały dzień',
-    body: ['Zatrudniamy opiekunki anglojęzyczne, które mówią do dzieci wyłącznie po angielsku przez większą część dnia. Koniec z lekcjami z kartami pracy — zaczyna się naturalny kontakt z językiem od najmłodszych lat.'],
-  },
-  {
-    year: '2020',
-    title: 'Zakopiańska 8 — druga lokalizacja',
-    body: ['Olga i Agnieszka Trębicka otwierają drugą placówkę przy ul. Zakopiańskiej 8. Willa z ogrodem ponad 1200 m² staje się domem dla starszych grup. Powstaje sala Integracji Sensorycznej i gabinet psychologiczny.', 'Dwie lokalizacje, jedna filozofia.'],
-  },
-  {
-    year: '2024',
-    title: 'Drugie pokolenie — i kolejne',
-    body: ['Do Kolorowego Przedszkola zaczynają trafiać dzieci absolwentów z lat 90. Wśród naszych wychowanków są dziś profesor Uniwersytetu Warszawskiego pracujący nad fizyką kwantową, lekarze, prawnicy, przedsiębiorcy czy trener windsurfingu na Teneryfie.', 'Ponad 30 lat obecności na Saskiej Kępie to dla nas nie sentyment. To zobowiązanie.'],
-  },
-];
 ---
 
 <Layout metadata={metadata}>
@@ -187,39 +150,6 @@ const milestones = [
       </div>
     </section>
   ))}
-
-  <!-- ─── Timeline ─────────────────────────────────────────── -->
-  <section class="bg-brand-warm py-20">
-    <div class="max-w-4xl mx-auto px-6">
-
-      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3 text-center">Oś czasu</p>
-      <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight mb-16 text-center">
-        Ponad 30 lat w datach
-      </h2>
-
-      <div class="relative">
-        <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-brand-navy/15 -translate-x-px"></div>
-        <div class="flex flex-col gap-0">
-          {milestones.map((m, i) => {
-            const isRight = i % 2 === 0;
-            return (
-              <div class={`relative flex items-start gap-0 md:gap-8 mb-12 pl-12 md:pl-0 ${isRight ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                <div class="absolute left-4 md:left-1/2 top-1.5 w-3 h-3 rounded-full bg-brand-teal border-2 border-brand-warm -translate-x-1/2 z-10 shrink-0"></div>
-                <div class={`w-full md:w-[calc(50%-2rem)] bg-white rounded-2xl px-7 py-6 shadow-sm border border-brand-navy/6 ${isRight ? 'md:mr-auto' : 'md:ml-auto'}`}>
-                  <span class="font-sans font-bold text-brand-teal text-sm uppercase tracking-widest mb-2 block">{m.year}</span>
-                  <h3 class="font-sans font-bold text-brand-navy text-xl mb-3 leading-snug">{m.title}</h3>
-                  {m.body.map(para => (
-                    <p class="font-sans text-brand-navy/65 text-base leading-relaxed mb-2 last:mb-0">{para}</p>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-    </div>
-  </section>
 
   <!-- ─── Co się nie zmienia (granatowe) ─────────────────── -->
   <section class="bg-brand-navy py-24">
