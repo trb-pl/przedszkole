@@ -16,41 +16,89 @@ const metadata = {
   },
 };
 
+const sekcje = [
+  {
+    imgSrc: 'https://placehold.co/960x720/FEFAF3/2D346F?text=Olga+Tr%C4%99bicka',
+    alt: 'Olga Trębicka, założycielka Kolorowego Przedszkola',
+    eyebrow: 'Skąd się wzięłyśmy',
+    title: 'Mazury, szkolna ławka i tata dyrektor',
+    body: [
+      'Olga Trębicka wychowywała się w Miłomłynie — niewielkiej miejscowości na Mazurach, w wielodzietnej rodzinie. Jej ojciec był dyrektorem wiejskiej szkoły, w której mieszkali. Już jako czterolatka całymi dniami przesiadywała w szkolnej ławce — bawiąc się, słuchając i obserwując pracę taty i innych nauczycieli.',
+      'Będąc nastolatką, postanowiła wyłamać się z rodzinnego schematu. Wybrała ekonomię. Kilka lat później, po studiach i założeniu własnej rodziny, przekonała się, że pedagogiczna krew jednak w niej płynie.',
+    ],
+    flip: false,
+  },
+  {
+    imgSrc: 'https://placehold.co/960x720/FCF6F0/2D346F?text=Lotary%C5%84ska+18+1991',
+    alt: 'Dom przy ulicy Lotaryńskiej 18 — pierwsza siedziba Kolorowego Przedszkola',
+    eyebrow: '1991',
+    title: 'Dom, który stał się przedszkolem',
+    body: [
+      'W 1991 roku Olga szukała dla swojej córki Agnieszki miejsca, w którym dziecko poczuje się bezpiecznie i będzie traktowane z uwagą i miłością. Takiego miejsca nie było na mapie Warszawy.',
+      'Razem z mężem przystosowała własny dom przy ulicy Lotaryńskiej 18 na Saskiej Kępie. Tak powstało Kolorowe Przedszkole — nie jako biznes, ale jako odpowiedź na potrzebę, którą znała z własnego doświadczenia.',
+    ],
+    flip: true,
+  },
+  {
+    imgSrc: 'https://placehold.co/960x720/FEFAF3/2D346F?text=Agnieszka+Tr%C4%99bicka',
+    alt: 'Agnieszka Trębicka, pedagog i współzałożycielka Kolorowego Przedszkola',
+    eyebrow: 'Drugie pokolenie',
+    title: 'Agnieszka — pierwsze dziecko, drugi filar',
+    body: [
+      'W 1991 roku to właśnie dla Agnieszki Trębickiej powstało Kolorowe Przedszkole. Swoje pierwsze doświadczenie zawodowe zdobywała już jako siedmiolatka — wracała ze szkoły i pomagała mamie przy dzieciach.',
+      'Ukończyła pedagogikę przedszkolną i wczesnoszkolną na Uniwersytecie Warszawskim. Swoje doświadczenie poszerzała w przedszkolach w Kanadzie, Nowej Zelandii, Australii, Wielkiej Brytanii i Hongkongu. Jest propagatorką pedagogiki Emmi Pikler — podejścia opartego na szacunku dla indywidualnych potrzeb i tempa dziecka.',
+      'Dziś Agnieszka jest drugim filarem Kolorowego Przedszkola. Tej samej, którą mama stworzyła kiedyś dla niej.',
+    ],
+    flip: false,
+  },
+  {
+    imgSrc: 'https://placehold.co/960x720/FCF6F0/2D346F?text=Absolwenci',
+    alt: 'Dzieci w Kolorowym Przedszkolu na Saskiej Kępie',
+    eyebrow: 'Absolwenci',
+    title: 'Pokolenia, które pamiętamy',
+    body: [
+      'Przez ponad trzydzieści lat przez Kolorowe Przedszkole przeszły setki dzieci. Dziś są wśród nich profesor Uniwersytetu Warszawskiego pracujący nad zagadnieniami fizyki kwantowej, lekarze, prawnicy, przedsiębiorcy i zawodowy windsurfer.',
+      'Śledzimy ich drogi z prawdziwą dumą — bo pamiętamy ich jako trzylatków, którzy po raz pierwszy samodzielnie zawiązali buty. Nasi absolwenci to nasi przyjaciele. Utrzymujemy z nimi kontakt, cieszymy się z ich sukcesów i pielęgnujemy bliskie więzi — przez wszystkie lata, nawet kiedy są już dorośli.',
+    ],
+    flip: true,
+  },
+];
+
 const milestones = [
   {
     year: '1991',
     title: 'Początki przy Lotaryńskiej',
-    body: 'Olga Trębicka nie mogła znaleźć dla swojej córki Agnieszki miejsca, w którym dziecko poczuje się bezpiecznie i będzie traktowane z uwagą. Takiego miejsca nie było na mapie Warszawy.\n\nRazem z mężem przystosowała własny dom przy ulicy Lotaryńskiej 18 na Saskiej Kępie. Tak powstało Kolorowe Przedszkole — nie jako biznes, ale jako odpowiedź na potrzebę, którą znała z własnego doświadczenia.\n\nPierwsza grupa: dwanaścioro dzieci. I jedna ogromna pasja do wychowania.',
+    body: ['Olga Trębicka otwiera pierwsze Kolorowe Przedszkole w swoim domu przy ul. Lotaryńskiej 18 na Saskiej Kępie. Pierwsza grupa: dwanaścioro dzieci. I jedna ogromna pasja do wychowania.'],
   },
   {
     year: '1997',
     title: 'Pierwsze rozszerzenie',
-    body: 'Rosnące zainteresowanie rodziców sprawia, że otwieramy drugą grupę. Remontujemy kolejne sale, powiększamy ogród i zatrudniamy pierwszą logopedę.',
+    body: ['Rosnące zainteresowanie rodziców sprawia, że otwieramy drugą grupę. Remontujemy kolejne sale, powiększamy ogród i zatrudniamy pierwszą logopedę.'],
   },
   {
     year: '2004',
     title: 'Montessori, Pikler, Korczak',
-    body: 'Cały zespół pedagogiczny przechodzi intensywne szkolenia. Wdrażamy elementy pedagogiki Marii Montessori, filozofii Emmi Pikler i myśli Janusza Korczaka. Szacunek do indywidualnego tempa dziecka staje się fundamentem naszej pracy — i pozostaje nim do dziś.',
+    body: ['Cały zespół pedagogiczny przechodzi intensywne szkolenia. Wdrażamy elementy pedagogiki Marii Montessori, filozofii Emmi Pikler i myśli Janusza Korczaka. Szacunek do indywidualnego tempa dziecka staje się fundamentem naszej pracy — i pozostaje nim do dziś.'],
   },
   {
     year: '2009',
     title: 'Własna kuchnia',
-    body: 'Rezygnujemy z zewnętrznego cateringu i otwieramy własną kuchnię. Od tej pory każdy posiłek jest przygotowywany na miejscu, ze świeżych składników. Bez kompromisów.',
+    body: ['Rezygnujemy z zewnętrznego cateringu i otwieramy własną kuchnię. Od tej pory każdy posiłek jest przygotowywany na miejscu, ze świeżych składników. Bez kompromisów.'],
   },
   {
     year: '2018',
     title: 'Angielski przez cały dzień',
-    body: 'Zatrudniamy opiekunki anglojęzyczne, które mówią do dzieci wyłącznie po angielsku przez większą część dnia. Koniec z lekcjami z kartami pracy — zaczyna się naturalny kontakt z językiem od najmłodszych lat.',
+    body: ['Zatrudniamy opiekunki anglojęzyczne, które mówią do dzieci wyłącznie po angielsku przez większą część dnia. Koniec z lekcjami z kartami pracy — zaczyna się naturalny kontakt z językiem od najmłodszych lat.'],
   },
   {
     year: '2020',
     title: 'Zakopiańska 8 — druga lokalizacja',
-    body: 'Olga i Agnieszka Trębicka otwierają drugą placówkę przy ul. Zakopiańskiej 8. Willa z ogrodem ponad 1200 m² staje się domem dla starszych grup. Powstaje sala Integracji Sensorycznej i gabinet psychologiczny.\n\nDwie lokalizacje, jedna filozofia.',
+    body: ['Olga i Agnieszka Trębicka otwierają drugą placówkę przy ul. Zakopiańskiej 8. Willa z ogrodem ponad 1200 m² staje się domem dla starszych grup. Powstaje sala Integracji Sensorycznej i gabinet psychologiczny.', 'Dwie lokalizacje, jedna filozofia.'],
   },
   {
     year: '2024',
     title: 'Drugie pokolenie — i kolejne',
-    body: 'Do Kolorowego Przedszkola zaczynają trafiać dzieci absolwentów z lat 90. Wśród naszych wychowanków są dziś profesor Uniwersytetu Warszawskiego pracujący nad fizyką kwantową, lekarze, prawnicy, przedsiębiorcy i zawodowy windsurfer.\n\nPonad 30 lat obecności na Saskiej Kępie to dla nas nie sentyment. To zobowiązanie.',
+    body: ['Do Kolorowego Przedszkola zaczynają trafiać dzieci absolwentów z lat 90. Wśród naszych wychowanków są dziś profesor Uniwersytetu Warszawskiego pracujący nad fizyką kwantową, lekarze, prawnicy, przedsiębiorcy i zawodowy windsurfer.', 'Ponad 30 lat obecności na Saskiej Kępie to dla nas nie sentyment. To zobowiązanie.'],
   },
 ];
 ---
@@ -63,27 +111,12 @@ const milestones = [
     "@type": "ChildCare",
     "name": "Kolorowe Przedszkole",
     "foundingDate": "1991",
-    "founder": {
-      "@type": "Person",
-      "name": "Olga Trębicka"
-    },
-    "description": "Rodzinne przedszkole na Saskiej Kępie, założone w 1991 roku przez Olgę Trębicką. Dwie lokalizacje: ul. Lotaryńska 18 i ul. Zakopiańska 8.",
+    "founder": { "@type": "Person", "name": "Olga Trębicka" },
+    "description": "Rodzinne przedszkole na Saskiej Kępie założone w 1991 roku przez Olgę Trębicką. Dwie lokalizacje: ul. Lotaryńska 18 i ul. Zakopiańska 8.",
     "url": "https://koloroweprzedszkole.com",
     "address": [
-      {
-        "@type": "PostalAddress",
-        "streetAddress": "ul. Lotaryńska 18",
-        "postalCode": "03-974",
-        "addressLocality": "Warszawa",
-        "addressCountry": "PL"
-      },
-      {
-        "@type": "PostalAddress",
-        "streetAddress": "ul. Zakopiańska 8",
-        "postalCode": "03-977",
-        "addressLocality": "Warszawa",
-        "addressCountry": "PL"
-      }
+      { "@type": "PostalAddress", "streetAddress": "ul. Lotaryńska 18", "postalCode": "03-974", "addressLocality": "Warszawa", "addressCountry": "PL" },
+      { "@type": "PostalAddress", "streetAddress": "ul. Zakopiańska 8",  "postalCode": "03-977", "addressLocality": "Warszawa", "addressCountry": "PL" }
     ]
   })} />
 
@@ -118,50 +151,71 @@ const milestones = [
       <p class="font-sans text-lg text-brand-navy/60 leading-relaxed">
         Oficjalnie nasza historia liczy ponad trzydzieści lat. Nieoficjalnie —
         zaczęła się kilkadziesiąt lat wcześniej, w mazurskim Miłomłynie,
-        gdzie mały dyrektor szkoły miał czteroletnią córkę,
-        która całymi dniami siedziała w szkolnej ławce i obserwowała.
+        gdzie mały dyrektor szkoły miał czteroletnią córkę, która całymi dniami
+        siedziała w szkolnej ławce i obserwowała.
       </p>
     </div>
   </section>
 
+  <!-- ─── 4 sekcje narracyjne (alternating) ────────────────── -->
+  {sekcje.map((s, i) => (
+    <section class={i % 2 === 0 ? 'bg-brand-warm' : 'bg-brand-cream'}>
+      <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+
+          <div class={`rounded-2xl overflow-hidden aspect-[4/3] ${s.flip ? 'md:order-2' : ''}`}>
+            <img
+              src={s.imgSrc}
+              alt={s.alt}
+              class="w-full h-full object-cover"
+            />
+          </div>
+
+          <div class={`flex flex-col gap-5 ${s.flip ? 'md:order-1' : ''}`}>
+            <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">{s.eyebrow}</p>
+            <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight">
+              {s.title}
+            </h2>
+            {s.body.map(para => (
+              <p class="font-sans text-brand-navy/70 text-base leading-relaxed">{para}</p>
+            ))}
+          </div>
+
+        </div>
+      </div>
+    </section>
+  ))}
+
   <!-- ─── Timeline ─────────────────────────────────────────── -->
-  <section class="bg-brand-warm py-20">
+  <section class="bg-brand-cream py-20">
     <div class="max-w-4xl mx-auto px-6">
+
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3 text-center">Oś czasu</p>
+      <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight mb-16 text-center">
+        Ponad 30 lat w datach
+      </h2>
+
       <div class="relative">
-
-        <!-- Linia pionowa -->
         <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-brand-navy/15 -translate-x-px"></div>
-
         <div class="flex flex-col gap-0">
           {milestones.map((m, i) => {
             const isRight = i % 2 === 0;
             return (
               <div class={`relative flex items-start gap-0 md:gap-8 mb-12 pl-12 md:pl-0 ${isRight ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-
-                <!-- Kropka -->
-                <div class="absolute left-4 md:left-1/2 top-1.5 w-3 h-3 rounded-full bg-brand-teal border-2 border-brand-warm -translate-x-1/2 z-10 shrink-0"></div>
-
-                <!-- Karta -->
+                <div class="absolute left-4 md:left-1/2 top-1.5 w-3 h-3 rounded-full bg-brand-teal border-2 border-brand-cream -translate-x-1/2 z-10 shrink-0"></div>
                 <div class={`w-full md:w-[calc(50%-2rem)] bg-white rounded-2xl px-7 py-6 shadow-sm border border-brand-navy/6 ${isRight ? 'md:mr-auto' : 'md:ml-auto'}`}>
-                  <span class="font-sans font-bold text-brand-teal text-sm uppercase tracking-widest mb-2 block">
-                    {m.year}
-                  </span>
-                  <h2 class="font-sans font-bold text-brand-navy text-xl mb-3 leading-snug">
-                    {m.title}
-                  </h2>
-                  {m.body.split('\n\n').map(para => (
-                    <p class="font-sans text-brand-navy/65 text-base leading-relaxed mb-3 last:mb-0">
-                      {para}
-                    </p>
+                  <span class="font-sans font-bold text-brand-teal text-sm uppercase tracking-widest mb-2 block">{m.year}</span>
+                  <h3 class="font-sans font-bold text-brand-navy text-xl mb-3 leading-snug">{m.title}</h3>
+                  {m.body.map(para => (
+                    <p class="font-sans text-brand-navy/65 text-base leading-relaxed mb-2 last:mb-0">{para}</p>
                   ))}
                 </div>
-
               </div>
             );
           })}
         </div>
-
       </div>
+
     </div>
   </section>
 
@@ -170,17 +224,19 @@ const milestones = [
     <div class="max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Co się nie zmienia</p>
       <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.8rem)] text-brand-cream leading-snug">
-        Co się nie zmienia
+        Domowa atmosfera — od zawsze
       </h2>
       <p class="font-sans text-brand-cream/70 text-lg leading-relaxed max-w-xl">
-        Lata mijają, metody się rozwijają, lokalizacji przybywa.
-        Ale jedno pozostaje niezmienne: domowa, rodzinna atmosfera, luz
-        i bliskość w pracy z dziećmi i ich rodzicami.
-        Dbamy o to świadomie — bo wiemy, że tego nie można kupić ani zastąpić programem.
+        Lata mijają, metody się rozwijają, lokalizacji przybywa. Ale jedno
+        pozostaje niezmienne: domowa, rodzinna atmosfera, luz i bliskość
+        w pracy z dziećmi i ich rodzicami.
       </p>
       <p class="font-sans text-brand-cream/50 text-base leading-relaxed max-w-xl">
         Chcemy, żeby pobyt w Kolorowym Przedszkolu dawał dzieciom najlepszy start
         i przygotowanie do dalszej drogi — nie tylko szkolnej, ale i życiowej.
+        Jeśli podoba Ci się nasza historia i czujesz, że to miejsce stworzone
+        dla Twojego dziecka — odezwij się. Możesz napisać, zadzwonić albo
+        po prostu przyjść. Koniecznie z dzieckiem.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 mt-4">
         <a
