@@ -15,7 +15,7 @@ metadata:
   canonical: https://koloroweprzedszkole.com/porady/przedszkole-z-ogrodem-goclaw-saska-kepa
 ---
 
-Zaczarowany ogród to serce Kolorowego Przedszkola i nasz największy atut w gęstej zabudowie Saskiej Kępy. Dysponujemy własnym, ogrodzonym i bezpiecznym placem zabaw bezpośrednio przy budynku przedszkola. Dzieci spędzają na świeżym powietrzu minimum godzinę dziennie, co buduje odporność, rozwija motorykę dużą i wspiera naturalną integrację sensoryczną.
+Zaczarowany ogród to serce Kolorowego Przedszkola i nasz największy atut w gęstej zabudowie Saskiej Kępy. Dysponujemy własnym, ogrodzonym i bezpiecznym placem zabaw bezpośrednio przy budynku przedszkola. Dzieci spędzają na świeżym powietrzu minimum godzinę dziennie, co buduje odporność, rozwija dużą motorykę i wspiera naturalną integrację sensoryczną.
 
 ## Jak często dzieci wychodzą na plac zabaw?
 
@@ -41,6 +41,8 @@ Prywatny, ogrodzony teren oznacza:
 - **Sprzęty dobrane do wieku** — nie ma urządzeń przeznaczonych dla starszych dzieci, na które maluchy mogłyby się wspinać.
 - **Bezpośredni dostęp z budynku** — wyjście trwa sekundy, nie wymaga przejścia przez ruchliwą ulicę.
 - **Stały nadzór kadry** — proporcja opiekunek do dzieci jest taka sama jak w sali.
+
+W naszym ogrodzie dzieci robią też rzeczy, których nie da się zaplanować w programie: bawią się błotem, wykopują robaki z ziemi i uczą się do nich szacunku, a jesienią zbierają jabłka z własnych jabłoni. Właśnie z tych jabłek razem pieczemy szarlotkę — i smakuje lepiej niż jakakolwiek kupna.
 
 Jeśli szukasz przedszkola z ogrodem na Pradze Południe, [umów się na wizytę](/kontakt) — pokażemy Ci nasz zaczarowany ogród na żywo.
 

@@ -37,7 +37,7 @@ Zapytaj, czy przedszkole monitoruje jakość powietrza i dysponuje oczyszczaczam
 
 ### 5. Jakie są ukryte koszty miesięczne?
 
-Poproś o pełen cennik uwzględniający: wyżywienie, wpisowe, materiały plastyczne, zajęcia dodatkowe (angielski, rytmika, logopeda) i ewentualne opłaty za późny odbiór. W Kolorowym Przedszkolu wszystko jest zawarte w jednej, przejrzystej kwocie czesnego.
+Poproś o pełen cennik uwzględniający: wyżywienie, wpisowe, materiały plastyczne, zajęcia dodatkowe (angielski, rytmika, logopeda) i ewentualne opłaty za późny odbiór. Skontaktuj się z nami bezpośrednio — chętnie omówimy wszystkie składowe kosztów i odpowiemy na każde pytanie bez owijania w bawełnę.
 
 ## Co jeszcze warto sprawdzić?
 

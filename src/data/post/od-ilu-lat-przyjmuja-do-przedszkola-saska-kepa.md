@@ -34,9 +34,9 @@ Nie wymagamy pełnego odpieluchowania w dniu rozpoczęcia adaptacji. Rozumiemy, 
 
 ## Czym adaptacja 2,5-latka różni się od adaptacji 3-latka?
 
-Młodsze dzieci potrzebują zazwyczaj nieco więcej czasu na przyzwyczajenie się do nowej przestrzeni i nowych osób. W Kolorowym Przedszkolu [proces adaptacji](/porady/adaptacja-w-przedszkolu-saska-kepa) trwa od 5 do 14 dni — ale dla 2,5-latków często wydłużamy go o dodatkowy tydzień krótszych wizyt. Zależy to od indywidualnego tempa dziecka.
+Z naszego doświadczenia wynika, że 2,5-latki często adaptują się szybciej i łatwiej niż 3-latki. Starsze dziecko jest bardziej świadome rozłąki i potrafi ją „przepracować" w głowie — co bywa trudniejsze. Młodsze maluszki działają bardziej intuicyjnie: ciekawość środowiska i rówieśników szybko bierze górę nad tęsknotą.
 
-Kluczowe jest, żeby nie porównywać swojego malucha z innymi dziećmi w grupie. Każde dziecko ma własny zegar.
+W Kolorowym Przedszkolu [proces adaptacji](/porady/adaptacja-w-przedszkolu-saska-kepa) trwa od 5 do 14 dni — dopasowujemy tempo do konkretnego dziecka, niezależnie od wieku. Kluczowe jest, żeby nie porównywać swojego malucha z innymi. Każde dziecko ma własny zegar.
 
 ## Czy przyjmujecie dzieci starsze niż 3 lata w trakcie roku?
 

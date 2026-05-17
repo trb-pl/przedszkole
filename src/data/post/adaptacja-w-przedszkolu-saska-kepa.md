@@ -20,7 +20,7 @@ Gotowość przedszkolna to moment, w którym dziecko potrafi komunikować swoje 
 
 ## Jak długo trwa adaptacja dziecka do nowej grupy?
 
-Nie ma jednego sztywnego harmonogramu — każde dziecko oswaja nowe środowisko we własnym tempie. W pierwszym tygodniu zalecamy, aby odbierać malucha zaraz po obiedzie (ok. godziny 12:00). Dzięki temu dziecko nie doświadcza lęku przed popołudniową drzemką w obcym jeszcze miejscu.
+Nie ma jednego sztywnego harmonogramu — każde dziecko oswaja nowe środowisko we własnym tempie. W pierwszym tygodniu zalecamy, aby odbierać malucha zaraz po obiedzie (ok. godziny 13:00–13:30). Dzięki temu dziecko nie doświadcza lęku przed popołudniową drzemką w obcym jeszcze miejscu.
 
 Nasza kadra na bieżąco informuje Cię o nastroju dziecka — działamy w pełnej transparentności. Prawdziwie domowe przedszkole to takie, w którym rodzic również czuje się bezpiecznie. W obu lokalizacjach na Saskiej Kępie stosujemy ten sam sprawdzony od ponad 30 lat model adaptacji.
 
@@ -41,6 +41,10 @@ Przygotuj do przedszkolnej szafki:
 - **Kapcie na rzepy lub wsuwane** — z antypoślizgową podeszwą, łatwe do samodzielnego zakładania.
 - **Ubrania „na cebulkę"** — takie, których nie będzie szkoda pobrudzić farbami.
 - **Komplet ubrań na zmianę** — bielizna, koszulka, spodnie — zapakowane w podpisany worek.
+
+## Czy adaptacja jest płatna osobno?
+
+Nie. Okres adaptacji jest wliczony we wpisowe — nie ma osobnej opłaty za dni adaptacyjne. Jeśli dziecko zaczyna adaptację w sierpniu lub lutym, pierwsza płatność za czesne następuje dopiero od kolejnego, pełnego miesiąca (tj. od września lub marca). Rodzice nie płacą czesnego za miesiąc, w którym trwa wyłącznie adaptacja.
 
 ## Jak pomóc dziecku, które płacze przy rozstaniu?
 
