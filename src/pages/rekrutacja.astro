@@ -1,44 +1,253 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import ContactForm from '~/components/ContactForm.astro';
 
 const metadata = {
-  title: 'Rekrutacja 2026/2027 — Kolorowe Przedszkole Saska Kępa',
-  description: 'Zapisy do Kolorowego Przedszkola na Saskiej Kępie na rok 2026/2027. Miejsca są ograniczone — skontaktuj się z nami jak najwcześniej. Przyjmujemy dzieci od 2,5 roku życia.',
+  title: 'Rekrutacja 2026/2027 – Kolorowe Przedszkole Saska Kępa',
+  description: 'Rekrutacja do Kolorowego Przedszkola na Saskiej Kępie otwarta. Przyjmujemy dzieci od 2,5 roku życia. Miejsca ograniczone — zgłoś się wcześniej.',
   canonical: 'https://koloroweprzedszkole.com/rekrutacja',
   ignoreTitleTemplate: true,
   robots: { index: true, follow: true },
   openGraph: {
-    title: 'Rekrutacja 2026/2027 — Kolorowe Przedszkole Saska Kępa',
-    description: 'Zapisy do Kolorowego Przedszkola na Saskiej Kępie na rok 2026/2027. Miejsca są ograniczone — skontaktuj się z nami jak najwcześniej. Przyjmujemy dzieci od 2,5 roku życia.',
+    title: 'Rekrutacja 2026/2027 – Kolorowe Przedszkole Saska Kępa',
+    description: 'Rekrutacja do Kolorowego Przedszkola na Saskiej Kępie otwarta. Przyjmujemy dzieci od 2,5 roku życia. Miejsca ograniczone — zgłoś się wcześniej.',
     type: 'website',
     url: 'https://koloroweprzedszkole.com/rekrutacja',
     site_name: 'Kolorowe Przedszkole',
   },
 };
+
+const faqItems = [
+  {
+    q: 'Od jakiego wieku przyjmujecie dzieci?',
+    a: 'Przyjmujemy dzieci od 2,5 roku życia. Grupy są zróżnicowane wiekowo i kameralne — każde dziecko ma swoje tempo.',
+  },
+  {
+    q: 'Do kiedy trwa rekrutacja?',
+    a: 'Rekrutacja jest otwarta, ale liczba miejsc jest ograniczona. Co roku większość miejsc zostaje zajęta przed wakacjami. Warto zgłosić się jak najwcześniej.',
+  },
+  {
+    q: 'Czy mogę przyjść z dzieckiem przed podjęciem decyzji?',
+    a: 'Tak — i gorąco zachęcamy. Zapraszamy rodziców z dziećmi na wizytę w przedszkolu. To najlepszy sposób, żeby zobaczyć, jak u nas jest. Skontaktuj się z nami, żeby umówić termin.',
+  },
+  {
+    q: 'Czy są dwie osobne lokalizacje?',
+    a: 'Tak. Prowadzimy dwie placówki na Saskiej Kępie: Lotaryńska 18 i Zakopiańska 8. Obie mają ogród, kameralne grupy i pełny program. Możemy pomóc dobrać odpowiednią dla Twojego dziecka.',
+  },
+  {
+    q: 'Jak szybko odpowiadacie na zgłoszenia?',
+    a: 'Zazwyczaj tego samego dnia. Formularz trafia bezpośrednio do Cioci Oli i jej zespołu.',
+  },
+];
+
+const kroki = [
+  {
+    n: '1',
+    title: 'Napisz lub zadzwoń',
+    desc: 'Wypełnij formularz poniżej albo zadzwoń pod numer 605 657 366. Odpiszemy tego samego dnia.',
+  },
+  {
+    n: '2',
+    title: 'Przyjdź z dzieckiem',
+    desc: 'Zapraszamy na spotkanie w przedszkolu — razem z dzieckiem. To najlepszy sposób, żeby poczuć atmosferę miejsca. Bez zobowiązań.',
+  },
+  {
+    n: '3',
+    title: 'Decyzja należy do Was',
+    desc: 'Po wizycie dajemy czas na rozmowę i decyzję. Nie sprzedajemy — pokazujemy, jak u nas jest.',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
-  <section class="bg-brand-warm pt-24 pb-20">
-    <div class="max-w-3xl mx-auto px-6">
-      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">Kolorowe Przedszkole</p>
-      <h1 class="font-sans italic text-[clamp(2.2rem,5vw,3.5rem)] text-brand-navy leading-tight mb-6">
-        Rekrutacja 2026/2027
+
+  <!-- FAQPage schema -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Od jakiego wieku przyjmujecie dzieci do Kolorowego Przedszkola?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Przyjmujemy dzieci od 2,5 roku życia. Grupy są zróżnicowane wiekowo i kameralne — każde dziecko ma swoje tempo." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do kiedy trwa rekrutacja na rok 2026/2027?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Rekrutacja jest otwarta, ale liczba miejsc jest ograniczona. Co roku większość miejsc zostaje zajęta przed wakacjami. Warto zgłosić się jak najwcześniej." }
+      },
+      {
+        "@type": "Question",
+        "name": "Czy mogę odwiedzić Kolorowe Przedszkole z dzieckiem przed podjęciem decyzji?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Tak — i gorąco zachęcamy. Zapraszamy rodziców z dziećmi na wizytę w przedszkolu. Skontaktuj się z nami, żeby umówić termin." }
+      },
+      {
+        "@type": "Question",
+        "name": "Ile jest lokalizacji Kolorowego Przedszkola?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Prowadzimy dwie placówki na Saskiej Kępie w Warszawie: ul. Lotaryńska 18 i ul. Zakopiańska 8. Obie mają ogród, kameralne grupy i pełny program." }
+      },
+      {
+        "@type": "Question",
+        "name": "Jak szybko Kolorowe Przedszkole odpowiada na zgłoszenia rekrutacyjne?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Zazwyczaj tego samego dnia. Formularz trafia bezpośrednio do założycielki Olgi Trębickiej i jej zespołu." }
+      }
+    ]
+  })} />
+
+  <!-- ─── 1. Hero ───────────────────────────────────────────── -->
+  <section class="bg-brand-navy pt-20 pb-16 md:pt-32 md:pb-24">
+    <div class="max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Rekrutacja 2026/2027</p>
+      <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4rem)] text-brand-cream leading-tight">
+        Zapisz dziecko do Kolorowego Przedszkola
       </h1>
-      <p class="font-sans text-lg text-brand-navy/60 mb-8">Treść tej strony jest w przygotowaniu.</p>
-      <div class="flex flex-wrap gap-4">
+      <p class="font-sans text-lg text-brand-cream/70 max-w-xl leading-relaxed">
+        Rekrutacja na rok szkolny 2026/2027 jest otwarta. Przyjmujemy dzieci od 2,5 roku życia. Zapraszamy rodziców — najlepiej z dziećmi — do odwiedzin przed podjęciem decyzji.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 mt-2">
         <a
-          href="tel:605657366"
+          href="#formularz"
           class="inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-coral"
         >
-          Zadzwoń
+          Przejdź do formularza
         </a>
         <a
-          href="/kontakt"
-          class="inline-block border-2 border-brand-navy text-brand-navy font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-navy hover:text-brand-cream"
+          href="tel:605657366"
+          class="inline-block border-2 border-brand-cream/40 text-brand-cream font-sans font-semibold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:border-brand-teal hover:text-brand-teal"
         >
-          Napisz do nas
+          Zadzwoń: 605 657 366
         </a>
       </div>
     </div>
   </section>
+
+  <!-- ─── 2. Fact cards ────────────────────────────────────── -->
+  <section class="bg-brand-cream py-14">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {[
+          { emoji: '🗓️', title: 'Rok szkolny', line1: '2026/2027', line2: 'Rekrutacja otwarta' },
+          { emoji: '👶', title: 'Wiek dzieci', line1: 'Od 2,5 roku życia', line2: 'Kameralne grupy, dwie lokalizacje' },
+          { emoji: '📍', title: 'Lokalizacje', line1: 'Lotaryńska 18 · Zakopiańska 8', line2: 'Saska Kępa, Warszawa' },
+        ].map((card) => (
+          <div class="bg-brand-warm rounded-2xl px-6 py-8 flex flex-col items-center text-center gap-3 border border-brand-navy/6">
+            <span class="text-4xl" role="img" aria-hidden="true">{card.emoji}</span>
+            <p class="font-sans font-bold text-brand-navy text-base uppercase tracking-wide">{card.title}</p>
+            <p class="font-sans text-brand-navy text-sm font-semibold leading-snug">{card.line1}</p>
+            <p class="font-sans text-brand-navy/55 text-xs leading-snug">{card.line2}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 3. Urgency block ─────────────────────────────────── -->
+  <section class="bg-brand-warm py-20">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">Dlaczego warto się zgłosić teraz</p>
+      <h2 class="font-sans italic text-[clamp(1.9rem,3.5vw,3rem)] text-brand-navy leading-tight mb-8">
+        Miejsc jest mało. Co roku kończą się przed wakacjami.
+      </h2>
+      <p class="font-sans text-brand-navy/70 text-lg leading-relaxed mb-4">
+        Kolorowe Przedszkole celowo utrzymuje małe grupy — żeby każde dziecko było zauważone, wysłuchane i bezpieczne. To oznacza, że dostępnych miejsc nie jest wiele.
+      </p>
+      <p class="font-sans text-brand-navy/70 text-lg leading-relaxed">
+        Jeśli myślisz o nas dla swojego dziecka na rok 2026/2027 — odezwij się teraz, póki możemy jeszcze powiedzieć „tak".
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── 4. Three-step process ────────────────────────────── -->
+  <section class="bg-brand-cream py-20">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">Jak to działa</p>
+        <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight">
+          Trzy proste kroki
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {kroki.map((krok) => (
+          <div class="flex flex-col gap-4">
+            <span class="font-sans font-bold text-[clamp(3rem,6vw,4rem)] text-brand-teal leading-none">{krok.n}</span>
+            <h3 class="font-sans font-bold text-brand-navy text-xl leading-snug">{krok.title}</h3>
+            <p class="font-sans text-brand-navy/65 text-base leading-relaxed">{krok.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 5. Contact form ──────────────────────────────────── -->
+  <section id="formularz" class="bg-brand-warm py-20 scroll-mt-6">
+    <div class="max-w-2xl mx-auto px-6">
+      <div class="flex flex-col gap-3 text-center mb-10">
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Napisz do nas</p>
+        <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.8rem)] text-brand-navy">
+          Zapytaj o wolne miejsce
+        </h2>
+        <p class="font-sans text-brand-navy/70">
+          Odpiszemy tak szybko jak to możliwe — zazwyczaj tego samego dnia.
+        </p>
+      </div>
+      <ContactForm formId="rekrutacja-form" submitLabel="Wyślij zapytanie" />
+    </div>
+  </section>
+
+  <!-- ─── 6. FAQ ───────────────────────────────────────────── -->
+  <section class="bg-brand-cream py-20">
+    <div class="max-w-3xl mx-auto px-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Pytania o rekrutację</p>
+      <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight mb-4">
+        Najczęściej pytacie
+      </h2>
+      <p class="font-sans text-lg text-brand-navy/60 mb-12">
+        Odpowiedzi na pytania, które słyszymy najczęściej od rodziców przed podjęciem decyzji.
+      </p>
+      <div class="divide-y divide-brand-navy/10">
+        {faqItems.map((item, i) => (
+          <details class="group py-5" open={i === 0}>
+            <summary class="flex justify-between items-start cursor-pointer gap-4 list-none">
+              <span class="font-sans text-brand-navy font-semibold text-lg leading-snug group-open:text-brand-teal transition-colors duration-200">
+                {item.q}
+              </span>
+              <span class="flex-shrink-0 mt-1 text-brand-teal text-2xl font-light transition-transform duration-200 group-open:rotate-45">
+                +
+              </span>
+            </summary>
+            <p class="font-sans mt-4 text-brand-navy/75 leading-relaxed text-base">
+              {item.a}
+            </p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 7. Closing CTA ───────────────────────────────────── -->
+  <section class="bg-brand-navy py-24">
+    <div class="max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
+      <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.8rem)] text-brand-cream leading-snug">
+        Masz pytania? Zadzwoń.
+      </h2>
+      <p class="font-sans text-brand-cream/65 text-lg leading-relaxed max-w-lg">
+        Olga Trębicka i jej zespół chętnie odpowiedzą na wszystko — przez telefon, mailowo lub przy kawie w przedszkolu.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 mt-2">
+        <a
+          href="tel:605657366"
+          class="inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-coral"
+        >
+          Zadzwoń: 605 657 366
+        </a>
+        <a
+          href="mailto:przedszkole@kolorowe.eu"
+          class="inline-block border-2 border-brand-cream/40 text-brand-cream font-sans font-semibold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:border-brand-teal hover:text-brand-teal"
+        >
+          Napisz: przedszkole@kolorowe.eu
+        </a>
+      </div>
+    </div>
+  </section>
+
 </Layout>

@@ -1,0 +1,107 @@
+---
+interface Props {
+  formId?: string;
+  submitLabel?: string;
+}
+const { formId = 'kontakt-form', submitLabel = 'Wyślij wiadomość' } = Astro.props;
+const succesId = `${formId}-sukces`;
+const bladId   = `${formId}-blad`;
+---
+
+<form class="flex flex-col gap-5" id={formId}>
+  <input type="hidden" name="access_key" value="e1446f91-1e54-4f44-870e-1c86f83256ed" />
+  <input type="hidden" name="subject" value="Wiadomość ze strony Kolorowe Przedszkole" />
+  <input type="checkbox" name="botcheck" class="hidden" />
+
+  <div class="flex flex-col gap-1.5">
+    <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for={`${formId}-imie`}>Imię i nazwisko</label>
+    <input
+      type="text" id={`${formId}-imie`} name="name" required placeholder="Jan Kowalski"
+      class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200"
+    />
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for={`${formId}-telefon`}>Nr telefonu</label>
+    <input
+      type="tel" id={`${formId}-telefon`} name="phone" required placeholder="+48 600 000 000"
+      class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200"
+    />
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for={`${formId}-email`}>E-mail</label>
+    <input
+      type="email" id={`${formId}-email`} name="email" required placeholder="jan@example.com"
+      class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200"
+    />
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label class="font-sans text-sm font-semibold text-brand-navy uppercase tracking-wider" for={`${formId}-wiek`}>Wiek dziecka</label>
+    <input
+      type="text" id={`${formId}-wiek`} name="wiek_dziecka" required placeholder="np. 3 lata"
+      class="font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/30 focus:outline-none focus:border-brand-teal transition-colors duration-200"
+    />
+  </div>
+
+  <button
+    type="submit"
+    class="w-full bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-4 rounded-lg transition-colors duration-200 hover:bg-brand-coral cursor-pointer"
+  >
+    {submitLabel}
+  </button>
+</form>
+
+<!-- Sukces -->
+<div id={succesId} class="hidden mt-2 bg-brand-teal/10 border border-brand-teal/30 rounded-xl px-6 py-6 text-center flex flex-col gap-2">
+  <p class="font-sans text-2xl">✓</p>
+  <p class="font-sans text-brand-teal font-semibold text-lg">Wiadomość wysłana!</p>
+  <p class="font-sans text-brand-navy/70 text-sm">Odezwiemy się tak szybko jak to możliwe.</p>
+</div>
+
+<!-- Błąd -->
+<div id={bladId} class="hidden mt-2 bg-brand-coral/10 border border-brand-coral/30 rounded-xl px-6 py-4 text-center">
+  <p class="font-sans text-brand-coral font-semibold">Coś poszło nie tak. Spróbuj ponownie lub zadzwoń: +48 605 657 366</p>
+</div>
+
+<script define:vars={{ formId, succesId, bladId, submitLabel }}>
+  function initForm() {
+    const form = document.getElementById(formId);
+    const sukces = document.getElementById(succesId);
+    const blad = document.getElementById(bladId);
+    if (!form) return;
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Wysyłanie…';
+
+      const data = new FormData(form);
+      const json = Object.fromEntries(data.entries());
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(json),
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          form.classList.add('hidden');
+          sukces?.classList.remove('hidden');
+        } else {
+          throw new Error('Web3Forms error');
+        }
+      } catch {
+        blad?.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitLabel;
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', initForm);
+</script>
