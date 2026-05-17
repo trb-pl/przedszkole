@@ -1,24 +1,68 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import { getHomePermalink } from '~/utils/permalinks';
+import Layout from '~/layouts/PageLayout.astro';
 
-const title = `Error 404`;
+const metadata = {
+  title: 'Strona nie istnieje — Kolorowe Przedszkole',
+  robots: { index: false, follow: true },
+};
+
+const links = [
+  { href: '/',                           emoji: '🏠', label: 'Strona główna',       desc: 'Wróć na początek' },
+  { href: '/o-nas/historia',             emoji: '📖', label: 'Nasza historia',      desc: 'Od 1991 roku na Saskiej Kępie' },
+  { href: '/lokalizacje/lotarynska-18',  emoji: '🏡', label: 'Lotaryńska 18',       desc: 'Prawdziwie domowe przedszkole' },
+  { href: '/lokalizacje/zakopianska-8',  emoji: '🌳', label: 'Zakopiańska 8',       desc: 'Zaczarowany ogród' },
+  { href: '/rekrutacja',                 emoji: '✏️', label: 'Rekrutacja',          desc: 'Zapisz dziecko na rok 2026/2027' },
+  { href: '/porady',                     emoji: '💡', label: 'Porady dla rodziców', desc: 'Blog o wychowaniu i przedszkolu' },
+  { href: '/kontakt',                    emoji: '📞', label: 'Kontakt',              desc: 'Napisz lub zadzwoń' },
+];
 ---
 
-<Layout metadata={{ title }}>
-  <section class="flex items-center h-full p-16">
-    <div class="container flex flex-col items-center justify-center px-5 mx-auto my-8">
-      <div class="max-w-md text-center">
-        <h2 class="mb-8 font-bold text-9xl">
-          <span class="sr-only">Error</span>
-          <span class="text-primary">404</span>
-        </h2>
-        <p class="text-3xl font-semibold md:text-3xl">Sorry, we couldn't find this page.</p>
-        <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
-          But don't worry, you can find plenty of other things on our homepage.
-        </p>
-        <a rel="noopener noreferrer" href={getHomePermalink()} class="btn ml-4">Back to homepage</a>
-      </div>
+<Layout metadata={metadata}>
+
+  <!-- Hero -->
+  <section class="bg-brand-navy pt-20 pb-16 md:pt-32 md:pb-20">
+    <div class="max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-4">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Błąd 404</p>
+      <h1 class="font-sans italic text-[clamp(2.2rem,5vw,3.5rem)] text-brand-cream leading-tight">
+        Strona nie istnieje (jeszcze)
+      </h1>
+      <p class="font-sans text-lg text-brand-cream/70 max-w-xl leading-relaxed">
+        Trafiłeś na adres, którego u nas nie ma. Być może szukasz jednej z tych stron:
+      </p>
     </div>
   </section>
+
+  <!-- Cards + CTA -->
+  <section class="bg-brand-cream py-16">
+    <div class="max-w-5xl mx-auto px-6">
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+        {links.map((l) => (
+          <a
+            href={l.href}
+            class="bg-brand-warm rounded-2xl px-5 py-6 flex flex-col gap-2 border border-brand-navy/6 hover:border-brand-teal/50 transition-colors duration-200 group"
+          >
+            <span class="text-3xl" role="img" aria-hidden="true">{l.emoji}</span>
+            <p class="font-sans font-bold text-brand-navy text-base group-hover:text-brand-teal transition-colors duration-200">{l.label}</p>
+            <p class="font-sans text-brand-navy/55 text-sm leading-snug">{l.desc}</p>
+          </a>
+        ))}
+      </div>
+
+      <div class="text-center flex flex-col items-center gap-4">
+        <a
+          href="tel:605657366"
+          class="inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-coral"
+        >
+          Zadzwoń: 605 657 366
+        </a>
+        <p class="font-sans text-brand-navy/50 text-sm">
+          Albo wróć na stronę główną i znajdź to, czego szukasz.
+          <a href="/" class="text-brand-teal underline hover:text-brand-coral transition-colors duration-200 ml-1">Strona główna →</a>
+        </p>
+      </div>
+
+    </div>
+  </section>
+
 </Layout>
