@@ -149,11 +149,7 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
 </header>
 
 <script is:inline>
-  // is:inline ensures this script re-runs on every View Transitions navigation.
-  // Regular <script> modules run only once (cached by the browser), which caused
-  // the hamburger to stop working after client-side navigation.
-
-  // Scroll handler — attached once to window; looks up #navbar dynamically each scroll
+  // Scroll handler — added once to window; looks up #navbar dynamically on each scroll.
   if (!window.__navScrollAttached) {
     window.__navScrollAttached = true;
     window.addEventListener('scroll', function () {
@@ -170,11 +166,17 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
     }, { passive: true });
   }
 
-  // Mobile menu — re-attached fresh on every page render
+  // Mobile menu toggle.
+  // Guard flag on the DOM element prevents double-listener stacking when Astro
+  // morphs (reuses) the same <header> element across View Transitions navigations.
+  // If the element is replaced (new DOM node), the flag is absent → listener added.
+  // If the element is morphed (same node), the flag is present → skip (old listener intact).
   var toggle = document.getElementById('mobile-menu-toggle');
   var mobileMenu = document.getElementById('mobile-menu');
 
-  if (toggle && mobileMenu) {
+  if (toggle && mobileMenu && !toggle.__menuInit) {
+    toggle.__menuInit = true;
+
     toggle.addEventListener('click', function () {
       var hidden = mobileMenu.classList.contains('hidden');
       mobileMenu.classList.toggle('hidden', !hidden);
@@ -185,7 +187,8 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
       var btn = document.getElementById(toggleId);
       var menu = document.getElementById(menuId);
       var chevron = document.getElementById(chevronId);
-      if (!btn || !menu) return;
+      if (!btn || !menu || btn.__accordionInit) return;
+      btn.__accordionInit = true;
       btn.addEventListener('click', function () {
         var open = !menu.classList.contains('hidden');
         menu.classList.toggle('hidden', open);
@@ -198,6 +201,8 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
     setupAccordion('mobile-lok-toggle',  'mobile-lok-menu',  'mobile-lok-chevron');
 
     mobileMenu.querySelectorAll('a').forEach(function (link) {
+      if (link.__closeInit) return;
+      link.__closeInit = true;
       link.addEventListener('click', function () {
         mobileMenu.classList.add('hidden');
         toggle.setAttribute('aria-expanded', 'false');
@@ -207,7 +212,8 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
 
   // Smooth scroll to top on logo click
   var logoLink = document.querySelector('header a[href="/"]');
-  if (logoLink) {
+  if (logoLink && !logoLink.__logoInit) {
+    logoLink.__logoInit = true;
     logoLink.addEventListener('click', function (e) {
       if (window.location.pathname === '/') {
         e.preventDefault();
