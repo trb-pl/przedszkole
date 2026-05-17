@@ -11,8 +11,11 @@
     { "source": "/wartosci",    "destination": "/o-nas/misja-i-wartosci",     "permanent": true },
     { "source": "/misja",       "destination": "/o-nas/misja-i-wartosci",     "permanent": true },
     { "source": "/zapisy",      "destination": "/rekrutacja",                 "permanent": true },
-    { "source": "/blog",        "destination": "/porady",                     "permanent": true },
-    { "source": "/aktualnosci", "destination": "/porady",                     "permanent": true },
+    { "source": "/blog",         "destination": "/porady", "permanent": true },
+    { "source": "/aktualnosci",  "destination": "/porady", "permanent": true },
+    { "source": "/style-guide",  "destination": "/",       "permanent": true },
+    { "source": "/witaj-swiecie","destination": "/",       "permanent": true },
+    { "source": "/hello-world",  "destination": "/",       "permanent": true },
 
     {
       "source": "/",
