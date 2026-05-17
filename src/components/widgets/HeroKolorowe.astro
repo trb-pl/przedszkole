@@ -17,6 +17,7 @@ import posterImage from '~/assets/images/hero-mobile-poster.jpg';
 
   <!-- Background video (mobile) -->
   <video
+    id="hero-video"
     class="absolute inset-0 w-full h-full object-cover block md:hidden"
     autoplay
     muted
@@ -61,3 +62,23 @@ import posterImage from '~/assets/images/hero-mobile-poster.jpg';
 
   </div>
 </section>
+
+<script is:inline>
+  // Force the hero video to resume after View Transitions navigations.
+  // The autoplay attribute only fires on initial DOM insertion; after a
+  // client-side navigation back to "/" the video is paused on its poster
+  // frame. We listen on document (which persists) so the handler stays
+  // valid across navigations.
+  if (!window.__heroVideoInit) {
+    window.__heroVideoInit = true;
+    var tryPlay = function () {
+      var v = document.getElementById('hero-video');
+      if (v && v.paused) {
+        var p = v.play();
+        if (p && typeof p.catch === 'function') p.catch(function () {});
+      }
+    };
+    document.addEventListener('astro:page-load', tryPlay);
+    document.addEventListener('astro:after-swap', tryPlay);
+  }
+</script>
