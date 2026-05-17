@@ -149,73 +149,85 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
 </header>
 
 <script is:inline>
-  // Scroll handler — added once to window; looks up #navbar dynamically on each scroll.
-  if (!window.__navScrollAttached) {
-    window.__navScrollAttached = true;
+  // Event delegation on document — survives all View Transitions navigations
+  // because `document` is never replaced. We attach listeners ONCE; they handle
+  // every click/scroll regardless of whether elements are swapped or morphed.
+  if (!window.__navbarDelegated) {
+    window.__navbarDelegated = true;
+
+    // Scroll: tint the navbar after the user scrolls down.
     window.addEventListener('scroll', function () {
       var navbar = document.getElementById('navbar');
       if (!navbar) return;
       if (window.scrollY > 10) {
-        navbar.classList.add('shadow-md');
+        navbar.classList.add('shadow-md', 'bg-brand-cream');
         navbar.classList.remove('bg-brand-cream/90', 'backdrop-blur-sm');
-        navbar.classList.add('bg-brand-cream');
       } else {
         navbar.classList.remove('shadow-md', 'bg-brand-cream');
         navbar.classList.add('bg-brand-cream/90', 'backdrop-blur-sm');
       }
     }, { passive: true });
-  }
 
-  // Mobile menu toggle.
-  // Guard flag on the DOM element prevents double-listener stacking when Astro
-  // morphs (reuses) the same <header> element across View Transitions navigations.
-  // If the element is replaced (new DOM node), the flag is absent → listener added.
-  // If the element is morphed (same node), the flag is present → skip (old listener intact).
-  var toggle = document.getElementById('mobile-menu-toggle');
-  var mobileMenu = document.getElementById('mobile-menu');
+    // Single delegated click handler for the entire navbar.
+    document.addEventListener('click', function (e) {
+      var target = e.target;
+      if (!(target instanceof Element)) return;
 
-  if (toggle && mobileMenu && !toggle.__menuInit) {
-    toggle.__menuInit = true;
+      // Hamburger toggle
+      var toggleBtn = target.closest('#mobile-menu-toggle');
+      if (toggleBtn) {
+        var menu = document.getElementById('mobile-menu');
+        if (menu) {
+          var hidden = menu.classList.contains('hidden');
+          menu.classList.toggle('hidden', !hidden);
+          toggleBtn.setAttribute('aria-expanded', String(hidden));
+        }
+        return;
+      }
 
-    toggle.addEventListener('click', function () {
-      var hidden = mobileMenu.classList.contains('hidden');
-      mobileMenu.classList.toggle('hidden', !hidden);
-      toggle.setAttribute('aria-expanded', String(hidden));
-    });
+      // Accordion: O Nas
+      var onasBtn = target.closest('#mobile-onas-toggle');
+      if (onasBtn) {
+        var onasMenu = document.getElementById('mobile-onas-menu');
+        var onasChevron = document.getElementById('mobile-onas-chevron');
+        if (onasMenu) {
+          var open = !onasMenu.classList.contains('hidden');
+          onasMenu.classList.toggle('hidden', open);
+          if (onasChevron) onasChevron.classList.toggle('rotate-180', !open);
+          onasBtn.setAttribute('aria-expanded', String(!open));
+        }
+        return;
+      }
 
-    function setupAccordion(toggleId, menuId, chevronId) {
-      var btn = document.getElementById(toggleId);
-      var menu = document.getElementById(menuId);
-      var chevron = document.getElementById(chevronId);
-      if (!btn || !menu || btn.__accordionInit) return;
-      btn.__accordionInit = true;
-      btn.addEventListener('click', function () {
-        var open = !menu.classList.contains('hidden');
-        menu.classList.toggle('hidden', open);
-        if (chevron) chevron.classList.toggle('rotate-180', !open);
-        btn.setAttribute('aria-expanded', String(!open));
-      });
-    }
+      // Accordion: Lokalizacje
+      var lokBtn = target.closest('#mobile-lok-toggle');
+      if (lokBtn) {
+        var lokMenu = document.getElementById('mobile-lok-menu');
+        var lokChevron = document.getElementById('mobile-lok-chevron');
+        if (lokMenu) {
+          var openL = !lokMenu.classList.contains('hidden');
+          lokMenu.classList.toggle('hidden', openL);
+          if (lokChevron) lokChevron.classList.toggle('rotate-180', !openL);
+          lokBtn.setAttribute('aria-expanded', String(!openL));
+        }
+        return;
+      }
 
-    setupAccordion('mobile-onas-toggle', 'mobile-onas-menu', 'mobile-onas-chevron');
-    setupAccordion('mobile-lok-toggle',  'mobile-lok-menu',  'mobile-lok-chevron');
+      // Close mobile menu when any link inside it is clicked
+      var mobileMenuEl = document.getElementById('mobile-menu');
+      if (mobileMenuEl && mobileMenuEl.contains(target)) {
+        var clickedLink = target.closest('a');
+        if (clickedLink) {
+          mobileMenuEl.classList.add('hidden');
+          var toggleEl = document.getElementById('mobile-menu-toggle');
+          if (toggleEl) toggleEl.setAttribute('aria-expanded', 'false');
+        }
+        return;
+      }
 
-    mobileMenu.querySelectorAll('a').forEach(function (link) {
-      if (link.__closeInit) return;
-      link.__closeInit = true;
-      link.addEventListener('click', function () {
-        mobileMenu.classList.add('hidden');
-        toggle.setAttribute('aria-expanded', 'false');
-      });
-    });
-  }
-
-  // Smooth scroll to top on logo click
-  var logoLink = document.querySelector('header a[href="/"]');
-  if (logoLink && !logoLink.__logoInit) {
-    logoLink.__logoInit = true;
-    logoLink.addEventListener('click', function (e) {
-      if (window.location.pathname === '/') {
+      // Smooth-scroll to top when clicking the logo while already on /
+      var logoLink = target.closest('header a[href="/"]');
+      if (logoLink && window.location.pathname === '/') {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
