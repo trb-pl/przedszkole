@@ -1,13 +1,14 @@
 ---
 publishDate: 2026-05-15T00:00:00Z
 author: Kolorowe Przedszkole
-title: "Ile kosztuje prywatne przedszkole na Gocławiu? Przewodnik 2026"
-excerpt: "Z czego składa się koszt prywatnego przedszkola na Saskiej Kępie i Gocławiu? Wpisowe, czesne, wyżywienie, zajęcia dodatkowe — co jest w pakiecie, a co osobno. Bez ściemy."
+title: "Ile kosztuje przedszkole prywatne na Saskiej Kępie? Kolorowe Przedszkole — cennik 2025/2026"
+excerpt: "Czesne, wyżywienie, wpisowe, zajęcia dodatkowe — pełny i szczery obraz kosztów Kolorowego Przedszkola na Saskiej Kępie. Bez ukrytych pozycji i niespodzianek."
 image: ~/assets/images/porady-umowa.jpg
 category: Porady
 tags:
   - koszty
   - czesne
+  - cennik
   - gocław
   - saska kępa
   - prywatne przedszkole
@@ -19,8 +20,8 @@ metadata:
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Ile kosztuje prywatne przedszkole na Gocławiu? Przewodnik 2026",
-  "description": "Z czego składa się koszt prywatnego przedszkola na Saskiej Kępie i Gocławiu? Wpisowe, czesne, wyżywienie, zajęcia dodatkowe — co jest w pakiecie, a co osobno.",
+  "headline": "Ile kosztuje przedszkole prywatne na Saskiej Kępie? Kolorowe Przedszkole — cennik 2025/2026",
+  "description": "Czesne, wyżywienie, wpisowe, zajęcia dodatkowe — pełny i szczery obraz kosztów Kolorowego Przedszkola na Saskiej Kępie. Bez ukrytych pozycji i niespodzianek.",
   "author": { "@type": "Organization", "name": "Kolorowe Przedszkole" },
   "publisher": {
     "@type": "Organization",
@@ -32,51 +33,69 @@ metadata:
 }
 </script>
 
-Jednym z pierwszych pytań, które zadają nam rodzice na spotkaniu rekrutacyjnym, jest: „ile to kosztuje?". To pytanie jak najbardziej na miejscu — i zasługuje na szczerą odpowiedź. Poniżej rozkładamy na czynniki pierwsze, z czego składa się koszt prywatnego przedszkola na Pradze Południe.
+Rodzice pytają nas o koszty zazwyczaj jeszcze przed pierwszą wizytą — i słusznie. Chcemy odpowiedzieć na to pytanie uczciwie i konkretnie, bez ukrytych pozycji i niespodzianek przy podpisywaniu umowy. Oto pełny obraz tego, co płacisz i co za to dostajesz.
 
-## Składowe kosztów prywatnego przedszkola
+## Ile wynosi czesne w Kolorowym Przedszkolu?
 
-Koszt prywatnego przedszkola to zazwyczaj kilka osobnych pozycji. Warto zapytać o każdą z nich przed podpisaniem umowy — i dobrze je rozumieć.
+Czesne podstawowe wynosi **2 250 zł miesięcznie** — identycznie w obu naszych lokalizacjach: na ul. Lotaryńskiej 18 i ul. Zakopiańskiej 8 na Saskiej Kępie.
 
-### 1. Wpisowe
+Kwota miesięczna wynika z rocznej umowy — całkowity koszt roku szkolnego jest wyliczony z góry i podzielony równo na 12 rat. Dzięki temu miesięczna płatność jest przewidywalna przez cały rok, niezależnie od liczby dni roboczych w danym miesiącu.
 
-Jednorazowa opłata przy zapisie dziecka. Pokrywa m.in. koszty rekrutacji i przygotowania miejsca. W Kolorowym Przedszkolu **wpisowe obejmuje również cały okres adaptacji** — nie ma osobnych opłat za dni adaptacyjne. Jeśli dziecko zaczyna adaptację w sierpniu lub lutym, czesne naliczane jest dopiero od kolejnego pełnego miesiąca.
+W czesnym mieści się znacznie więcej niż sama opieka. W standardzie każdego dnia dzieci mają:
 
-### 2. Czesne miesięczne
+- **Native speaker** — zajęcia z angielskiego prowadzone przez rodzimego użytkownika języka, codziennie, przez naturalne sytuacje i zabawę
+- **Zajęcia dydaktyczne** — realizacja podstawy programowej wzbogaconej o elementy metod Montessori, Steinera, Korczaka i Pikler
+- **Rytmika i taniec** — w tym zajęcia metodą Gordona na Lotaryńskiej
+- **Gimnastyka**
+- **Dostęp do sali integracji sensorycznej** — wyposażonej, z terapeutą
+- **Opieka psychologa dziecięcego** — zatrudnionego na etacie, dostępnego na co dzień
 
-Stała opłata miesięczna pokrywająca opiekę i program edukacyjny. Warto zapytać, co konkretnie zawiera:
+Nie ma listy zajęć „premium" z dopłatą. To, co wymieniamy, jest w cenie czesnego.
 
-- W Kolorowym Przedszkolu w czesnym zawarte są m.in. zajęcia dydaktyczne, rytmika, angielski z ciociami native speaker, gimnastyka (2 razy w tygodniu), gotowanie z dziećmi, pobyt w ogrodzie i opieka psychologiczna.
-- Na Zakopiańskiej 8 czesne obejmuje dodatkowo dostęp do sali Integracji Sensorycznej (SI) i zerówkę dla 6-latków.
+## Zajęcia dodatkowe
 
-### 3. Wyżywienie
+Poza programem standardowym oferujemy zajęcia dodatkowe — ich aktualny wykaz i ceny ustalamy na początku każdego roku szkolnego. Nie ma obowiązku rocznej deklaracji uczestnictwa. Rodzice mogą swobodnie zdecydować, z których zajęć dziecko skorzysta.
 
-W większości prywatnych przedszkoli wyżywienie jest **osobną, miesięczną opłatą** doliczaną do czesnego. Obejmuje zazwyczaj śniadanie, obiad i podwieczorek. W Kolorowym Przedszkolu wszystkie posiłki przygotowywane są na miejscu, codziennie, przez Ciocię Tatianę — [bez cateringu](/o-nas/kuchnia).
+## Wyżywienie — jak to liczymy?
 
-### 4. Zajęcia dodatkowe
+Stawka żywieniowa wynosi **25 zł za dzień** i naliczana jest wyłącznie za dni, w których dziecko faktycznie jest obecne w przedszkolu. Jeśli maluch choruje przez tydzień — płacisz tylko za dni, które spędził z nami.
 
-Popularne zajęcia — robotyka, akrobatyka, basen, szachy, judo, balet, logopedia — są w większości placówek **płatne osobno**. To zrozumiałe: nie każde dziecko chce chodzić na każde zajęcia. W Kolorowym Przedszkolu zajęcia dodatkowe wyceniane są osobno; logopedia (Ciocia Lena, 2 razy w tygodniu) jest dostępna za dodatkową opłatą.
+Przy 20 dniach roboczych miesięcznie daje to 500 zł. Zawsze dokładnie tyle, ile wynika z listy obecności.
 
-## Jak porównywać oferty przedszkoli?
+Posiłki są gotowane na miejscu przez naszą kucharkę. Nie korzystamy z cateringu. Dzieci na dietach eliminacyjnych (alergie, nietolerancje pokarmowe) otrzymują odpowiednio zmodyfikowane menu — bez dodatkowych opłat i bez konieczności przynoszenia jedzenia z domu.
 
-Samo czesne to zły punkt odniesienia. Jedno przedszkole może mieć niższe czesne, ale doliczać za każdą dodatkową godzinę, materiały plastyczne, ubezpieczenie i „fundusz remontowy". Inne — wyższe czesne, ale bez niespodzianek.
+## Wpisowe
 
-Przed rozmową z dyrekcją przygotuj listę pytań:
+Jednorazowa opłata przy podpisaniu umowy wynosi **1 800 zł**. Płacisz ją raz — przy zapisaniu dziecka do Kolorowego Przedszkola.
 
-- Co dokładnie zawiera czesne?
-- Czy wyżywienie jest w pakiecie, czy osobno?
-- Jakie zajęcia są dodatkowo płatne?
-- Czy jest opłata za późny odbiór?
-- Czy jest opłata za nieobecność (urlop, choroba)?
+## Kiedy przedszkole jest zamknięte?
 
-Dobre przedszkole nie ma nic do ukrycia — i chętnie odpowie na każde z tych pytań.
+Kolorowe Przedszkole działa przez cały rok. Przerwy w roku szkolnym 2025/2026 wyglądają następująco:
 
-## Ile konkretnie kosztuje Kolorowe Przedszkole?
+| Przerwa | Termin |
+|---|---|
+| Przerwa świąteczna (Boże Narodzenie) | zgodna z kalendarzem MEN |
+| Ferie zimowe | 1 tydzień w czasie 2-tygodniowych ferii województwa mazowieckiego — termin ustalany z rodzicami |
+| Przerwa wielkanocna | Wielki Piątek |
+| Przerwa wakacyjna | 2 tygodnie na przełomie lipca i sierpnia |
 
-Nie podajemy cennika na stronie — bo czesne zależy od grupy wiekowej, lokalizacji i aktualnych warunków. Chętnie omówimy wszystkie koszty bezpośrednio, bez owijania w bawełnę.
+Letnia przerwa istnieje po to, żeby nasza kadra — tak jak dzieci — miała czas na prawdziwy odpoczynek. Poza tymi terminami przedszkole jest otwarte, również w lipcu i sierpniu.
 
-[Skontaktuj się z nami](/kontakt) — odpowiemy na wszystkie pytania i pomożemy ocenić, czy Kolorowe Przedszkole pasuje do Twojej rodziny i budżetu.
+## Zniżki
+
+Oferujemy zniżkę dla rodzeństwa. Jeśli do Kolorowego uczęszcza więcej niż jedno Twoje dziecko, skontaktuj się z nami bezpośrednio — omówimy warunki indywidualnie.
+
+## Pełne zestawienie kosztów miesięcznych
+
+| Pozycja | Kwota |
+|---|---|
+| Czesne podstawowe | 2 250 zł |
+| Wyżywienie (przy 20 dniach) | ~500 zł |
+| **Razem miesięcznie** | **~2 750 zł** |
+| Wpisowe (jednorazowo, przy zapisie) | 1 800 zł |
+
+Wpisowe płacisz raz. Zajęcia dodatkowe — według wyboru, bez rocznych zobowiązań.
 
 ---
 
-**Chcesz wiedzieć więcej?** Przeczytaj też: [5 pytań przed podpisaniem umowy z przedszkolem](/porady/jakie-przedszkole-wybrac-goclaw-5-pytan) i [jak wygląda adaptacja w Kolorowym Przedszkolu](/porady/adaptacja-w-przedszkolu-saska-kepa).
+**Masz pytania o rekrutację lub chcesz umówić się na dzień otwarty?** [Napisz do nas](/kontakt) — odpiszemy i zaprosimy na spotkanie z naszą dyrekcją.
