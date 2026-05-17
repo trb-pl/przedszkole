@@ -1,5 +1,11 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
+
+import imgMazury      from '~/assets/images/historia-mazury.jpg';
+import imgOlga        from '~/assets/images/historia-olga.jpg';
+import imgAgnieszka   from '~/assets/images/historia-agnieszka.jpg';
+import imgAbsolwenci  from '~/assets/images/historia-absolwenci.jpg';
 
 const metadata = {
   title: 'Historia Kolorowego Przedszkola — Od 1991 roku | Saska Kępa',
@@ -18,7 +24,7 @@ const metadata = {
 
 const sekcje = [
   {
-    imgSrc: 'https://placehold.co/960x720/FEFAF3/2D346F?text=Olga+Tr%C4%99bicka',
+    img: imgMazury,
     alt: 'Olga Trębicka, założycielka Kolorowego Przedszkola',
     eyebrow: 'Skąd się wzięłyśmy',
     title: 'Mazury, szkolna ławka i tata dyrektor',
@@ -29,7 +35,7 @@ const sekcje = [
     flip: false,
   },
   {
-    imgSrc: 'https://placehold.co/960x720/FCF6F0/2D346F?text=Lotary%C5%84ska+18+1991',
+    img: imgOlga,
     alt: 'Dom przy ulicy Lotaryńskiej 18 — pierwsza siedziba Kolorowego Przedszkola',
     eyebrow: '1991',
     title: 'Dom, który stał się przedszkolem',
@@ -40,7 +46,7 @@ const sekcje = [
     flip: true,
   },
   {
-    imgSrc: 'https://placehold.co/960x720/FEFAF3/2D346F?text=Agnieszka+Tr%C4%99bicka',
+    img: imgAgnieszka,
     alt: 'Agnieszka Trębicka, pedagog i współzałożycielka Kolorowego Przedszkola',
     eyebrow: 'Drugie pokolenie',
     title: 'Agnieszka — pierwsze dziecko, drugi filar',
@@ -52,7 +58,7 @@ const sekcje = [
     flip: false,
   },
   {
-    imgSrc: 'https://placehold.co/960x720/FCF6F0/2D346F?text=Absolwenci',
+    img: imgAbsolwenci,
     alt: 'Dzieci w Kolorowym Przedszkolu na Saskiej Kępie',
     eyebrow: 'Absolwenci',
     title: 'Pokolenia, które pamiętamy',
@@ -164,11 +170,7 @@ const milestones = [
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
 
           <div class={`rounded-2xl overflow-hidden aspect-[4/3] ${s.flip ? 'md:order-2' : ''}`}>
-            <img
-              src={s.imgSrc}
-              alt={s.alt}
-              class="w-full h-full object-cover"
-            />
+            <Image src={s.img} alt={s.alt} class="w-full h-full object-cover" widths={[640, 960, 1280]} sizes="(max-width: 768px) 100vw, 50vw" />
           </div>
 
           <div class={`flex flex-col gap-5 ${s.flip ? 'md:order-1' : ''}`}>
