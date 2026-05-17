@@ -3,7 +3,7 @@ publishDate: 2026-05-15T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Ile kosztuje przedszkole prywatne na Saskiej Kępie? Kolorowe Przedszkole — cennik 2025/2026"
 excerpt: "Czesne, wyżywienie, wpisowe, zajęcia dodatkowe — pełny i szczery obraz kosztów Kolorowego Przedszkola na Saskiej Kępie. Bez ukrytych pozycji i niespodzianek."
-image: ~/assets/images/porady-umowa.jpg
+image: ~/assets/images/Kolorowe_przedszkole_czesne.jpg
 category: Porady
 tags:
   - koszty
