@@ -1,5 +1,5 @@
 ---
-publishDate: 2026-05-15T00:00:00Z
+publishDate: 2026-05-12T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Kiedy zapisać dziecko do przedszkola? Wolne miejsca Saska Kępa i Gocław 2026/2027"
 excerpt: "Rekrutacja do prywatnych przedszkoli na Saskiej Kępie na rok 2026/2027. Kiedy ruszają zapisy, jak wygląda proces i czy są jeszcze wolne miejsca w Kolorowym Przedszkolu."

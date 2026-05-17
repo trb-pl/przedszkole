@@ -1,5 +1,5 @@
 ---
-publishDate: 2026-05-15T00:00:00Z
+publishDate: 2026-04-14T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Przedszkole z dużym ogrodem na Saskiej Kępie — dlaczego codzienny ruch to podstawa?"
 excerpt: "Własny ogród w przedszkolu na Pradze Południe. Jak Kolorowe Przedszkole na Saskiej Kępie organizuje codzienną aktywność na świeżym powietrzu — i co robi w dni smogowe."

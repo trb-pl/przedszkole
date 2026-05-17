@@ -1,5 +1,5 @@
 ---
-publishDate: 2026-05-15T00:00:00Z
+publishDate: 2026-03-18T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Angielski w przedszkolu na Pradze Południe — jak maluchy uczą się języka przez zabawę?"
 excerpt: "Jak wygląda nauka angielskiego w Kolorowym Przedszkolu na Saskiej Kępie? Naturalna metoda, bez kart pracy i odpytywania — przez piosenki, gry i codzienne sytuacje."

@@ -1,5 +1,5 @@
 ---
-publishDate: 2026-05-15T00:00:00Z
+publishDate: 2026-03-05T00:00:00Z
 updateDate: 2026-05-15T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Adaptacja w przedszkolu na Saskiej Kępie — jak przygotować 3-latka?"
