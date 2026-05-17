@@ -1,0 +1,337 @@
+---
+import { Image } from 'astro:assets';
+import '~/assets/styles/tailwind.css';
+import Favicons from '~/components/Favicons.astro';
+import CommonMeta from '~/components/common/CommonMeta.astro';
+import { ClientRouter } from 'astro:transitions';
+
+import logoUrl    from '~/assets/images/logo.svg?url';
+import imgZamek  from '~/assets/kolonie/zamek.jpg';
+import imgBiegna from '~/assets/kolonie/biegna.jpg';
+
+const days = [
+  {
+    day: 'Dzień 1',
+    title: 'Przyjazd i pierwsze odkrycia',
+    body: 'Przyjazd, zakwaterowanie, gry integracyjne, spacer po terenie ośrodka — mini zoo, plac zabaw, pierwsze znajomości.',
+  },
+  {
+    day: 'Dzień 2',
+    title: 'Sport i sztuka',
+    body: 'Zajęcia sportowe i plaża przed południem, warsztaty plastyczne w plenerze po południu.',
+  },
+  {
+    day: 'Dzień 3',
+    title: 'Leśna przygoda',
+    body: 'Gra terenowa — podchody, dzień tematyczny w leśniczówce, wieczorne kalambury.',
+  },
+  {
+    day: 'Dzień 4',
+    title: 'Kreatywny dzień',
+    body: 'Warsztaty kreatywne, karaoke i wspólne ognisko.',
+  },
+  {
+    day: 'Dzień 5',
+    title: 'Wycieczka do Miłomłyna',
+    body: 'Wizyta w Straży Pożarnej w Miłomłynie, lody w mieście, wieczór talentów.',
+  },
+  {
+    day: 'Dzień 6',
+    title: 'Olimpiada i dyskoteka',
+    body: 'Kolonijna olimpiada sportowa, zabawy wodne i pożegnalna dyskoteka.',
+  },
+  {
+    day: 'Dzień 7',
+    title: 'Do zobaczenia!',
+    body: 'Wręczenie dyplomów, wspólne zdjęcia, pakowanie, powrót do domu.',
+  },
+];
+
+const info = [
+  { label: 'Termin zapisów',          value: 'do 23 marca 2026',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>` },
+  { label: 'Wiek uczestników',         value: '6–10 lat',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m4 6v-2m0 0a4 4 0 10-8 0m8 0a4 4 0 108 0"/></svg>` },
+  { label: 'Cena',                     value: '3000 zł (transport i ubezpieczenie w cenie)',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>` },
+  { label: 'Płatność',                 value: 'Możliwość płatności w 3 ratach. Rabat dla rodzeństwa.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>` },
+  { label: 'Wyjazd',                   value: '28.06.2026, godz. 10:00',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>` },
+  { label: 'Miejsce zbiórki',          value: 'Parking basenu Wodnik, ul. Bora Komorowskiego 40',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>` },
+  { label: 'Powrót',                   value: '5.07.2026, godz. 14:00, parking basenu Wodnik',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>` },
+  { label: 'Spotkanie organizacyjne',  value: '20.05.2026, godz. 17:30, ul. Zakopiańska 8',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 00-1-1h-2a1 1 0 00-1 1v5m4 0H9"/></svg>` },
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Kolonie Karnity 2026 — Kolorowe Przedszkole",
+  "description": "Tygodniowe kolonie dla dzieci w wieku 6–10 lat w Zamku Karnity na Mazurach. Codzienna zabawa, plaża, mini zoo, alpaki i sarny.",
+  "startDate": "2026-06-28",
+  "endDate": "2026-07-05",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "location": {
+    "@type": "Place",
+    "name": "Zamek Karnity",
+    "address": { "@type": "PostalAddress", "addressLocality": "Karnity", "addressCountry": "PL" }
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "Kolorowe Przedszkole",
+    "url": "https://koloroweprzedszkole.com",
+    "telephone": "+48605657366"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "3000",
+    "priceCurrency": "PLN",
+    "availability": "https://schema.org/LimitedAvailability",
+    "validThrough": "2026-03-23"
+  },
+  "typicalAgeRange": "6-10"
+};
+---
+
+<!doctype html>
+<html lang="pl" class="2xl:text-[20px]">
+<head>
+  <CommonMeta />
+  <Favicons />
+  <ClientRouter fallback="swap" />
+  <link rel="stylesheet" href="https://use.typekit.net/sni5mcg.css" />
+  <title>Kolonie Karnity 2026 — Kolorowe Przedszkole</title>
+  <meta name="description" content="Tygodniowe kolonie dla dzieci 6–10 lat w Zamku Karnity na Mazurach. 28.06–5.07.2026. Cena 3000 zł. Organizuje Kolorowe Przedszkole, Saska Kępa, Warszawa." />
+  <link rel="canonical" href="https://koloroweprzedszkole.com/kolonie" />
+  <meta property="og:title" content="Kolonie Karnity 2026 — Kolorowe Przedszkole" />
+  <meta property="og:description" content="Tygodniowe kolonie dla dzieci 6–10 lat w Zamku Karnity na Mazurach. 28.06–5.07.2026. Cena 3000 zł." />
+  <meta property="og:url" content="https://koloroweprzedszkole.com/kolonie" />
+  <meta property="og:type" content="website" />
+  <meta name="robots" content="index, follow" />
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</head>
+<body class="antialiased bg-[#FCF6F0] text-[#2D346F] font-sans">
+
+  <!-- ─── Minimal header ───────────────────────────────────── -->
+  <header class="bg-[#FCF6F0] py-4 px-6">
+    <div class="max-w-6xl mx-auto">
+      <a href="/" aria-label="Kolorowe Przedszkole — strona główna">
+        <img src={logoUrl} alt="Kolorowe Przedszkole" class="h-10 w-auto" />
+      </a>
+    </div>
+  </header>
+
+  <!-- ─── Hero ─────────────────────────────────────────────── -->
+  <section class="relative h-[50vh] md:h-[70vh] overflow-hidden">
+    <Image
+      src={imgZamek}
+      alt="Zamek Karnity na Mazurach — miejsce kolonii Kolorowego Przedszkola 2026"
+      class="absolute inset-0 w-full h-full object-cover object-center"
+      widths={[800, 1200, 1600, 2000]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <!-- Gradient overlay -->
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, transparent 30%, rgba(45,52,111,0.88) 100%)"></div>
+    <!-- Text -->
+    <div class="absolute bottom-0 left-0 right-0 px-6 pb-10 md:pb-14 max-w-4xl mx-auto">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-[#34BBA8] mb-3">Lato 2026</p>
+      <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4.5rem)] text-white leading-tight mb-3">
+        Kolonie Karnity 2026
+      </h1>
+      <p class="font-sans text-white/80 text-lg max-w-xl leading-relaxed">
+        Codzienna zabawa, plaża, plac zabaw w lesie i karmienie alpak.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── Key facts row ────────────────────────────────────── -->
+  <section class="bg-white border-b border-[#2D346F]/8">
+    <div class="max-w-4xl mx-auto px-6 py-6 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-0 sm:divide-x sm:divide-[#2D346F]/10">
+      <div class="flex items-center gap-3 sm:justify-center sm:px-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 shrink-0 text-[#34BBA8]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <div>
+          <p class="font-sans font-bold text-[#2D346F] text-sm leading-none">28.06 – 5.07.2026</p>
+          <p class="font-sans text-xs text-[#2D346F]/50 mt-0.5">Termin</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 sm:justify-center sm:px-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 shrink-0 text-[#34BBA8]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <div>
+          <p class="font-sans font-bold text-[#2D346F] text-sm leading-none">Zamek Karnity</p>
+          <p class="font-sans text-xs text-[#2D346F]/50 mt-0.5">Miejsce</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 sm:justify-center sm:px-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 shrink-0 text-[#34BBA8]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m4 6v-2m0 0a4 4 0 10-8 0m8 0a4 4 0 108 0"/></svg>
+        <div>
+          <p class="font-sans font-bold text-[#2D346F] text-sm leading-none">6–10 lat</p>
+          <p class="font-sans text-xs text-[#2D346F]/50 mt-0.5">Wiek dzieci</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Co na Was czeka (3 karty) ────────────────────────── -->
+  <section class="bg-[#FCF6F0] py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-[#34BBA8] mb-3 text-center">Atrakcje</p>
+      <h2 class="font-sans italic text-[clamp(2rem,4vw,3rem)] text-[#2D346F] text-center mb-12 leading-tight">
+        Co na Was czeka?
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <!-- Karta 1 -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-[#2D346F]/6">
+          <div class="aspect-[4/3] overflow-hidden">
+            <Image
+              src={imgBiegna}
+              alt="Dzieci biegnące w plenerze podczas kolonii Kolorowego Przedszkola"
+              class="w-full h-full object-cover"
+              widths={[400, 600, 800]}
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="font-sans font-bold text-[#2D346F] text-xl mb-2">Wolność i przygoda</h3>
+            <p class="font-sans text-[#2D346F]/65 text-sm leading-relaxed">
+              Plaża, plac zabaw w lesie, gry terenowe i podchody — każdy dzień pełen ruchu i niespodzianek.
+            </p>
+          </div>
+        </div>
+
+        <!-- Karta 2 -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-[#2D346F]/6">
+          <div class="aspect-[4/3] overflow-hidden bg-[#FEFAF3] flex items-center justify-center">
+            <img
+              src="https://placehold.co/600x450/FEFAF3/34BBA8?text=sarenka"
+              alt="Sarenka w mini zoo w Zamku Karnity"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="font-sans font-bold text-[#2D346F] text-xl mb-2">Kontakt z naturą</h3>
+            <p class="font-sans text-[#2D346F]/65 text-sm leading-relaxed">
+              Mini zoo z alpakami i sarenikami, wycieczki do leśniczówki i codzienne odkrywanie mazurskiej przyrody.
+            </p>
+          </div>
+        </div>
+
+        <!-- Karta 3 -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-[#2D346F]/6">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img
+              src="https://placehold.co/600x450/2D346F/34BBA8?text=Warsztaty"
+              alt="Dzieci podczas warsztatów plastycznych na koloniach"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="font-sans font-bold text-[#2D346F] text-xl mb-2">Kreatywność i talent</h3>
+            <p class="font-sans text-[#2D346F]/65 text-sm leading-relaxed">
+              Warsztaty plastyczne w plenerze, karaoke, wieczór talentów i wielka olimpiada sportowa.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Program kolonii ──────────────────────────────────── -->
+  <section class="bg-white py-20 px-6">
+    <div class="max-w-3xl mx-auto">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-[#34BBA8] mb-3">Harmonogram</p>
+      <h2 class="font-sans italic text-[clamp(2rem,4vw,3rem)] text-[#2D346F] mb-12 leading-tight">
+        Program kolonii
+      </h2>
+      <div class="divide-y divide-[#2D346F]/10">
+        {days.map((d, i) => (
+          <details class="group py-5" open={i === 0}>
+            <summary class="flex justify-between items-start cursor-pointer gap-4 list-none">
+              <span class="font-sans text-[#2D346F] font-semibold text-lg leading-snug group-open:text-[#34BBA8] transition-colors duration-200">
+                <span class="text-[#34BBA8] font-bold text-sm uppercase tracking-wider mr-2">{d.day}</span>
+                {d.title}
+              </span>
+              <span class="flex-shrink-0 mt-1 text-[#34BBA8] text-2xl font-light transition-transform duration-200 group-open:rotate-45">+</span>
+            </summary>
+            <p class="font-sans mt-4 text-[#2D346F]/70 leading-relaxed text-base">
+              {d.body}
+            </p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Informacje praktyczne ────────────────────────────── -->
+  <section class="bg-[#FEFAF3] py-20 px-6">
+    <div class="max-w-4xl mx-auto">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-[#34BBA8] mb-3">Logistyka</p>
+      <h2 class="font-sans italic text-[clamp(2rem,4vw,3rem)] text-[#2D346F] mb-12 leading-tight">
+        Informacje praktyczne
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {info.map(item => (
+          <div class="bg-white rounded-2xl px-6 py-5 flex items-start gap-4 shadow-sm border border-[#2D346F]/6">
+            <span class="text-[#34BBA8] mt-0.5 shrink-0" set:html={item.icon} />
+            <div>
+              <p class="font-sans font-bold text-xs uppercase tracking-wider text-[#2D346F]/40 mb-1">{item.label}</p>
+              <p class="font-sans text-[#2D346F] text-sm leading-relaxed">{item.value}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ──────────────────────────────────────────────── -->
+  <section class="bg-[#2D346F] py-24 px-6">
+    <div class="max-w-2xl mx-auto text-center flex flex-col items-center gap-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-[#34BBA8]">Zapisz się</p>
+      <h2 class="font-sans italic text-[clamp(2rem,4vw,3rem)] text-white leading-tight">
+        Zapisz dziecko na najlepsze lato
+      </h2>
+      <p class="font-sans text-white/70 text-lg leading-relaxed max-w-lg">
+        Miejsc jest mało. Jeśli chcesz, żeby Twoje dziecko spędziło wakacje
+        w Zamku Karnity z ekipą Kolorowego Przedszkola — odezwij się teraz.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 mt-2">
+        <a
+          href="tel:+48605657366"
+          class="inline-block bg-[#34BBA8] text-white font-sans font-bold uppercase tracking-wider text-sm px-8 py-4 rounded-lg transition-colors duration-200 hover:bg-[#F2795D]"
+        >
+          Zadzwoń — 605 657 366
+        </a>
+        <a
+          href="mailto:przedszkole@kolorowe.eu"
+          class="inline-block border-2 border-white/40 text-white font-sans font-semibold uppercase tracking-wider text-sm px-8 py-4 rounded-lg transition-colors duration-200 hover:border-[#34BBA8] hover:text-[#34BBA8]"
+        >
+          Napisz do nas
+        </a>
+      </div>
+      <p class="font-sans text-white/40 text-sm mt-2 italic">Serdecznie zapraszam — Olga Trębicka</p>
+    </div>
+  </section>
+
+  <!-- ─── Minimal footer ───────────────────────────────────── -->
+  <footer class="bg-[#2D346F] border-t border-white/10 py-8 px-6">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <a href="/">
+        <img src={logoUrl} alt="Kolorowe Przedszkole" class="h-8 w-auto brightness-0 invert" />
+      </a>
+      <p class="font-sans text-xs text-white/30">© 2026 Kolorowe Przedszkole</p>
+      <div class="flex gap-6">
+        <a href="tel:+48605657366" class="font-sans text-xs text-white/50 hover:text-white transition-colors duration-200">+48 605 657 366</a>
+        <a href="mailto:przedszkole@kolorowe.eu" class="font-sans text-xs text-white/50 hover:text-white transition-colors duration-200">przedszkole@kolorowe.eu</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
