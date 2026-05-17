@@ -148,72 +148,71 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
   </div>
 </header>
 
-<script>
-  // AbortController ensures old listeners are cleaned up before re-adding on each navigation.
-  // Without this, Astro's View Transitions can morph/persist the navbar element across pages,
-  // causing click handlers to stack — hamburger fires twice (open then immediately close).
-  let navbarController: AbortController | null = null;
+<script is:inline>
+  // is:inline ensures this script re-runs on every View Transitions navigation.
+  // Regular <script> modules run only once (cached by the browser), which caused
+  // the hamburger to stop working after client-side navigation.
 
-  function initNavbar() {
-    navbarController?.abort();
-    navbarController = new AbortController();
-    const { signal } = navbarController;
-
-    // Scroll effect
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
+  // Scroll handler — attached once to window; looks up #navbar dynamically each scroll
+  if (!window.__navScrollAttached) {
+    window.__navScrollAttached = true;
+    window.addEventListener('scroll', function () {
+      var navbar = document.getElementById('navbar');
+      if (!navbar) return;
       if (window.scrollY > 10) {
-        navbar?.classList.add('shadow-md');
-        navbar?.classList.remove('bg-brand-cream/90', 'backdrop-blur-sm');
-        navbar?.classList.add('bg-brand-cream');
+        navbar.classList.add('shadow-md');
+        navbar.classList.remove('bg-brand-cream/90', 'backdrop-blur-sm');
+        navbar.classList.add('bg-brand-cream');
       } else {
-        navbar?.classList.remove('shadow-md', 'bg-brand-cream');
-        navbar?.classList.add('bg-brand-cream/90', 'backdrop-blur-sm');
+        navbar.classList.remove('shadow-md', 'bg-brand-cream');
+        navbar.classList.add('bg-brand-cream/90', 'backdrop-blur-sm');
       }
-    }, { passive: true, signal });
+    }, { passive: true });
+  }
 
-    // Smooth scroll to top on logo click
-    document.querySelector<HTMLAnchorElement>('header a[href="/"]')?.addEventListener('click', (e) => {
-      if (window.location.pathname === '/') {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    }, { signal });
+  // Mobile menu — re-attached fresh on every page render
+  var toggle = document.getElementById('mobile-menu-toggle');
+  var mobileMenu = document.getElementById('mobile-menu');
 
-    // Mobile menu toggle
-    const toggle = document.getElementById('mobile-menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    toggle?.addEventListener('click', () => {
-      const isOpen = mobileMenu?.classList.contains('hidden');
-      mobileMenu?.classList.toggle('hidden', !isOpen);
-      toggle.setAttribute('aria-expanded', String(isOpen));
-    }, { signal });
+  if (toggle && mobileMenu) {
+    toggle.addEventListener('click', function () {
+      var hidden = mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden', !hidden);
+      toggle.setAttribute('aria-expanded', String(hidden));
+    });
 
-    // Mobile accordion
-    function setupAccordion(toggleId: string, menuId: string, chevronId: string) {
-      const btn = document.getElementById(toggleId);
-      const menu = document.getElementById(menuId);
-      const chevron = document.getElementById(chevronId);
-      btn?.addEventListener('click', () => {
-        const open = !menu?.classList.contains('hidden');
-        menu?.classList.toggle('hidden', open);
-        chevron?.classList.toggle('rotate-180', !open);
+    function setupAccordion(toggleId, menuId, chevronId) {
+      var btn = document.getElementById(toggleId);
+      var menu = document.getElementById(menuId);
+      var chevron = document.getElementById(chevronId);
+      if (!btn || !menu) return;
+      btn.addEventListener('click', function () {
+        var open = !menu.classList.contains('hidden');
+        menu.classList.toggle('hidden', open);
+        if (chevron) chevron.classList.toggle('rotate-180', !open);
         btn.setAttribute('aria-expanded', String(!open));
-      }, { signal });
+      });
     }
 
     setupAccordion('mobile-onas-toggle', 'mobile-onas-menu', 'mobile-onas-chevron');
     setupAccordion('mobile-lok-toggle',  'mobile-lok-menu',  'mobile-lok-chevron');
 
-    // Close mobile menu on any link click
-    mobileMenu?.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu?.classList.add('hidden');
-        toggle?.setAttribute('aria-expanded', 'false');
-      }, { signal });
+    mobileMenu.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        mobileMenu.classList.add('hidden');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
     });
   }
 
-  // Fires on first load AND after every View Transitions navigation
-  document.addEventListener('astro:page-load', initNavbar);
+  // Smooth scroll to top on logo click
+  var logoLink = document.querySelector('header a[href="/"]');
+  if (logoLink) {
+    logoLink.addEventListener('click', function (e) {
+      if (window.location.pathname === '/') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
 </script>
