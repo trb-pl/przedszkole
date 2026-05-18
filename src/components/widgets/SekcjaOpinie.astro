@@ -24,7 +24,7 @@ const opinie = [
 ---
 
 <section id="opinie" class="bg-brand-warm py-16 md:py-20">
-  <div class="max-w-5xl mx-auto px-4 md:px-6">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
 
     <!-- Section heading -->
     <div class="text-center mb-10 md:mb-14">
@@ -44,16 +44,25 @@ const opinie = [
         <div id="opinie-track" class="flex transition-transform duration-500 ease-in-out">
           {opinie.map((opinia) => (
             <div class="min-w-full">
-              <article class="bg-white px-6 md:px-16 py-10 md:py-14 flex flex-col gap-5 min-h-[340px] md:min-h-[380px]">
-                <span class="font-sans text-6xl md:text-7xl leading-none text-brand-teal/80 select-none" aria-hidden="true">"</span>
-                <p class="font-sans text-base md:text-lg lg:text-xl leading-relaxed text-brand-navy/80 flex-1">
+              <article class="bg-white px-6 md:px-14 py-12 md:py-16 flex flex-col items-center justify-center text-center gap-6 min-h-[420px] md:min-h-[440px]">
+
+                <!-- Decorative quote glyph (SVG, not HTML char — renders cleanly across fonts) -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 md:w-12 md:h-12 text-brand-teal/70 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h10zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
+                </svg>
+
+                <!-- Body — larger, italic, capped width for comfortable line length -->
+                <p class="font-sans italic text-lg md:text-xl lg:text-2xl leading-relaxed text-brand-navy/85 max-w-2xl">
                   {opinia.tekst}
                 </p>
-                <div class="flex flex-col gap-1 mt-2">
-                  <span class="text-brand-yellow text-lg tracking-wide" aria-label="5 z 5 gwiazdek">★★★★★</span>
+
+                <!-- Author block -->
+                <div class="flex flex-col items-center gap-1.5 mt-2">
+                  <span class="text-brand-yellow text-xl tracking-wide" aria-label="5 z 5 gwiazdek">★★★★★</span>
                   <p class="font-sans font-bold text-brand-navy text-sm uppercase tracking-wider">{opinia.autor}</p>
                   <p class="font-sans italic text-brand-navy/55 text-sm">{opinia.podpis}</p>
                 </div>
+
               </article>
             </div>
           ))}
