@@ -4,58 +4,52 @@ const opinie = [
     tekst: 'Za co kocham przedszkole? Za wszystkich nauczycieli i pracowników, zabawy na powietrzu przy każdej pogodzie, odpowiedni balans pomiędzy zabawą a nauką, za kreatywne prace plastyczne które dziecko każdego dnia przynosi do domu, oraz za wzruszające i wspaniałe uroczystości na Boże Narodzenie, oraz Zakończenie Roku.',
     autor: 'Paulina',
     podpis: 'Mama Zosi',
+    glyph: 'k',
+    accent: 'text-brand-teal',
   },
   {
     tekst: 'Jestem zachwycona poziomem opieki w Kolorowym Przedszkolu. Nauczyciele tworzą ciepłą, bezpieczną przestrzeń, w której dzieci mogą eksplorować świat. Program edukacyjny jest doskonale zbalansowany, łącząc naukę z zabawą. Moja córka codziennie wraca do domu pełna nowych doświadczeń i z uśmiechem na twarzy.',
     autor: 'Gosia',
     podpis: 'Mama Kasi',
+    glyph: 'o',
+    accent: 'text-brand-coral',
   },
   {
     tekst: 'Wybór Kolorowego Przedszkola to najlepsza decyzja, jaką podjęliśmy dla naszego syna. Bogactwo zajęć artystycznych, sportowych i językowych zachwyca nas każdego dnia. Szczególnie cenimy sobie regularną komunikację z wychowawcami oraz czyste, przestronne i inspirujące otoczenie, które sprzyja harmonijnemu rozwojowi dzieci.',
     autor: 'Michał',
     podpis: 'Tata Antka',
+    glyph: 'l',
+    accent: 'text-brand-yellow',
   },
   {
     tekst: 'Kolorowe Przedszkole wyróżnia się nowoczesnym podejściem do edukacji wczesnoszkolnej. Doceniam szczególnie małe grupy, które pozwalają na indywidualne traktowanie każdego dziecka. Nauczyciele są wyjątkowo cierpliwi i kreatywni, a różnorodność zajęć dodatkowych sprawia, że dzieci z radością uczestniczą w codziennych aktywnościach.',
     autor: 'Marzena',
     podpis: 'Mama Asi',
+    glyph: 'e',
+    accent: 'text-brand-teal',
   },
 ];
 
-// Decorative scattered letters in the background.
-// Alphabet limited to {k, o, l, r, w, e} — pulls from "kolorowe".
-// Two sizes (LG/SM), rotations span ~90° for an organic, hand-tossed feel.
+// Background scattered letters — kept from the previous design.
 const LG = 'text-7xl md:text-[11rem]';
 const SM = 'text-4xl md:text-6xl';
 const letters = [
-  // Top
   { c: 'k', top: '5%',  left: '8%',  size: LG, rot: -28 },
   { c: 'l', top: '4%',  left: '34%', size: LG, rot: -45 },
   { c: 'O', top: '8%',  left: '58%', size: LG, rot: 18 },
   { c: 'w', top: '3%',  left: '82%', size: LG, rot: 38 },
-
-  // Left
-  { c: 'O', top: '34%', left: '14%', size: LG, rot: -20 },
-  { c: 'k', top: '56%', left: '4%',  size: LG, rot: -40 },
-  { c: 'e', top: '78%', left: '16%', size: SM, rot: 18 },
-
-  // Right
-  { c: 'r', top: '32%', left: '86%', size: SM, rot: -38 },
-  { c: 'O', top: '56%', left: '96%', size: LG, rot: 28 },
-  { c: 'k', top: '78%', left: '84%', size: LG, rot: 40 },
-
-  // Bottom
-  { c: 'e', top: '92%', left: '10%', size: LG, rot: -15 },
-  { c: 'l', top: '88%', left: '36%', size: LG, rot: -32 },
-  { c: 'O', top: '93%', left: '62%', size: LG, rot: 14 },
-  { c: 'w', top: '90%', left: '88%', size: SM, rot: 30 },
+  { c: 'O', top: '50%', left: '4%',  size: LG, rot: -20 },
+  { c: 'k', top: '50%', left: '96%', size: LG, rot: 28 },
+  { c: 'e', top: '94%', left: '12%', size: LG, rot: -15 },
+  { c: 'l', top: '92%', left: '38%', size: LG, rot: -32 },
+  { c: 'O', top: '95%', left: '62%', size: LG, rot: 14 },
+  { c: 'w', top: '92%', left: '88%', size: SM, rot: 30 },
 ];
 ---
 
 <section id="opinie" class="relative bg-brand-warm py-16 md:py-20 overflow-hidden">
 
-  <!-- Decorative scattered-letters background — handwritten Caveat at low opacity.
-       Pointer-events disabled so they never intercept clicks/touch. -->
+  <!-- Decorative scattered letters -->
   <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
     {letters.map((l) => (
       <span
@@ -65,10 +59,10 @@ const letters = [
     ))}
   </div>
 
-  <div class="relative max-w-3xl mx-auto px-4 md:px-6">
+  <div class="relative max-w-7xl mx-auto px-4 md:px-6">
 
     <!-- Section heading -->
-    <div class="text-center mb-10 md:mb-12">
+    <div class="text-center mb-6 md:mb-8">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">
         Opinie rodziców
       </p>
@@ -77,78 +71,55 @@ const letters = [
       </h2>
     </div>
 
-    <!-- Slider wrapper -->
-    <div class="relative">
-
-      <!-- Clipping container -->
-      <div class="overflow-hidden rounded-2xl shadow-sm">
-        <div id="opinie-track" class="flex transition-transform duration-500 ease-in-out">
-          {opinie.map((opinia) => (
-            <div class="min-w-full">
-              <article class="bg-white px-6 md:px-12 py-10 md:py-12 flex flex-col items-center justify-center text-center gap-5 min-h-[340px] md:min-h-[380px]">
-
-                <!-- Decorative quote glyph -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-brand-teal/70 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h10zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
-                </svg>
-
-                <!-- Body -->
-                <p class="font-sans italic text-base md:text-lg leading-relaxed text-brand-navy/85 max-w-xl">
-                  {opinia.tekst}
-                </p>
-
-                <!-- Author block -->
-                <div class="flex flex-col items-center gap-1 mt-1">
-                  <span class="text-brand-yellow text-base tracking-wide" aria-label="5 z 5 gwiazdek">★★★★★</span>
-                  <p class="font-sans font-bold text-brand-navy text-sm uppercase tracking-wider">{opinia.autor}</p>
-                  <p class="font-sans italic text-brand-navy/55 text-sm">{opinia.podpis}</p>
-                </div>
-
-              </article>
-            </div>
-          ))}
-        </div>
+    <!-- Aggregate rating banner — strong trust signal -->
+    <div class="flex flex-col items-center gap-2 mb-12 md:mb-14">
+      <div class="flex gap-1.5 text-brand-yellow text-3xl md:text-4xl tracking-wide" aria-label="Średnia ocena 5 z 5 gwiazdek">
+        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
       </div>
-
-      <!-- Prev arrow -->
-      <button id="opinie-prev" aria-label="Poprzednia opinia"
-        class="absolute -left-3 md:-left-5 top-1/2 -translate-y-1/2 z-20
-          w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center
-          bg-white border border-brand-navy/10 shadow-md text-brand-navy
-          hover:bg-brand-navy hover:text-brand-cream hover:border-brand-navy
-          transition-all duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-
-      <!-- Next arrow -->
-      <button id="opinie-next" aria-label="Następna opinia"
-        class="absolute -right-3 md:-right-5 top-1/2 -translate-y-1/2 z-20
-          w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center
-          bg-white border border-brand-navy/10 shadow-md text-brand-navy
-          hover:bg-brand-navy hover:text-brand-cream hover:border-brand-navy
-          transition-all duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-
+      <p class="font-sans text-brand-navy/65 text-sm uppercase tracking-wider">
+        5.0 · 4 opinie rodziców
+      </p>
     </div>
 
-    <!-- Dots -->
-    <div class="flex justify-center gap-3 mt-8">
-      {opinie.map((_, i) => (
-        <button
-          class="opinie-dot w-2.5 h-2.5 rounded-full bg-brand-navy/30 transition-all duration-300"
-          data-index={i}
-          aria-label={`Opinia ${i + 1}`}
-        />
+    <!-- 4-card grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 md:gap-6">
+      {opinie.map((opinia) => (
+        <article class="group relative flex flex-col gap-5 bg-white rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-6 md:p-7 min-h-[420px] md:min-h-[440px] overflow-hidden">
+
+          <!-- Decorative big letter in the top-right corner — picks up the brand glyph -->
+          <span
+            class={`absolute -top-4 -right-4 text-8xl md:text-9xl leading-none opacity-15 ${opinia.accent} group-hover:opacity-25 transition-opacity duration-300 pointer-events-none`}
+            style="font-family: 'learning-curve', sans-serif; font-weight: 400; transform: rotate(8deg);"
+            aria-hidden="true"
+          >{opinia.glyph}</span>
+
+          <!-- Quote glyph -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="relative w-8 h-8 text-brand-teal/70 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h10zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
+          </svg>
+
+          <!-- Body -->
+          <p class="relative font-sans italic text-base leading-relaxed text-brand-navy/85 flex-1">
+            {opinia.tekst}
+          </p>
+
+          <!-- Stars across the full card width -->
+          <div class="relative flex justify-between text-brand-yellow text-xl md:text-2xl tracking-wide pt-1" aria-label="5 z 5 gwiazdek">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+          </div>
+
+          <!-- Author block — divided by a thin rule for structure -->
+          <div class="relative flex flex-col gap-1 pt-4 border-t border-brand-navy/8">
+            <p class="font-sans font-bold text-brand-navy text-sm uppercase tracking-wider">{opinia.autor}</p>
+            <p class="font-sans italic text-brand-navy/55 text-sm">{opinia.podpis}</p>
+          </div>
+
+        </article>
       ))}
     </div>
 
     <!-- Link to Google reviews -->
-    <div class="text-center mt-8">
+    <div class="text-center mt-12 md:mt-14">
       <a href="https://www.google.com/search?q=Kolorowe+Przedszkole+Saska+Kępa+opinie" target="_blank" rel="noopener noreferrer"
          class="inline-block font-sans text-sm font-semibold uppercase tracking-wider
                 text-brand-teal hover:text-brand-coral
@@ -159,49 +130,3 @@ const letters = [
 
   </div>
 </section>
-
-<script>
-  const track = document.getElementById('opinie-track') as HTMLElement;
-  const dots = document.querySelectorAll<HTMLElement>('.opinie-dot');
-  const total = 4;
-  let current = 0;
-
-  function goTo(index: number) {
-    if (index < 0) index = total - 1;
-    if (index >= total) index = 0;
-    current = index;
-    track.style.transform = `translateX(-${current * 100}%)`;
-
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('bg-brand-navy/30', i !== current);
-      dot.classList.toggle('bg-brand-navy',    i === current);
-      dot.classList.toggle('w-6',              i === current);
-      dot.classList.toggle('w-2.5',            i !== current);
-    });
-  }
-
-  document.getElementById('opinie-prev')?.addEventListener('click', () => goTo(current - 1));
-  document.getElementById('opinie-next')?.addEventListener('click', () => goTo(current + 1));
-  dots.forEach(dot => dot.addEventListener('click', (e) =>
-    goTo(Number((e.currentTarget as HTMLElement).dataset.index))
-  ));
-
-  // Touch / swipe
-  let touchStartX = 0;
-  let touchStartY = 0;
-  track.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-  track.addEventListener('touchmove', (e) => {
-    const dx = Math.abs(touchStartX - e.touches[0].clientX);
-    const dy = Math.abs(touchStartY - e.touches[0].clientY);
-    if (dx > dy) e.preventDefault();
-  }, { passive: false });
-  track.addEventListener('touchend', (e) => {
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
-  });
-
-  goTo(0);
-</script>
