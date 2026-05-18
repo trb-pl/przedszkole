@@ -22,28 +22,30 @@ const opinie = [
   },
 ];
 
-// Decorative scattered letters — handwritten "kolorowe przedszkole" wrap around the card.
-// Positions tuned manually so they read organic (no apparent grid) and stay clear of the
-// card on desktop. On mobile fewer letters peek out behind the card edge.
+// Decorative scattered letters in the background.
+// Alphabet limited to {k, o, l, r, w, e} — pulls from "kolorowe", giving brand recall
+// without spelling anything specific. Two sizes only (LG/SM) for a tighter rhythm.
+const LG = 'text-5xl md:text-8xl';
+const SM = 'text-2xl md:text-4xl';
 const letters = [
-  { c: 'k', top: '4%',  left: '5%',  size: 'text-5xl md:text-7xl',  rot: -10 },
-  { c: 'o', top: '9%',  left: '22%', size: 'text-3xl md:text-5xl',  rot: 14 },
-  { c: 'l', top: '3%',  left: '40%', size: 'text-4xl md:text-6xl',  rot: -16 },
-  { c: 'o', top: '7%',  left: '58%', size: 'text-3xl md:text-5xl',  rot: 6 },
-  { c: 'r', top: '2%',  left: '74%', size: 'text-5xl md:text-7xl',  rot: 18 },
-  { c: 'o', top: '10%', left: '90%', size: 'text-3xl md:text-5xl',  rot: -8 },
-  { c: 'w', top: '24%', left: '3%',  size: 'text-4xl md:text-6xl',  rot: 15 },
-  { c: 'e', top: '50%', left: '2%',  size: 'text-5xl md:text-7xl',  rot: -12 },
-  { c: 'p', top: '72%', left: '4%',  size: 'text-3xl md:text-5xl',  rot: 10 },
-  { c: 'r', top: '90%', left: '8%',  size: 'text-4xl md:text-6xl',  rot: -6 },
-  { c: 'z', top: '94%', left: '24%', size: 'text-3xl md:text-5xl',  rot: 12 },
-  { c: 'e', top: '88%', left: '42%', size: 'text-5xl md:text-7xl',  rot: -8 },
-  { c: 'd', top: '93%', left: '58%', size: 'text-3xl md:text-5xl',  rot: 14 },
-  { c: 's', top: '90%', left: '74%', size: 'text-4xl md:text-6xl',  rot: -10 },
-  { c: 'z', top: '94%', left: '90%', size: 'text-3xl md:text-5xl',  rot: 8 },
-  { c: 'k', top: '24%', left: '94%', size: 'text-5xl md:text-7xl',  rot: -14 },
-  { c: 'o', top: '48%', left: '95%', size: 'text-3xl md:text-5xl',  rot: 10 },
-  { c: 'l', top: '72%', left: '93%', size: 'text-4xl md:text-6xl',  rot: -8 },
+  { c: 'k', top: '4%',  left: '6%',  size: LG, rot: -10 },
+  { c: 'o', top: '9%',  left: '22%', size: SM, rot: 14 },
+  { c: 'l', top: '3%',  left: '38%', size: LG, rot: -16 },
+  { c: 'r', top: '8%',  left: '54%', size: SM, rot: 6 },
+  { c: 'w', top: '2%',  left: '70%', size: LG, rot: 18 },
+  { c: 'e', top: '10%', left: '88%', size: SM, rot: -8 },
+  { c: 'o', top: '24%', left: '3%',  size: SM, rot: 12 },
+  { c: 'k', top: '48%', left: '2%',  size: LG, rot: -12 },
+  { c: 'r', top: '72%', left: '4%',  size: SM, rot: 10 },
+  { c: 'e', top: '90%', left: '8%',  size: LG, rot: -6 },
+  { c: 'w', top: '94%', left: '24%', size: SM, rot: 12 },
+  { c: 'l', top: '88%', left: '42%', size: LG, rot: -8 },
+  { c: 'o', top: '93%', left: '58%', size: SM, rot: 14 },
+  { c: 'k', top: '90%', left: '74%', size: LG, rot: -10 },
+  { c: 'e', top: '94%', left: '90%', size: SM, rot: 8 },
+  { c: 'r', top: '24%', left: '95%', size: SM, rot: -14 },
+  { c: 'w', top: '48%', left: '94%', size: LG, rot: 10 },
+  { c: 'l', top: '72%', left: '93%', size: SM, rot: -8 },
 ];
 ---
 
@@ -54,8 +56,8 @@ const letters = [
   <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
     {letters.map((l) => (
       <span
-        class={`absolute font-['Caveat'] text-brand-navy/15 leading-none ${l.size}`}
-        style={`top: ${l.top}; left: ${l.left}; transform: translate(-50%, -50%) rotate(${l.rot}deg);`}
+        class={`absolute text-brand-navy/15 leading-none ${l.size}`}
+        style={`top: ${l.top}; left: ${l.left}; transform: translate(-50%, -50%) rotate(${l.rot}deg); font-family: 'learning-curve', sans-serif; font-weight: 400;`}
       >{l.c}</span>
     ))}
   </div>
