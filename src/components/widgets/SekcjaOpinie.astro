@@ -24,7 +24,7 @@ const opinie = [
 ---
 
 <section id="opinie" class="bg-brand-warm py-16 md:py-20">
-  <div class="max-w-6xl mx-auto px-4 md:px-6">
+  <div class="max-w-5xl mx-auto px-4 md:px-6">
 
     <!-- Section heading -->
     <div class="text-center mb-10 md:mb-14">
@@ -36,32 +36,17 @@ const opinie = [
       </h2>
     </div>
 
-    <!-- Desktop grid (md+): all 4 visible at once -->
-    <div class="hidden md:grid md:grid-cols-2 gap-5 lg:gap-6">
-      {opinie.map((opinia) => (
-        <article class="flex flex-col gap-4 bg-white border border-brand-navy/5 rounded-2xl shadow-sm px-7 py-7">
-          <span class="font-sans text-5xl leading-none text-brand-teal/80 select-none" aria-hidden="true">"</span>
-          <p class="font-sans text-base lg:text-lg leading-relaxed text-brand-navy/75 flex-1">
-            {opinia.tekst}
-          </p>
-          <div class="flex flex-col gap-1 mt-2">
-            <span class="text-brand-yellow text-lg tracking-wide" aria-label="5 z 5 gwiazdek">★★★★★</span>
-            <p class="font-sans font-bold text-brand-navy text-sm uppercase tracking-wider">{opinia.autor}</p>
-            <p class="font-sans italic text-brand-navy/55 text-sm">{opinia.podpis}</p>
-          </div>
-        </article>
-      ))}
-    </div>
+    <!-- Slider wrapper — same pattern as SekcjaWartosci -->
+    <div class="relative">
 
-    <!-- Mobile slider -->
-    <div class="block md:hidden">
-      <div class="overflow-hidden rounded-2xl">
+      <!-- Clipping container — round corners contain the track -->
+      <div class="overflow-hidden rounded-2xl shadow-sm">
         <div id="opinie-track" class="flex transition-transform duration-500 ease-in-out">
           {opinie.map((opinia) => (
             <div class="min-w-full">
-              <article class="flex flex-col gap-4 bg-white border border-brand-navy/5 shadow-sm px-6 py-7">
-                <span class="font-sans text-5xl leading-none text-brand-teal/80 select-none" aria-hidden="true">"</span>
-                <p class="font-sans text-base leading-relaxed text-brand-navy/75 flex-1">
+              <article class="bg-white px-6 md:px-16 py-10 md:py-14 flex flex-col gap-5 min-h-[340px] md:min-h-[380px]">
+                <span class="font-sans text-6xl md:text-7xl leading-none text-brand-teal/80 select-none" aria-hidden="true">"</span>
+                <p class="font-sans text-base md:text-lg lg:text-xl leading-relaxed text-brand-navy/80 flex-1">
                   {opinia.tekst}
                 </p>
                 <div class="flex flex-col gap-1 mt-2">
@@ -75,19 +60,44 @@ const opinie = [
         </div>
       </div>
 
-      <!-- Dots -->
-      <div class="flex justify-center gap-3 mt-6">
-        {opinie.map((_, i) => (
-          <button
-            class="opinie-dot w-2.5 h-2.5 rounded-full bg-brand-navy/30 transition-all duration-300"
-            data-index={i}
-            aria-label={`Opinia ${i + 1}`}
-          />
-        ))}
-      </div>
+      <!-- Prev arrow -->
+      <button id="opinie-prev" aria-label="Poprzednia opinia"
+        class="absolute -left-3 md:-left-5 top-1/2 -translate-y-1/2 z-20
+          w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center
+          bg-white border border-brand-navy/10 shadow-md text-brand-navy
+          hover:bg-brand-navy hover:text-brand-cream hover:border-brand-navy
+          transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <!-- Next arrow -->
+      <button id="opinie-next" aria-label="Następna opinia"
+        class="absolute -right-3 md:-right-5 top-1/2 -translate-y-1/2 z-20
+          w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center
+          bg-white border border-brand-navy/10 shadow-md text-brand-navy
+          hover:bg-brand-navy hover:text-brand-cream hover:border-brand-navy
+          transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
     </div>
 
-    <!-- Link to Google reviews — strongest social-proof signal -->
+    <!-- Dots -->
+    <div class="flex justify-center gap-3 mt-8">
+      {opinie.map((_, i) => (
+        <button
+          class="opinie-dot w-2.5 h-2.5 rounded-full bg-brand-navy/30 transition-all duration-300"
+          data-index={i}
+          aria-label={`Opinia ${i + 1}`}
+        />
+      ))}
+    </div>
+
+    <!-- Link to Google reviews -->
     <div class="text-center mt-10">
       <a href="https://www.google.com/search?q=Kolorowe+Przedszkole+Saska+Kępa+opinie" target="_blank" rel="noopener noreferrer"
          class="inline-block font-sans text-sm font-semibold uppercase tracking-wider
@@ -101,37 +111,44 @@ const opinie = [
 </section>
 
 <script>
-  const track = document.getElementById('opinie-track');
-  const dots = document.querySelectorAll('.opinie-dot');
-  let current = 0;
+  const track = document.getElementById('opinie-track') as HTMLElement;
+  const dots = document.querySelectorAll<HTMLElement>('.opinie-dot');
   const total = 4;
+  let current = 0;
 
   function goTo(index: number) {
-    current = (index + total) % total;
-    (track as HTMLElement).style.transform = `translateX(-${current * 100}%)`;
+    if (index < 0) index = total - 1;
+    if (index >= total) index = 0;
+    current = index;
+    track.style.transform = `translateX(-${current * 100}%)`;
+
     dots.forEach((dot, i) => {
-      dot.classList.toggle('bg-brand-navy', i === current);
       dot.classList.toggle('bg-brand-navy/30', i !== current);
-      dot.classList.toggle('w-6', i === current);
-      dot.classList.toggle('w-2.5', i !== current);
+      dot.classList.toggle('bg-brand-navy',    i === current);
+      dot.classList.toggle('w-6',              i === current);
+      dot.classList.toggle('w-2.5',            i !== current);
     });
   }
 
-  dots.forEach(dot => dot.addEventListener('click', (e) => goTo(Number((e.currentTarget as HTMLElement).dataset.index))));
+  document.getElementById('opinie-prev')?.addEventListener('click', () => goTo(current - 1));
+  document.getElementById('opinie-next')?.addEventListener('click', () => goTo(current + 1));
+  dots.forEach(dot => dot.addEventListener('click', (e) =>
+    goTo(Number((e.currentTarget as HTMLElement).dataset.index))
+  ));
 
+  // Touch / swipe
   let touchStartX = 0;
   let touchStartY = 0;
-  const slider = track?.parentElement;
-  slider?.addEventListener('touchstart', (e) => {
+  track.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
   }, { passive: true });
-  slider?.addEventListener('touchmove', (e) => {
-    const diffX = Math.abs(touchStartX - e.touches[0].clientX);
-    const diffY = Math.abs(touchStartY - e.touches[0].clientY);
-    if (diffX > diffY) e.preventDefault();
+  track.addEventListener('touchmove', (e) => {
+    const dx = Math.abs(touchStartX - e.touches[0].clientX);
+    const dy = Math.abs(touchStartY - e.touches[0].clientY);
+    if (dx > dy) e.preventDefault();
   }, { passive: false });
-  slider?.addEventListener('touchend', (e) => {
+  track.addEventListener('touchend', (e) => {
     const diff = touchStartX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
   });
