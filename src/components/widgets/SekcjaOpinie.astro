@@ -21,13 +21,49 @@ const opinie = [
     podpis: 'Mama Asi',
   },
 ];
+
+// Decorative scattered letters — handwritten "kolorowe przedszkole" wrap around the card.
+// Positions tuned manually so they read organic (no apparent grid) and stay clear of the
+// card on desktop. On mobile fewer letters peek out behind the card edge.
+const letters = [
+  { c: 'k', top: '4%',  left: '5%',  size: 'text-5xl md:text-7xl',  rot: -10 },
+  { c: 'o', top: '9%',  left: '22%', size: 'text-3xl md:text-5xl',  rot: 14 },
+  { c: 'l', top: '3%',  left: '40%', size: 'text-4xl md:text-6xl',  rot: -16 },
+  { c: 'o', top: '7%',  left: '58%', size: 'text-3xl md:text-5xl',  rot: 6 },
+  { c: 'r', top: '2%',  left: '74%', size: 'text-5xl md:text-7xl',  rot: 18 },
+  { c: 'o', top: '10%', left: '90%', size: 'text-3xl md:text-5xl',  rot: -8 },
+  { c: 'w', top: '24%', left: '3%',  size: 'text-4xl md:text-6xl',  rot: 15 },
+  { c: 'e', top: '50%', left: '2%',  size: 'text-5xl md:text-7xl',  rot: -12 },
+  { c: 'p', top: '72%', left: '4%',  size: 'text-3xl md:text-5xl',  rot: 10 },
+  { c: 'r', top: '90%', left: '8%',  size: 'text-4xl md:text-6xl',  rot: -6 },
+  { c: 'z', top: '94%', left: '24%', size: 'text-3xl md:text-5xl',  rot: 12 },
+  { c: 'e', top: '88%', left: '42%', size: 'text-5xl md:text-7xl',  rot: -8 },
+  { c: 'd', top: '93%', left: '58%', size: 'text-3xl md:text-5xl',  rot: 14 },
+  { c: 's', top: '90%', left: '74%', size: 'text-4xl md:text-6xl',  rot: -10 },
+  { c: 'z', top: '94%', left: '90%', size: 'text-3xl md:text-5xl',  rot: 8 },
+  { c: 'k', top: '24%', left: '94%', size: 'text-5xl md:text-7xl',  rot: -14 },
+  { c: 'o', top: '48%', left: '95%', size: 'text-3xl md:text-5xl',  rot: 10 },
+  { c: 'l', top: '72%', left: '93%', size: 'text-4xl md:text-6xl',  rot: -8 },
+];
 ---
 
-<section id="opinie" class="bg-brand-warm py-16 md:py-20">
-  <div class="max-w-4xl mx-auto px-4 md:px-6">
+<section id="opinie" class="relative bg-brand-warm py-16 md:py-20 overflow-hidden">
+
+  <!-- Decorative scattered-letters background — handwritten Caveat at low opacity.
+       Pointer-events disabled so they never intercept clicks/touch. -->
+  <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+    {letters.map((l) => (
+      <span
+        class={`absolute font-['Caveat'] text-brand-navy/15 leading-none ${l.size}`}
+        style={`top: ${l.top}; left: ${l.left}; transform: translate(-50%, -50%) rotate(${l.rot}deg);`}
+      >{l.c}</span>
+    ))}
+  </div>
+
+  <div class="relative max-w-3xl mx-auto px-4 md:px-6">
 
     <!-- Section heading -->
-    <div class="text-center mb-10 md:mb-14">
+    <div class="text-center mb-10 md:mb-12">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">
         Opinie rodziców
       </p>
@@ -36,29 +72,29 @@ const opinie = [
       </h2>
     </div>
 
-    <!-- Slider wrapper — same pattern as SekcjaWartosci -->
+    <!-- Slider wrapper -->
     <div class="relative">
 
-      <!-- Clipping container — round corners contain the track -->
+      <!-- Clipping container -->
       <div class="overflow-hidden rounded-2xl shadow-sm">
         <div id="opinie-track" class="flex transition-transform duration-500 ease-in-out">
           {opinie.map((opinia) => (
             <div class="min-w-full">
-              <article class="bg-white px-6 md:px-14 py-12 md:py-16 flex flex-col items-center justify-center text-center gap-6 min-h-[420px] md:min-h-[440px]">
+              <article class="bg-white px-6 md:px-12 py-10 md:py-12 flex flex-col items-center justify-center text-center gap-5 min-h-[340px] md:min-h-[380px]">
 
-                <!-- Decorative quote glyph (SVG, not HTML char — renders cleanly across fonts) -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 md:w-12 md:h-12 text-brand-teal/70 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <!-- Decorative quote glyph -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-brand-teal/70 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h10zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
                 </svg>
 
-                <!-- Body — larger, italic, capped width for comfortable line length -->
-                <p class="font-sans italic text-lg md:text-xl lg:text-2xl leading-relaxed text-brand-navy/85 max-w-2xl">
+                <!-- Body -->
+                <p class="font-sans italic text-base md:text-lg leading-relaxed text-brand-navy/85 max-w-xl">
                   {opinia.tekst}
                 </p>
 
                 <!-- Author block -->
-                <div class="flex flex-col items-center gap-1.5 mt-2">
-                  <span class="text-brand-yellow text-xl tracking-wide" aria-label="5 z 5 gwiazdek">★★★★★</span>
+                <div class="flex flex-col items-center gap-1 mt-1">
+                  <span class="text-brand-yellow text-base tracking-wide" aria-label="5 z 5 gwiazdek">★★★★★</span>
                   <p class="font-sans font-bold text-brand-navy text-sm uppercase tracking-wider">{opinia.autor}</p>
                   <p class="font-sans italic text-brand-navy/55 text-sm">{opinia.podpis}</p>
                 </div>
@@ -107,7 +143,7 @@ const opinie = [
     </div>
 
     <!-- Link to Google reviews -->
-    <div class="text-center mt-10">
+    <div class="text-center mt-8">
       <a href="https://www.google.com/search?q=Kolorowe+Przedszkole+Saska+Kępa+opinie" target="_blank" rel="noopener noreferrer"
          class="inline-block font-sans text-sm font-semibold uppercase tracking-wider
                 text-brand-teal hover:text-brand-coral
