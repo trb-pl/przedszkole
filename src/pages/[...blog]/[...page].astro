@@ -43,9 +43,14 @@ const metadata = {
       <Headline subtitle="Praktyczne porady dla rodziców przedszkolaków — z perspektywy ponad 30 lat doświadczenia.">
         Porady
       </Headline>
-      <!-- Kafelki tematyczne -->
+      <BlogList posts={page.data} />
+      <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+
+      <!-- Topic tiles: moved below BlogList so they don't push articles off
+           the first screen on mobile. Retained because the descriptive anchor
+           text + topical grouping provide real internal-linking SEO value. -->
       {currentPage === 1 && (
-        <div class="mb-14">
+        <div class="mt-16 pt-12 border-t border-brand-navy/10">
           <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-5">O czym piszemy?</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <a href="/porady/adaptacja-w-przedszkolu-saska-kepa"
@@ -77,9 +82,6 @@ const metadata = {
           </div>
         </div>
       )}
-
-      <BlogList posts={page.data} />
-      <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
     </div>
   </div>
 </Layout>
