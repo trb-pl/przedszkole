@@ -71,34 +71,30 @@ const letters = [
       </h2>
     </div>
 
-    <!-- 4-card grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 md:gap-6">
+    <!-- Desktop grid (md+): 2-col on tablet, 4-col on widescreen -->
+    <div class="hidden md:grid grid-cols-2 xl:grid-cols-4 gap-5 md:gap-6">
       {opinie.map((opinia) => (
         <article class="group relative flex flex-col gap-5 bg-white rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-6 md:p-7 min-h-[420px] md:min-h-[440px] overflow-hidden">
 
-          <!-- Decorative big letter in the top-right corner — picks up the brand glyph -->
+          <!-- Decorative big letter in the top-right corner -->
           <span
             class={`absolute -top-4 -right-4 text-8xl md:text-9xl leading-none opacity-15 ${opinia.accent} group-hover:opacity-25 transition-opacity duration-300 pointer-events-none`}
             style="font-family: 'learning-curve', sans-serif; font-weight: 400; transform: rotate(8deg);"
             aria-hidden="true"
           >{opinia.glyph}</span>
 
-          <!-- Quote glyph -->
           <svg xmlns="http://www.w3.org/2000/svg" class="relative w-8 h-8 text-brand-teal/70 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h10zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
           </svg>
 
-          <!-- Body -->
           <p class="relative font-sans italic text-base leading-relaxed text-brand-navy/85 flex-1">
             {opinia.tekst}
           </p>
 
-          <!-- Stars across the full card width -->
           <div class="relative flex justify-between text-brand-yellow text-xl md:text-2xl tracking-wide pt-1" aria-label="5 z 5 gwiazdek">
             <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
           </div>
 
-          <!-- Author block — divided by a thin rule for structure -->
           <div class="relative flex flex-col gap-1 pt-4 border-t border-brand-navy/8">
             <p class="font-sans font-bold text-brand-navy text-sm uppercase tracking-wider">{opinia.autor}</p>
             <p class="font-sans italic text-brand-navy/55 text-sm">{opinia.podpis}</p>
@@ -106,6 +102,81 @@ const letters = [
 
         </article>
       ))}
+    </div>
+
+    <!-- Mobile slider (< md): one card at a time, dots + arrows + swipe -->
+    <div class="block md:hidden">
+      <div class="relative">
+
+        <div class="overflow-hidden rounded-2xl">
+          <div id="opinie-track" class="flex transition-transform duration-500 ease-in-out">
+            {opinie.map((opinia) => (
+              <div class="min-w-full px-1">
+                <article class="relative flex flex-col gap-5 bg-white rounded-2xl shadow-sm p-6 min-h-[420px] overflow-hidden">
+
+                  <span
+                    class={`absolute -top-4 -right-4 text-8xl leading-none opacity-15 ${opinia.accent} pointer-events-none`}
+                    style="font-family: 'learning-curve', sans-serif; font-weight: 400; transform: rotate(8deg);"
+                    aria-hidden="true"
+                  >{opinia.glyph}</span>
+
+                  <svg xmlns="http://www.w3.org/2000/svg" class="relative w-8 h-8 text-brand-teal/70 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h10zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
+                  </svg>
+
+                  <p class="relative font-sans italic text-base leading-relaxed text-brand-navy/85 flex-1">
+                    {opinia.tekst}
+                  </p>
+
+                  <div class="relative flex justify-between text-brand-yellow text-xl tracking-wide pt-1" aria-label="5 z 5 gwiazdek">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                  </div>
+
+                  <div class="relative flex flex-col gap-1 pt-4 border-t border-brand-navy/8">
+                    <p class="font-sans font-bold text-brand-navy text-sm uppercase tracking-wider">{opinia.autor}</p>
+                    <p class="font-sans italic text-brand-navy/55 text-sm">{opinia.podpis}</p>
+                  </div>
+
+                </article>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <button id="opinie-prev" aria-label="Poprzednia opinia"
+          class="absolute -left-2 top-1/2 -translate-y-1/2 z-20
+            w-10 h-10 rounded-full flex items-center justify-center
+            bg-white border border-brand-navy/10 shadow-md text-brand-navy
+            hover:bg-brand-navy hover:text-brand-cream hover:border-brand-navy
+            transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <button id="opinie-next" aria-label="Następna opinia"
+          class="absolute -right-2 top-1/2 -translate-y-1/2 z-20
+            w-10 h-10 rounded-full flex items-center justify-center
+            bg-white border border-brand-navy/10 shadow-md text-brand-navy
+            hover:bg-brand-navy hover:text-brand-cream hover:border-brand-navy
+            transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+      </div>
+
+      <!-- Dots -->
+      <div class="flex justify-center gap-3 mt-6">
+        {opinie.map((_, i) => (
+          <button
+            class="opinie-dot w-2.5 h-2.5 rounded-full bg-brand-navy/30 transition-all duration-300"
+            data-index={i}
+            aria-label={`Opinia ${i + 1}`}
+          />
+        ))}
+      </div>
     </div>
 
     <!-- Link to Google reviews -->
@@ -120,3 +191,51 @@ const letters = [
 
   </div>
 </section>
+
+<script>
+  // Mobile-only slider — desktop renders the grid and these elements stay hidden.
+  const track = document.getElementById('opinie-track') as HTMLElement | null;
+  const dots = document.querySelectorAll<HTMLElement>('.opinie-dot');
+  const total = 4;
+  let current = 0;
+
+  function goTo(index: number) {
+    if (!track) return;
+    if (index < 0) index = total - 1;
+    if (index >= total) index = 0;
+    current = index;
+    track.style.transform = `translateX(-${current * 100}%)`;
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('bg-brand-navy/30', i !== current);
+      dot.classList.toggle('bg-brand-navy',    i === current);
+      dot.classList.toggle('w-6',              i === current);
+      dot.classList.toggle('w-2.5',            i !== current);
+    });
+  }
+
+  document.getElementById('opinie-prev')?.addEventListener('click', () => goTo(current - 1));
+  document.getElementById('opinie-next')?.addEventListener('click', () => goTo(current + 1));
+  dots.forEach(dot => dot.addEventListener('click', (e) =>
+    goTo(Number((e.currentTarget as HTMLElement).dataset.index))
+  ));
+
+  // Touch / swipe
+  let touchStartX = 0;
+  let touchStartY = 0;
+  track?.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  track?.addEventListener('touchmove', (e) => {
+    const dx = Math.abs(touchStartX - e.touches[0].clientX);
+    const dy = Math.abs(touchStartY - e.touches[0].clientY);
+    if (dx > dy) e.preventDefault();
+  }, { passive: false });
+  track?.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
+  });
+
+  goTo(0);
+</script>
