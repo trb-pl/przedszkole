@@ -28,6 +28,8 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
       <!-- O Nas dropdown -->
       <div class="relative group/onas">
         <button
+          type="button"
+          data-dd-toggle="onas"
           class={`${isONas ? active : link} flex items-center gap-1 pb-2 -mb-2`}
           aria-haspopup="true" aria-expanded="false"
         >
@@ -36,8 +38,10 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <!-- Dropdown panel — pt-2 bridges the gap so hover doesn't break -->
-        <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover/onas:opacity-100 group-hover/onas:visible translate-y-1 group-hover/onas:translate-y-0 transition-all duration-200 z-50">
+        <!-- Dropdown panel — pt-2 bridges the gap so hover doesn't break.
+             data-[open] mirrors group-hover behavior so touch devices (iPad)
+             that don't fire :hover can still open the menu via tap. -->
+        <div data-dd-panel="onas" class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover/onas:opacity-100 group-hover/onas:visible data-[open]:opacity-100 data-[open]:visible translate-y-1 group-hover/onas:translate-y-0 data-[open]:translate-y-0 transition-all duration-200 z-50">
           <div class="w-52 bg-white rounded-xl shadow-lg border border-brand-navy/8 py-2">
             <a href="/o-nas/historia"        class={`block px-4 py-2.5 font-sans text-xs font-semibold uppercase tracking-wider text-brand-navy hover:text-brand-teal transition-colors duration-150 ${pathname === '/o-nas/historia' ? 'text-brand-teal' : ''}`}>Historia</a>
             <a href="/o-nas/misja-i-wartosci" class={`block px-4 py-2.5 font-sans text-xs font-semibold uppercase tracking-wider text-brand-navy hover:text-brand-teal transition-colors duration-150 ${pathname === '/o-nas/misja-i-wartosci' ? 'text-brand-teal' : ''}`}>Misja i Wartości</a>
@@ -49,6 +53,8 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
       <!-- Lokalizacje dropdown -->
       <div class="relative group/lok">
         <button
+          type="button"
+          data-dd-toggle="lok"
           class={`${isLokalizacje ? active : link} flex items-center gap-1 pb-2 -mb-2`}
           aria-haspopup="true" aria-expanded="false"
         >
@@ -57,7 +63,7 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover/lok:opacity-100 group-hover/lok:visible translate-y-1 group-hover/lok:translate-y-0 transition-all duration-200 z-50">
+        <div data-dd-panel="lok" class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover/lok:opacity-100 group-hover/lok:visible data-[open]:opacity-100 data-[open]:visible translate-y-1 group-hover/lok:translate-y-0 data-[open]:translate-y-0 transition-all duration-200 z-50">
           <div class="w-52 bg-white rounded-xl shadow-lg border border-brand-navy/8 py-2">
             <a href="/lokalizacje/lotarynska-18"  class={`block px-4 py-2.5 font-sans text-xs font-semibold uppercase tracking-wider text-brand-navy hover:text-brand-teal transition-colors duration-150 ${pathname === '/lokalizacje/lotarynska-18' ? 'text-brand-teal' : ''}`}>Lotaryńska 18</a>
             <a href="/lokalizacje/zakopianska-8"  class={`block px-4 py-2.5 font-sans text-xs font-semibold uppercase tracking-wider text-brand-navy hover:text-brand-teal transition-colors duration-150 ${pathname === '/lokalizacje/zakopianska-8' ? 'text-brand-teal' : ''}`}>Zakopiańska 8</a>
@@ -168,10 +174,45 @@ const active = "font-sans text-sm font-semibold text-brand-teal uppercase tracki
       }
     }, { passive: true });
 
+    // Helper: close all open desktop dropdowns (O Nas / Lokalizacje)
+    function closeAllDesktopDropdowns() {
+      document.querySelectorAll('[data-dd-panel][data-open]').forEach(function (p) {
+        p.removeAttribute('data-open');
+      });
+      document.querySelectorAll('[data-dd-toggle]').forEach(function (b) {
+        b.setAttribute('aria-expanded', 'false');
+        var chev = b.querySelector('svg');
+        if (chev) chev.classList.remove('rotate-180');
+      });
+    }
+
     // Single delegated click handler for the entire navbar.
     document.addEventListener('click', function (e) {
       var target = e.target;
       if (!(target instanceof Element)) return;
+
+      // Desktop dropdown toggle (O Nas / Lokalizacje) — needed for touch
+      // devices like iPad where :hover doesn't reliably fire.
+      var ddToggle = target.closest('[data-dd-toggle]');
+      if (ddToggle) {
+        e.preventDefault();
+        var key = ddToggle.getAttribute('data-dd-toggle');
+        var panel = document.querySelector('[data-dd-panel="' + key + '"]');
+        var wasOpen = panel && panel.hasAttribute('data-open');
+        closeAllDesktopDropdowns();
+        if (panel && !wasOpen) {
+          panel.setAttribute('data-open', '');
+          ddToggle.setAttribute('aria-expanded', 'true');
+          var chev = ddToggle.querySelector('svg');
+          if (chev) chev.classList.add('rotate-180');
+        }
+        return;
+      }
+
+      // Click outside an open dropdown → close it
+      if (!target.closest('[data-dd-panel]')) {
+        closeAllDesktopDropdowns();
+      }
 
       // Hamburger toggle
       var toggleBtn = target.closest('#mobile-menu-toggle');
