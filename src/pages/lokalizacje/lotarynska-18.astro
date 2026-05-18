@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
+import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 
 import imgDlaKogo    from '~/assets/images/lotarynska-5.jpg';
 import imgAdaptacja  from '~/assets/images/lotarynska-adaptacja.jpg';
@@ -70,6 +71,12 @@ const faqItems = [
 ---
 
 <Layout metadata={metadata}>
+
+  <SchemaBreadcrumbs items={[
+    { name: 'Strona główna', url: 'https://koloroweprzedszkole.com/' },
+    { name: 'Lokalizacje', url: 'https://koloroweprzedszkole.com/lokalizacje/lotarynska-18' },
+    { name: 'Lotaryńska 18', url: 'https://koloroweprzedszkole.com/lokalizacje/lotarynska-18' },
+  ]} />
 
   <!-- JSON-LD schema -->
   <script type="application/ld+json" set:html={JSON.stringify({

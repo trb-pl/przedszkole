@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
+import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 
 import imgTatiana from '~/assets/images/kuchnia-tatiana.jpg';
 import imgZupa    from '~/assets/images/kuchnia-zupa.jpg';
@@ -86,6 +87,12 @@ const faqItems = [
 ---
 
 <Layout metadata={metadata}>
+
+  <SchemaBreadcrumbs items={[
+    { name: 'Strona główna', url: 'https://koloroweprzedszkole.com/' },
+    { name: 'O nas', url: 'https://koloroweprzedszkole.com/o-nas/historia' },
+    { name: 'Kuchnia', url: 'https://koloroweprzedszkole.com/o-nas/kuchnia' },
+  ]} />
 
   <!-- FAQPage schema -->
   <script type="application/ld+json" set:html={JSON.stringify({

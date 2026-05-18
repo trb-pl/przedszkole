@@ -56,4 +56,46 @@ Siła pokoleń uczy nas jednego: adaptacja to bardzo często większy stres dla 
 
 ---
 
-**Szukasz przedszkola z indywidualnym podejściem do adaptacji?** [Skontaktuj się z nami](/kontakt) — chętnie opowiemy więcej o tym, jak wygląda pierwszy tydzień w Kolorowym Przedszkolu.
+**Szukasz przedszkola z indywidualnym podejściem do adaptacji?** [Skontaktuj się z nami](/kontakt) — chętnie opowiemy więcej o tym, jak wygląda pierwszy tydzień w Kolorowym Przedszkolu na [Lotaryńskiej 18](/lokalizacje/lotarynska-18) (od 2,5 roku) lub [Zakopiańskiej 8](/lokalizacje/zakopianska-8) (od 4 lat). Możesz też od razu [wypełnić formularz rekrutacyjny](/rekrutacja).
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Łagodna adaptacja dziecka w przedszkolu — 5 kroków",
+  "description": "Praktyczny przewodnik z Kolorowego Przedszkola na Saskiej Kępie: jak przygotować 3-latka do pierwszych dni w przedszkolu.",
+  "totalTime": "P14D",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Rozmowa w domu",
+      "text": "Opowiadaj o przedszkolu w pozytywny sposób, ale bez budowania nierealnych obietnic."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Wspólne zakupy",
+      "text": "Wybierzcie razem kapcie na zmianę i mały plecaczek — dziecko poczuje sprawczość."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Krótkie pożegnania",
+      "text": "W szatni pożegnaj się szybko, z uśmiechem i konkretną obietnicą, której dotrzymasz, np. „Będę zaraz po obiedzie"."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Kawałek domu",
+      "text": "Pozwól zabrać ulubionego pluszaka lub kocyk — znajomy przedmiot daje poczucie bezpieczeństwa."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 5,
+      "name": "Konsekwencja",
+      "text": "Unikaj przerw w uczęszczaniu do placówki w pierwszych tygodniach (z wyjątkiem chorób). Regularność buduje rutynę."
+    }
+  ]
+}
+</script>

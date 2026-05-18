@@ -1,0 +1,36 @@
+---
+// BreadcrumbList schema — Google replaces ugly URLs in SERP with this trail.
+// Drop into any subpage with the path from "Strona główna" to the current page.
+//
+// Usage:
+//   <SchemaBreadcrumbs items={[
+//     { name: 'Strona główna', url: 'https://koloroweprzedszkole.com/' },
+//     { name: 'O nas', url: 'https://koloroweprzedszkole.com/o-nas/historia' },
+//     { name: 'Historia', url: 'https://koloroweprzedszkole.com/o-nas/historia' },
+//   ]} />
+export interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+
+const itemList = items.map((item, idx) => ({
+  '@type': 'ListItem',
+  position: idx + 1,
+  name: item.name,
+  item: item.url,
+}));
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: itemList,
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

@@ -1,5 +1,6 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 import ContactForm from '~/components/ContactForm.astro';
 
 const metadata = {
@@ -60,6 +61,11 @@ const kroki = [
 ---
 
 <Layout metadata={metadata}>
+
+  <SchemaBreadcrumbs items={[
+    { name: 'Strona główna', url: 'https://koloroweprzedszkole.com/' },
+    { name: 'Rekrutacja', url: 'https://koloroweprzedszkole.com/rekrutacja' },
+  ]} />
 
   <!-- FAQPage schema -->
   <script type="application/ld+json" set:html={JSON.stringify({

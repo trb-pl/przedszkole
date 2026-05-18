@@ -1,5 +1,6 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 
 const metadata = {
   title: 'Kadra Kolorowego Przedszkola — Nauczyciele i Wychowawcy | Saska Kępa',
@@ -18,6 +19,12 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
+
+  <SchemaBreadcrumbs items={[
+    { name: 'Strona główna', url: 'https://koloroweprzedszkole.com/' },
+    { name: 'O nas', url: 'https://koloroweprzedszkole.com/o-nas/historia' },
+    { name: 'Kadra', url: 'https://koloroweprzedszkole.com/o-nas/kadra' },
+  ]} />
   <section class="bg-brand-warm pt-24 pb-20">
     <div class="max-w-3xl mx-auto px-6">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>

@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
+import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 import SekcjaZajecia from '~/components/widgets/SekcjaZajecia.astro';
 
 import imgDlaKogo    from '~/assets/images/zakopianska-1.jpg';
@@ -56,6 +57,12 @@ const faqItems = [
 ---
 
 <Layout metadata={metadata}>
+
+  <SchemaBreadcrumbs items={[
+    { name: 'Strona główna', url: 'https://koloroweprzedszkole.com/' },
+    { name: 'Lokalizacje', url: 'https://koloroweprzedszkole.com/lokalizacje/zakopianska-8' },
+    { name: 'Zakopiańska 8', url: 'https://koloroweprzedszkole.com/lokalizacje/zakopianska-8' },
+  ]} />
 
   <!-- JSON-LD schema -->
   <script type="application/ld+json" set:html={JSON.stringify({

@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
+import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 
 import imgSerce   from '~/assets/images/wartosci-serce.jpg';
 import imgDom     from '~/assets/images/wartosci-dom.jpg';
@@ -94,6 +95,12 @@ const faqItems = [
 ---
 
 <Layout metadata={metadata}>
+
+  <SchemaBreadcrumbs items={[
+    { name: 'Strona główna', url: 'https://koloroweprzedszkole.com/' },
+    { name: 'O nas', url: 'https://koloroweprzedszkole.com/o-nas/historia' },
+    { name: 'Misja i wartości', url: 'https://koloroweprzedszkole.com/o-nas/misja-i-wartosci' },
+  ]} />
 
   <!-- FAQPage schema (inline, dotyczy tej strony) -->
   <script type="application/ld+json" set:html={JSON.stringify({

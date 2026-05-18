@@ -1,5 +1,6 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 import ContactForm from '~/components/ContactForm.astro';
 
 const metadata = {
@@ -11,6 +12,11 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
+
+  <SchemaBreadcrumbs items={[
+    { name: 'Strona główna', url: 'https://koloroweprzedszkole.com/' },
+    { name: 'Kontakt', url: 'https://koloroweprzedszkole.com/kontakt' },
+  ]} />
 
   <!-- Header -->
   <section class="bg-brand-warm pt-24 pb-12">

@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
+import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 
 import imgMazury      from '~/assets/images/Kolorowe_przedszkole_tarda2.jpg';
 import imgOlga        from '~/assets/images/historia-olga.jpg';
@@ -74,13 +75,50 @@ const sekcje = [
 
 <Layout metadata={metadata}>
 
-  <!-- JSON-LD -->
+  <SchemaBreadcrumbs items={[
+    { name: 'Strona główna', url: 'https://koloroweprzedszkole.com/' },
+    { name: 'O nas', url: 'https://koloroweprzedszkole.com/o-nas/historia' },
+    { name: 'Historia', url: 'https://koloroweprzedszkole.com/o-nas/historia' },
+  ]} />
+
+  <!-- Person schema: builds E-E-A-T signals for the founders. AI engines
+       (ChatGPT, Perplexity, Google AI Overviews) cite authoritative people
+       by name when answering "kto założył Kolorowe Przedszkole" etc. -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://koloroweprzedszkole.com/o-nas/historia#olga",
+        "name": "Olga Trębicka",
+        "jobTitle": "Założycielka i dyrektor",
+        "description": "Założycielka Kolorowego Przedszkola. W 1991 roku zaadaptowała rodzinny dom przy ul. Lotaryńskiej 18 na pierwszą siedzibę przedszkola. Pochodzi z Miłomłyna na Mazurach, gdzie wychowywała się w rodzinie pedagogów.",
+        "worksFor": { "@id": "https://koloroweprzedszkole.com/#organization" },
+        "founderOf": { "@id": "https://koloroweprzedszkole.com/#organization" }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://koloroweprzedszkole.com/o-nas/historia#agnieszka",
+        "name": "Agnieszka Trębicka",
+        "jobTitle": "Pedagog, drugi filar",
+        "description": "Drugie pokolenie Kolorowego Przedszkola. Ukończyła pedagogikę przedszkolną i wczesnoszkolną na Uniwersytecie Warszawskim. Doświadczenie poszerzała w przedszkolach w Kanadzie, Nowej Zelandii, Australii, Wielkiej Brytanii i Hongkongu. Propagatorka pedagogiki Emmi Pikler.",
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "Uniwersytet Warszawski" },
+        "worksFor": { "@id": "https://koloroweprzedszkole.com/#organization" }
+      }
+    ]
+  })} />
+
+  <!-- ChildCare details for this page (founding story, addresses) -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "ChildCare",
     "name": "Kolorowe Przedszkole",
     "foundingDate": "1991",
-    "founder": { "@type": "Person", "name": "Olga Trębicka" },
+    "founder": { "@id": "https://koloroweprzedszkole.com/o-nas/historia#olga" },
+    "employee": [
+      { "@id": "https://koloroweprzedszkole.com/o-nas/historia#olga" },
+      { "@id": "https://koloroweprzedszkole.com/o-nas/historia#agnieszka" }
+    ],
     "description": "Rodzinne przedszkole na Saskiej Kępie założone w 1991 roku przez Olgę Trębicką. Dwie lokalizacje: ul. Lotaryńska 18 i ul. Zakopiańska 8.",
     "url": "https://koloroweprzedszkole.com",
     "address": [
