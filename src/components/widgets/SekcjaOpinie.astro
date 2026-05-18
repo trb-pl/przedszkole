@@ -23,51 +23,53 @@ const opinie = [
 ];
 ---
 
-<section id="opinie" class="min-h-screen bg-brand-navy flex items-center">
-  <div class="max-w-6xl mx-auto px-6 py-20 w-full">
+<section id="opinie" class="bg-brand-warm py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
 
-    <!-- Header -->
-    <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-cream/50 text-center mb-3">
-      Opinie o Kolorowym Przedszkolu
-    </p>
-    <h2 class="font-sans italic text-[clamp(1.8rem,3vw,3rem)] text-brand-cream text-center mb-12">
-      Co mówią rodzice
-    </h2>
+    <!-- Section heading -->
+    <div class="text-center mb-10 md:mb-14">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">
+        Opinie rodziców
+      </p>
+      <h2 class="font-sans italic text-[clamp(2rem,4vw,3.2rem)] text-brand-navy leading-tight">
+        Co mówią rodzice
+      </h2>
+    </div>
 
-    <!-- Desktop grid (md+) -->
-    <div class="hidden md:grid md:grid-cols-2 gap-6 lg:gap-8">
+    <!-- Desktop grid (md+): all 4 visible at once -->
+    <div class="hidden md:grid md:grid-cols-2 gap-5 lg:gap-6">
       {opinie.map((opinia) => (
-        <div class="flex flex-col gap-4 bg-brand-cream/10 border border-brand-cream/15 rounded-2xl px-7 py-7">
-          <span class="font-sans text-5xl leading-none text-brand-teal select-none">"</span>
-          <p class="font-sans text-lg leading-relaxed text-brand-cream/85 flex-1">
+        <article class="flex flex-col gap-4 bg-white border border-brand-navy/5 rounded-2xl shadow-sm px-7 py-7">
+          <span class="font-sans text-5xl leading-none text-brand-teal/80 select-none" aria-hidden="true">"</span>
+          <p class="font-sans text-base lg:text-lg leading-relaxed text-brand-navy/75 flex-1">
             {opinia.tekst}
           </p>
           <div class="flex flex-col gap-1 mt-2">
-            <span class="text-brand-yellow text-lg tracking-wide">★★★★★</span>
-            <p class="font-sans font-bold text-brand-cream text-sm uppercase tracking-wider">{opinia.autor}</p>
-            <p class="font-sans italic text-brand-cream/60 text-sm">{opinia.podpis}</p>
+            <span class="text-brand-yellow text-lg tracking-wide" aria-label="5 z 5 gwiazdek">★★★★★</span>
+            <p class="font-sans font-bold text-brand-navy text-sm uppercase tracking-wider">{opinia.autor}</p>
+            <p class="font-sans italic text-brand-navy/55 text-sm">{opinia.podpis}</p>
           </div>
-        </div>
+        </article>
       ))}
     </div>
 
     <!-- Mobile slider -->
     <div class="block md:hidden">
-      <div class="overflow-hidden">
+      <div class="overflow-hidden rounded-2xl">
         <div id="opinie-track" class="flex transition-transform duration-500 ease-in-out">
           {opinie.map((opinia) => (
-            <div class="min-w-full px-1">
-              <div class="flex flex-col gap-4 bg-brand-cream/10 border border-brand-cream/15 rounded-2xl px-7 py-7">
-                <span class="font-sans text-5xl leading-none text-brand-teal select-none">"</span>
-                <p class="font-sans text-base leading-relaxed text-brand-cream/85 flex-1">
+            <div class="min-w-full">
+              <article class="flex flex-col gap-4 bg-white border border-brand-navy/5 shadow-sm px-6 py-7">
+                <span class="font-sans text-5xl leading-none text-brand-teal/80 select-none" aria-hidden="true">"</span>
+                <p class="font-sans text-base leading-relaxed text-brand-navy/75 flex-1">
                   {opinia.tekst}
                 </p>
                 <div class="flex flex-col gap-1 mt-2">
-                  <span class="text-brand-yellow text-lg tracking-wide">★★★★★</span>
-                  <p class="font-sans font-bold text-brand-cream text-sm uppercase tracking-wider">{opinia.autor}</p>
-                  <p class="font-sans italic text-brand-cream/60 text-sm">{opinia.podpis}</p>
+                  <span class="text-brand-yellow text-lg tracking-wide" aria-label="5 z 5 gwiazdek">★★★★★</span>
+                  <p class="font-sans font-bold text-brand-navy text-sm uppercase tracking-wider">{opinia.autor}</p>
+                  <p class="font-sans italic text-brand-navy/55 text-sm">{opinia.podpis}</p>
                 </div>
-              </div>
+              </article>
             </div>
           ))}
         </div>
@@ -77,12 +79,22 @@ const opinie = [
       <div class="flex justify-center gap-3 mt-6">
         {opinie.map((_, i) => (
           <button
-            class="opinie-dot w-2.5 h-2.5 rounded-full bg-brand-cream/40 transition-all duration-300"
+            class="opinie-dot w-2.5 h-2.5 rounded-full bg-brand-navy/30 transition-all duration-300"
             data-index={i}
             aria-label={`Opinia ${i + 1}`}
           />
         ))}
       </div>
+    </div>
+
+    <!-- Link to Google reviews — strongest social-proof signal -->
+    <div class="text-center mt-10">
+      <a href="https://www.google.com/search?q=Kolorowe+Przedszkole+Saska+Kępa+opinie" target="_blank" rel="noopener noreferrer"
+         class="inline-block font-sans text-sm font-semibold uppercase tracking-wider
+                text-brand-teal hover:text-brand-coral
+                border-b border-current/40 hover:border-current pb-0.5 transition-colors duration-200">
+        Zobacz wszystkie opinie w Google →
+      </a>
     </div>
 
   </div>
@@ -98,9 +110,10 @@ const opinie = [
     current = (index + total) % total;
     (track as HTMLElement).style.transform = `translateX(-${current * 100}%)`;
     dots.forEach((dot, i) => {
-      dot.classList.toggle('bg-brand-cream', i === current);
-      dot.classList.toggle('bg-brand-cream/40', i !== current);
-      dot.classList.toggle('scale-125', i === current);
+      dot.classList.toggle('bg-brand-navy', i === current);
+      dot.classList.toggle('bg-brand-navy/30', i !== current);
+      dot.classList.toggle('w-6', i === current);
+      dot.classList.toggle('w-2.5', i !== current);
     });
   }
 
