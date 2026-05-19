@@ -4,29 +4,21 @@ const opinie = [
     tekst: 'Za co kocham przedszkole? Za wszystkich nauczycieli i pracowników, zabawy na powietrzu przy każdej pogodzie, odpowiedni balans pomiędzy zabawą a nauką, za kreatywne prace plastyczne które dziecko każdego dnia przynosi do domu, oraz za wzruszające i wspaniałe uroczystości na Boże Narodzenie, oraz Zakończenie Roku.',
     autor: 'Paulina',
     podpis: 'Mama Zosi',
-    glyph: 'k',
-    accent: 'text-brand-teal',
   },
   {
     tekst: 'Jestem zachwycona poziomem opieki w Kolorowym Przedszkolu. Nauczyciele tworzą ciepłą, bezpieczną przestrzeń, w której dzieci mogą eksplorować świat. Program edukacyjny jest doskonale zbalansowany, łącząc naukę z zabawą. Moja córka codziennie wraca do domu pełna nowych doświadczeń i z uśmiechem na twarzy.',
     autor: 'Gosia',
     podpis: 'Mama Kasi',
-    glyph: 'o',
-    accent: 'text-brand-coral',
   },
   {
     tekst: 'Wybór Kolorowego Przedszkola to najlepsza decyzja, jaką podjęliśmy dla naszego syna. Bogactwo zajęć artystycznych, sportowych i językowych zachwyca nas każdego dnia. Szczególnie cenimy sobie regularną komunikację z wychowawcami oraz czyste, przestronne i inspirujące otoczenie, które sprzyja harmonijnemu rozwojowi dzieci.',
     autor: 'Michał',
     podpis: 'Tata Antka',
-    glyph: 'l',
-    accent: 'text-brand-yellow',
   },
   {
     tekst: 'Kolorowe Przedszkole wyróżnia się nowoczesnym podejściem do edukacji wczesnoszkolnej. Doceniam szczególnie małe grupy, które pozwalają na indywidualne traktowanie każdego dziecka. Nauczyciele są wyjątkowo cierpliwi i kreatywni, a różnorodność zajęć dodatkowych sprawia, że dzieci z radością uczestniczą w codziennych aktywnościach.',
     autor: 'Marzena',
     podpis: 'Mama Asi',
-    glyph: 'e',
-    accent: 'text-brand-teal',
   },
 ];
 
@@ -40,28 +32,35 @@ const SM = 'text-3xl md:text-5xl';          // small dots/corners
 
 const letters = [
   // Top band — header area
-  { c: 'k', top: '3%',  left: '5%',   size: SM, rot: -38 },
-  { c: 'r', top: '8%',  left: '14%',  size: SM, rot: 22 },
-  { c: 'O', top: '6%',  left: '48%',  size: XL, rot: -8  },
-  { c: 'r', top: '4%',  left: '86%',  size: SM, rot: 16 },
-  { c: 'k', top: '10%', left: '95%',  size: SM, rot: -26 },
+  { c: 'k', top: '2%',  left: '4%',   size: SM, rot: -38 },
+  { c: 'r', top: '7%',  left: '12%',  size: SM, rot: 22 },
+  { c: 'w', top: '12%', left: '22%',  size: MD, rot: -18 },
+  { c: 'O', top: '5%',  left: '48%',  size: XL, rot: -8  },
+  { c: 'l', top: '14%', left: '74%',  size: SM, rot: 30 },
+  { c: 'r', top: '4%',  left: '85%',  size: SM, rot: 16 },
+  { c: 'k', top: '9%',  left: '95%',  size: SM, rot: -26 },
 
-  // Middle-left — partially behind cards on narrow, clear on wide
-  { c: 'k', top: '44%', left: '4%',   size: XL, rot: -22 },
-  { c: 'w', top: '66%', left: '6%',   size: SM, rot: 28 },
+  // Middle-left — outside max-w-7xl on wide screens
+  { c: 'e', top: '28%', left: '5%',   size: MD, rot: 24 },
+  { c: 'k', top: '46%', left: '3%',   size: XL, rot: -22 },
+  { c: 'r', top: '64%', left: '5%',   size: MD, rot: -32 },
+  { c: 'w', top: '78%', left: '4%',   size: SM, rot: 28 },
 
   // Middle-right
-  { c: 'e', top: '38%', left: '96%',  size: MD, rot: 18 },
-  { c: 'O', top: '62%', left: '97%',  size: MD, rot: -32 },
-  { c: 'l', top: '52%', left: '93%',  size: SM, rot: 14 },
+  { c: 'l', top: '28%', left: '95%',  size: MD, rot: -20 },
+  { c: 'e', top: '46%', left: '96%',  size: MD, rot: 18 },
+  { c: 'O', top: '66%', left: '97%',  size: MD, rot: -32 },
+  { c: 'k', top: '82%', left: '95%',  size: SM, rot: 40 },
 
   // Bottom band — below cards
   { c: 'w', top: '88%', left: '6%',   size: MD, rot: -28 },
   { c: 'r', top: '95%', left: '14%',  size: SM, rot: 42 },
-  { c: 'o', top: '90%', left: '32%',  size: MD, rot: 18 },
-  { c: 'r', top: '94%', left: '58%',  size: MD, rot: -36 },
-  { c: 'l', top: '88%', left: '78%',  size: SM, rot: 22 },
-  { c: 'w', top: '93%', left: '92%',  size: MD, rot: -12 },
+  { c: 'o', top: '90%', left: '28%',  size: MD, rot: 18 },
+  { c: 'l', top: '94%', left: '44%',  size: SM, rot: -20 },
+  { c: 'O', top: '90%', left: '58%',  size: MD, rot: -8 },
+  { c: 'r', top: '95%', left: '70%',  size: SM, rot: 30 },
+  { c: 'e', top: '88%', left: '82%',  size: MD, rot: -22 },
+  { c: 'w', top: '94%', left: '94%',  size: SM, rot: 30 },
 ];
 ---
 
@@ -94,13 +93,6 @@ const letters = [
       {opinie.map((opinia) => (
         <article class="group relative flex flex-col gap-5 bg-white rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-6 md:p-7 min-h-[420px] md:min-h-[440px] overflow-hidden">
 
-          <!-- Decorative big letter in the top-right corner -->
-          <span
-            class={`absolute -top-4 -right-4 text-8xl md:text-9xl leading-none opacity-15 ${opinia.accent} group-hover:opacity-25 transition-opacity duration-300 pointer-events-none`}
-            style="font-family: 'learning-curve', sans-serif; font-weight: 400; transform: rotate(8deg);"
-            aria-hidden="true"
-          >{opinia.glyph}</span>
-
           <svg xmlns="http://www.w3.org/2000/svg" class="relative w-8 h-8 text-brand-teal/70 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h10zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
           </svg>
@@ -131,12 +123,6 @@ const letters = [
             {opinie.map((opinia) => (
               <div class="min-w-full px-1">
                 <article class="relative flex flex-col gap-5 bg-white rounded-2xl shadow-sm p-6 min-h-[420px] overflow-hidden">
-
-                  <span
-                    class={`absolute -top-4 -right-4 text-8xl leading-none opacity-15 ${opinia.accent} pointer-events-none`}
-                    style="font-family: 'learning-curve', sans-serif; font-weight: 400; transform: rotate(8deg);"
-                    aria-hidden="true"
-                  >{opinia.glyph}</span>
 
                   <svg xmlns="http://www.w3.org/2000/svg" class="relative w-8 h-8 text-brand-teal/70 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h10zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
