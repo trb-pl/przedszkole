@@ -123,19 +123,24 @@ const faqItems = [
       sizes="100vw"
     />
 
-    <div class="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-      <p
-        class="font-sans font-bold uppercase tracking-widest text-xs text-brand-cream mb-2 md:mb-3"
-        style="text-shadow: 0 1px 6px rgba(45, 52, 111, 0.45);"
-      >
-        O nas
-      </p>
-      <h1
-        class="font-sans italic text-[clamp(2.4rem,7vw,5rem)] text-brand-cream leading-none tracking-tight"
-        style="text-shadow: 0 3px 14px rgba(45, 52, 111, 0.35);"
-      >
-        Kuchnia
-      </h1>
+    <!-- Editorial bottom-left composition. The italic H1 anchors the lower
+         corner of the band rather than fighting for optical center against
+         italic slant. Eyebrow tiny above it like a magazine kicker. -->
+    <div class="absolute inset-x-0 bottom-0 px-6 md:px-10 lg:px-16 pb-5 md:pb-8 lg:pb-10">
+      <div class="max-w-7xl mx-auto">
+        <p
+          class="font-sans font-bold uppercase tracking-[0.25em] text-[0.7rem] md:text-xs text-brand-cream mb-1.5 md:mb-2"
+          style="text-shadow: 0 1px 6px rgba(45, 52, 111, 0.45);"
+        >
+          O nas
+        </p>
+        <h1
+          class="font-sans italic text-[clamp(3rem,10vw,8rem)] text-brand-cream leading-[0.9] tracking-tight"
+          style="text-shadow: 0 3px 14px rgba(45, 52, 111, 0.35);"
+        >
+          Kuchnia
+        </h1>
+      </div>
     </div>
   </div>
 
