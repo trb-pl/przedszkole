@@ -106,16 +106,16 @@ const faqItems = [
     }))
   })} />
 
-  <!-- ─── Hero ──────────────────────────────────────────────── -->
-  <!-- Top: colorful 'mazy' band (designer asset). Bottom: white card pulled
-       up to overlap the band — title stays high-contrast on the card while
-       the colors take the upper third. -->
+  <!-- ─── Hero (editorial / Awwwards-style) ──────────────────── -->
+  <!-- Shorter colorful 'mazy' band + an oversized italic H1 that breaks
+       the boundary between the colorful zone and the cream zone. No card,
+       no shadow — the typography is the centerpiece. -->
   <div class="pt-16 md:pt-20">
     <Image
       src={headerMazy}
       alt=""
       aria-hidden="true"
-      class="w-full h-56 md:h-72 lg:h-80 object-cover"
+      class="w-full h-32 md:h-44 lg:h-52 object-cover"
       loading="eager"
       fetchpriority="high"
       widths={[768, 1280, 1920]}
@@ -123,16 +123,23 @@ const faqItems = [
     />
 
     <section class="bg-brand-cream pb-12 md:pb-16">
-      <div class="relative -mt-12 md:-mt-16 max-w-4xl mx-auto px-6">
-        <div class="bg-white rounded-2xl shadow-lg px-8 py-10 md:px-12 md:py-14 text-center">
-          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>
-          <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4rem)] text-brand-navy leading-tight mb-6">
-            Kuchnia
-          </h1>
-          <p class="font-sans text-lg text-brand-navy/70 max-w-xl mx-auto leading-relaxed">
+      <div class="max-w-6xl mx-auto px-6">
+
+        <!-- H1 — pulled up so its top half sits on the band, bottom half on cream -->
+        <h1 class="relative -mt-12 md:-mt-20 lg:-mt-24 font-sans italic text-[clamp(4rem,14vw,10rem)] text-brand-navy leading-[0.9] tracking-tight">
+          Kuchnia
+        </h1>
+
+        <!-- Eyebrow + lead in a sidebar-style grid -->
+        <div class="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8">
+          <p class="md:col-span-3 lg:col-span-2 font-sans font-bold uppercase tracking-widest text-xs text-brand-teal md:pt-2">
+            O nas
+          </p>
+          <p class="md:col-span-8 lg:col-span-7 font-sans text-base md:text-lg text-brand-navy/70 leading-relaxed">
             Gotujemy na Saskiej Kępie od 1991 roku — codziennie, od podstaw, bez cateringu. Oto co trafia na talerze naszych dzieci.
           </p>
         </div>
+
       </div>
     </section>
   </div>
