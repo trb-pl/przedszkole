@@ -2,12 +2,12 @@
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
 
 import imgTatiana from '~/assets/images/kuchnia-tatiana.jpg';
 import imgZupa    from '~/assets/images/kuchnia-zupa.jpg';
 import imgOgrodek from '~/assets/images/kuchnia-hero.jpg';
 import imgKanapki from '~/assets/images/kuchnia-kanapki.jpg';
-import headerMazy from '~/assets/images/header-mazy.png';
 
 const metadata = {
   title: 'Kuchnia Kolorowego Przedszkola — domowe obiady na Saskiej Kępie',
@@ -106,33 +106,7 @@ const faqItems = [
     }))
   })} />
 
-  <!-- ─── Hero (knockout style, trimmed) ─────────────────────── -->
-  <!-- Band sits directly under the navbar with no extra padding wrapper —
-       PageLayout's main pt-16 already pushes content below the fixed
-       navbar on mobile; on desktop the navbar (cream/90 + backdrop-blur)
-       gently tints over the top of the band. -->
-  <div class="relative">
-    <Image
-      src={headerMazy}
-      alt=""
-      aria-hidden="true"
-      class="w-full h-40 md:h-52 lg:h-60 object-cover"
-      loading="eager"
-      fetchpriority="high"
-      widths={[768, 1280, 1920]}
-      sizes="100vw"
-    />
-
-    <!-- Massive lowercase title bleeding below the band edge — the lower
-         portion of the letters is cream-on-cream below the band, so it
-         visually 'fades' / gets cut by the section divider. No shadow,
-         clean knockout. Centered horizontally. -->
-    <div class="absolute inset-x-0 bottom-0 pointer-events-none">
-      <h1 class="px-6 text-center font-sans font-black text-[clamp(4.5rem,16vw,12rem)] text-brand-cream leading-[0.85] tracking-tight lowercase translate-y-[13%] md:translate-y-[17%]">
-        kuchnia
-      </h1>
-    </div>
-  </div>
+  <HeroMazy title="kuchnia" />
 
   <!-- ─── Intro (with scattered-letters background, same pattern as Opinie) ─── -->
   <section class="relative bg-brand-cream py-16 md:py-20 overflow-hidden">

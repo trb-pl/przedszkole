@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
 
 import imgMazury      from '~/assets/images/Kolorowe_przedszkole_tarda2.jpg';
 import imgOlga        from '~/assets/images/historia-olga.jpg';
@@ -127,26 +128,7 @@ const sekcje = [
     ]
   })} />
 
-  <!-- ─── Hero ─────────────────────────────────────────────── -->
-  <section class="relative bg-brand-navy pt-20 pb-12 md:pt-32 md:pb-24 overflow-hidden">
-    <div class="absolute inset-0 bg-brand-navy/70 z-10"></div>
-    <img
-      src="https://placehold.co/1600x700/2D346F/34BBA8?text=Historia"
-      alt=""
-      aria-hidden="true"
-      class="absolute inset-0 w-full h-full object-cover opacity-20"
-    />
-    <div class="relative z-20 max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>
-      <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4rem)] text-brand-cream leading-tight mb-6">
-        Historia Kolorowego Przedszkola
-      </h1>
-      <p class="font-sans text-lg text-brand-cream/75 max-w-xl mx-auto leading-relaxed">
-        Od małej grupki dzieci w domu na Lotaryńskiej do dwóch lokalizacji
-        i ponad trzydziestu lat na Saskiej Kępie.
-      </p>
-    </div>
-  </section>
+  <HeroMazy title="historia" />
 
   <!-- ─── Intro ─────────────────────────────────────────────── -->
   <section class="bg-brand-cream py-20">

@@ -1,0 +1,36 @@
+---
+// Reusable hero band for subpages. Designer's colorful "mazy" pattern as the
+// band background, with a massive lowercase H1 in cream that bleeds slightly
+// below the band edge into the cream section below (knockout / fade effect).
+//
+// Usage:
+//   <HeroMazy title="kuchnia" />
+//   <HeroMazy title="historia" />
+import { Image } from 'astro:assets';
+import headerMazy from '~/assets/images/header-mazy.png';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="relative">
+  <Image
+    src={headerMazy}
+    alt=""
+    aria-hidden="true"
+    class="w-full h-40 md:h-52 lg:h-60 object-cover"
+    loading="eager"
+    fetchpriority="high"
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+  />
+
+  <div class="absolute inset-x-0 bottom-0 pointer-events-none">
+    <h1 class="px-6 text-center font-sans font-black text-[clamp(4.5rem,16vw,12rem)] text-brand-cream leading-[0.85] tracking-tight lowercase translate-y-[13%] md:translate-y-[17%]">
+      {title}
+    </h1>
+  </div>
+</div>
