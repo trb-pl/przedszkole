@@ -107,35 +107,35 @@ const faqItems = [
   })} />
 
   <!-- ─── Hero (knockout style, trimmed) ─────────────────────── -->
-  <!-- Smaller band, smaller H1 — no lead text under hero (it was duplicating
-       the intro section anyway). The H1 + colorful band carry the hero alone. -->
-  <div class="pt-16 md:pt-20">
-    <div class="relative">
-      <Image
-        src={headerMazy}
-        alt=""
-        aria-hidden="true"
-        class="w-full h-44 md:h-56 lg:h-64 object-cover"
-        loading="eager"
-        fetchpriority="high"
-        widths={[768, 1280, 1920]}
-        sizes="100vw"
-      />
+  <!-- Band sits directly under the navbar with no extra padding wrapper —
+       PageLayout's main pt-16 already pushes content below the fixed
+       navbar on mobile; on desktop the navbar (cream/90 + backdrop-blur)
+       gently tints over the top of the band. -->
+  <div class="relative">
+    <Image
+      src={headerMazy}
+      alt=""
+      aria-hidden="true"
+      class="w-full h-40 md:h-52 lg:h-60 object-cover"
+      loading="eager"
+      fetchpriority="high"
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+    />
 
-      <div class="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-        <p
-          class="font-sans font-bold uppercase tracking-widest text-xs text-brand-cream mb-2 md:mb-3"
-          style="text-shadow: 0 1px 6px rgba(45, 52, 111, 0.45);"
-        >
-          O nas
-        </p>
-        <h1
-          class="font-sans italic text-[clamp(2.5rem,7.5vw,5.5rem)] text-brand-cream leading-none tracking-tight"
-          style="text-shadow: 0 3px 14px rgba(45, 52, 111, 0.35);"
-        >
-          Kuchnia
-        </h1>
-      </div>
+    <div class="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+      <p
+        class="font-sans font-bold uppercase tracking-widest text-xs text-brand-cream mb-2 md:mb-3"
+        style="text-shadow: 0 1px 6px rgba(45, 52, 111, 0.45);"
+      >
+        O nas
+      </p>
+      <h1
+        class="font-sans italic text-[clamp(2.4rem,7vw,5rem)] text-brand-cream leading-none tracking-tight"
+        style="text-shadow: 0 3px 14px rgba(45, 52, 111, 0.35);"
+      >
+        Kuchnia
+      </h1>
     </div>
   </div>
 
