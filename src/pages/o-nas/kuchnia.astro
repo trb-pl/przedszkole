@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 import HeroMazy from '~/components/widgets/HeroMazy.astro';
+import ScatteredLetters from '~/components/widgets/ScatteredLetters.astro';
 
 import imgTatiana from '~/assets/images/kuchnia-tatiana.jpg';
 import imgZupa    from '~/assets/images/kuchnia-zupa.jpg';
@@ -112,16 +113,7 @@ const faqItems = [
   <section class="relative bg-brand-cream py-16 md:py-20 overflow-hidden">
 
     <!-- Decorative scattered letters, same Adobe Typekit handwritten font -->
-    <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-      <span class="absolute text-brand-navy/12 leading-none text-5xl md:text-8xl"   style="top: 8%;  left: 6%;  transform: translate(-50%,-50%) rotate(-32deg); font-family: 'learning-curve', sans-serif;">k</span>
-      <span class="absolute text-brand-navy/12 leading-none text-3xl md:text-5xl"   style="top: 14%; left: 18%; transform: translate(-50%,-50%) rotate(22deg); font-family: 'learning-curve', sans-serif;">o</span>
-      <span class="absolute text-brand-navy/12 leading-none text-5xl md:text-8xl"   style="top: 12%; left: 88%; transform: translate(-50%,-50%) rotate(28deg); font-family: 'learning-curve', sans-serif;">O</span>
-      <span class="absolute text-brand-navy/12 leading-none text-3xl md:text-5xl"   style="top: 50%; left: 4%;  transform: translate(-50%,-50%) rotate(-18deg); font-family: 'learning-curve', sans-serif;">r</span>
-      <span class="absolute text-brand-navy/12 leading-none text-3xl md:text-5xl"   style="top: 52%; left: 96%; transform: translate(-50%,-50%) rotate(34deg); font-family: 'learning-curve', sans-serif;">l</span>
-      <span class="absolute text-brand-navy/12 leading-none text-5xl md:text-8xl"   style="top: 88%; left: 10%; transform: translate(-50%,-50%) rotate(40deg); font-family: 'learning-curve', sans-serif;">w</span>
-      <span class="absolute text-brand-navy/12 leading-none text-3xl md:text-5xl"   style="top: 92%; left: 38%; transform: translate(-50%,-50%) rotate(-22deg); font-family: 'learning-curve', sans-serif;">e</span>
-      <span class="absolute text-brand-navy/12 leading-none text-5xl md:text-8xl"   style="top: 90%; left: 82%; transform: translate(-50%,-50%) rotate(-14deg); font-family: 'learning-curve', sans-serif;">k</span>
-    </div>
+    <ScatteredLetters />
 
     <div class="relative max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans text-xl text-brand-navy/80 leading-relaxed mb-6">

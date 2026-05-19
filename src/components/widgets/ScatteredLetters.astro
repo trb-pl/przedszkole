@@ -1,0 +1,48 @@
+---
+// Reusable decorative background — handwritten letters scattered across a
+// section. Drop inside any section that has `relative overflow-hidden`,
+// and add `relative z-10` to the content wrapper so it paints above.
+//
+// Alphabet: k o l r w e + capital O (the 'kolorowe' set).
+// Font: Adobe Typekit 'learning-curve' (already loaded via Layout).
+// Opacity: brand-navy at 12% — visible as accent, doesn't compete with text.
+
+const XL = 'text-[5rem] md:text-[8rem]';
+const MD = 'text-4xl md:text-7xl';
+const SM = 'text-3xl md:text-5xl';
+
+const letters = [
+  // Top
+  { c: 'k', top: '4%',  left: '6%',  size: SM, rot: -32 },
+  { c: 'l', top: '8%',  left: '20%', size: MD, rot: -45 },
+  { c: 'O', top: '6%',  left: '50%', size: XL, rot: -8  },
+  { c: 'r', top: '10%', left: '74%', size: SM, rot: 22  },
+  { c: 'w', top: '4%',  left: '92%', size: MD, rot: 38  },
+
+  // Middle-left
+  { c: 'e', top: '30%', left: '4%',  size: MD, rot: 24  },
+  { c: 'k', top: '52%', left: '2%',  size: XL, rot: -22 },
+  { c: 'r', top: '74%', left: '6%',  size: SM, rot: -28 },
+
+  // Middle-right
+  { c: 'l', top: '32%', left: '96%', size: SM, rot: -20 },
+  { c: 'O', top: '54%', left: '98%', size: MD, rot: 28  },
+  { c: 'w', top: '76%', left: '95%', size: SM, rot: 32  },
+
+  // Bottom
+  { c: 'e', top: '92%', left: '12%', size: MD, rot: -15 },
+  { c: 'r', top: '95%', left: '30%', size: SM, rot: 30  },
+  { c: 'l', top: '88%', left: '48%', size: MD, rot: -32 },
+  { c: 'O', top: '95%', left: '66%', size: SM, rot: 14  },
+  { c: 'w', top: '90%', left: '85%', size: MD, rot: -22 },
+];
+---
+
+<div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+  {letters.map((l) => (
+    <span
+      class={`absolute text-brand-navy/12 leading-none ${l.size}`}
+      style={`top: ${l.top}; left: ${l.left}; transform: translate(-50%, -50%) rotate(${l.rot}deg); font-family: 'learning-curve', sans-serif; font-weight: 400;`}
+    >{l.c}</span>
+  ))}
+</div>

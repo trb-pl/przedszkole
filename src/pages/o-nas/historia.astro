@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 import HeroMazy from '~/components/widgets/HeroMazy.astro';
+import ScatteredLetters from '~/components/widgets/ScatteredLetters.astro';
 
 import imgMazury      from '~/assets/images/Kolorowe_przedszkole_tarda2.jpg';
 import imgOlga        from '~/assets/images/historia-olga.jpg';
@@ -131,8 +132,9 @@ const sekcje = [
   <HeroMazy title="historia" />
 
   <!-- ─── Intro ─────────────────────────────────────────────── -->
-  <section class="bg-brand-cream py-20">
-    <div class="max-w-3xl mx-auto px-6 text-center">
+  <section class="relative bg-brand-cream py-16 md:py-20 overflow-hidden">
+    <ScatteredLetters />
+    <div class="relative max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans text-xl text-brand-navy/80 leading-relaxed mb-6">
         <strong class="text-brand-navy">Nasze miejsce:</strong> rodzinny dom Olgi i Tomasza Trębickich przy Lotaryńskiej 18 —
         i właśnie tutaj, w 1991 roku, wszystko się zaczęło.
