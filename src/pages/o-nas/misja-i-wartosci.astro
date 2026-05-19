@@ -2,6 +2,8 @@
 import { Image } from 'astro:assets';
 import Layout from '~/layouts/PageLayout.astro';
 import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+import ScatteredLetters from '~/components/widgets/ScatteredLetters.astro';
 
 import imgSerce   from '~/assets/images/wartosci-serce.jpg';
 import imgDom     from '~/assets/images/wartosci-dom.jpg';
@@ -116,30 +118,18 @@ const faqItems = [
     }))
   })} />
 
-  <!-- ─── Hero ─────────────────────────────────────────────── -->
-  <section class="relative bg-brand-navy pt-20 pb-12 md:pt-32 md:pb-24 overflow-hidden">
-    <div class="absolute inset-0 bg-brand-navy/70 z-10"></div>
-    <img
-      src="https://placehold.co/1600x700/2D346F/34BBA8?text=Misja+i+warto%C5%9Bci"
-      alt=""
-      aria-hidden="true"
-      class="absolute inset-0 w-full h-full object-cover opacity-20"
-    />
-    <div class="relative z-20 max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>
-      <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4rem)] text-brand-cream leading-tight mb-6">
-        Misja i wartości
-      </h1>
-      <p class="font-sans text-lg text-brand-cream/75 max-w-xl mx-auto leading-relaxed">
-        Przez ponad 30 lat na Saskiej Kępie wypracowaliśmy model opieki, który łączy profesjonalizm z domowym ciepłem.
-        Oto co nas napędza.
-      </p>
-    </div>
-  </section>
+  <HeroMazy title="wartości" />
 
   <!-- ─── Intro ─────────────────────────────────────────────── -->
-  <section class="bg-brand-cream py-20">
-    <div class="max-w-3xl mx-auto px-6 text-center">
+  <!-- Hero lead 'Przez ponad 30 lat na Saskiej Kępie...' moved into the intro
+       as opening line so the SEO keywords (30 lat, Saska Kępa, model opieki,
+       profesjonalizm, domowe ciepło) survive the H1 trim. -->
+  <section class="relative bg-brand-cream py-16 md:py-20 overflow-hidden">
+    <ScatteredLetters />
+    <div class="relative max-w-3xl mx-auto px-6 text-center">
+      <p class="font-sans text-base text-brand-navy/65 leading-relaxed mb-6 italic">
+        Przez ponad 30 lat na Saskiej Kępie wypracowaliśmy model opieki, który łączy profesjonalizm z domowym ciepłem.
+      </p>
       <p class="font-sans text-xl text-brand-navy/80 leading-relaxed mb-6">
         <strong class="text-brand-navy">Nasza misja:</strong> być bezpiecznym pomostem między domem a szkołą —
         miejscem, gdzie dziecko rośnie w swoim tempie, a rodzic ma poczucie, że zostawia je w dobrych rękach.
