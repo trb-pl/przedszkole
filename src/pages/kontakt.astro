@@ -2,6 +2,8 @@
 import Layout from '~/layouts/PageLayout.astro';
 import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 import ContactForm from '~/components/ContactForm.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+import ScatteredLetters from '~/components/widgets/ScatteredLetters.astro';
 
 const metadata = {
   title: 'Kontakt – Kolorowe Przedszkole Saska Kępa i Gocław',
@@ -18,16 +20,13 @@ const metadata = {
     { name: 'Kontakt', url: 'https://koloroweprzedszkole.com/kontakt' },
   ]} />
 
-  <!-- Header -->
-  <section class="bg-brand-warm pt-24 pb-12">
-    <div class="max-w-4xl mx-auto px-6 text-center flex flex-col gap-3">
-      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">
-        Kolorowe Przedszkole
-      </p>
-      <h1 class="font-sans italic text-[clamp(2.5rem,5vw,4rem)] text-brand-navy leading-tight">
-        Skontaktuj się z nami
-      </h1>
-      <p class="font-sans text-lg text-brand-navy/70 max-w-xl mx-auto">
+  <HeroMazy title="kontakt" />
+
+  <!-- Lead -->
+  <section class="relative bg-brand-cream py-12 md:py-16 overflow-hidden">
+    <ScatteredLetters />
+    <div class="relative max-w-3xl mx-auto px-6 text-center">
+      <p class="font-sans text-xl text-brand-navy/80 leading-relaxed">
         Chętnie odpowiemy na wszystkie pytania dotyczące rekrutacji i życia w Kolorowym Przedszkolu.
       </p>
     </div>
