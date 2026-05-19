@@ -7,6 +7,7 @@ import imgTatiana from '~/assets/images/kuchnia-tatiana.jpg';
 import imgZupa    from '~/assets/images/kuchnia-zupa.jpg';
 import imgOgrodek from '~/assets/images/kuchnia-hero.jpg';
 import imgKanapki from '~/assets/images/kuchnia-kanapki.jpg';
+import headerMazy from '~/assets/images/header-mazy.png';
 
 const metadata = {
   title: 'Kuchnia Kolorowego Przedszkola — domowe obiady na Saskiej Kępie',
@@ -106,24 +107,35 @@ const faqItems = [
   })} />
 
   <!-- ─── Hero ──────────────────────────────────────────────── -->
-  <section class="relative bg-brand-navy pt-20 pb-12 md:pt-32 md:pb-24 overflow-hidden">
-    <div class="absolute inset-0 bg-brand-navy/70 z-10"></div>
-    <img
-      src="https://placehold.co/1600x700/2D346F/34BBA8?text=Kuchnia"
+  <!-- Top: colorful 'mazy' band (designer asset). Bottom: white card pulled
+       up to overlap the band — title stays high-contrast on the card while
+       the colors take the upper third. -->
+  <div class="pt-16 md:pt-20">
+    <Image
+      src={headerMazy}
       alt=""
       aria-hidden="true"
-      class="absolute inset-0 w-full h-full object-cover opacity-20"
+      class="w-full h-56 md:h-72 lg:h-80 object-cover"
+      loading="eager"
+      fetchpriority="high"
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
     />
-    <div class="relative z-20 max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>
-      <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4rem)] text-brand-cream leading-tight mb-6">
-        Kuchnia
-      </h1>
-      <p class="font-sans text-lg text-brand-cream/75 max-w-xl mx-auto leading-relaxed">
-        Gotujemy na Saskiej Kępie od 1991 roku — codziennie, od podstaw, bez cateringu. Oto co trafia na talerze naszych dzieci.
-      </p>
-    </div>
-  </section>
+
+    <section class="bg-brand-cream pb-12 md:pb-16">
+      <div class="relative -mt-12 md:-mt-16 max-w-4xl mx-auto px-6">
+        <div class="bg-white rounded-2xl shadow-lg px-8 py-10 md:px-12 md:py-14 text-center">
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">O nas</p>
+          <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4rem)] text-brand-navy leading-tight mb-6">
+            Kuchnia
+          </h1>
+          <p class="font-sans text-lg text-brand-navy/70 max-w-xl mx-auto leading-relaxed">
+            Gotujemy na Saskiej Kępie od 1991 roku — codziennie, od podstaw, bez cateringu. Oto co trafia na talerze naszych dzieci.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <!-- ─── Intro ─────────────────────────────────────────────── -->
   <section class="bg-brand-cream py-20">
