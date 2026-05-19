@@ -106,26 +106,22 @@ const faqItems = [
     }))
   })} />
 
-  <!-- ─── Hero (knockout style) ──────────────────────────────── -->
-  <!-- Cream-colored title sits ON the colorful band — looks like the cream
-       section below 'punches through' the colors in the shape of the H1.
-       No overlap, no empty space — composition is tight and the band height
-       drives the whole hero size. -->
+  <!-- ─── Hero (knockout style, trimmed) ─────────────────────── -->
+  <!-- Smaller band, smaller H1 — no lead text under hero (it was duplicating
+       the intro section anyway). The H1 + colorful band carry the hero alone. -->
   <div class="pt-16 md:pt-20">
     <div class="relative">
       <Image
         src={headerMazy}
         alt=""
         aria-hidden="true"
-        class="w-full h-48 md:h-64 lg:h-72 object-cover"
+        class="w-full h-44 md:h-56 lg:h-64 object-cover"
         loading="eager"
         fetchpriority="high"
         widths={[768, 1280, 1920]}
         sizes="100vw"
       />
 
-      <!-- H1 + eyebrow centered on the band, cream color with soft text-shadow
-           for readability against the yellow/cyan/coral regions of the artwork. -->
       <div class="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
         <p
           class="font-sans font-bold uppercase tracking-widest text-xs text-brand-cream mb-2 md:mb-3"
@@ -134,32 +130,39 @@ const faqItems = [
           O nas
         </p>
         <h1
-          class="font-sans italic text-[clamp(3rem,9vw,7rem)] text-brand-cream leading-none tracking-tight"
+          class="font-sans italic text-[clamp(2.5rem,7.5vw,5.5rem)] text-brand-cream leading-none tracking-tight"
           style="text-shadow: 0 3px 14px rgba(45, 52, 111, 0.35);"
         >
           Kuchnia
         </h1>
       </div>
     </div>
-
-    <!-- Lead text below — sits naturally on cream, no overlap mess -->
-    <section class="bg-brand-cream py-8 md:py-12">
-      <div class="max-w-2xl mx-auto px-6 text-center">
-        <p class="font-sans text-base md:text-lg text-brand-navy/70 leading-relaxed">
-          Gotujemy na Saskiej Kępie od 1991 roku — codziennie, od podstaw, bez cateringu. Oto co trafia na talerze naszych dzieci.
-        </p>
-      </div>
-    </section>
   </div>
 
-  <!-- ─── Intro ─────────────────────────────────────────────── -->
-  <section class="bg-brand-cream py-20">
-    <div class="max-w-3xl mx-auto px-6 text-center">
+  <!-- ─── Intro (with scattered-letters background, same pattern as Opinie) ─── -->
+  <section class="relative bg-brand-cream py-16 md:py-20 overflow-hidden">
+
+    <!-- Decorative scattered letters, same Adobe Typekit handwritten font -->
+    <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+      <span class="absolute text-brand-navy/12 leading-none text-5xl md:text-8xl"   style="top: 8%;  left: 6%;  transform: translate(-50%,-50%) rotate(-32deg); font-family: 'learning-curve', sans-serif;">k</span>
+      <span class="absolute text-brand-navy/12 leading-none text-3xl md:text-5xl"   style="top: 14%; left: 18%; transform: translate(-50%,-50%) rotate(22deg); font-family: 'learning-curve', sans-serif;">o</span>
+      <span class="absolute text-brand-navy/12 leading-none text-5xl md:text-8xl"   style="top: 12%; left: 88%; transform: translate(-50%,-50%) rotate(28deg); font-family: 'learning-curve', sans-serif;">O</span>
+      <span class="absolute text-brand-navy/12 leading-none text-3xl md:text-5xl"   style="top: 50%; left: 4%;  transform: translate(-50%,-50%) rotate(-18deg); font-family: 'learning-curve', sans-serif;">r</span>
+      <span class="absolute text-brand-navy/12 leading-none text-3xl md:text-5xl"   style="top: 52%; left: 96%; transform: translate(-50%,-50%) rotate(34deg); font-family: 'learning-curve', sans-serif;">l</span>
+      <span class="absolute text-brand-navy/12 leading-none text-5xl md:text-8xl"   style="top: 88%; left: 10%; transform: translate(-50%,-50%) rotate(40deg); font-family: 'learning-curve', sans-serif;">w</span>
+      <span class="absolute text-brand-navy/12 leading-none text-3xl md:text-5xl"   style="top: 92%; left: 38%; transform: translate(-50%,-50%) rotate(-22deg); font-family: 'learning-curve', sans-serif;">e</span>
+      <span class="absolute text-brand-navy/12 leading-none text-5xl md:text-8xl"   style="top: 90%; left: 82%; transform: translate(-50%,-50%) rotate(-14deg); font-family: 'learning-curve', sans-serif;">k</span>
+    </div>
+
+    <div class="relative max-w-3xl mx-auto px-6 text-center">
       <p class="font-sans text-xl text-brand-navy/80 leading-relaxed mb-6">
         <strong class="text-brand-navy">Nasza filozofia kuchni:</strong> gotować tak, jak gotuje się w domu — ze świeżych składników, od lokalnych dostawców, bez kompromisów. Śniadanie, obiad i podwieczorek, każdego dnia, przygotowane na miejscu przez Ciocię Tatianę.
       </p>
-      <p class="font-sans text-lg text-brand-navy/60 leading-relaxed">
+      <p class="font-sans text-lg text-brand-navy/60 leading-relaxed mb-6">
         Nie korzystamy z cateringu. Wierzymy, że dziecko, które je prawdziwe domowe jedzenie, czuje się zaopiekowane — i że smak ma znaczenie równie duże jak program.
+      </p>
+      <p class="font-sans text-base text-brand-navy/55 leading-relaxed italic">
+        Gotujemy tak na Saskiej Kępie od 1991 roku — bez kompromisów, bez cateringu.
       </p>
     </div>
   </section>
