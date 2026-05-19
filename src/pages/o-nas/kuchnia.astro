@@ -106,40 +106,48 @@ const faqItems = [
     }))
   })} />
 
-  <!-- ─── Hero (editorial / Awwwards-style) ──────────────────── -->
-  <!-- Shorter colorful 'mazy' band + an oversized italic H1 that breaks
-       the boundary between the colorful zone and the cream zone. No card,
-       no shadow — the typography is the centerpiece. -->
+  <!-- ─── Hero (knockout style) ──────────────────────────────── -->
+  <!-- Cream-colored title sits ON the colorful band — looks like the cream
+       section below 'punches through' the colors in the shape of the H1.
+       No overlap, no empty space — composition is tight and the band height
+       drives the whole hero size. -->
   <div class="pt-16 md:pt-20">
-    <Image
-      src={headerMazy}
-      alt=""
-      aria-hidden="true"
-      class="w-full h-32 md:h-44 lg:h-52 object-cover"
-      loading="eager"
-      fetchpriority="high"
-      widths={[768, 1280, 1920]}
-      sizes="100vw"
-    />
+    <div class="relative">
+      <Image
+        src={headerMazy}
+        alt=""
+        aria-hidden="true"
+        class="w-full h-48 md:h-64 lg:h-72 object-cover"
+        loading="eager"
+        fetchpriority="high"
+        widths={[768, 1280, 1920]}
+        sizes="100vw"
+      />
 
-    <section class="bg-brand-cream pb-12 md:pb-16">
-      <div class="max-w-6xl mx-auto px-6">
-
-        <!-- H1 — pulled up so its top half sits on the band, bottom half on cream -->
-        <h1 class="relative -mt-12 md:-mt-20 lg:-mt-24 font-sans italic text-[clamp(4rem,14vw,10rem)] text-brand-navy leading-[0.9] tracking-tight">
+      <!-- H1 + eyebrow centered on the band, cream color with soft text-shadow
+           for readability against the yellow/cyan/coral regions of the artwork. -->
+      <div class="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+        <p
+          class="font-sans font-bold uppercase tracking-widest text-xs text-brand-cream mb-2 md:mb-3"
+          style="text-shadow: 0 1px 6px rgba(45, 52, 111, 0.45);"
+        >
+          O nas
+        </p>
+        <h1
+          class="font-sans italic text-[clamp(3rem,9vw,7rem)] text-brand-cream leading-none tracking-tight"
+          style="text-shadow: 0 3px 14px rgba(45, 52, 111, 0.35);"
+        >
           Kuchnia
         </h1>
+      </div>
+    </div>
 
-        <!-- Eyebrow + lead in a sidebar-style grid -->
-        <div class="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8">
-          <p class="md:col-span-3 lg:col-span-2 font-sans font-bold uppercase tracking-widest text-xs text-brand-teal md:pt-2">
-            O nas
-          </p>
-          <p class="md:col-span-8 lg:col-span-7 font-sans text-base md:text-lg text-brand-navy/70 leading-relaxed">
-            Gotujemy na Saskiej Kępie od 1991 roku — codziennie, od podstaw, bez cateringu. Oto co trafia na talerze naszych dzieci.
-          </p>
-        </div>
-
+    <!-- Lead text below — sits naturally on cream, no overlap mess -->
+    <section class="bg-brand-cream py-8 md:py-12">
+      <div class="max-w-2xl mx-auto px-6 text-center">
+        <p class="font-sans text-base md:text-lg text-brand-navy/70 leading-relaxed">
+          Gotujemy na Saskiej Kępie od 1991 roku — codziennie, od podstaw, bez cateringu. Oto co trafia na talerze naszych dzieci.
+        </p>
       </div>
     </section>
   </div>
