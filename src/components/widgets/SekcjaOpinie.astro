@@ -30,20 +30,38 @@ const opinie = [
   },
 ];
 
-// Background scattered letters — kept from the previous design.
-const LG = 'text-7xl md:text-[11rem]';
-const SM = 'text-4xl md:text-6xl';
+// Background scattered letters — reproduces the graphic-designer pattern
+// reference image: three size tiers (XL/MD/SM), wider rotation range
+// (~±55°), all six brand letters with lowercase + capital O.
+// Cards have bg-white + z-10 so anything sitting under them is covered.
+const XL = 'text-[6rem] md:text-[12rem]';   // big anchor letters
+const MD = 'text-5xl md:text-8xl';          // medium accents
+const SM = 'text-3xl md:text-5xl';          // small dots/corners
+
 const letters = [
-  { c: 'k', top: '5%',  left: '8%',  size: LG, rot: -28 },
-  { c: 'l', top: '4%',  left: '34%', size: LG, rot: -45 },
-  { c: 'O', top: '8%',  left: '58%', size: LG, rot: 18 },
-  { c: 'w', top: '3%',  left: '82%', size: LG, rot: 38 },
-  { c: 'O', top: '50%', left: '4%',  size: LG, rot: -20 },
-  { c: 'k', top: '50%', left: '96%', size: LG, rot: 28 },
-  { c: 'e', top: '94%', left: '12%', size: LG, rot: -15 },
-  { c: 'l', top: '92%', left: '38%', size: LG, rot: -32 },
-  { c: 'O', top: '95%', left: '62%', size: LG, rot: 14 },
-  { c: 'w', top: '92%', left: '88%', size: SM, rot: 30 },
+  // Top band — header area
+  { c: 'k', top: '3%',  left: '5%',   size: SM, rot: -38 },
+  { c: 'r', top: '8%',  left: '14%',  size: SM, rot: 22 },
+  { c: 'O', top: '6%',  left: '48%',  size: XL, rot: -8  },
+  { c: 'r', top: '4%',  left: '86%',  size: SM, rot: 16 },
+  { c: 'k', top: '10%', left: '95%',  size: SM, rot: -26 },
+
+  // Middle-left — partially behind cards on narrow, clear on wide
+  { c: 'k', top: '44%', left: '4%',   size: XL, rot: -22 },
+  { c: 'w', top: '66%', left: '6%',   size: SM, rot: 28 },
+
+  // Middle-right
+  { c: 'e', top: '38%', left: '96%',  size: MD, rot: 18 },
+  { c: 'O', top: '62%', left: '97%',  size: MD, rot: -32 },
+  { c: 'l', top: '52%', left: '93%',  size: SM, rot: 14 },
+
+  // Bottom band — below cards
+  { c: 'w', top: '88%', left: '6%',   size: MD, rot: -28 },
+  { c: 'r', top: '95%', left: '14%',  size: SM, rot: 42 },
+  { c: 'o', top: '90%', left: '32%',  size: MD, rot: 18 },
+  { c: 'r', top: '94%', left: '58%',  size: MD, rot: -36 },
+  { c: 'l', top: '88%', left: '78%',  size: SM, rot: 22 },
+  { c: 'w', top: '93%', left: '92%',  size: MD, rot: -12 },
 ];
 ---
 
