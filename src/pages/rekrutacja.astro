@@ -2,6 +2,8 @@
 import Layout from '~/layouts/PageLayout.astro';
 import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 import ContactForm from '~/components/ContactForm.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+import ScatteredLetters from '~/components/widgets/ScatteredLetters.astro';
 
 const metadata = {
   title: 'Rekrutacja 2026/2027 – Kolorowe Przedszkole Saska Kępa',
@@ -100,15 +102,19 @@ const kroki = [
     ]
   })} />
 
-  <!-- ─── 1. Hero ───────────────────────────────────────────── -->
-  <section class="bg-brand-navy pt-20 pb-16 md:pt-32 md:pb-24">
-    <div class="max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
+  <HeroMazy title="rekrutacja" />
+
+  <!-- ─── Intro + primary CTAs ─────────────────────────────── -->
+  <!-- Hero lead + the two top-level CTAs from the old navy hero. Moved
+       into the intro section under the mazy band so HeroMazy stays
+       title-only (consistent pattern) while preserving the conversion
+       buttons and SEO copy (2026/2027, 2,5 roku życia). -->
+  <section class="relative bg-brand-cream py-16 md:py-20 overflow-hidden">
+    <ScatteredLetters />
+    <div class="relative max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Rekrutacja 2026/2027</p>
-      <h1 class="font-sans italic text-[clamp(2.4rem,6vw,4rem)] text-brand-cream leading-tight">
-        Zapisz dziecko do Kolorowego Przedszkola
-      </h1>
-      <p class="font-sans text-lg text-brand-cream/70 max-w-xl leading-relaxed">
-        Rekrutacja na rok szkolny 2026/2027 jest otwarta. Przyjmujemy dzieci od 2,5 roku życia. Zapraszamy rodziców — najlepiej z dziećmi — do odwiedzin przed podjęciem decyzji.
+      <p class="font-sans text-xl text-brand-navy/80 leading-relaxed">
+        Rekrutacja na rok szkolny <strong class="text-brand-navy">2026/2027</strong> jest otwarta. Przyjmujemy dzieci od 2,5 roku życia. Zapraszamy rodziców — najlepiej z dziećmi — do odwiedzin przed podjęciem decyzji.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 mt-2">
         <a
@@ -119,7 +125,7 @@ const kroki = [
         </a>
         <a
           href="tel:605657366"
-          class="inline-block border-2 border-brand-cream/40 text-brand-cream font-sans font-semibold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:border-brand-teal hover:text-brand-teal"
+          class="inline-block border-2 border-brand-navy/40 text-brand-navy font-sans font-semibold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:border-brand-teal hover:text-brand-teal"
         >
           Zadzwoń: 605 657 366
         </a>
