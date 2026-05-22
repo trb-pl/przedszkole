@@ -5,63 +5,145 @@ import koloroweLogo from '~/assets/images/kolorowe.svg?raw';
 import posterImage from '~/assets/images/hero-mobile-poster.jpg';
 ---
 
-<section class="relative min-h-screen overflow-hidden">
-  <!-- Background image (desktop) -->
-  <Image
-    src={heroImage}
-    alt="Kolorowe Przedszkole — Saska Kępa, Warszawa od 1991 roku"
-    class="absolute inset-0 w-full h-full object-cover hidden md:block"
-    loading="eager"
-    fetchpriority="high"
-  />
+<section id="hero" class="hero relative min-h-screen overflow-hidden">
+  <!-- Background image (desktop) — wrapped so we can blur the bg without
+       affecting the foreground content. -->
+  <div class="hero-bg absolute inset-0">
+    <Image
+      src={heroImage}
+      alt="Kolorowe Przedszkole — Saska Kępa, Warszawa od 1991 roku"
+      class="absolute inset-0 w-full h-full object-cover hidden md:block"
+      loading="eager"
+      fetchpriority="high"
+    />
 
-  <!-- Background video (mobile) -->
-  <video
-    id="hero-video"
-    class="absolute inset-0 w-full h-full object-cover block md:hidden"
-    autoplay
-    muted
-    loop
-    playsinline
-    poster={posterImage.src}
-  >
-    <source src="/videos/hero-mobile.mp4" type="video/mp4" />
-  </video>
+    <!-- Background video (mobile) -->
+    <video
+      id="hero-video"
+      class="absolute inset-0 w-full h-full object-cover block md:hidden"
+      autoplay
+      muted
+      loop
+      playsinline
+      poster={posterImage.src}
+    >
+      <source src="/videos/hero-mobile.mp4" type="video/mp4" />
+    </video>
+  </div>
 
-  <!-- Overlay -->
-  <div class="absolute inset-0 bg-black/25"></div>
+  <!-- Overlay (darkens on scroll) -->
+  <div class="hero-overlay absolute inset-0 bg-black/25"></div>
 
   <!-- Content -->
   <div class="relative z-10 flex flex-col items-center justify-center h-[calc(100vh-4rem)] mt-16 px-6 gap-8 text-center text-brand-cream">
 
-    <!-- Typography composition -->
+    <!-- Primary block — always visible. Soft staggered fade-in on initial load. -->
     <div class="flex flex-col items-center gap-1 sm:gap-2">
-      <div class="w-[65vw] sm:w-[60vw] md:w-[55vw] lg:w-[52vw] max-w-[820px]" set:html={koloroweLogo} />
-      <h1 class="font-sans font-bold uppercase text-[clamp(2rem,12vw,11rem)] leading-none tracking-wider text-brand-cream">
+      <div class="hero-logo w-[65vw] sm:w-[60vw] md:w-[55vw] lg:w-[52vw] max-w-[820px]" set:html={koloroweLogo} />
+      <h1 class="hero-title font-sans font-bold uppercase text-[clamp(2rem,12vw,11rem)] leading-none tracking-wider text-brand-cream">
         <span class="sr-only">Kolorowe </span>Przedszkole<span class="sr-only"> na Saskiej Kępie</span>
       </h1>
     </div>
 
-    <!-- Tagline -->
-    <p class="font-sans text-2xl sm:text-3xl md:text-4xl text-brand-cream/95 max-w-3xl mt-8">
-      między domem a szkołą od 1991 roku
-    </p>
+    <!-- Secondary block — hidden initially, revealed on scroll. -->
+    <div class="hero-secondary flex flex-col items-center gap-8">
+      <!-- Tagline -->
+      <p class="font-sans text-2xl sm:text-3xl md:text-4xl text-brand-cream/95 max-w-3xl mt-8">
+        między domem a szkołą od 1991 roku
+      </p>
 
-    <!-- Sub-tagline -->
-    <p class="font-sans text-base sm:text-lg uppercase tracking-[0.3em] text-brand-cream/80">
-      Saska Kępa · Gocław · Warszawa
-    </p>
+      <!-- Sub-tagline -->
+      <p class="font-sans text-base sm:text-lg uppercase tracking-[0.3em] text-brand-cream/80">
+        Saska Kępa · Gocław · Warszawa
+      </p>
 
-    <!-- CTA -->
-    <a
-      href="#olga"
-      class="inline-block bg-transparent text-brand-cream border-2 border-brand-cream font-sans font-bold uppercase tracking-wider text-sm sm:text-base px-10 py-4 rounded-lg transition-all duration-300 hover:bg-brand-teal hover:border-brand-teal mt-4"
-    >
-      POZNAJ NAS
-    </a>
+      <!-- CTA -->
+      <a
+        href="#olga"
+        class="inline-block bg-transparent text-brand-cream border-2 border-brand-cream font-sans font-bold uppercase tracking-wider text-sm sm:text-base px-10 py-4 rounded-lg transition-all duration-300 hover:bg-brand-teal hover:border-brand-teal mt-4"
+      >
+        POZNAJ NAS
+      </a>
+    </div>
 
   </div>
 </section>
+
+<style>
+  /* Initial page-load fade-in for the primary block (preloader feel) */
+  @keyframes heroFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-logo {
+    opacity: 0;
+    animation: heroFadeIn 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+  }
+
+  .hero-title {
+    opacity: 0;
+    animation: heroFadeIn 1s cubic-bezier(0.22, 1, 0.36, 1) 0.65s forwards;
+  }
+
+  /* Secondary block — hidden until user scrolls a bit */
+  .hero-secondary {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Background image transitions for blur + scale (scale hides blur edges) */
+  .hero-bg {
+    transition:
+      filter 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: filter, transform;
+  }
+
+  /* Overlay deepens on scroll for stronger text contrast */
+  .hero-overlay {
+    transition: background-color 0.8s ease;
+  }
+
+  /* Scrolled state — toggled by the inline script below */
+  .hero.is-scrolled .hero-bg {
+    filter: blur(5px);
+    transform: scale(1.05);
+  }
+  .hero.is-scrolled .hero-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .hero.is-scrolled .hero-secondary {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Respect prefers-reduced-motion: snap everything to final state */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-logo,
+    .hero-title {
+      opacity: 1;
+      animation: none;
+    }
+    .hero-secondary {
+      opacity: 1;
+      transform: none;
+    }
+    .hero-bg,
+    .hero-overlay {
+      transition: none;
+    }
+  }
+</style>
 
 <script is:inline>
   // Force the hero video to resume after View Transitions navigations.
@@ -80,5 +162,24 @@ import posterImage from '~/assets/images/hero-mobile-poster.jpg';
     };
     document.addEventListener('astro:page-load', tryPlay);
     document.addEventListener('astro:after-swap', tryPlay);
+  }
+
+  // Scroll-triggered reveal: when the user scrolls past ~60px the hero
+  // gets `is-scrolled`, which (via CSS) blurs the background, deepens the
+  // overlay, and fades in the secondary content block.
+  if (!window.__heroScrollInit) {
+    window.__heroScrollInit = true;
+    var updateHero = function () {
+      var hero = document.getElementById('hero');
+      if (!hero) return;
+      if (window.scrollY > 60) {
+        hero.classList.add('is-scrolled');
+      } else {
+        hero.classList.remove('is-scrolled');
+      }
+    };
+    window.addEventListener('scroll', updateHero, { passive: true });
+    document.addEventListener('astro:page-load', updateHero);
+    updateHero();
   }
 </script>
