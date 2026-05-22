@@ -95,7 +95,32 @@ import posterImage from '~/assets/images/hero-mobile-poster.jpg';
     transform: translate3d(0, 32px, 0);
   }
 
-  /* Reduced motion: kill the pin, snap everything to final state. */
+  /* Mobile (< md): kill the pin entirely. The trapped scroll feels wrong
+     on touch devices — let the user scroll naturally past a normal hero.
+     !important defeats the inline styles JS would otherwise set. */
+  @media (max-width: 767px) {
+    .hero-pin {
+      height: 100vh !important;
+    }
+    .hero-sticky {
+      position: relative !important;
+    }
+    .hero-bg {
+      transform: none !important;
+      filter: none !important;
+    }
+    .hero-overlay {
+      opacity: 1 !important;
+    }
+    .hero-tagline,
+    .hero-subtag,
+    .hero-cta {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* Reduced motion: same as mobile — snap to final state. */
   @media (prefers-reduced-motion: reduce) {
     .hero-pin {
       height: 100vh;
@@ -146,6 +171,9 @@ import posterImage from '~/assets/images/hero-mobile-poster.jpg';
       var hero = document.getElementById('hero');
       if (!hero) return;
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      // Mobile: skip the work entirely. CSS @media (max-width: 767px)
+      // overrides any leftover inline styles with !important.
+      if (window.innerWidth < 768) return;
 
       var pin = hero.querySelector('.hero-pin');
       if (!pin) return;
