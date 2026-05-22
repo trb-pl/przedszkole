@@ -5,67 +5,74 @@ import koloroweLogo from '~/assets/images/kolorowe.svg?raw';
 import posterImage from '~/assets/images/hero-mobile-poster.jpg';
 ---
 
-<section id="hero" class="hero relative min-h-screen overflow-hidden">
-  <!-- Background wrapper — transformed per-frame for parallax + scale + blur. -->
-  <div class="hero-bg absolute inset-0 will-change-transform">
-    <Image
-      src={heroImage}
-      alt="Kolorowe Przedszkole — Saska Kępa, Warszawa od 1991 roku"
-      class="absolute inset-0 w-full h-full object-cover hidden md:block"
-      loading="eager"
-      fetchpriority="high"
-    />
+<section id="hero" class="hero relative">
+  <!-- Pin container: 200vh of scroll while the inner stays sticky.
+       Outer = (1 viewport you see) + (1 viewport of 'effects scroll')
+       After the user has scrolled this whole distance, the sticky unsticks
+       and the page continues to the next section. -->
+  <div class="hero-pin relative h-[200vh]">
+    <div class="hero-sticky sticky top-0 h-screen overflow-hidden">
 
-    <video
-      id="hero-video"
-      class="absolute inset-0 w-full h-full object-cover block md:hidden"
-      autoplay
-      muted
-      loop
-      playsinline
-      poster={posterImage.src}
-    >
-      <source src="/videos/hero-mobile.mp4" type="video/mp4" />
-    </video>
-  </div>
+      <!-- Background — stays fixed in place; only blur + slight scale change. -->
+      <div class="hero-bg absolute inset-0 will-change-[filter,transform]">
+        <Image
+          src={heroImage}
+          alt="Kolorowe Przedszkole — Saska Kępa, Warszawa od 1991 roku"
+          class="absolute inset-0 w-full h-full object-cover hidden md:block"
+          loading="eager"
+          fetchpriority="high"
+        />
 
-  <!-- Overlay — opacity interpolates with scroll progress. -->
-  <div class="hero-overlay absolute inset-0 bg-black/25"></div>
+        <video
+          id="hero-video"
+          class="absolute inset-0 w-full h-full object-cover block md:hidden"
+          autoplay
+          muted
+          loop
+          playsinline
+          poster={posterImage.src}
+        >
+          <source src="/videos/hero-mobile.mp4" type="video/mp4" />
+        </video>
+      </div>
 
-  <!-- Content -->
-  <div class="relative z-10 flex flex-col items-center justify-center h-[calc(100vh-4rem)] mt-16 px-6 gap-8 text-center text-brand-cream">
+      <!-- Overlay — opacity rises with scroll progress for text contrast. -->
+      <div class="hero-overlay absolute inset-0 bg-black/25"></div>
 
-    <!-- Primary block — visible from page-load with staggered fade-in.
-         Translates upward slightly with scroll (faster than image = depth). -->
-    <div class="hero-primary flex flex-col items-center gap-1 sm:gap-2 will-change-transform">
-      <div class="hero-logo w-[65vw] sm:w-[60vw] md:w-[55vw] lg:w-[52vw] max-w-[820px]" set:html={koloroweLogo} />
-      <h1 class="hero-title font-sans font-bold uppercase text-[clamp(2rem,12vw,11rem)] leading-none tracking-wider text-brand-cream">
-        <span class="sr-only">Kolorowe </span>Przedszkole<span class="sr-only"> na Saskiej Kępie</span>
-      </h1>
+      <!-- Content — fills the sticky viewport with the navbar offset. -->
+      <div class="relative z-10 flex flex-col items-center justify-center h-full pt-16 px-6 gap-8 text-center text-brand-cream">
+
+        <!-- Primary block (always visible — initial staggered fade-in only) -->
+        <div class="flex flex-col items-center gap-1 sm:gap-2">
+          <div class="hero-logo w-[65vw] sm:w-[60vw] md:w-[55vw] lg:w-[52vw] max-w-[820px]" set:html={koloroweLogo} />
+          <h1 class="hero-title font-sans font-bold uppercase text-[clamp(2rem,12vw,11rem)] leading-none tracking-wider text-brand-cream">
+            <span class="sr-only">Kolorowe </span>Przedszkole<span class="sr-only"> na Saskiej Kępie</span>
+          </h1>
+        </div>
+
+        <!-- Secondary elements — reveal one after another as user scrolls -->
+        <p class="hero-tagline font-sans text-2xl sm:text-3xl md:text-4xl text-brand-cream/95 max-w-3xl mt-8 will-change-[opacity,transform]">
+          między domem a szkołą od 1991 roku
+        </p>
+
+        <p class="hero-subtag font-sans text-base sm:text-lg uppercase tracking-[0.3em] text-brand-cream/80 will-change-[opacity,transform]">
+          Saska Kępa · Gocław · Warszawa
+        </p>
+
+        <a
+          href="#olga"
+          class="hero-cta inline-block bg-transparent text-brand-cream border-2 border-brand-cream font-sans font-bold uppercase tracking-wider text-sm sm:text-base px-10 py-4 rounded-lg transition-colors duration-300 hover:bg-brand-teal hover:border-brand-teal mt-4 will-change-[opacity,transform]"
+        >
+          POZNAJ NAS
+        </a>
+
+      </div>
     </div>
-
-    <!-- Secondary block — reveals on scroll, each line at a different scroll range. -->
-    <p class="hero-tagline font-sans text-2xl sm:text-3xl md:text-4xl text-brand-cream/95 max-w-3xl mt-8 will-change-[opacity,transform]">
-      między domem a szkołą od 1991 roku
-    </p>
-
-    <p class="hero-subtag font-sans text-base sm:text-lg uppercase tracking-[0.3em] text-brand-cream/80 will-change-[opacity,transform]">
-      Saska Kępa · Gocław · Warszawa
-    </p>
-
-    <a
-      href="#olga"
-      class="hero-cta inline-block bg-transparent text-brand-cream border-2 border-brand-cream font-sans font-bold uppercase tracking-wider text-sm sm:text-base px-10 py-4 rounded-lg transition-colors duration-300 hover:bg-brand-teal hover:border-brand-teal mt-4 will-change-[opacity,transform]"
-    >
-      POZNAJ NAS
-    </a>
-
   </div>
 </section>
 
 <style>
-  /* Initial page-load fade-in for the primary block — preloader feel.
-     Opacity only; the JS scroll handler controls all transforms. */
+  /* Initial page-load fade-in for the primary block (preloader feel). */
   @keyframes heroFadeIn {
     from { opacity: 0; }
     to   { opacity: 1; }
@@ -80,7 +87,7 @@ import posterImage from '~/assets/images/hero-mobile-poster.jpg';
     animation: heroFadeIn 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
   }
 
-  /* Secondary elements start hidden — the JS scroll handler reveals them. */
+  /* Secondary elements start hidden — JS reveals them on scroll progress. */
   .hero-tagline,
   .hero-subtag,
   .hero-cta {
@@ -88,8 +95,14 @@ import posterImage from '~/assets/images/hero-mobile-poster.jpg';
     transform: translate3d(0, 32px, 0);
   }
 
-  /* prefers-reduced-motion: snap everything to final state. */
+  /* Reduced motion: kill the pin, snap everything to final state. */
   @media (prefers-reduced-motion: reduce) {
+    .hero-pin {
+      height: 100vh;
+    }
+    .hero-sticky {
+      position: relative;
+    }
     .hero-logo,
     .hero-title,
     .hero-tagline,
@@ -117,13 +130,13 @@ import posterImage from '~/assets/images/hero-mobile-poster.jpg';
     document.addEventListener('astro:after-swap', tryPlay);
   }
 
-  /* Scroll-linked hero animation. Per-frame (rAF) parallax + blur + multi-stage
-     fade-in. The whole effect runs over ~first 1× viewport-height of scroll. */
+  /* Pinned scroll-through: progress is calculated against the hero-pin
+     container (200vh). While the user scrolls through that 200vh, the
+     sticky inner stays in viewport and effects play out. */
   if (!window.__heroScrollInit) {
     window.__heroScrollInit = true;
 
     var rafScheduled = false;
-
     var clamp = function (v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; };
     var lerp  = function (a, b, t) { return a + (b - a) * t; };
     var easeOutCubic = function (t) { return 1 - Math.pow(1 - t, 3); };
@@ -132,23 +145,23 @@ import posterImage from '~/assets/images/hero-mobile-poster.jpg';
       rafScheduled = false;
       var hero = document.getElementById('hero');
       if (!hero) return;
-
-      // Reduced-motion users get the static layout via the CSS @media rule;
-      // skip JS-driven transforms entirely.
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-      var vh = window.innerHeight;
-      // Animation completes within 1 viewport-height of scroll from the top.
-      var progress = clamp(window.scrollY / vh, 0, 1);
+      var pin = hero.querySelector('.hero-pin');
+      if (!pin) return;
 
-      // Background: parallax up + scale + blur. Scale hides blur edges.
+      var pinRect = pin.getBoundingClientRect();
+      var pinHeight = pin.offsetHeight;
+      var vh = window.innerHeight;
+      var scrolled = -pinRect.top;
+      var distance = pinHeight - vh;
+      var progress = distance > 0 ? clamp(scrolled / distance, 0, 1) : 0;
+
+      // Background: blur + slight scale only. NO translateY — image holds in place.
       var bg = hero.querySelector('.hero-bg');
       if (bg) {
-        var bgY = -progress * 90;            // parallax: image drifts up ~90px
-        var bgScale = 1 + progress * 0.10;   // subtle 10% zoom-in
-        var bgBlur = progress * 7;           // 0 → 7px
-        bg.style.transform = 'translate3d(0,' + bgY + 'px,0) scale(' + bgScale + ')';
-        bg.style.filter = 'blur(' + bgBlur + 'px)';
+        bg.style.transform = 'scale(' + (1 + progress * 0.06) + ')';
+        bg.style.filter = 'blur(' + (progress * 8) + 'px)';
       }
 
       // Overlay: 0.25 → 0.55
@@ -157,13 +170,7 @@ import posterImage from '~/assets/images/hero-mobile-poster.jpg';
         overlay.style.opacity = lerp(0.25, 0.55, progress);
       }
 
-      // Primary block: small upward drift (faster than image = depth).
-      var primary = hero.querySelector('.hero-primary');
-      if (primary) {
-        primary.style.transform = 'translate3d(0,' + (-progress * 28) + 'px,0)';
-      }
-
-      // Staggered reveals for the three secondary elements.
+      // Staggered reveals — generous ranges so you really see each line appear.
       function revealAt(selector, startP, endP, lift) {
         var el = hero.querySelector(selector);
         if (!el) return;
@@ -174,9 +181,9 @@ import posterImage from '~/assets/images/hero-mobile-poster.jpg';
         el.style.transform = 'translate3d(0,' + ((1 - e) * lift) + 'px,0)';
       }
 
-      revealAt('.hero-tagline', 0.05, 0.32, 28);
-      revealAt('.hero-subtag',  0.22, 0.50, 28);
-      revealAt('.hero-cta',     0.40, 0.68, 28);
+      revealAt('.hero-tagline', 0.10, 0.38, 28);
+      revealAt('.hero-subtag',  0.35, 0.62, 28);
+      revealAt('.hero-cta',     0.58, 0.85, 28);
     }
 
     function scheduleApply() {
