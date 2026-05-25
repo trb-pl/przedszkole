@@ -66,13 +66,15 @@ const letters = [
 
 <section id="opinie" class="relative bg-brand-warm py-16 md:py-20 overflow-hidden">
 
-  <!-- Decorative scattered letters -->
-  <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+  <!-- Decorative scattered letters — content rendered via CSS ::before
+       (.deco-* classes in tailwind.css) so the actual letter character
+       doesn't sit in the HTML source as crawler-visible text. -->
+  <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true" data-nosnippet>
     {letters.map((l) => (
       <span
-        class={`absolute text-brand-navy/12 leading-none ${l.size}`}
+        class={`absolute text-brand-navy/12 leading-none deco-${l.c} ${l.size}`}
         style={`top: ${l.top}; left: ${l.left}; transform: translate(-50%, -50%) rotate(${l.rot}deg); font-family: 'learning-curve', sans-serif; font-weight: 400;`}
-      >{l.c}</span>
+      />
     ))}
   </div>
 
