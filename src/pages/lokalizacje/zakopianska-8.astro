@@ -91,7 +91,19 @@ const faqItems = [
     }
   })} />
 
-  <HeroMazy title="zakopiańska" />
+  <!-- FAQPage schema — built from faqItems. Rich result eligibility in Google +
+       cite-able by AI overviews (ChatGPT, Perplexity, Google AI). -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": { "@type": "Answer", "text": item.a },
+    }))
+  })} />
+
+  <HeroMazy title="zakopiańska" seoPrefix="Kolorowe Przedszkole — Zakopiańska 8, Saska Kępa, Warszawa — " />
 
   <!-- ─── Intro ─────────────────────────────────────────────── -->
   <!-- Hero lead 'Zaczarowany ogród na Saskiej Kępie...' moved into intro
@@ -205,13 +217,21 @@ const faqItems = [
   <section class="bg-brand-cream">
     <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-        <div class="rounded-2xl overflow-hidden aspect-[4/3] md:order-2">
-          <img
-            src="https://placehold.co/800x500/E8F7F4/2D346F?text=Sala+SI"
-            alt="Sala Integracji Sensorycznej w Kolorowym Przedszkolu na Zakopiańskiej"
-            loading="lazy"
-            class="w-full h-full object-cover"
-          />
+        <!-- Placeholder SVG (no external dep). Replace src with a real photo
+             when the photoshoot delivers — keep alt unchanged. -->
+        <div class="rounded-2xl overflow-hidden aspect-[4/3] md:order-2 relative bg-brand-teal/10 flex items-center justify-center"
+             role="img"
+             aria-label="Sala Integracji Sensorycznej w Kolorowym Przedszkolu na Zakopiańskiej">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" class="absolute inset-0 w-full h-full" aria-hidden="true">
+            <rect width="800" height="500" fill="#E8F7F4"/>
+            <circle cx="180" cy="160" r="70" fill="#34BBA8" opacity="0.18"/>
+            <circle cx="640" cy="380" r="100" fill="#F2795D" opacity="0.15"/>
+            <circle cx="540" cy="120" r="40" fill="#F5C41F" opacity="0.22"/>
+            <circle cx="120" cy="380" r="55" fill="#2D346F" opacity="0.10"/>
+          </svg>
+          <p class="relative font-sans italic text-[clamp(1.5rem,3vw,2.4rem)] text-brand-navy/70 px-6 text-center">
+            Sala SI — zdjęcie wkrótce
+          </p>
         </div>
         <div class="flex flex-col gap-5 md:order-1">
           <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Sala SI</p>
