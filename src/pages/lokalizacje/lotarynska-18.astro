@@ -105,7 +105,19 @@ const faqItems = [
     }
   })} />
 
-  <HeroMazy title="lotaryńska" />
+  <!-- FAQPage schema — built from faqItems above. Rich result eligibility
+       in Google + cite-able by AI overviews (ChatGPT, Perplexity, Google AI). -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": { "@type": "Answer", "text": item.a },
+    }))
+  })} />
+
+  <HeroMazy title="lotaryńska" seoPrefix="Kolorowe Przedszkole — Lotaryńska 18, Saska Kępa, Warszawa — " />
 
   <!-- ─── Intro ─────────────────────────────────────────────── -->
   <!-- Hero lead 'Prawdziwie domowe przedszkole...' moved into intro as
