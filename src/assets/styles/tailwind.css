@@ -123,3 +123,16 @@
 .dd *:first-child {
   margin-top: 0;
 }
+
+/* Decorative letters rendered via CSS ::before content so the actual
+   letter character never appears in the HTML source. Google does not
+   index pseudo-element content, so the scattered-letters background
+   pattern (in ScatteredLetters component + SekcjaOpinie) stops looking
+   like keyword-stuffed gibberish ('klOrwekrlOw') to crawlers. */
+.deco-k::before { content: 'k'; }
+.deco-o::before { content: 'o'; }
+.deco-l::before { content: 'l'; }
+.deco-r::before { content: 'r'; }
+.deco-w::before { content: 'w'; }
+.deco-e::before { content: 'e'; }
+.deco-O::before { content: 'O'; }
