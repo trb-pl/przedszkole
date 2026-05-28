@@ -80,30 +80,9 @@ const faqItems = [
     { name: 'Lotaryńska 18', url: 'https://koloroweprzedszkole.com/lokalizacje/lotarynska-18' },
   ]} />
 
-  <!-- JSON-LD schema -->
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "ChildCare",
-    "name": "Kolorowe Przedszkole — Lotaryńska 18",
-    "description": "Kameralne, domowe przedszkole na Saskiej Kępie dla dzieci od 2,5 roku życia. Jedna grupa, 12 dzieci, gordonki, rytmika, native speaker, ogród.",
-    "url": "https://koloroweprzedszkole.com/lokalizacje/lotarynska-18",
-    "telephone": "+48605657366",
-    "email": "przedszkole@kolorowe.eu",
-    "openingHours": "Mo-Fr 07:30-17:00",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "ul. Lotaryńska 18",
-      "postalCode": "03-974",
-      "addressLocality": "Warszawa",
-      "addressRegion": "Masovian Voivodeship",
-      "addressCountry": "PL"
-    },
-    "parentOrganization": {
-      "@type": "Organization",
-      "name": "Kolorowe Przedszkole",
-      "url": "https://koloroweprzedszkole.com"
-    }
-  })} />
+  <!-- LocalBusiness / Preschool schema for this branch lives site-wide in
+       SchemaOrg.astro (as a department of EducationalOrganization).
+       Single canonical @id, no per-page duplication. -->
 
   <!-- FAQPage schema — built from faqItems above. Rich result eligibility
        in Google + cite-able by AI overviews (ChatGPT, Perplexity, Google AI). -->
@@ -117,7 +96,7 @@ const faqItems = [
     }))
   })} />
 
-  <HeroMazy title="lotaryńska" seoPrefix="Kolorowe Przedszkole — Lotaryńska 18, Saska Kępa, Warszawa — " />
+  <HeroMazy title="lotaryńska" seoHeading="Lotaryńska 18 — kameralne przedszkole na Saskiej Kępie" />
 
   <!-- ─── Intro ─────────────────────────────────────────────── -->
   <!-- Hero lead 'Prawdziwie domowe przedszkole...' moved into intro as

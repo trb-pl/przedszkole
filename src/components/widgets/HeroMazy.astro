@@ -1,23 +1,29 @@
 ---
 // Reusable hero band for subpages. Designer's colorful "mazy" pattern as the
-// band background, with a massive lowercase H1 in cream that bleeds slightly
-// below the band edge into the cream section below (knockout / fade effect).
+// band background, with a massive lowercase decorative wordmark in cream
+// bleeding past the band edge (knockout / fade effect).
+//
+// SEO/A11y structure (per audit fix):
+// - The real <h1> is sr-only with the full descriptive heading — what
+//   Google + screen readers receive.
+// - The visible knockout wordmark is a separate <span aria-hidden="true">,
+//   purely decorative. Sighted users see only the lowercase short word.
 //
 // Usage:
-//   <HeroMazy title="kuchnia" seoPrefix="Domowa kuchnia w Kolorowym Przedszkolu — " />
-//
-// seoPrefix is rendered inside the H1 as sr-only (visually hidden) so Google
-// and screen readers see the full SEO-rich heading while sighted users see
-// only the single-word lowercase title.
+//   <HeroMazy
+//     title="kuchnia"
+//     seoHeading="Kuchnia — domowe obiady gotowane na miejscu"
+//   />
 import { Image } from 'astro:assets';
 import headerMazy from '~/assets/images/header-mazy.png';
 
 interface Props {
-  title: string;
-  seoPrefix?: string;
+  title: string;          // Visible decorative wordmark, e.g. "kuchnia"
+  seoHeading?: string;    // Full H1 text for Google/screen readers
 }
 
-const { title, seoPrefix } = Astro.props;
+const { title, seoHeading } = Astro.props;
+const heading = seoHeading || title;
 ---
 
 <div class="relative">
@@ -32,9 +38,14 @@ const { title, seoPrefix } = Astro.props;
     sizes="100vw"
   />
 
-  <div class="absolute inset-x-0 bottom-0 pointer-events-none">
-    <h1 class="px-6 text-center font-sans font-black text-[clamp(4.5rem,16vw,12rem)] text-brand-cream leading-[0.85] tracking-tight lowercase translate-y-[13%] md:translate-y-[17%]">
-      {seoPrefix && <span class="sr-only">{seoPrefix}</span>}{title}
-    </h1>
+  <!-- Real H1 — visually hidden, full SEO-friendly heading. -->
+  <h1 class="sr-only">{heading}</h1>
+
+  <!-- Visible knockout-bleed wordmark — decorative only (aria-hidden so
+       screen readers don't double-announce the page topic). -->
+  <div class="absolute inset-x-0 bottom-0 pointer-events-none" aria-hidden="true">
+    <span class="block px-6 text-center font-sans font-black text-[clamp(4.5rem,16vw,12rem)] text-brand-cream leading-[0.85] tracking-tight lowercase translate-y-[13%] md:translate-y-[17%]">
+      {title}
+    </span>
   </div>
 </div>

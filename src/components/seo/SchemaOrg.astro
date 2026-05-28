@@ -1,110 +1,167 @@
 ---
-// Schema.org structured data — site-wide on every page.
-// Uses ChildCare (which is a subtype of LocalBusiness) so we get both
-// the "private kindergarten" semantic and the local-business signals
-// (geo coordinates, opening hours, telephone) that Google needs for
-// rich results in Search and Maps.
+// Site-wide canonical entity graph for Kolorowe Przedszkole. Renders on every
+// page via Layout.astro.
 //
-// GPS coordinates below are approximate (~5–15m). Refine from Google
-// Maps if you need pixel-perfect Maps pins.
+// What's inside the single @graph:
+//   • EducationalOrganization (parent org, @id = #organization)
+//       - Two Preschool branches as `department`
+//       - Founder + employee[] reference Person @ids below
+//   • WebSite
+//   • Person x 5 (founder, pedagog, 2 psychologists, logopeda)
+//
+// Notes / verified facts:
+//   • Hours: Lotaryńska 07:30–17:00, Zakopiańska 07:30–17:15 (verified)
+//   • GPS: approximate (±10m), real positions from Google Maps
+//   • Sala SI is a supportive-activities room (not clinical therapy)
+//   • Staff first names only (per owner)
 ---
 
-<script type="application/ld+json">
-{
+<script type="application/ld+json" set:html={JSON.stringify({
   "@context": "https://schema.org",
-  "@type": "ChildCare",
-  "@id": "https://koloroweprzedszkole.com/#organization",
-  "name": "Kolorowe Przedszkole",
-  "alternateName": "Kolorowe Przedszkole na Saskiej Kępie",
-  "url": "https://koloroweprzedszkole.com",
-  "logo": "https://koloroweprzedszkole.com/logo.svg",
-  "image": "https://koloroweprzedszkole.com/og-image.jpg",
-  "foundingDate": "1991",
-  "founder": {
-    "@type": "Person",
-    "name": "Olga Trębicka"
-  },
-  "description": "Prywatne niepubliczne przedszkole na Saskiej Kępie w Warszawie, działające od 1991 roku. Dwie lokalizacje: ul. Lotaryńska 18 i ul. Zakopiańska 8. Sala integracji sensorycznej, domowe obiady, język angielski, metody Montessori, Steinera, Korczaka i Pikler.",
-  "telephone": "+48605657366",
-  "email": "przedszkole@kolorowe.eu",
-  "priceRange": "$$",
-  "currenciesAccepted": "PLN",
-  "areaServed": [
-    { "@type": "Place", "name": "Saska Kępa, Warszawa" },
-    { "@type": "Place", "name": "Gocław, Warszawa" },
-    { "@type": "Place", "name": "Praga-Południe, Warszawa" }
-  ],
-  "sameAs": [
-    "https://www.instagram.com/koloroweprzedszkole"
-  ],
-  "department": [
+  "@graph": [
+
+    /* ─── Organization ──────────────────────────────────────────── */
     {
-      "@type": "ChildCare",
-      "@id": "https://koloroweprzedszkole.com/lokalizacje/lotarynska-18#location",
-      "name": "Kolorowe Przedszkole — Lotaryńska 18",
-      "url": "https://koloroweprzedszkole.com/lokalizacje/lotarynska-18",
+      "@type": "EducationalOrganization",
+      "@id": "https://koloroweprzedszkole.com/#organization",
+      "name": "Kolorowe Przedszkole",
+      "alternateName": "Niepubliczne Przedszkole Saska Kępa",
+      "foundingDate": "1991",
+      "description": "Prywatne, niepubliczne przedszkole na Saskiej Kępie w Warszawie, działające od 1991 roku w dwóch lokalizacjach. Łączymy metody Montessori, Steinera, Korczaka i Pikler. Domowe obiady gotowane na miejscu, język angielski przez cały dzień, sala integracji sensorycznej.",
+      "url": "https://koloroweprzedszkole.com",
+      "logo": "https://koloroweprzedszkole.com/logo.svg",
+      "image": "https://koloroweprzedszkole.com/og-image.jpg",
       "telephone": "+48605657366",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "ul. Lotaryńska 18",
-        "postalCode": "03-974",
-        "addressLocality": "Warszawa",
-        "addressRegion": "mazowieckie",
-        "addressCountry": "PL"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "52.2425",
-        "longitude": "21.0689"
-      },
-      "openingHoursSpecification": [{
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-        "opens": "07:30",
-        "closes": "17:00"
-      }],
-      "hasMap": "https://www.google.com/maps?q=ul.+Lotaryńska+18,+03-974+Warszawa"
+      "email": "przedszkole@kolorowe.eu",
+      "priceRange": "$$",
+      "currenciesAccepted": "PLN",
+      "founder": { "@id": "https://koloroweprzedszkole.com/#olga-trebicka" },
+      "employee": [
+        { "@id": "https://koloroweprzedszkole.com/#olga-trebicka" },
+        { "@id": "https://koloroweprzedszkole.com/#agnieszka-trebicka" },
+        { "@id": "https://koloroweprzedszkole.com/#natalia" },
+        { "@id": "https://koloroweprzedszkole.com/#anna" },
+        { "@id": "https://koloroweprzedszkole.com/#lena" }
+      ],
+      "areaServed": [
+        { "@type": "Place", "name": "Saska Kępa, Warszawa" },
+        { "@type": "Place", "name": "Gocław, Warszawa" },
+        { "@type": "Place", "name": "Praga-Południe, Warszawa" }
+      ],
+      "sameAs": [
+        "https://www.instagram.com/koloroweprzedszkole"
+      ],
+      "department": [
+        {
+          "@type": "Preschool",
+          "@id": "https://koloroweprzedszkole.com/lokalizacje/lotarynska-18#branch",
+          "name": "Kolorowe Przedszkole — Lotaryńska 18",
+          "url": "https://koloroweprzedszkole.com/lokalizacje/lotarynska-18",
+          "telephone": "+48605657366",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "ul. Lotaryńska 18",
+            "postalCode": "03-974",
+            "addressLocality": "Warszawa",
+            "addressRegion": "mazowieckie",
+            "addressCountry": "PL"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "52.2425",
+            "longitude": "21.0689"
+          },
+          "openingHoursSpecification": [{
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+            "opens": "07:30",
+            "closes": "17:00"
+          }],
+          "hasMap": "https://www.google.com/maps?q=ul.+Lotaryńska+18,+03-974+Warszawa"
+        },
+        {
+          "@type": "Preschool",
+          "@id": "https://koloroweprzedszkole.com/lokalizacje/zakopianska-8#branch",
+          "name": "Kolorowe Przedszkole — Zakopiańska 8",
+          "url": "https://koloroweprzedszkole.com/lokalizacje/zakopianska-8",
+          "telephone": "+48605657366",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "ul. Zakopiańska 8",
+            "postalCode": "03-934",
+            "addressLocality": "Warszawa",
+            "addressRegion": "mazowieckie",
+            "addressCountry": "PL"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "52.2371",
+            "longitude": "21.0759"
+          },
+          "openingHoursSpecification": [{
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+            "opens": "07:30",
+            "closes": "17:15"
+          }],
+          "hasMap": "https://www.google.com/maps?q=ul.+Zakopiańska+8,+03-934+Warszawa"
+        }
+      ]
+    },
+
+    /* ─── WebSite ───────────────────────────────────────────────── */
+    {
+      "@type": "WebSite",
+      "@id": "https://koloroweprzedszkole.com/#website",
+      "name": "Kolorowe Przedszkole",
+      "alternateName": "Kolorowe Przedszkole — Saska Kępa",
+      "url": "https://koloroweprzedszkole.com",
+      "inLanguage": "pl-PL",
+      "publisher": { "@id": "https://koloroweprzedszkole.com/#organization" }
+    },
+
+    /* ─── People (E-E-A-T signal) ───────────────────────────────── */
+    {
+      "@type": "Person",
+      "@id": "https://koloroweprzedszkole.com/#olga-trebicka",
+      "name": "Olga Trębicka",
+      "jobTitle": "Założycielka",
+      "description": "Założycielka Kolorowego Przedszkola. W 1991 roku zaadaptowała rodzinny dom przy ul. Lotaryńskiej 18 na pierwszą siedzibę przedszkola. Pochodzi z Miłomłyna na Mazurach, gdzie wychowywała się w rodzinie pedagogów.",
+      "worksFor": { "@id": "https://koloroweprzedszkole.com/#organization" },
+      "founderOf": { "@id": "https://koloroweprzedszkole.com/#organization" },
+      "knowsAbout": ["edukacja przedszkolna", "pedagogika alternatywna"]
     },
     {
-      "@type": "ChildCare",
-      "@id": "https://koloroweprzedszkole.com/lokalizacje/zakopianska-8#location",
-      "name": "Kolorowe Przedszkole — Zakopiańska 8",
-      "url": "https://koloroweprzedszkole.com/lokalizacje/zakopianska-8",
-      "telephone": "+48605657366",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "ul. Zakopiańska 8",
-        "postalCode": "03-934",
-        "addressLocality": "Warszawa",
-        "addressRegion": "mazowieckie",
-        "addressCountry": "PL"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "52.2371",
-        "longitude": "21.0759"
-      },
-      "openingHoursSpecification": [{
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-        "opens": "07:30",
-        "closes": "17:15"
-      }],
-      "hasMap": "https://www.google.com/maps?q=ul.+Zakopiańska+8,+03-934+Warszawa"
+      "@type": "Person",
+      "@id": "https://koloroweprzedszkole.com/#agnieszka-trebicka",
+      "name": "Agnieszka Trębicka",
+      "jobTitle": "Pedagog",
+      "description": "Drugie pokolenie Kolorowego Przedszkola. Ukończyła pedagogikę przedszkolną i wczesnoszkolną na Uniwersytecie Warszawskim. Doświadczenie poszerzała w przedszkolach w Kanadzie, Nowej Zelandii, Australii, Wielkiej Brytanii i Hongkongu. Propagatorka pedagogiki Emmi Pikler.",
+      "alumniOf": { "@type": "CollegeOrUniversity", "name": "Uniwersytet Warszawski" },
+      "worksFor": { "@id": "https://koloroweprzedszkole.com/#organization" },
+      "knowsAbout": ["pedagogika przedszkolna i wczesnoszkolna", "pedagogika Emmi Pikler"]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://koloroweprzedszkole.com/#natalia",
+      "name": "Natalia",
+      "jobTitle": "Psycholog",
+      "worksFor": { "@id": "https://koloroweprzedszkole.com/#organization" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://koloroweprzedszkole.com/#anna",
+      "name": "Anna",
+      "jobTitle": "Psycholog",
+      "worksFor": { "@id": "https://koloroweprzedszkole.com/#organization" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://koloroweprzedszkole.com/#lena",
+      "name": "Lena",
+      "jobTitle": "Logopeda",
+      "worksFor": { "@id": "https://koloroweprzedszkole.com/#organization" }
     }
-  ]
-}
-</script>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": "https://koloroweprzedszkole.com/#website",
-  "name": "Kolorowe Przedszkole",
-  "alternateName": "Kolorowe Przedszkole — Saska Kępa",
-  "url": "https://koloroweprzedszkole.com",
-  "inLanguage": "pl-PL",
-  "publisher": { "@id": "https://koloroweprzedszkole.com/#organization" }
-}
-</script>
+  ]
+})} />
