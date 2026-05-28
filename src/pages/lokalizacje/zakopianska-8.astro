@@ -66,30 +66,9 @@ const faqItems = [
     { name: 'Zakopiańska 8', url: 'https://koloroweprzedszkole.com/lokalizacje/zakopianska-8' },
   ]} />
 
-  <!-- JSON-LD schema -->
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "ChildCare",
-    "name": "Kolorowe Przedszkole — Zakopiańska 8",
-    "description": "Willa z ogrodem ponad 1200m² na Saskiej Kępie. Dwie kameralne grupy, sala SI, psycholog na miejscu, stały kontakt z native speakerami.",
-    "url": "https://koloroweprzedszkole.com/lokalizacje/zakopianska-8",
-    "telephone": "+48605657366",
-    "email": "przedszkole@kolorowe.eu",
-    "openingHours": "Mo-Fr 07:30-17:15",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "ul. Zakopiańska 8",
-      "postalCode": "03-934",
-      "addressLocality": "Warszawa",
-      "addressRegion": "Masovian Voivodeship",
-      "addressCountry": "PL"
-    },
-    "parentOrganization": {
-      "@type": "Organization",
-      "name": "Kolorowe Przedszkole",
-      "url": "https://koloroweprzedszkole.com"
-    }
-  })} />
+  <!-- LocalBusiness / Preschool schema for this branch lives site-wide in
+       SchemaOrg.astro (as a department of EducationalOrganization).
+       Single canonical @id, no per-page duplication. -->
 
   <!-- FAQPage schema — built from faqItems. Rich result eligibility in Google +
        cite-able by AI overviews (ChatGPT, Perplexity, Google AI). -->
@@ -103,7 +82,7 @@ const faqItems = [
     }))
   })} />
 
-  <HeroMazy title="zakopiańska" seoPrefix="Kolorowe Przedszkole — Zakopiańska 8, Saska Kępa, Warszawa — " />
+  <HeroMazy title="zakopiańska" seoHeading="Zakopiańska 8 — przedszkole z ogrodem i salą SI na Saskiej Kępie" />
 
   <!-- ─── Intro ─────────────────────────────────────────────── -->
   <!-- Hero lead 'Zaczarowany ogród na Saskiej Kępie...' moved into intro
