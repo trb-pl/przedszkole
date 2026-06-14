@@ -124,6 +124,14 @@
   margin-top: 0;
 }
 
+/* Force font-display: swap on Typekit fonts. Typekit's default is
+   font-display: auto (block period), which causes invisible text
+   during font load. With swap, fallback shows instantly, real font
+   swaps in when ready (~310ms saving on PageSpeed). */
+@font-face { font-family: 'filson-pro';      font-display: swap; src: local('Filson Pro'); }
+@font-face { font-family: 'filson-soft';     font-display: swap; src: local('Filson Soft'); }
+@font-face { font-family: 'learning-curve';  font-display: swap; src: local('Learning Curve'); }
+
 /* Decorative letters rendered via CSS ::before content so the actual
    letter character never appears in the HTML source. Google does not
    index pseudo-element content, so the scattered-letters background

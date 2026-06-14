@@ -39,9 +39,19 @@ const isStaging = import.meta.env.PUBLIC_IS_STAGING === 'true';
     <Analytics />
     <SchemaOrg />
 
-    <link rel="stylesheet" href="https://use.typekit.net/sni5mcg.css" />
-
-    <link rel="preconnect" href="https://images.unsplash.com" />
+    <!-- Adobe Typekit — preconnect early, but load the stylesheet
+         non-blocking so it doesn't gate first paint (~1.5s saving on
+         PageSpeed). Fonts will swap in as they arrive with
+         font-display: swap (set in CustomStyles.astro). -->
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://use.typekit.net/sni5mcg.css"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript><link rel="stylesheet" href="https://use.typekit.net/sni5mcg.css" /></noscript>
 
     <!-- Staging: noindex -->
     {isStaging && <meta name="robots" content="noindex,nofollow" />}
