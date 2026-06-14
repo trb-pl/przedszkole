@@ -1,4 +1,12 @@
 ---
+// Self-hosted Nunito Variable — replaces Filson Pro from Adobe Typekit
+// for body/UI/headings. Bundled with the site (Vercel edge), so it loads
+// from the same origin: no DNS lookup, no render-blocking CDN call,
+// rock-solid Polish characters. Typekit kit still loads in <head> for
+// 'learning-curve' (decorative scattered letters + logo glyph style).
+import '@fontsource-variable/nunito';
+import '@fontsource-variable/nunito/wght-italic.css';
+
 import '~/assets/styles/tailwind.css';
 
 import { I18N } from 'astrowind:config';

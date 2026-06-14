@@ -22,10 +22,10 @@
   --color-brand-yellow: #F5C41F;
   --color-brand-forest: #415D43;
 
-  --font-sans: 'filson-pro', system-ui, sans-serif;
-  --font-serif: 'var(--aw-font-serif, ui-serif)', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-heading: 'filson-pro', system-ui, sans-serif;
-  --font-display: 'filson-soft', 'filson-pro', system-ui, sans-serif;
+  --font-sans:    'Nunito Variable', 'filson-pro', system-ui, sans-serif;
+  --font-serif:   'var(--aw-font-serif, ui-serif)', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-heading: 'Nunito Variable', 'filson-pro', system-ui, sans-serif;
+  --font-display: 'Nunito Variable', 'filson-soft', 'filson-pro', system-ui, sans-serif;
 
   --animate-fade: fadeInUp 1s both;
 
