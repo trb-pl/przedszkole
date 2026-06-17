@@ -132,6 +132,17 @@
 @font-face { font-family: 'filson-soft';     font-display: swap; src: local('Filson Soft'); }
 @font-face { font-family: 'learning-curve';  font-display: swap; src: local('Learning Curve'); }
 
+/* size-adjust bumps Nunito to match Filson Pro's apparent size.
+   Nunito has a smaller x-height than Filson Pro at the same font-size,
+   so text reads ~5% smaller. 106% returns the visual sizing parity
+   without us touching every Tailwind text-* utility. Layered on top of
+   Fontsource's @font-face declarations — the browser merges them. */
+@font-face {
+  font-family: 'Nunito Variable';
+  src: local('Nunito');
+  size-adjust: 106%;
+}
+
 /* Decorative letters rendered via CSS ::before content so the actual
    letter character never appears in the HTML source. Google does not
    index pseudo-element content, so the scattered-letters background
