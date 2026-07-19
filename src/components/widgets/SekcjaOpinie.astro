@@ -68,12 +68,15 @@ const letters = [
 
   <!-- Decorative scattered letters — content rendered via CSS ::before
        (.deco-* classes in tailwind.css) so the actual letter character
-       doesn't sit in the HTML source as crawler-visible text. -->
+       doesn't sit in the HTML source as crawler-visible text. Each letter
+       drifts at its own speed via the float engine (parallax depth). -->
   <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true" data-nosnippet>
-    {letters.map((l) => (
+    {letters.map((l, i) => (
       <span
         class={`absolute text-brand-navy/12 leading-none deco-${l.c} ${l.size}`}
-        style={`top: ${l.top}; left: ${l.left}; transform: translate(-50%, -50%) rotate(${l.rot}deg); font-family: 'learning-curve', sans-serif; font-weight: 400;`}
+        data-float
+        data-speed={[0.05, -0.07, 0.09, 0.13, -0.04, 0.06, -0.05, 0.1, -0.08, 0.14, 0.04, -0.06, 0.07, -0.09, 0.05, 0.08, -0.05, 0.11, 0.06, -0.07, 0.09, -0.04, 0.08][i % 23]}
+        style={`top: ${l.top}; left: ${l.left}; transform: translate(-50%, calc(-50% + var(--float-y, 0px))) rotate(${l.rot}deg); font-family: 'learning-curve', sans-serif; font-weight: 400;`}
       />
     ))}
   </div>
@@ -81,7 +84,7 @@ const letters = [
   <div class="relative max-w-7xl mx-auto px-4 md:px-6">
 
     <!-- Section heading -->
-    <div class="text-center mb-12 md:mb-14" data-reveal>
+    <div class="text-center mb-12 md:mb-14" data-reveal="mask">
       <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">
         Opinie rodziców
       </p>

@@ -123,7 +123,7 @@ const isStaging = import.meta.env.PUBLIC_IS_STAGING === 'true';
               // otherwise hover effects (e.g. card lift) inherit the slow
               // 0.8s reveal timing.
               el.addEventListener('transitionend', function onEnd(e) {
-                if (e.target === el && e.propertyName === 'opacity') {
+                if (e.target === el && (e.propertyName === 'opacity' || e.propertyName === 'clip-path')) {
                   el.removeAttribute('data-reveal');
                   el.removeEventListener('transitionend', onEnd);
                 }
@@ -136,6 +136,81 @@ const isStaging = import.meta.env.PUBLIC_IS_STAGING === 'true';
           io.observe(el);
         });
       });
+    </script>
+
+    <!-- Lenis inertia smooth-scroll — the 'expensive site' glide. Desktop
+         pointer-fine only; touch devices keep native momentum scrolling.
+         Instance persists across View Transitions (document survives). -->
+    <script>
+      import Lenis from 'lenis';
+
+      const w = window as unknown as { __lenis?: Lenis };
+      if (
+        !w.__lenis &&
+        window.matchMedia('(pointer: fine)').matches &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ) {
+        const lenis = new Lenis({ lerp: 0.09 });
+        w.__lenis = lenis;
+        const raf = (time: number) => {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
+      }
+    </script>
+
+    <!-- Scroll-linked motion engine: continuous (not one-shot) movement.
+         [data-float] drifts vertically at data-speed relative to viewport
+         center (sets --float-y, consumed inside the element's transform).
+         [data-marquee] slides horizontally across its viewport transit
+         (data-marquee-speed = total px of travel). rAF-throttled, skips
+         offscreen elements, inert under prefers-reduced-motion. -->
+    <script is:inline>
+      if (!window.__floatInit) {
+        window.__floatInit = true;
+        var floatItems = [];
+        var floatTicking = false;
+
+        function floatCollect() {
+          floatItems = Array.prototype.slice.call(
+            document.querySelectorAll('[data-float], [data-marquee]')
+          );
+        }
+
+        function floatUpdate() {
+          floatTicking = false;
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          var vh = window.innerHeight;
+          floatItems.forEach(function (el) {
+            var r = el.getBoundingClientRect();
+            if (r.bottom < -120 || r.top > vh + 120) return;
+            if (el.hasAttribute('data-marquee')) {
+              var p = (vh - r.top) / (vh + r.height);
+              p = Math.max(0, Math.min(1, p));
+              var dist = parseFloat(el.getAttribute('data-marquee-speed')) || 400;
+              el.style.transform = 'translate3d(' + (-p * dist).toFixed(1) + 'px, 0, 0)';
+            } else {
+              var speed = parseFloat(el.getAttribute('data-speed')) || 0.08;
+              var offCenter = r.top + r.height / 2 - vh / 2;
+              el.style.setProperty('--float-y', (-offCenter * speed).toFixed(1) + 'px');
+            }
+          });
+        }
+
+        function floatSchedule() {
+          if (floatTicking) return;
+          floatTicking = true;
+          requestAnimationFrame(floatUpdate);
+        }
+
+        window.addEventListener('scroll', floatSchedule, { passive: true });
+        window.addEventListener('resize', floatSchedule, { passive: true });
+        document.addEventListener('astro:page-load', function () {
+          floatCollect();
+          floatSchedule();
+        });
+      }
     </script>
   </body>
 </html>

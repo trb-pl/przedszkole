@@ -52,6 +52,18 @@ const optimizedPoster = await getImage({
       <!-- Overlay — opacity rises with scroll progress for text contrast. -->
       <div class="hero-overlay absolute inset-0 bg-black/25"></div>
 
+      <!-- Floating brand letters over the photo (book-cover vibe): cream,
+           translucent, each at its own mouse-parallax depth. Letters render
+           via .deco-* ::before so nothing lands in the HTML text. -->
+      <div class="absolute inset-0 pointer-events-none select-none hidden md:block" aria-hidden="true" data-nosnippet>
+        <span class="hero-fl deco-k" style="top: 14%; left: 8%;  --rot: -24deg; --depth: 0.09;  font-size: clamp(3.5rem, 8vw, 7.5rem);" />
+        <span class="hero-fl deco-w" style="top: 9%;  left: 72%; --rot: 30deg;  --depth: 0.06;  font-size: clamp(2.5rem, 5vw, 4.5rem);" />
+        <span class="hero-fl deco-o" style="top: 24%; left: 90%; --rot: 18deg;  --depth: 0.12;  font-size: clamp(2rem, 4vw, 3.5rem);" />
+        <span class="hero-fl deco-l" style="top: 68%; left: 5%;  --rot: -30deg; --depth: 0.07;  font-size: clamp(2.5rem, 5.5vw, 5rem);" />
+        <span class="hero-fl deco-e" style="top: 84%; left: 28%; --rot: -14deg; --depth: 0.1;   font-size: clamp(2rem, 4vw, 3.5rem);" />
+        <span class="hero-fl deco-r" style="top: 76%; left: 91%; --rot: 26deg;  --depth: 0.08;  font-size: clamp(3rem, 6.5vw, 6rem);" />
+      </div>
+
       <!-- Content — fills the sticky viewport with the navbar offset. -->
       <div class="relative z-10 flex flex-col items-center justify-center h-full pt-16 px-6 gap-8 text-center text-brand-cream">
 
@@ -124,6 +136,19 @@ const optimizedPoster = await getImage({
     animation: heroLetter 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
+  /* Floating brand letters over the photo. --mx/--my come from the
+     mouse-parallax handler; the long eased transition turns raw cursor
+     jitter into a lazy, liquid drift. */
+  .hero-fl {
+    position: absolute;
+    font-family: 'learning-curve', sans-serif;
+    color: rgba(252, 246, 240, 0.28);
+    line-height: 1;
+    transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) rotate(var(--rot, 0deg));
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
   /* Secondary elements start hidden — JS reveals them on scroll progress. */
   .hero-tagline,
   .hero-subtag,
@@ -179,6 +204,30 @@ const optimizedPoster = await getImage({
 </style>
 
 <script is:inline>
+  /* Mouse parallax for the floating hero letters. Each letter's --depth
+     scales how far it drifts from the cursor — different depths read as
+     physical layers. rAF-throttled; inert on mobile and reduced-motion. */
+  if (!window.__heroLettersInit) {
+    window.__heroLettersInit = true;
+    var hlTicking = false, hlX = 0, hlY = 0;
+    document.addEventListener('mousemove', function (e) {
+      if (window.innerWidth < 768) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      hlX = e.clientX / window.innerWidth - 0.5;
+      hlY = e.clientY / window.innerHeight - 0.5;
+      if (hlTicking) return;
+      hlTicking = true;
+      requestAnimationFrame(function () {
+        hlTicking = false;
+        document.querySelectorAll('.hero-fl').forEach(function (el) {
+          var d = parseFloat(el.style.getPropertyValue('--depth')) || 0.06;
+          el.style.setProperty('--mx', (hlX * d * 1000).toFixed(1) + 'px');
+          el.style.setProperty('--my', (hlY * d * 1000).toFixed(1) + 'px');
+        });
+      });
+    }, { passive: true });
+  }
+
   /* Hero video resume after View Transitions (unchanged). */
   if (!window.__heroVideoInit) {
     window.__heroVideoInit = true;

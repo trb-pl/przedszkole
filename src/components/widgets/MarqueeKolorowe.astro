@@ -1,0 +1,26 @@
+---
+// Scroll-linked marquee strip — the brand name in the handwritten script,
+// gliding sideways as the user scrolls past (not an auto-looping CSS
+// marquee; the position is tied to scroll, which reads as crafted).
+// The float engine in Layout.astro drives [data-marquee] translateX.
+//
+// Letters via .deco-* would be impractical for full words here, so the
+// strip is aria-hidden + data-nosnippet: invisible to screen readers and
+// excluded from Google snippets. It's pure decoration.
+const repeats = 6;
+---
+
+<div class="overflow-hidden bg-brand-warm py-8 md:py-12" aria-hidden="true" data-nosnippet>
+  <div
+    class="flex whitespace-nowrap will-change-transform"
+    data-marquee
+    data-marquee-speed="480"
+  >
+    {Array.from({ length: repeats }).map(() => (
+      <span
+        class="shrink-0 px-8 md:px-12 text-6xl md:text-8xl leading-none text-brand-navy/10"
+        style="font-family: 'learning-curve', sans-serif;"
+      >kolorowe przedszkole</span>
+    ))}
+  </div>
+</div>

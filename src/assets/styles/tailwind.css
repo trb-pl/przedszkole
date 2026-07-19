@@ -132,10 +132,10 @@
    data-reveal="zoom" scales up from 96%. */
 [data-reveal] {
   opacity: 0;
-  transform: translate3d(0, 32px, 0);
+  transform: translate3d(0, 24px, 0);
   transition:
-    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
 }
@@ -145,6 +145,21 @@
 [data-reveal].is-revealed {
   opacity: 1;
   transform: none;
+}
+
+/* 'mask' variant — editorial wipe instead of a fade: content is fully
+   opaque but clipped away, then unclips top-to-bottom on a hard easing.
+   Negative end insets keep italic overhangs and descenders unclipped. */
+[data-reveal='mask'] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.9s cubic-bezier(0.77, 0, 0.175, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: clip-path;
+}
+[data-reveal='mask'].is-revealed {
+  clip-path: inset(-8% -8% -12% -8%);
 }
 
 @media (prefers-reduced-motion: reduce) {
