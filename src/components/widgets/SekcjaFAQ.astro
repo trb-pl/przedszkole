@@ -31,20 +31,20 @@ const pytania = [
   <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
 
     <!-- Eyebrow -->
-    <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">
+    <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3" data-reveal>
       Pytania i odpowiedzi
     </p>
 
     <!-- Nagłówek -->
-    <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight mb-4">
+    <h2 class="font-sans italic text-[clamp(2rem,3.5vw,3rem)] text-brand-navy leading-tight mb-4" data-reveal style="--reveal-delay: 80ms">
       Najczęściej zadawane pytania
     </h2>
-    <p class="font-sans text-lg text-brand-navy/70 mb-12">
+    <p class="font-sans text-lg text-brand-navy/70 mb-12" data-reveal style="--reveal-delay: 160ms">
       Odpowiedzi na pytania, które słyszymy najczęściej od rodziców.
     </p>
 
     <!-- Lista pytań -->
-    <div class="divide-y divide-brand-navy/10">
+    <div class="divide-y divide-brand-navy/10" data-reveal style="--reveal-delay: 240ms">
       {pytania.map((item, i) => (
         <details class="group py-5" open={i === 0}>
           <summary class="flex justify-between items-start cursor-pointer gap-4 list-none">

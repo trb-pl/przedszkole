@@ -8,7 +8,7 @@ import olgaImage from '~/assets/images/olga.jpg';
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center">
 
       <!-- Photo -->
-      <div class="rounded-2xl overflow-hidden aspect-[3/4]">
+      <div class="rounded-2xl overflow-hidden aspect-[3/4]" data-reveal="left">
         <Image
           src={olgaImage}
           alt="Olga Trębicka — założycielka Kolorowego Przedszkola"
@@ -20,7 +20,7 @@ import olgaImage from '~/assets/images/olga.jpg';
       </div>
 
       <!-- Text -->
-      <div class="flex flex-col gap-8">
+      <div class="flex flex-col gap-8" data-reveal="right" style="--reveal-delay: 120ms">
         <h2 class="font-sans italic text-[clamp(2.8rem,4vw,5rem)] leading-tight text-brand-navy">
           Dzień dobry,
         </h2>
@@ -37,7 +37,7 @@ import olgaImage from '~/assets/images/olga.jpg';
 
         <a
           href="tel:605657366"
-          class="self-start inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-4 rounded-lg transition-colors duration-200 hover:bg-brand-coral hover:text-brand-cream"
+          class="cta-pop self-start inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-4 rounded-lg hover:bg-brand-coral hover:text-brand-cream"
         >
           Zadzwoń
         </a>

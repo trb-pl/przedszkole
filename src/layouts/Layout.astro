@@ -99,5 +99,43 @@ const isStaging = import.meta.env.PUBLIC_IS_STAGING === 'true';
         });
       });
     </script>
+
+    <!-- Scroll-reveal: observe [data-reveal] elements, add .is-revealed on
+         first intersection. Re-runs after every View Transition navigation
+         (astro:page-load fires on initial load too). Elements already
+         revealed are skipped, so re-init is cheap. -->
+    <script is:inline>
+      document.addEventListener('astro:page-load', function () {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.querySelectorAll('[data-reveal]').forEach(function (el) {
+            el.classList.add('is-revealed');
+          });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              var el = entry.target;
+              el.classList.add('is-revealed');
+              io.unobserve(el);
+              // Once the entrance transition finishes, strip the attribute so
+              // the element returns to its normal Tailwind transitions —
+              // otherwise hover effects (e.g. card lift) inherit the slow
+              // 0.8s reveal timing.
+              el.addEventListener('transitionend', function onEnd(e) {
+                if (e.target === el && e.propertyName === 'opacity') {
+                  el.removeAttribute('data-reveal');
+                  el.removeEventListener('transitionend', onEnd);
+                }
+              });
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -48px 0px' });
+
+        document.querySelectorAll('[data-reveal]:not(.is-revealed)').forEach(function (el) {
+          io.observe(el);
+        });
+      });
+    </script>
   </body>
 </html>

@@ -27,17 +27,17 @@ const lokalizacje = [
   <div class="max-w-6xl mx-auto px-6 py-16 md:py-20 w-full">
 
     <!-- Section header -->
-    <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal text-center mb-3">
+    <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal text-center mb-3" data-reveal>
       Kolorowe Przedszkole
     </p>
-    <h2 class="font-sans italic text-[clamp(1.8rem,3vw,3rem)] text-brand-navy text-center mb-12">
+    <h2 class="font-sans italic text-[clamp(1.8rem,3vw,3rem)] text-brand-navy text-center mb-12" data-reveal style="--reveal-delay: 80ms">
       Nasze lokalizacje
     </h2>
 
     <!-- Desktop grid (md+) -->
     <div class="hidden md:grid grid-cols-2 gap-8 lg:gap-12">
-      {lokalizacje.map((l) => (
-        <div class="flex flex-col gap-5">
+      {lokalizacje.map((l, i) => (
+        <div class="flex flex-col gap-5" data-reveal style={`--reveal-delay: ${i * 150}ms`}>
           <div class="overflow-hidden rounded-2xl aspect-[4/3]">
             <Image src={l.img} alt={l.alt} class="w-full h-full object-cover" loading="lazy" />
           </div>

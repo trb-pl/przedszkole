@@ -124,6 +124,58 @@
   margin-top: 0;
 }
 
+/* ─── Scroll-reveal system ────────────────────────────────────────────
+   Tag any element with data-reveal and it enters with a fade + lift when
+   it scrolls into view (IntersectionObserver in Layout.astro adds
+   .is-revealed). Stagger siblings via inline --reveal-delay.
+   Optional flavors: data-reveal="left" / "right" slide in sideways,
+   data-reveal="zoom" scales up from 96%. */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 32px, 0);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+[data-reveal='left']  { transform: translate3d(-44px, 0, 0); }
+[data-reveal='right'] { transform: translate3d(44px, 0, 0); }
+[data-reveal='zoom']  { transform: scale(0.96); }
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ─── CTA micro-interaction ───────────────────────────────────────────
+   Playful spring-lift on the site's pill buttons. Opt-in via .cta-pop. */
+.cta-pop {
+  transition:
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.25s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+.cta-pop:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px -8px rgba(45, 52, 111, 0.35);
+}
+.cta-pop:active {
+  transform: translateY(-1px) scale(0.98);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cta-pop, .cta-pop:hover, .cta-pop:active { transform: none; box-shadow: none; }
+}
+
 /* Force font-display: swap on Typekit fonts. Typekit's default is
    font-display: auto (block period), which causes invisible text
    during font load. With swap, fallback shows instantly, real font
