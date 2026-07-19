@@ -38,7 +38,7 @@ const lokalizacje = [
     <div class="hidden md:grid grid-cols-2 gap-8 lg:gap-12">
       {lokalizacje.map((l, i) => (
         <div class="flex flex-col gap-5" data-reveal style={`--reveal-delay: ${i * 150}ms`}>
-          <div class="overflow-hidden rounded-2xl aspect-[4/3]">
+          <div class="overflow-hidden rounded-2xl aspect-[4/3]" data-img-parallax>
             <Image src={l.img} alt={l.alt} class="w-full h-full object-cover" loading="lazy" />
           </div>
           <div class="flex flex-col gap-3">
@@ -71,7 +71,7 @@ const lokalizacje = [
             {lokalizacje.map((l) => (
               <div class="min-w-full px-1">
                 <div class="flex flex-col gap-5">
-                  <div class="overflow-hidden rounded-2xl aspect-[4/3]">
+                  <div class="overflow-hidden rounded-2xl aspect-[4/3]" data-img-parallax>
                     <Image src={l.img} alt={l.alt} class="w-full h-full object-cover" loading="lazy" />
                   </div>
                   <div class="flex flex-col gap-3">

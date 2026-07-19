@@ -1,0 +1,54 @@
+---
+// Auto-gliding photo ribbon — the emotional photos ARE the effect.
+// Polaroid-ish cards with alternating tilt drift sideways continuously
+// (GSAP [data-marquee-loop]); scrolling accelerates the ribbon. Each
+// photo additionally 'breathes' vertically via [data-img-parallax] —
+// two layers of motion give the strip real depth.
+import { Image } from 'astro:assets';
+
+import g1 from '~/assets/images/lotarynska-1.jpg';
+import g2 from '~/assets/images/zakopianska-1.jpg';
+import g3 from '~/assets/images/kuchnia-zupa.jpg';
+import g4 from '~/assets/images/lotarynska-3.jpg';
+import g5 from '~/assets/images/wartosci-natura.jpg';
+import g6 from '~/assets/images/lotarynska-5.jpg';
+import g7 from '~/assets/images/kuchnia-kanapki.jpg';
+import g8 from '~/assets/images/wartosci-serce.jpg';
+
+const zdjecia = [
+  { img: g1, alt: 'Dzieci podczas zabawy w Kolorowym Przedszkolu przy Lotaryńskiej 18' },
+  { img: g2, alt: 'Ogród Kolorowego Przedszkola przy Zakopiańskiej 8' },
+  { img: g3, alt: 'Domowa zupa gotowana na miejscu w Kolorowym Przedszkolu' },
+  { img: g4, alt: 'Zabawa w ogrodzie przedszkola na Saskiej Kępie' },
+  { img: g5, alt: 'Dzieci w kontakcie z naturą — Kolorowe Przedszkole' },
+  { img: g6, alt: 'Codzienne aktywności w Kolorowym Przedszkolu' },
+  { img: g7, alt: 'Domowe kanapki przygotowane w przedszkolnej kuchni' },
+  { img: g8, alt: 'Bliskość i bezpieczeństwo w Kolorowym Przedszkolu' },
+];
+---
+
+<section class="bg-brand-cream py-14 md:py-20 overflow-hidden" aria-label="Galeria zdjęć z Kolorowego Przedszkola">
+  <div class="flex w-max gap-5 md:gap-8 will-change-transform" data-marquee-loop="45">
+    {[0, 1].map((half) => (
+      <div class="flex gap-5 md:gap-8 shrink-0 items-center" aria-hidden={half === 1}>
+        {zdjecia.map((z, i) => (
+          <div
+            class={`w-56 md:w-80 aspect-[4/3] rounded-2xl overflow-hidden shrink-0 shadow-md ${
+              i % 2 ? 'rotate-2 translate-y-3' : '-rotate-2 -translate-y-1'
+            }`}
+            data-img-parallax
+          >
+            <Image
+              src={z.img}
+              alt={half === 0 ? z.alt : ''}
+              class="w-full h-full object-cover"
+              widths={[320, 480, 640]}
+              sizes="(max-width: 768px) 224px, 320px"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>

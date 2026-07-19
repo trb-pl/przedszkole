@@ -138,26 +138,91 @@ const isStaging = import.meta.env.PUBLIC_IS_STAGING === 'true';
       });
     </script>
 
-    <!-- Lenis inertia smooth-scroll — the 'expensive site' glide. Desktop
-         pointer-fine only; touch devices keep native momentum scrolling.
-         Instance persists across View Transitions (document survives). -->
+    <!-- Motion stack: Lenis (inertia scroll) + GSAP ScrollTrigger (scrubbed
+         effects). The standard award-site pairing — Lenis feeds scroll
+         position into ScrollTrigger, GSAP's ticker drives Lenis' raf.
+
+         Effects registered here, re-built after every View Transition:
+         · [data-img-parallax]   — image drifts vertically inside its mask
+                                   while scrolling (photos 'breathe')
+         · [data-rotate-scroll]  — element rotates, scrubbed to scroll
+         · [data-marquee-loop]   — infinite marquee; scroll velocity
+                                   temporarily accelerates it -->
     <script>
       import Lenis from 'lenis';
+      import gsap from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-      const w = window as unknown as { __lenis?: Lenis };
-      if (
-        !w.__lenis &&
-        window.matchMedia('(pointer: fine)').matches &&
-        !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      ) {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const pointerFine = window.matchMedia('(pointer: fine)').matches;
+      const w = window as unknown as { __lenis?: Lenis; __fxTweens?: gsap.core.Tween[] };
+
+      if (!w.__lenis && pointerFine && !reduced) {
         const lenis = new Lenis({ lerp: 0.09 });
         w.__lenis = lenis;
-        const raf = (time: number) => {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        };
-        requestAnimationFrame(raf);
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
       }
+
+      function initFx() {
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+        (w.__fxTweens || []).forEach((t) => t.kill());
+        w.__fxTweens = [];
+        if (reduced) return;
+
+        // Photos breathe: the image is oversized (scale 1.16) inside its
+        // overflow-hidden mask and drifts -8% → +8% across the viewport.
+        document.querySelectorAll<HTMLElement>('[data-img-parallax]').forEach((wrap) => {
+          const img = wrap.querySelector('img');
+          if (!img) return;
+          const tween = gsap.fromTo(
+            img,
+            { yPercent: -8, scale: 1.16 },
+            {
+              yPercent: 8,
+              scale: 1.16,
+              ease: 'none',
+              scrollTrigger: { trigger: wrap, start: 'top bottom', end: 'bottom top', scrub: true },
+            }
+          );
+          w.__fxTweens!.push(tween);
+        });
+
+        // Brand symbol rotation, scrubbed to scroll.
+        document.querySelectorAll<HTMLElement>('[data-rotate-scroll]').forEach((el) => {
+          const tween = gsap.to(el, {
+            rotation: parseFloat(el.dataset.rotateScroll || '180'),
+            ease: 'none',
+            scrollTrigger: {
+              trigger: el.parentElement,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          });
+          w.__fxTweens!.push(tween);
+        });
+
+        // Infinite marquee (track = two identical halves, so -50% loops
+        // seamlessly). Scroll velocity boosts playback up to 4× and eases
+        // back — the strip 'reacts' to the user.
+        document.querySelectorAll<HTMLElement>('[data-marquee-loop]').forEach((track) => {
+          const dur = parseFloat(track.dataset.marqueeLoop || '24');
+          const tween = gsap.to(track, { xPercent: -50, repeat: -1, duration: dur, ease: 'none' });
+          w.__fxTweens!.push(tween);
+          ScrollTrigger.create({
+            onUpdate(self) {
+              const boost = Math.min(Math.abs(self.getVelocity()) / 1500, 3);
+              gsap.to(tween, { timeScale: 1 + boost, duration: 0.4, overwrite: true });
+            },
+          });
+        });
+      }
+
+      document.addEventListener('astro:page-load', initFx);
     </script>
 
     <!-- Scroll-linked motion engine: continuous (not one-shot) movement.
@@ -173,9 +238,7 @@ const isStaging = import.meta.env.PUBLIC_IS_STAGING === 'true';
         var floatTicking = false;
 
         function floatCollect() {
-          floatItems = Array.prototype.slice.call(
-            document.querySelectorAll('[data-float], [data-marquee]')
-          );
+          floatItems = Array.prototype.slice.call(document.querySelectorAll('[data-float]'));
         }
 
         function floatUpdate() {
@@ -185,16 +248,9 @@ const isStaging = import.meta.env.PUBLIC_IS_STAGING === 'true';
           floatItems.forEach(function (el) {
             var r = el.getBoundingClientRect();
             if (r.bottom < -120 || r.top > vh + 120) return;
-            if (el.hasAttribute('data-marquee')) {
-              var p = (vh - r.top) / (vh + r.height);
-              p = Math.max(0, Math.min(1, p));
-              var dist = parseFloat(el.getAttribute('data-marquee-speed')) || 400;
-              el.style.transform = 'translate3d(' + (-p * dist).toFixed(1) + 'px, 0, 0)';
-            } else {
-              var speed = parseFloat(el.getAttribute('data-speed')) || 0.08;
-              var offCenter = r.top + r.height / 2 - vh / 2;
-              el.style.setProperty('--float-y', (-offCenter * speed).toFixed(1) + 'px');
-            }
+            var speed = parseFloat(el.getAttribute('data-speed')) || 0.08;
+            var offCenter = r.top + r.height / 2 - vh / 2;
+            el.style.setProperty('--float-y', (-offCenter * speed).toFixed(1) + 'px');
           });
         }
 

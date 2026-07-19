@@ -1,5 +1,14 @@
-<section class="bg-brand-warm">
-  <div class="max-w-4xl mx-auto px-6 py-16 flex flex-col items-center gap-8 text-center">
+<section class="relative bg-brand-warm overflow-hidden">
+  <!-- Rotating brand 'O' — the script glyph from the logo, spinning slowly
+       as the page scrolls past (GSAP data-rotate-scroll). -->
+  <span
+    class="deco-O absolute top-[8%] -right-10 md:-right-6 text-brand-teal/15 leading-none pointer-events-none select-none"
+    data-rotate-scroll="220"
+    aria-hidden="true"
+    data-nosnippet
+    style="font-family: 'learning-curve', sans-serif; font-size: clamp(10rem, 24vw, 22rem);"
+  />
+  <div class="relative z-10 max-w-4xl mx-auto px-6 py-16 flex flex-col items-center gap-8 text-center">
 
     <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal" data-reveal>
       Saska Kępa · Gocław · Warszawa

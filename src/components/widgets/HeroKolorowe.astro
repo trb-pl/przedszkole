@@ -52,16 +52,30 @@ const optimizedPoster = await getImage({
       <!-- Overlay — opacity rises with scroll progress for text contrast. -->
       <div class="hero-overlay absolute inset-0 bg-black/25"></div>
 
-      <!-- Floating brand letters over the photo (book-cover vibe): cream,
-           translucent, each at its own mouse-parallax depth. Letters render
-           via .deco-* ::before so nothing lands in the HTML text. -->
+      <!-- Floating brand letters over the photo (book-cover composition):
+           big, clearly visible, each on its own depth layer. Outer .hero-bob
+           breathes vertically on an infinite keyframe; inner .hero-fl lazily
+           follows the cursor. Letters render via .deco-* ::before so nothing
+           lands in the HTML text. -->
       <div class="absolute inset-0 pointer-events-none select-none hidden md:block" aria-hidden="true" data-nosnippet>
-        <span class="hero-fl deco-k" style="top: 14%; left: 8%;  --rot: -24deg; --depth: 0.09;  font-size: clamp(3.5rem, 8vw, 7.5rem);" />
-        <span class="hero-fl deco-w" style="top: 9%;  left: 72%; --rot: 30deg;  --depth: 0.06;  font-size: clamp(2.5rem, 5vw, 4.5rem);" />
-        <span class="hero-fl deco-o" style="top: 24%; left: 90%; --rot: 18deg;  --depth: 0.12;  font-size: clamp(2rem, 4vw, 3.5rem);" />
-        <span class="hero-fl deco-l" style="top: 68%; left: 5%;  --rot: -30deg; --depth: 0.07;  font-size: clamp(2.5rem, 5.5vw, 5rem);" />
-        <span class="hero-fl deco-e" style="top: 84%; left: 28%; --rot: -14deg; --depth: 0.1;   font-size: clamp(2rem, 4vw, 3.5rem);" />
-        <span class="hero-fl deco-r" style="top: 76%; left: 91%; --rot: 26deg;  --depth: 0.08;  font-size: clamp(3rem, 6.5vw, 6rem);" />
+        <span class="hero-bob" style="top: 12%; left: 7%;  animation-duration: 7s;   animation-delay: -1s;">
+          <span class="hero-fl deco-k" style="--rot: -24deg; --depth: 0.09; font-size: clamp(5rem, 12vw, 11rem);" />
+        </span>
+        <span class="hero-bob" style="top: 8%;  left: 70%; animation-duration: 9s;   animation-delay: -4s;">
+          <span class="hero-fl deco-w" style="--rot: 30deg;  --depth: 0.06; font-size: clamp(3.5rem, 7vw, 6.5rem);" />
+        </span>
+        <span class="hero-bob" style="top: 26%; left: 89%; animation-duration: 6s;   animation-delay: -2.5s;">
+          <span class="hero-fl deco-o" style="--rot: 18deg;  --depth: 0.13; font-size: clamp(2.5rem, 5vw, 4.5rem);" />
+        </span>
+        <span class="hero-bob" style="top: 64%; left: 4%;  animation-duration: 8s;   animation-delay: -5s;">
+          <span class="hero-fl deco-l" style="--rot: -30deg; --depth: 0.07; font-size: clamp(4rem, 8vw, 7.5rem);" />
+        </span>
+        <span class="hero-bob" style="top: 82%; left: 26%; animation-duration: 7.5s; animation-delay: -3s;">
+          <span class="hero-fl deco-e" style="--rot: -14deg; --depth: 0.11; font-size: clamp(2.5rem, 5vw, 4.5rem);" />
+        </span>
+        <span class="hero-bob" style="top: 70%; left: 90%; animation-duration: 8.5s; animation-delay: -6s;">
+          <span class="hero-fl deco-r" style="--rot: 26deg;  --depth: 0.08; font-size: clamp(4.5rem, 9vw, 8.5rem);" />
+        </span>
       </div>
 
       <!-- Content — fills the sticky viewport with the navbar offset. -->
@@ -136,14 +150,23 @@ const optimizedPoster = await getImage({
     animation: heroLetter 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
-  /* Floating brand letters over the photo. --mx/--my come from the
-     mouse-parallax handler; the long eased transition turns raw cursor
-     jitter into a lazy, liquid drift. */
-  .hero-fl {
+  /* Floating brand letters: outer wrapper breathes up/down on an infinite
+     keyframe; inner span lazily follows the cursor (--mx/--my from the
+     mouse-parallax handler, long eased transition = liquid drift). */
+  @keyframes heroBob {
+    from { transform: translateY(-12px); }
+    to   { transform: translateY(12px); }
+  }
+  .hero-bob {
     position: absolute;
+    animation: heroBob 7s ease-in-out infinite alternate;
+  }
+  .hero-fl {
+    display: block;
     font-family: 'learning-curve', sans-serif;
-    color: rgba(252, 246, 240, 0.28);
+    color: rgba(252, 246, 240, 0.55);
     line-height: 1;
+    text-shadow: 0 2px 24px rgba(45, 52, 111, 0.25);
     transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) rotate(var(--rot, 0deg));
     transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: transform;
@@ -193,6 +216,7 @@ const optimizedPoster = await getImage({
     .hero-logo,
     .hero-title,
     .hero-letter,
+    .hero-bob,
     .hero-tagline,
     .hero-subtag,
     .hero-cta {

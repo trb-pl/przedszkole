@@ -1,26 +1,35 @@
 ---
-// Scroll-linked marquee strip — the brand name in the handwritten script,
-// gliding sideways as the user scrolls past (not an auto-looping CSS
-// marquee; the position is tied to scroll, which reads as crafted).
-// The float engine in Layout.astro drives [data-marquee] translateX.
+// Infinite brand marquee — the logo lockup itself, in motion. Alternates
+// the handwritten 'kolorowe' (learning-curve, like the logo script) with
+// 'PRZEDSZKOLE' (Filson Pro black caps, like the logo wordmark), so the
+// strip reads as the brand — not as random type.
 //
-// Letters via .deco-* would be impractical for full words here, so the
-// strip is aria-hidden + data-nosnippet: invisible to screen readers and
-// excluded from Google snippets. It's pure decoration.
-const repeats = 6;
+// Motion: GSAP loop in Layout.astro ([data-marquee-loop]); scroll velocity
+// accelerates the strip up to 4× and eases back. Track = two identical
+// halves so xPercent: -50 loops seamlessly.
+//
+// aria-hidden + data-nosnippet: pure decoration, invisible to screen
+// readers and crawlers.
+const repeats = 3;
 ---
 
-<div class="overflow-hidden bg-brand-warm py-8 md:py-12" aria-hidden="true" data-nosnippet>
-  <div
-    class="flex whitespace-nowrap will-change-transform"
-    data-marquee
-    data-marquee-speed="480"
-  >
-    {Array.from({ length: repeats }).map(() => (
-      <span
-        class="shrink-0 px-8 md:px-12 text-6xl md:text-8xl leading-none text-brand-navy/10"
-        style="font-family: 'learning-curve', sans-serif;"
-      >kolorowe przedszkole</span>
+<div class="overflow-hidden bg-brand-warm py-10 md:py-14 select-none" aria-hidden="true" data-nosnippet>
+  <div class="flex w-max items-center whitespace-nowrap will-change-transform" data-marquee-loop="30">
+    {[0, 1].map(() => (
+      <div class="flex items-center shrink-0">
+        {Array.from({ length: repeats }).map(() => (
+          <>
+            <span
+              class="px-6 md:px-10 text-7xl md:text-9xl leading-none text-brand-teal/25"
+              style="font-family: 'learning-curve', sans-serif;"
+            >kolorowe</span>
+            <span
+              class="px-6 md:px-10 text-4xl md:text-6xl leading-none font-black uppercase tracking-[0.15em] text-brand-navy/20"
+              style="font-family: 'filson-pro', 'Nunito Variable', sans-serif;"
+            >przedszkole</span>
+          </>
+        ))}
+      </div>
     ))}
   </div>
 </div>
