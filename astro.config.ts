@@ -48,6 +48,10 @@ export default defineConfig({
 
   integrations: [
     sitemap({
+      // /brandbook is a private partner page: robots noindex on the page
+      // itself + kept out of the sitemap here. (Deliberately NOT listed in
+      // robots.txt Disallow — that would advertise the URL.)
+      filter: (page) => !page.includes('/brandbook'),
       serialize(item) {
         const slug = item.url.match(/\/porady\/([^/]+)\/?$/)?.[1];
         if (slug && postLastmod[slug]) {

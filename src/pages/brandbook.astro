@@ -1,0 +1,224 @@
+---
+// Internal brand asset page for partners (photographers, printers, etc.).
+// Hidden from search: robots noindex + excluded from the sitemap in
+// astro.config (filter). The URL is shared privately by the owner.
+import Layout from '~/layouts/PageLayout.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+
+const metadata = {
+  title: 'Brandbook — Kolorowe Przedszkole',
+  description: 'Materiały brandowe Kolorowego Przedszkola dla partnerów: logo, kolory, typografia, grafiki.',
+  robots: { index: false, follow: false },
+};
+
+const kolory = [
+  { nazwa: 'Granatowy', hex: '#2D346F', uzycie: 'Nagłówki, tekst, ciemne sekcje', jasny: false },
+  { nazwa: 'Kremowy', hex: '#FCF6F0', uzycie: 'Tło główne, tekst na ciemnym', jasny: true },
+  { nazwa: 'Kremowy ciepły', hex: '#FEFAF3', uzycie: 'Tła sekcji naprzemiennych', jasny: true },
+  { nazwa: 'Piaskowy', hex: '#FCF3DC', uzycie: 'Akcent ciepły', jasny: true },
+  { nazwa: 'Turkusowy', hex: '#34BBA8', uzycie: 'Akcenty, linki, przyciski CTA', jasny: false },
+  { nazwa: 'Koralowy', hex: '#F2795D', uzycie: 'Hover, akcent ciepły', jasny: false },
+  { nazwa: 'Żółty', hex: '#F5C41F', uzycie: 'Gwiazdki, mocny akcent', jasny: false },
+  { nazwa: 'Leśny', hex: '#415D43', uzycie: 'Akcent natury', jasny: false },
+];
+
+const fonty = [
+  {
+    nazwa: 'Filson Pro',
+    rola: 'Font logotypu — napis „PRZEDSZKOLE" (bold caps). Historycznie główny font marki.',
+    zrodlo: 'Adobe Fonts',
+    url: 'https://fonts.adobe.com/fonts/filson-pro',
+    probka: 'PRZEDSZKOLE',
+    styl: "font-family: 'filson-pro', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;",
+  },
+  {
+    nazwa: 'Learning Curve',
+    rola: 'Font odręczny — napis „kolorowe" w logo i rozsypane literki (k o l r w e) w materiałach.',
+    zrodlo: 'Adobe Fonts',
+    url: 'https://fonts.adobe.com/fonts/learning-curve',
+    probka: 'kolorowe',
+    styl: "font-family: 'learning-curve', sans-serif; font-size: 1.6em;",
+  },
+  {
+    nazwa: 'Nunito',
+    rola: 'Font tekstowy strony www — nagłówki, akapity, interfejs. Bezpłatny.',
+    zrodlo: 'Google Fonts',
+    url: 'https://fonts.google.com/specimen/Nunito',
+    probka: 'Między domem a szkołą od 1991 roku',
+    styl: "font-family: 'Nunito Variable', sans-serif;",
+  },
+];
+
+const pliki = [
+  { plik: '/brand/kolorowe-przedszkole-logo.svg', nazwa: 'Logo — pełny znak', format: 'SVG (wektor)', opis: 'Podstawowa wersja logo do wszystkich zastosowań. Skaluje się bez utraty jakości.' },
+  { plik: '/brand/kolorowe-napis.svg', nazwa: 'Napis „kolorowe"', format: 'SVG (wektor)', opis: 'Sam odręczny napis — używany m.in. w hero strony www.' },
+  { plik: '/brand/kolorowe-mazy.png', nazwa: 'Mazy — pattern kolorowy', format: 'PNG', opis: 'Falisty pattern brandowy (żółty/turkus/koral/limonka) — tła nagłówków, materiały drukowane.' },
+];
+---
+
+<Layout metadata={metadata}>
+
+  <HeroMazy title="brandbook" seoHeading="Brandbook Kolorowego Przedszkola — materiały dla partnerów" />
+
+  <!-- Intro -->
+  <section class="bg-brand-cream py-12 md:py-16">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="font-sans text-lg md:text-xl text-brand-navy/80 leading-relaxed mb-4">
+        Materiały brandowe Kolorowego Przedszkola dla naszych partnerów — fotografów, drukarni, grafików.
+        Znajdziesz tu logo do pobrania, paletę kolorów z kodami, fonty i grafiki.
+      </p>
+      <p class="font-sans text-sm text-brand-navy/55 leading-relaxed">
+        Ta strona nie jest indeksowana przez wyszukiwarki — prosimy nie udostępniać linku publicznie.
+        Pytania? Napisz: <a href="mailto:przedszkole@kolorowe.eu" class="text-brand-teal underline hover:text-brand-coral transition-colors duration-200">przedszkole@kolorowe.eu</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── Pliki do pobrania ─────────────────────────────────── -->
+  <section class="bg-brand-warm py-14 md:py-18">
+    <div class="max-w-5xl mx-auto px-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Do pobrania</p>
+      <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-10">Logo i grafiki</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {pliki.map((p) => (
+          <div class="bg-white rounded-2xl border border-brand-navy/6 shadow-sm overflow-hidden flex flex-col">
+            <div class="h-44 flex items-center justify-center p-6 bg-brand-cream border-b border-brand-navy/6">
+              <img src={p.plik} alt={p.nazwa} class="max-h-full max-w-full object-contain" loading="lazy" />
+            </div>
+            <div class="p-5 flex flex-col gap-2 flex-1">
+              <p class="font-sans font-bold text-brand-navy">{p.nazwa}</p>
+              <p class="font-sans text-xs uppercase tracking-wider text-brand-navy/45">{p.format}</p>
+              <p class="font-sans text-sm text-brand-navy/65 leading-relaxed flex-1">{p.opis}</p>
+              <a
+                href={p.plik}
+                download
+                class="cta-pop mt-3 self-start inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-xs px-6 py-2.5 rounded-lg hover:bg-brand-coral"
+              >
+                Pobierz
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Zasady logo -->
+      <div class="mt-10 bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-6 md:p-8">
+        <p class="font-sans font-bold text-brand-navy mb-4">Zasady użycia logo</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-2 font-sans text-sm text-brand-navy/70 leading-relaxed">
+          <p>✓ Minimalna szerokość: 100 px (digital) / 30 mm (druk)</p>
+          <p>✓ Strefa ochronna: wysokość litery „K" wokół znaku</p>
+          <p>✗ Nie zmieniaj kolorów liter</p>
+          <p>✗ Nie obracaj i nie rozciągaj znaku</p>
+          <p>✓ Na ciemnych tłach używaj wersji jasnej (kremowej)</p>
+          <p>✗ Nie dodawaj cieni ani obrysów</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Kolory ─────────────────────────────────────────────── -->
+  <section class="bg-brand-cream py-14 md:py-18">
+    <div class="max-w-5xl mx-auto px-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Paleta</p>
+      <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-3">Kolory marki</h2>
+      <p class="font-sans text-sm text-brand-navy/55 mb-10">Kliknij kafelek, aby skopiować kod HEX.</p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {kolory.map((k) => (
+          <button
+            type="button"
+            class="kolor-swatch group text-left rounded-2xl overflow-hidden border border-brand-navy/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer bg-white"
+            data-hex={k.hex}
+            aria-label={`Skopiuj kod koloru ${k.nazwa}: ${k.hex}`}
+          >
+            <span class="block h-24 md:h-28" style={`background-color: ${k.hex}; ${k.jasny ? 'border-bottom: 1px solid rgba(45,52,111,0.08);' : ''}`}></span>
+            <span class="block p-4">
+              <span class="block font-sans font-bold text-brand-navy text-sm">{k.nazwa}</span>
+              <span class="swatch-hex block font-mono text-sm text-brand-navy/60 mt-0.5">{k.hex}</span>
+              <span class="block font-sans text-xs text-brand-navy/45 mt-1.5 leading-snug">{k.uzycie}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Typografia ─────────────────────────────────────────── -->
+  <section class="bg-brand-warm py-14 md:py-18">
+    <div class="max-w-5xl mx-auto px-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Typografia</p>
+      <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-10">Fonty marki</h2>
+
+      <div class="flex flex-col gap-6">
+        {fonty.map((f) => (
+          <div class="bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-6 md:p-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <div class="md:col-span-5">
+              <p class="font-sans font-bold text-brand-navy text-lg">{f.nazwa}</p>
+              <p class="font-sans text-sm text-brand-navy/65 leading-relaxed mt-1.5">{f.rola}</p>
+              <a
+                href={f.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-3 inline-block font-sans text-xs font-semibold uppercase tracking-wider text-brand-teal hover:text-brand-coral border-b border-current/40 hover:border-current pb-0.5 transition-colors duration-200"
+              >
+                {f.zrodlo} →
+              </a>
+            </div>
+            <div class="md:col-span-7">
+              <p class="text-brand-navy text-3xl md:text-4xl leading-tight" style={f.styl}>{f.probka}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p class="font-sans text-sm text-brand-navy/55 mt-8 leading-relaxed">
+        Filson Pro i Learning Curve wymagają subskrypcji Adobe Creative Cloud (są w niej bez dopłat).
+        Jeśli nie masz dostępu do Adobe Fonts — napisz do nas, znajdziemy rozwiązanie.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── Rozsypane literki ──────────────────────────────────── -->
+  <section class="bg-brand-cream py-14 md:py-18">
+    <div class="max-w-5xl mx-auto px-6">
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Element graficzny</p>
+      <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.6rem)] text-brand-navy leading-tight mb-6">Rozsypane literki</h2>
+      <p class="font-sans text-brand-navy/70 leading-relaxed max-w-2xl mb-8">
+        Charakterystyczny motyw marki: litery <strong>k, o, l, r, w, e</strong> (ze słowa „kolorowe")
+        w foncie Learning Curve, rozsypane pod różnymi kątami, w 2–3 rozmiarach.
+        Na jasnych tłach — granatowe z niską przezroczystością (ok. 12–15%), na zdjęciach — kremowe.
+      </p>
+      <div class="bg-white rounded-2xl border border-brand-navy/6 shadow-sm relative overflow-hidden h-56 md:h-64" aria-hidden="true" data-nosnippet>
+        <span class="deco-k absolute text-brand-navy/15 leading-none text-7xl" style="top: 30%; left: 12%; transform: rotate(-24deg); font-family: 'learning-curve', sans-serif;" />
+        <span class="deco-o absolute text-brand-navy/15 leading-none text-5xl" style="top: 62%; left: 30%; transform: rotate(18deg); font-family: 'learning-curve', sans-serif;" />
+        <span class="deco-O absolute text-brand-navy/15 leading-none text-8xl" style="top: 22%; left: 46%; transform: rotate(-8deg); font-family: 'learning-curve', sans-serif;" />
+        <span class="deco-r absolute text-brand-navy/15 leading-none text-6xl" style="top: 58%; left: 64%; transform: rotate(30deg); font-family: 'learning-curve', sans-serif;" />
+        <span class="deco-w absolute text-brand-navy/15 leading-none text-7xl" style="top: 28%; left: 80%; transform: rotate(-18deg); font-family: 'learning-curve', sans-serif;" />
+        <span class="deco-e absolute text-brand-navy/15 leading-none text-5xl" style="top: 68%; left: 88%; transform: rotate(12deg); font-family: 'learning-curve', sans-serif;" />
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<script is:inline>
+  // Click-to-copy for the colour swatches.
+  document.addEventListener('astro:page-load', function () {
+    document.querySelectorAll('.kolor-swatch').forEach(function (btn) {
+      if (btn.__copyInit) return;
+      btn.__copyInit = true;
+      btn.addEventListener('click', function () {
+        var hex = btn.getAttribute('data-hex');
+        if (!hex || !navigator.clipboard) return;
+        navigator.clipboard.writeText(hex).then(function () {
+          var label = btn.querySelector('.swatch-hex');
+          if (!label) return;
+          var original = label.textContent;
+          label.textContent = 'Skopiowano!';
+          setTimeout(function () { label.textContent = original; }, 1200);
+        });
+      });
+    });
+  });
+</script>
