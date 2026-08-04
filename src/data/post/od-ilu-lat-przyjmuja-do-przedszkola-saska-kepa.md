@@ -45,3 +45,4 @@ Tak. Jeśli przeprowadzasz się na Saską Kępę lub Gocław i szukasz miejsca d
 ---
 
 **Chcesz sprawdzić, czy Twoje dziecko jest gotowe?** [Napisz do nas](/kontakt) — chętnie porozmawiamy i pomożemy ocenić sytuację.
+ Najmłodszych — już od 2,5 roku — zapraszamy do kameralnej grupy przy [Lotaryńskiej 18](/lokalizacje/lotarynska-18). Formularz zapisu znajdziesz na stronie [rekrutacji 2026/2027](/rekrutacja).

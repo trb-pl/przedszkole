@@ -50,3 +50,4 @@ Oprócz tych pięciu pytań, zwróć uwagę na:
 ---
 
 **Chcesz zobaczyć Kolorowe Przedszkole od środka?** [Umów się na wizytę](/kontakt) — pokażemy Ci wszystko i odpowiemy na każde pytanie. Działamy od 1991 roku — nie mamy nic do ukrycia.
+ Zobacz nasze lokalizacje: [Lotaryńska 18](/lokalizacje/lotarynska-18) (od 2,5 roku) i [Zakopiańska 8](/lokalizacje/zakopianska-8) (4–6 lat), a jeśli checklistę mamy zaliczoną — [przejdź do rekrutacji 2026/2027](/rekrutacja).

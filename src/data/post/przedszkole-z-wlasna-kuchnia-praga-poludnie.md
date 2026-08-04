@@ -53,3 +53,4 @@ Szczegółowe informacje o kosztach i tym, co wliczone jest w czesne, udzielamy 
 ---
 
 **Szukasz przedszkola z domową kuchnią na Pradze Południe?** [Skontaktuj się z nami](/kontakt) — opowiemy o naszym menu i odpowiemy na pytania o diety.
+ Więcej o tym, jak gotujemy, przeczytasz na stronie [naszej kuchni](/o-nas/kuchnia) — a jeśli szukasz miejsca dla dziecka, [sprawdź rekrutację 2026/2027](/rekrutacja).

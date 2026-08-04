@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'node:fs';
 import { fileURLToPath } from 'url';
 
 import { defineConfig } from 'astro/config';
@@ -17,6 +18,25 @@ import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/uti
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Real lastmod dates for blog posts in the sitemap, read straight from
+// each post's frontmatter (updateDate wins over publishDate). Google uses
+// lastmod to prioritise recrawls — but only when the dates are credible,
+// so pages without a known date get no lastmod at all (better than faking
+// a build timestamp site-wide).
+const postLastmod: Record<string, string> = (() => {
+  const map: Record<string, string> = {};
+  const dir = path.resolve(__dirname, './src/data/post');
+  for (const file of fs.readdirSync(dir)) {
+    if (!file.endsWith('.md') && !file.endsWith('.mdx')) continue;
+    const src = fs.readFileSync(path.join(dir, file), 'utf-8');
+    const date =
+      src.match(/^updateDate:\s*['"]?([\d-]+)/m)?.[1] ??
+      src.match(/^publishDate:\s*['"]?([\d-]+)/m)?.[1];
+    if (date) map[file.replace(/\.(md|mdx)$/, '')] = date;
+  }
+  return map;
+})();
+
 const hasExternalScripts = false;
 const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
@@ -27,7 +47,15 @@ export default defineConfig({
   trailingSlash: 'never',
 
   integrations: [
-    sitemap(),
+    sitemap({
+      serialize(item) {
+        const slug = item.url.match(/\/porady\/([^/]+)\/?$/)?.[1];
+        if (slug && postLastmod[slug]) {
+          item.lastmod = postLastmod[slug];
+        }
+        return item;
+      },
+    }),
     mdx(),
     icon({
       include: {
