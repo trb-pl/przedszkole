@@ -1,7 +1,8 @@
 ---
 publishDate: 2026-05-15T00:00:00Z
+updateDate: 2026-08-04T00:00:00Z
 author: Kolorowe Przedszkole
-title: "Ile kosztuje przedszkole prywatne na Saskiej Kępie? Kolorowe Przedszkole — cennik 2025/2026"
+title: "Ile kosztuje przedszkole prywatne na Saskiej Kępie? Kolorowe Przedszkole — cennik 2026/2027"
 excerpt: "Czesne, wyżywienie, wpisowe, zajęcia dodatkowe — pełny i szczery obraz kosztów Kolorowego Przedszkola na Saskiej Kępie. Bez ukrytych pozycji i niespodzianek."
 image: ~/assets/images/Kolorowe_przedszkole_czesne.jpg
 category: Porady
@@ -20,7 +21,7 @@ metadata:
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Ile kosztuje przedszkole prywatne na Saskiej Kępie? Kolorowe Przedszkole — cennik 2025/2026",
+  "headline": "Ile kosztuje przedszkole prywatne na Saskiej Kępie? Kolorowe Przedszkole — cennik 2026/2027",
   "description": "Czesne, wyżywienie, wpisowe, zajęcia dodatkowe — pełny i szczery obraz kosztów Kolorowego Przedszkola na Saskiej Kępie. Bez ukrytych pozycji i niespodzianek.",
   "author": { "@type": "Organization", "name": "Kolorowe Przedszkole" },
   "publisher": {
@@ -29,6 +30,7 @@ metadata:
     "url": "https://koloroweprzedszkole.com"
   },
   "datePublished": "2026-05-15",
+  "dateModified": "2026-08-04",
   "url": "https://koloroweprzedszkole.com/porady/ile-kosztuje-prywatne-przedszkole-goclaw"
 }
 </script>
@@ -70,7 +72,7 @@ Jednorazowa opłata przy podpisaniu umowy wynosi **1 800 zł**. Płacisz ją raz
 
 ## Kiedy przedszkole jest zamknięte?
 
-Kolorowe Przedszkole działa przez cały rok. Przerwy w roku szkolnym 2025/2026 wyglądają następująco:
+Kolorowe Przedszkole działa przez cały rok. Przerwy w roku szkolnym 2026/2027 wyglądają następująco:
 
 | Przerwa | Termin |
 |---|---|
@@ -98,4 +100,6 @@ Wpisowe płacisz raz. Zajęcia dodatkowe — według wyboru, bez rocznych zobowi
 
 ---
 
-**Masz pytania o rekrutację lub chcesz umówić się na dzień otwarty?** [Napisz do nas](/kontakt) — odpiszemy i zaprosimy na spotkanie z naszą dyrekcją.
+*Cennik zaktualizowany na rok szkolny 2026/2027 (sierpień 2026).*
+
+**Masz pytania o rekrutację lub chcesz umówić się na dzień otwarty?** [Sprawdź szczegóły rekrutacji 2026/2027](/rekrutacja) albo [napisz do nas](/kontakt) — odpiszemy i zaprosimy na spotkanie z naszą dyrekcją. Zobacz też, jak wyglądają nasze lokalizacje: [Lotaryńska 18](/lokalizacje/lotarynska-18) (od 2,5 roku) i [Zakopiańska 8](/lokalizacje/zakopianska-8) (4–6 lat).

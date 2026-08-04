@@ -48,3 +48,4 @@ Grupy w Kolorowym Przedszkolu są kameralne — znacząco mniejsze niż w placó
 ---
 
 **Chcesz zarezerwować miejsce na rok 2026/2027?** [Napisz do nas](/kontakt) — powiemy Ci, jak wygląda dostępność w Twojej grupie wiekowej.
+ Szczegóły procesu i formularz znajdziesz na stronie [rekrutacji 2026/2027](/rekrutacja), a obie lokalizacje — [Lotaryńską 18](/lokalizacje/lotarynska-18) i [Zakopiańską 8](/lokalizacje/zakopianska-8) — możesz odwiedzić przed decyzją.

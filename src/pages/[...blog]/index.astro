@@ -43,9 +43,29 @@ const metadata = merge(
   },
   { ...(post?.metadata ? { ...post.metadata, canonical: post.metadata?.canonical || url } : {}) }
 ) as MetaData;
+
+// BlogPosting JSON-LD for every post, generated from frontmatter —
+// datePublished/dateModified are what Google uses to show freshness in
+// SERPs and prioritise recrawls. Publisher references the site-wide
+// organization node from SchemaOrg.astro.
+const blogPostingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.excerpt,
+  url: String(url),
+  mainEntityOfPage: { '@type': 'WebPage', '@id': String(url) },
+  ...(post.publishDate ? { datePublished: new Date(post.publishDate).toISOString() } : {}),
+  ...(post.updateDate ? { dateModified: new Date(post.updateDate).toISOString() } : {}),
+  author: { '@type': 'Organization', name: 'Kolorowe Przedszkole', url: 'https://koloroweprzedszkole.com' },
+  publisher: { '@id': 'https://koloroweprzedszkole.com/#organization' },
+  ...(image && typeof image !== 'string' ? { image: new URL(image.src, Astro.site).href } : {}),
+  inLanguage: 'pl-PL',
+};
 ---
 
 <Layout metadata={metadata}>
+  <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
   <SinglePost post={{ ...post, image: image }} url={url}>
     {post.Content && <post.Content />}
   </SinglePost>

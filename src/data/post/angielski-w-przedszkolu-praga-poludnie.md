@@ -50,3 +50,4 @@ Zajęcia z angielskiego są wliczone w czesne — sprawdź [szczegóły cennika]
 ---
 
 **Szukasz przedszkola z angielskim na Pradze Południe?** [Skontaktuj się z nami](/kontakt) — opowiemy więcej o naszej metodzie.
+ Zajrzyj też na strony naszych lokalizacji — [Lotaryńska 18](/lokalizacje/lotarynska-18) i [Zakopiańska 8](/lokalizacje/zakopianska-8) — gdzie ciocie mówią do dzieci po angielsku każdego dnia, albo od razu [sprawdź rekrutację 2026/2027](/rekrutacja).

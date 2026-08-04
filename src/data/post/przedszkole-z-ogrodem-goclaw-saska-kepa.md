@@ -49,3 +49,4 @@ Jeśli szukasz przedszkola z ogrodem na Pradze Południe, [umów się na wizytę
 ---
 
 **Chcesz zobaczyć ogród i plac zabaw?** [Skontaktuj się](/kontakt) — zapraszamy na spacer po Kolorowym Przedszkolu.
+ Nasz ogród o powierzchni ponad 1200 m² zobaczysz przy [Zakopiańskiej 8](/lokalizacje/zakopianska-8) — a miejsce dla dziecka zarezerwujesz przez [formularz rekrutacyjny](/rekrutacja).

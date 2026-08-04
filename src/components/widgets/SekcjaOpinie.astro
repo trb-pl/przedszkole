@@ -119,8 +119,10 @@ const letters = [
       ))}
     </div>
 
-    <!-- Mobile slider (< md): one card at a time, dots + arrows + swipe -->
-    <div class="block md:hidden">
+    <!-- Mobile slider (< md): one card at a time, dots + arrows + swipe.
+         data-nosnippet: same testimonials as the desktop grid above, so
+         crawlers shouldn't treat this block as extra page copy. -->
+    <div class="block md:hidden" data-nosnippet>
       <div class="relative">
 
         <div class="overflow-hidden rounded-2xl">
