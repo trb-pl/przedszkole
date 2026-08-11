@@ -1,6 +1,5 @@
 ---
 import Image from '~/components/common/Image.astro';
-import PostTags from '~/components/blog/Tags.astro';
 
 import { getFormattedDate } from '~/utils/utils';
 import type { Post } from '~/types';
@@ -139,13 +138,6 @@ const canonicalUrl = String(url);
     ">
       <slot />
     </div>
-
-    <!-- Tagi -->
-    {post.tags && Array.isArray(post.tags) && post.tags.length > 0 && (
-      <div class="mt-12 pt-8 border-t border-brand-navy/10">
-        <PostTags tags={post.tags} />
-      </div>
-    )}
 
     <!-- Nawigacja dół -->
     <div class="mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
