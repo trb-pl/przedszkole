@@ -48,10 +48,17 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      // /brandbook is a private partner page: robots noindex on the page
-      // itself + kept out of the sitemap here. (Deliberately NOT listed in
-      // robots.txt Disallow — that would advertise the URL.)
-      filter: (page) => !page.includes('/brandbook'),
+      // Excluded from the sitemap:
+      // - /brandbook — private partner page (robots noindex on the page
+      //   itself; deliberately NOT in robots.txt Disallow, which would
+      //   advertise the URL)
+      // - /category/* and /tag/* — the blog template still generates these
+      //   pages, but vercel.json 308-redirects them all to /porady, so
+      //   listing them would put redirecting URLs in the sitemap
+      filter: (page) =>
+        !page.includes('/brandbook') &&
+        !page.includes('/category/') &&
+        !page.includes('/tag/'),
       serialize(item) {
         const slug = item.url.match(/\/porady\/([^/]+)\/?$/)?.[1];
         if (slug && postLastmod[slug]) {
