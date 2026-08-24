@@ -264,6 +264,46 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
           </div>
         </fieldset>
 
+        <!-- ── Zgoda na wizerunek (Załącznik nr 2 do umowy) ── -->
+        <fieldset class={cardCls}>
+          <legend class={legendCls}>Zgoda na wizerunek dziecka</legend>
+          <p class={`${hintCls} mb-1`}>
+            Zdecyduj osobno dla każdego sposobu wykorzystania. Brak zgody w jednym miejscu nie wpływa na pozostałe
+            ani na udział dziecka w zajęciach i wydarzeniach. Zgodę możesz w każdej chwili wycofać.
+          </p>
+
+          <div class="flex flex-col gap-3 mt-5">
+            {[
+              { name: 'wiz_aplikacja', label: 'Zamknięta aplikacja / grupa dla rodziców', opis: 'Zdjęcia i nagrania widoczne wyłącznie dla rodziców dzieci z placówki' },
+              { name: 'wiz_www', label: 'Strona internetowa przedszkola', opis: 'koloroweprzedszkole.com' },
+              { name: 'wiz_facebook', label: 'Profil na Facebooku', opis: 'Oficjalny profil Kolorowego Przedszkola' },
+              { name: 'wiz_instagram', label: 'Profil na Instagramie', opis: '@koloroweprzedszkole' },
+              { name: 'wiz_druk', label: 'Materiały drukowane', opis: 'Kronika, gazetka, plakat, ulotka' },
+            ].map((z) => (
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 border border-brand-navy/10 rounded-lg px-4 py-3">
+                <div class="flex-1">
+                  <p class="font-sans text-sm text-brand-navy font-semibold">{z.label}</p>
+                  <p class={hintCls}>{z.opis}</p>
+                </div>
+                <div class="flex gap-4 shrink-0">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name={z.name} value="TAK" class="accent-[#34BBA8]" />
+                    <span class="font-sans text-sm text-brand-navy">Zgoda</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name={z.name} value="NIE" checked class="accent-[#34BBA8]" />
+                    <span class="font-sans text-sm text-brand-navy/60">Brak zgody</span>
+                  </label>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p class={`${hintCls} mt-4`}>
+            Domyślnie zaznaczyliśmy „brak zgody" — zaznacz „zgoda" tam, gdzie faktycznie chcesz jej udzielić.
+          </p>
+        </fieldset>
+
         <!-- ── Zgody ── -->
         <fieldset class={cardCls}>
           <legend class={legendCls}>Potwierdzenie</legend>
@@ -354,23 +394,36 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
     /* ── Brama: kod dostępu ────────────────────────────────────
        Gate is UX only — it just reveals the form. The code travels
        with the submission and the Apps Script endpoint rejects it
-       server-side if wrong. */
-    function odblokuj() {
+       server-side if wrong.
+
+       The code can arrive in the link (?kod=...), so the school sends
+       parents one clickable URL and they never see the gate. Typing it
+       by hand stays as a fallback. */
+    function odblokuj(cichy) {
       var v = (kodInput.value || '').trim();
       if (!v) {
-        kodBlad.classList.remove('hidden');
+        if (!cichy) kodBlad.classList.remove('hidden');
         return;
       }
       kod = v;
       kodBlad.classList.add('hidden');
       brama.classList.add('hidden');
       sekcja.classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (!cichy) window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    document.getElementById('odblokuj').addEventListener('click', odblokuj);
+    document.getElementById('odblokuj').addEventListener('click', function () { odblokuj(false); });
     kodInput.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') { e.preventDefault(); odblokuj(); }
+      if (e.key === 'Enter') { e.preventDefault(); odblokuj(false); }
     });
+
+    var kodZLinku = new URLSearchParams(window.location.search).get('kod');
+    if (kodZLinku) {
+      kodInput.value = kodZLinku;
+      odblokuj(true);
+      // Strip the code from the address bar so it doesn't linger in
+      // history or get pasted onward by accident.
+      history.replaceState(null, '', window.location.pathname);
+    }
 
     /* ── Pola warunkowe ──────────────────────────────────────── */
     var chkZamel = document.getElementById('zameldowanie_takie_samo');

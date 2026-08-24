@@ -1,0 +1,239 @@
+---
+// Polish privacy policy — replaces the AstroWind English demo boilerplate
+// that shipped at /privacy. Lists every processor actually in use,
+// including TRBK (IT/hosting) which holds the contract-form data.
+//
+// This is a working draft prepared from what the site actually does.
+// A lawyer should review it before it's treated as final.
+import Layout from '~/layouts/PageLayout.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+
+const metadata = {
+  title: 'Polityka prywatności — Kolorowe Przedszkole',
+  description:
+    'Jak Kolorowe Przedszkole przetwarza dane osobowe: administrator, cele, podstawy prawne, odbiorcy danych, okresy przechowywania i prawa osób, których dane dotyczą.',
+  canonical: 'https://koloroweprzedszkole.com/polityka-prywatnosci',
+  ignoreTitleTemplate: true,
+  robots: { index: true, follow: true },
+};
+
+const aktualizacja = '24 sierpnia 2026';
+
+const odbiorcy = [
+  {
+    nazwa: 'TRBK Michał Trębicki',
+    nip: 'NIP 1132537306',
+    rola: 'Obsługa techniczna strony internetowej, hosting formularzy i przechowywanie danych przesłanych przez formularz danych do umowy.',
+    lokalizacja: 'Polska',
+  },
+  {
+    nazwa: 'Vercel Inc.',
+    rola: 'Hosting strony internetowej.',
+    lokalizacja: 'USA / UE — standardowe klauzule umowne',
+  },
+  {
+    nazwa: 'Google Ireland Limited',
+    rola: 'Google Workspace (poczta, arkusze, dokumenty), Google Analytics i Google Tag Manager, mapy dojazdu na stronie kontaktu.',
+    lokalizacja: 'Irlandia / UE',
+  },
+  {
+    nazwa: 'Web3Forms',
+    rola: 'Obsługa formularza kontaktowego i rekrutacyjnego (imię, telefon, e-mail, wiek dziecka).',
+    lokalizacja: 'UE',
+  },
+  {
+    nazwa: 'CookieYes',
+    rola: 'Obsługa zgód na pliki cookie.',
+    lokalizacja: 'UE',
+  },
+  {
+    nazwa: 'Adobe Systems Software Ireland Ltd.',
+    rola: 'Dostarczanie krojów pisma używanych na stronie.',
+    lokalizacja: 'Irlandia / UE',
+  },
+];
+
+const cele = [
+  {
+    cel: 'Kontakt i rekrutacja',
+    dane: 'Imię i nazwisko, telefon, adres e-mail, wiek dziecka.',
+    podstawa: 'Art. 6 ust. 1 lit. b RODO — działania przed zawarciem umowy na żądanie osoby, której dane dotyczą.',
+    okres: 'Do zakończenia procesu rekrutacji, a w razie zawarcia umowy — zgodnie z wierszem poniżej.',
+  },
+  {
+    cel: 'Zawarcie i realizacja umowy o świadczenie usług przedszkolnych',
+    dane: 'Dane rodziców / opiekunów prawnych (imię i nazwisko, adres, telefon, e-mail), dane dziecka (imiona, nazwisko, data urodzenia, PESEL, adres zamieszkania i zameldowania), dane osób upoważnionych do odbioru dziecka (imię, nazwisko, rodzaj i numer dokumentu tożsamości).',
+    podstawa: 'Art. 6 ust. 1 lit. b RODO — wykonanie umowy; art. 6 ust. 1 lit. c RODO — obowiązki prawne placówki oświatowej.',
+    okres: 'Przez czas trwania umowy, a następnie przez okres wymagany przepisami prawa — w szczególności podatkowymi i o rachunkowości (co do zasady 5 lat od końca roku, w którym powstał obowiązek podatkowy).',
+  },
+  {
+    cel: 'Utrwalanie i publikacja wizerunku dziecka',
+    dane: 'Wizerunek i głos dziecka utrwalone podczas zajęć, uroczystości i wydarzeń przedszkolnych.',
+    podstawa: 'Art. 6 ust. 1 lit. a RODO — zgoda rodzica / opiekuna prawnego, udzielana odrębnie dla każdego kanału publikacji.',
+    okres: 'Do momentu wycofania zgody. Wycofanie zgody nie wpływa na zgodność z prawem przetwarzania dokonanego przed jej wycofaniem.',
+  },
+  {
+    cel: 'Analiza ruchu na stronie internetowej',
+    dane: 'Dane o korzystaniu ze strony zbierane przez Google Analytics (m.in. odwiedzone podstrony, źródło wejścia, przybliżona lokalizacja, typ urządzenia).',
+    podstawa: 'Art. 6 ust. 1 lit. a RODO — zgoda wyrażona w banerze cookie.',
+    okres: 'Zgodnie z ustawieniami Google Analytics, nie dłużej niż 14 miesięcy.',
+  },
+];
+
+const prawa = [
+  'dostępu do swoich danych oraz otrzymania ich kopii',
+  'sprostowania (poprawiania) danych, jeśli są nieprawidłowe lub niekompletne',
+  'usunięcia danych — w sytuacjach przewidzianych przepisami',
+  'ograniczenia przetwarzania danych',
+  'przenoszenia danych — w zakresie danych przetwarzanych na podstawie zgody lub umowy',
+  'wniesienia sprzeciwu wobec przetwarzania opartego na prawnie uzasadnionym interesie',
+  'cofnięcia zgody w dowolnym momencie — bez wpływu na zgodność z prawem przetwarzania sprzed cofnięcia',
+  'wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa)',
+];
+
+const h2 = 'font-sans italic text-[clamp(1.6rem,2.8vw,2.3rem)] text-brand-navy leading-tight';
+const p = 'font-sans text-brand-navy/75 leading-relaxed';
+const card = 'bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-6 md:p-8';
+---
+
+<Layout metadata={metadata}>
+
+  <HeroMazy title="prywatność" seoHeading="Polityka prywatności — Kolorowe Przedszkole" />
+
+  <section class="bg-brand-cream py-14 md:py-20">
+    <div class="max-w-3xl mx-auto px-6 flex flex-col gap-10">
+
+      <div>
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">
+          Ostatnia aktualizacja: {aktualizacja}
+        </p>
+        <p class={`${p} text-lg`}>
+          Ta polityka wyjaśnia, jakie dane osobowe zbieramy w Kolorowym Przedszkolu, po co je zbieramy,
+          komu je powierzamy i jakie masz w związku z tym prawa. Staraliśmy się napisać ją zrozumiale,
+          bez zbędnego prawniczego żargonu.
+        </p>
+      </div>
+
+      <!-- Administrator -->
+      <div class={card}>
+        <h2 class={h2}>Kto jest administratorem danych</h2>
+        <p class={`${p} mt-4`}>
+          Administratorem Twoich danych osobowych oraz danych Twojego dziecka jest
+          <strong class="text-brand-navy"> Olga Trębicka, prowadząca Przedszkole Niepubliczne „Kolorowe Przedszkole"</strong>
+          z siedzibą przy ul. Lotaryńskiej 18, 03-974 Warszawa, oraz Punkt Przedszkolny przy ul. Zakopiańskiej 8, 03-934 Warszawa.
+        </p>
+        <p class={`${p} mt-4`}>
+          Kontakt w sprawach ochrony danych:
+          <a href="mailto:przedszkole@kolorowe.eu" class="text-brand-teal hover:text-brand-coral underline transition-colors duration-200">przedszkole@kolorowe.eu</a>,
+          tel. <a href="tel:605657366" class="text-brand-teal hover:text-brand-coral underline transition-colors duration-200">605 657 366</a>.
+        </p>
+      </div>
+
+      <!-- Cele -->
+      <div>
+        <h2 class={h2}>Jakie dane przetwarzamy i dlaczego</h2>
+        <div class="flex flex-col gap-4 mt-6">
+          {cele.map((c) => (
+            <div class={card}>
+              <p class="font-sans font-bold text-brand-navy mb-4">{c.cel}</p>
+              <dl class="flex flex-col gap-3 font-sans text-sm">
+                <div>
+                  <dt class="text-brand-teal font-semibold uppercase tracking-wider text-xs mb-1">Zakres danych</dt>
+                  <dd class="text-brand-navy/75 leading-relaxed">{c.dane}</dd>
+                </div>
+                <div>
+                  <dt class="text-brand-teal font-semibold uppercase tracking-wider text-xs mb-1">Podstawa prawna</dt>
+                  <dd class="text-brand-navy/75 leading-relaxed">{c.podstawa}</dd>
+                </div>
+                <div>
+                  <dt class="text-brand-teal font-semibold uppercase tracking-wider text-xs mb-1">Jak długo przechowujemy</dt>
+                  <dd class="text-brand-navy/75 leading-relaxed">{c.okres}</dd>
+                </div>
+              </dl>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Odbiorcy -->
+      <div>
+        <h2 class={h2}>Komu powierzamy dane</h2>
+        <p class={`${p} mt-4 mb-6`}>
+          Nie sprzedajemy danych i nie udostępniamy ich w celach marketingowych. Korzystamy natomiast z usług
+          firm, które przetwarzają dane w naszym imieniu — na podstawie zawartych z nimi umów powierzenia
+          przetwarzania danych osobowych:
+        </p>
+        <div class="flex flex-col gap-3">
+          {odbiorcy.map((o) => (
+            <div class={`${card} py-5`}>
+              <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
+                <p class="font-sans font-bold text-brand-navy">{o.nazwa}</p>
+                {o.nip && <p class="font-sans text-xs text-brand-navy/45">{o.nip}</p>}
+                <p class="font-sans text-xs text-brand-teal ml-auto">{o.lokalizacja}</p>
+              </div>
+              <p class="font-sans text-sm text-brand-navy/70 leading-relaxed">{o.rola}</p>
+            </div>
+          ))}
+        </div>
+        <p class={`${p} mt-6 text-sm`}>
+          Dane mogą być również udostępnione podmiotom uprawnionym na podstawie przepisów prawa —
+          na przykład organom nadzoru oświatowego czy organom podatkowym.
+        </p>
+      </div>
+
+      <!-- Prawa -->
+      <div class={card}>
+        <h2 class={h2}>Twoje prawa</h2>
+        <p class={`${p} mt-4 mb-4`}>W związku z przetwarzaniem danych przysługuje Ci prawo:</p>
+        <ul class="flex flex-col gap-2">
+          {prawa.map((pr) => (
+            <li class="font-sans text-brand-navy/75 leading-relaxed flex gap-3">
+              <span class="text-brand-teal shrink-0">→</span>
+              <span>{pr}</span>
+            </li>
+          ))}
+        </ul>
+        <p class={`${p} mt-5 text-sm`}>
+          Aby skorzystać z któregokolwiek z tych praw, napisz na
+          <a href="mailto:przedszkole@kolorowe.eu" class="text-brand-teal hover:text-brand-coral underline transition-colors duration-200"> przedszkole@kolorowe.eu</a>.
+          Odpowiadamy bez zbędnej zwłoki, najpóźniej w ciągu miesiąca.
+        </p>
+      </div>
+
+      <!-- Cookies -->
+      <div class={card}>
+        <h2 class={h2}>Pliki cookie</h2>
+        <p class={`${p} mt-4`}>
+          Strona używa plików cookie niezbędnych do jej działania oraz — po wyrażeniu zgody w banerze —
+          plików analitycznych Google Analytics, które pomagają nam zrozumieć, jak rodzice korzystają ze strony.
+        </p>
+        <p class={`${p} mt-4`}>
+          Zgodę możesz zmienić lub wycofać w każdej chwili poprzez baner zgód albo ustawienia swojej przeglądarki.
+          Wyłączenie cookies analitycznych nie wpływa na działanie strony.
+        </p>
+      </div>
+
+      <!-- Dobrowolność -->
+      <div class={card}>
+        <h2 class={h2}>Czy podanie danych jest obowiązkowe</h2>
+        <p class={`${p} mt-4`}>
+          Podanie danych jest dobrowolne, ale w przypadku danych potrzebnych do zawarcia umowy — niezbędne.
+          Bez nich nie moglibyśmy przygotować umowy ani przyjąć dziecka do przedszkola.
+          Zgody na publikację wizerunku są w pełni dobrowolne: ich brak nie wpływa na udział dziecka
+          w zajęciach, uroczystościach ani na jakikolwiek element opieki.
+        </p>
+      </div>
+
+      <!-- Zmiany -->
+      <div class={card}>
+        <h2 class={h2}>Zmiany w polityce</h2>
+        <p class={`${p} mt-4`}>
+          Jeśli zmienimy sposób przetwarzania danych, zaktualizujemy tę stronę i zmienimy datę na jej początku.
+          O istotnych zmianach poinformujemy rodziców drogą mailową.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+</Layout>

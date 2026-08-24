@@ -15,6 +15,9 @@
     { "source": "/aktualnosci",  "destination": "/porady", "permanent": true },
     { "source": "/style-guide",  "destination": "/",       "permanent": true },
     { "source": "/witaj-swiecie","destination": "/",       "permanent": true },
+
+    { "source": "/privacy", "destination": "/polityka-prywatnosci", "permanent": true },
+    { "source": "/terms",   "destination": "/polityka-prywatnosci", "permanent": true },
     { "source": "/hello-world",  "destination": "/",       "permanent": true },
 
     {

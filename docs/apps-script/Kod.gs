@@ -74,6 +74,11 @@ const NAGLOWKI = [
   'Upoważniona 2',
   'Upoważniona 3',
   'Upoważniona 4',
+  'Wizerunek — aplikacja dla rodziców',
+  'Wizerunek — strona www',
+  'Wizerunek — Facebook',
+  'Wizerunek — Instagram',
+  'Wizerunek — materiały drukowane',
 ];
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -123,6 +128,11 @@ function doPost(e) {
       zlozUpowaznienie(dane.upow2_imie, dane.upow2_dokument),
       zlozUpowaznienie(dane.upow3_imie, dane.upow3_dokument),
       zlozUpowaznienie(dane.upow4_imie, dane.upow4_dokument),
+      dane.wiz_aplikacja || 'NIE',
+      dane.wiz_www || 'NIE',
+      dane.wiz_facebook || 'NIE',
+      dane.wiz_instagram || 'NIE',
+      dane.wiz_druk || 'NIE',
     ]);
 
     wyslijKopieRodzicowi(dane, nrUmowy);
@@ -194,6 +204,15 @@ function wyslijKopieRodzicowi(dane, nrUmowy) {
       zlozUpowaznienie(dane.upow3_imie, dane.upow3_dokument),
       zlozUpowaznienie(dane.upow4_imie, dane.upow4_dokument),
     ].filter(Boolean).join('<br>')],
+    ['Zgody na wizerunek', [
+      ['Aplikacja dla rodziców', dane.wiz_aplikacja],
+      ['Strona www', dane.wiz_www],
+      ['Facebook', dane.wiz_facebook],
+      ['Instagram', dane.wiz_instagram],
+      ['Materiały drukowane', dane.wiz_druk],
+    ].map(function (z) {
+      return (z[1] === 'TAK' ? '✓ ' : '✗ ') + z[0] + ': ' + (z[1] === 'TAK' ? 'zgoda' : 'brak zgody');
+    }).join('<br>')],
   ].filter(function (w) { return w[1]; });
 
   const tabela = wiersze.map(function (w) {
