@@ -180,7 +180,27 @@ function arkuszDanych() {
     arkusz.getRange(1, 1, 1, NAGLOWKI.length).setFontWeight('bold');
     arkusz.setFrozenRows(1);
   }
+  ustawFormatTekstowy(arkusz);
   return arkusz;
+}
+
+/**
+ * Druga warstwa ochrony przed #ERROR! w telefonach i PESEL-ach. Apostrof
+ * przy zapisie wystarcza, ale gdyby ktoś wpisał numer ręcznie, wymuszony
+ * format tekstowy sprawi, że „+48 …" nadal nie zostanie potraktowane jak
+ * formuła. Wywoływane przy każdym dostępie do arkusza — jest tanie.
+ */
+function ustawFormatTekstowy(arkusz) {
+  const kolumnyTekstowe = ['PESEL', 'Rodzic 1 — telefon', 'Rodzic 2 — telefon'];
+  const naglowki = arkusz.getRange(1, 1, 1, arkusz.getLastColumn()).getValues()[0]
+    .map(function (n) { return String(n).trim(); });
+
+  kolumnyTekstowe.forEach(function (nazwa) {
+    const i = naglowki.indexOf(nazwa);
+    if (i < 0) return;
+    const wierszy = Math.max(arkusz.getMaxRows() - 1, 1);
+    arkusz.getRange(2, i + 1, wierszy, 1).setNumberFormat('@');
+  });
 }
 
 /** Numeracja ciągła w formacie 2026/2027/001. */
@@ -383,6 +403,8 @@ function onOpen() {
     .createMenu('📄 Umowy')
     .addItem('Generuj umowy dla zaznaczonych wierszy', 'generujUmowy')
     .addItem('Generuj wszystkie brakujące', 'generujBrakujace')
+    .addSeparator()
+    .addItem('Sprawdź konfigurację', 'testKonfiguracji')
     .addToUi();
 }
 
