@@ -130,18 +130,18 @@ function doPost(e) {
       dane.dziecko_imiona || '',
       dane.dziecko_nazwisko || '',
       dane.dziecko_data_ur || '',
-      "'" + (dane.dziecko_pesel || ''), // apostrof — żeby arkusz nie zjadł zer wiodących
+      jakoTekst(dane.dziecko_pesel),
       adresZam,
       dane.dziecko_dzielnica || '',
       adresZamel,
       dane.zamel_dzielnica || dane.dziecko_dzielnica || '',
       dane.r1_imie || '',
       dane.r1_adres || '',
-      dane.r1_telefon || '',
+      jakoTekst(dane.r1_telefon),
       dane.r1_email || '',
       dane.r2_imie || '',
       dane.r2_adres || '',
-      dane.r2_telefon || '',
+      jakoTekst(dane.r2_telefon),
       dane.r2_email || '',
       dane.email_rachunki || '',
       zlozUpowaznienie(dane.upow1_imie, dane.upow1_dokument),
@@ -198,6 +198,27 @@ function zlozUpowaznienie(imie, dokument) {
   return dokument ? imie + ' (' + dokument + ')' : imie;
 }
 
+/**
+ * Arkusz traktuje wartość zaczynającą się od „+" jak formułę i pokazuje
+ * #ERROR!. Apostrof z przodu wymusza tekst — potrzebne przy numerach
+ * telefonów (+48 …) i PESEL-ach z zerem wiodącym.
+ */
+function jakoTekst(wartosc) {
+  const s = String(wartosc || '').trim();
+  return s ? "'" + s : '';
+}
+
+/**
+ * Przyjmuje ID pliku/folderu w dowolnej postaci: samo ID, ID z doklejonym
+ * „?hl=PL", albo cały adres skopiowany z przeglądarki. Zwraca czyste ID.
+ */
+function czystyId(wartosc) {
+  const s = String(wartosc || '').trim();
+  const zAdresu = s.match(/\/(?:d|folders)\/([a-zA-Z0-9_-]+)/);
+  if (zAdresu) return zAdresu[1];
+  return s.split(/[?/#]/)[0];
+}
+
 // ─────────────────────────────────────────────────────────────────────────
 // 1b. SPRAWDZENIE KONFIGURACJI
 // ─────────────────────────────────────────────────────────────────────────
@@ -225,7 +246,7 @@ function testKonfiguracji() {
     problemy.push('Nie uzupełniono ID_SZABLONU_UMOWY w sekcji CONFIG');
   } else {
     try {
-      const plik = DriveApp.getFileById(CONFIG.ID_SZABLONU_UMOWY);
+      const plik = DriveApp.getFileById(czystyId(CONFIG.ID_SZABLONU_UMOWY));
       if (plik.getMimeType() !== MimeType.GOOGLE_DOCS) {
         problemy.push('Szablon „' + plik.getName() + '" nie jest Dokumentem Google — otwórz plik .docx przez „Otwórz za pomocą → Dokumenty Google" i użyj ID nowego pliku');
       } else {
@@ -241,7 +262,7 @@ function testKonfiguracji() {
     problemy.push('Nie uzupełniono ID_FOLDERU_UMOW w sekcji CONFIG');
   } else {
     try {
-      ok.push('Folder na umowy: ' + DriveApp.getFolderById(CONFIG.ID_FOLDERU_UMOW).getName());
+      ok.push('Folder na umowy: ' + DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_UMOW)).getName());
     } catch (e) {
       problemy.push('Nie mogę otworzyć folderu — sprawdź ID_FOLDERU_UMOW');
     }
@@ -386,7 +407,7 @@ function przetworzWiersze(arkusz, od, doW, tylkoBrakujace) {
     return;
   }
 
-  const folder = DriveApp.getFolderById(CONFIG.ID_FOLDERU_UMOW);
+  const folder = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_UMOW));
   const kolWygenerowana = NAGLOWKI.indexOf('Umowa wygenerowana') + 1;
   let zrobione = 0;
 
@@ -416,7 +437,7 @@ function generujUmoweDlaWiersza(wiersz, folder) {
   const nazwaPliku = 'Umowa ' + String(d['Nr umowy']).replace(/\//g, '-') + ' — ' + dziecko;
 
   // Kopia szablonu → podmiana placeholderów → PDF.
-  const kopia = DriveApp.getFileById(CONFIG.ID_SZABLONU_UMOWY).makeCopy(nazwaPliku, folder);
+  const kopia = DriveApp.getFileById(czystyId(CONFIG.ID_SZABLONU_UMOWY)).makeCopy(nazwaPliku, folder);
   const dok = DocumentApp.openById(kopia.getId());
   const body = dok.getBody();
 
@@ -427,7 +448,8 @@ function generujUmoweDlaWiersza(wiersz, folder) {
 
   const rodzice = [d['Rodzic 1 — imię i nazwisko'], d['Rodzic 2 — imię i nazwisko']]
     .filter(Boolean).join(', ');
-  const telefony = [d['Rodzic 1 — telefon'], d['Rodzic 2 — telefon']].filter(Boolean).join(', ');
+  const bezApostrofu = function (v) { return String(v || '').replace(/^'/, ''); };
+  const telefony = [d['Rodzic 1 — telefon'], d['Rodzic 2 — telefon']].map(bezApostrofu).filter(Boolean).join(', ');
   const maile = [d['Rodzic 1 — e-mail'], d['Rodzic 2 — e-mail']].filter(Boolean).join(', ');
 
   const podstawienia = {
