@@ -204,6 +204,50 @@ function ustawFormatTekstowy(arkusz) {
 }
 
 /** Numeracja ciągła w formacie 2026/2027/001. */
+/**
+ * Odzyskuje numery telefonów i PESEL-e, które Arkusze zamieniły w #ERROR!
+ * (bo zaczynały się od „+" i zostały uznane za formułę). Wpisana wartość
+ * nie przepada — siedzi jako treść formuły, więc da się ją odczytać przez
+ * getFormulas() i zapisać ponownie, już jako tekst.
+ */
+function naprawBledneKomorki() {
+  const arkusz = arkuszDanych();
+  const naglowki = arkusz.getRange(1, 1, 1, arkusz.getLastColumn()).getValues()[0]
+    .map(function (n) { return String(n).trim(); });
+  const ostatni = arkusz.getLastRow();
+
+  if (ostatni < 2) {
+    SpreadsheetApp.getUi().alert('Arkusz nie zawiera jeszcze żadnych danych.');
+    return;
+  }
+
+  let naprawione = 0;
+
+  ['PESEL', 'Rodzic 1 — telefon', 'Rodzic 2 — telefon'].forEach(function (nazwa) {
+    const i = naglowki.indexOf(nazwa);
+    if (i < 0) return;
+
+    const zakres = arkusz.getRange(2, i + 1, ostatni - 1, 1);
+    const wartosci = zakres.getValues();
+    const formuly = zakres.getFormulas();
+    zakres.setNumberFormat('@');
+
+    for (let r = 0; r < wartosci.length; r++) {
+      if (String(wartosci[r][0]).indexOf('#') !== 0) continue;
+      const oryginal = String(formuly[r][0] || '').replace(/^=/, '').trim();
+      if (!oryginal) continue;
+      arkusz.getRange(r + 2, i + 1).setValue("'" + oryginal);
+      naprawione++;
+    }
+  });
+
+  SpreadsheetApp.getUi().alert(
+    naprawione === 0
+      ? 'Nie znalazłem komórek do naprawy — kolumny z telefonami i PESEL-em są w porządku.'
+      : 'Naprawiono komórek: ' + naprawione + '.\n\nKolumny mają teraz format tekstowy, więc błąd nie powinien się powtórzyć.'
+  );
+}
+
 function nastepnyNumerUmowy(arkusz) {
   const kolejny = Math.max(0, arkusz.getLastRow() - 1) + 1;
   return CONFIG.ROK_SZKOLNY + '/' + String(kolejny).padStart(3, '0');
@@ -404,6 +448,7 @@ function onOpen() {
     .addItem('Generuj umowy dla zaznaczonych wierszy', 'generujUmowy')
     .addItem('Generuj wszystkie brakujące', 'generujBrakujace')
     .addSeparator()
+    .addItem('Napraw komórki z #ERROR!', 'naprawBledneKomorki')
     .addItem('Sprawdź konfigurację', 'testKonfiguracji')
     .addToUi();
 }
