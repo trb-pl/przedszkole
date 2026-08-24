@@ -52,7 +52,6 @@ const NAGLOWKI = [
   'Nr umowy',
   'Stawka',
   'Umowa wygenerowana',
-  'Placówka',
   'Dziecko — imiona',
   'Dziecko — nazwisko',
   'Data urodzenia',
@@ -106,7 +105,6 @@ function doPost(e) {
       nrUmowy,
       CONFIG.CZESNE_PODSTAWOWE, // Olga zmienia ręcznie na stawkę rodzeństwa
       '', // znacznik wygenerowania umowy
-      dane.placowka || '',
       dane.dziecko_imiona || '',
       dane.dziecko_nazwisko || '',
       dane.dziecko_data_ur || '',
@@ -187,7 +185,6 @@ function wyslijKopieRodzicowi(dane, nrUmowy) {
   if (!odbiorca) return;
 
   const wiersze = [
-    ['Placówka', dane.placowka],
     ['Dziecko', [dane.dziecko_imiona, dane.dziecko_nazwisko].filter(Boolean).join(' ')],
     ['Data urodzenia', dane.dziecko_data_ur],
     ['PESEL', dane.dziecko_pesel],
@@ -255,7 +252,6 @@ function wyslijPowiadomienieDoPrzedszkola(dane, nrUmowy) {
     body:
       'Wpłynęły dane do umowy ' + nrUmowy + '.\n\n' +
       'Dziecko: ' + dziecko + '\n' +
-      'Placówka: ' + (dane.placowka || '—') + '\n' +
       'Rodzic: ' + (dane.r1_imie || '—') + ', tel. ' + (dane.r1_telefon || '—') + '\n\n' +
       'Arkusz: ' + SpreadsheetApp.getActiveSpreadsheet().getUrl(),
     name: 'Formularz Kolorowe Przedszkole',
@@ -356,7 +352,8 @@ function generujUmoweDlaWiersza(wiersz, folder) {
     '{{DZIECKO_ADRES_ZAMEL}}': d['Adres zameldowania'],
     '{{DZIELNICA_ZAM}}': d['Dzielnica zamieszkania'],
     '{{DZIELNICA_ZAMEL}}': d['Dzielnica zameldowania'],
-    '{{PLACOWKA}}': d['Placówka'],
+    // Obie placówki zostają w druku — niepotrzebną skreśla się przy podpisie.
+    '{{PLACOWKA}}': 'Przedszkola Niepublicznego (ul. Lotaryńska 18) / Punktu Przedszkolnego (ul. Zakopiańska 8)',
     '{{EMAIL_RACHUNKI}}': d['E-mail do rachunków'],
     '{{CZESNE}}': String(stawka),
     '{{CZESNE_SLOWNIE}}': slownie(stawka),

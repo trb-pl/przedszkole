@@ -93,22 +93,6 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
 
       <form id="umowa-form" class="flex flex-col gap-6" novalidate>
 
-        <!-- ── Placówka ── -->
-        <fieldset class={cardCls}>
-          <legend class={legendCls}>Placówka</legend>
-          <p class={`${hintCls} mb-4`}>Do której placówki uczęszcza dziecko?</p>
-          <div class="flex flex-col sm:flex-row gap-3">
-            <label class="flex-1 flex items-center gap-3 border border-brand-navy/15 rounded-lg px-4 py-3 cursor-pointer hover:border-brand-teal transition-colors duration-200 has-[:checked]:border-brand-teal has-[:checked]:bg-brand-teal/5">
-              <input type="radio" name="placowka" value="Przedszkole Niepubliczne, ul. Lotaryńska 18" class="accent-[#34BBA8]" required />
-              <span class="font-sans text-sm text-brand-navy">Lotaryńska 18<br /><span class={hintCls}>Przedszkole Niepubliczne</span></span>
-            </label>
-            <label class="flex-1 flex items-center gap-3 border border-brand-navy/15 rounded-lg px-4 py-3 cursor-pointer hover:border-brand-teal transition-colors duration-200 has-[:checked]:border-brand-teal has-[:checked]:bg-brand-teal/5">
-              <input type="radio" name="placowka" value="Punkt Przedszkolny, ul. Zakopiańska 8" class="accent-[#34BBA8]" required />
-              <span class="font-sans text-sm text-brand-navy">Zakopiańska 8<br /><span class={hintCls}>Punkt Przedszkolny</span></span>
-            </label>
-          </div>
-        </fieldset>
-
         <!-- ── Dziecko ── -->
         <fieldset class={cardCls}>
           <legend class={legendCls}>Dane dziecka</legend>
@@ -188,13 +172,19 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
               <label class={labelCls} for="r1_imie">Imię i nazwisko <span class="text-brand-coral">*</span></label>
               <input type="text" id="r1_imie" name="r1_imie" required class={inputCls} />
             </div>
-            <div class="sm:col-span-2 flex flex-col gap-1.5">
-              <label class={labelCls} for="r1_adres">Adres zamieszkania <span class="text-brand-coral">*</span></label>
-              <input type="text" id="r1_adres" name="r1_adres" required class={inputCls} placeholder="ulica, nr, kod pocztowy, miejscowość" />
+            <div class="sm:col-span-2">
+              <label class="flex items-center gap-3 cursor-pointer mb-3">
+                <input type="checkbox" id="r1_adres_jak_dziecko" checked class="w-4 h-4 accent-[#34BBA8]" />
+                <span class="font-sans text-sm text-brand-navy">Mieszkam pod tym samym adresem co dziecko</span>
+              </label>
+              <div id="blok-r1-adres" class="hidden flex flex-col gap-1.5">
+                <label class={labelCls} for="r1_adres">Adres zamieszkania <span class="text-brand-coral">*</span></label>
+                <input type="text" id="r1_adres" name="r1_adres" required class={inputCls} placeholder="ulica, nr, kod pocztowy, miejscowość" />
+              </div>
             </div>
             <div class="flex flex-col gap-1.5">
               <label class={labelCls} for="r1_telefon">Telefon <span class="text-brand-coral">*</span></label>
-              <input type="tel" id="r1_telefon" name="r1_telefon" required class={inputCls} placeholder="600 000 000" />
+              <input type="tel" id="r1_telefon" name="r1_telefon" required class={inputCls} value="+48 " />
             </div>
             <div class="flex flex-col gap-1.5">
               <label class={labelCls} for="r1_email">E-mail <span class="text-brand-coral">*</span></label>
@@ -216,13 +206,19 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
               <label class={labelCls} for="r2_imie">Imię i nazwisko</label>
               <input type="text" id="r2_imie" name="r2_imie" class={inputCls} />
             </div>
-            <div class="sm:col-span-2 flex flex-col gap-1.5">
-              <label class={labelCls} for="r2_adres">Adres zamieszkania</label>
-              <input type="text" id="r2_adres" name="r2_adres" class={inputCls} placeholder="ulica, nr, kod pocztowy, miejscowość" />
+            <div class="sm:col-span-2">
+              <label class="flex items-center gap-3 cursor-pointer mb-3">
+                <input type="checkbox" id="r2_adres_jak_dziecko" checked class="w-4 h-4 accent-[#34BBA8]" />
+                <span class="font-sans text-sm text-brand-navy">Mieszka pod tym samym adresem co dziecko</span>
+              </label>
+              <div id="blok-r2-adres" class="hidden flex flex-col gap-1.5">
+                <label class={labelCls} for="r2_adres">Adres zamieszkania</label>
+                <input type="text" id="r2_adres" name="r2_adres" class={inputCls} placeholder="ulica, nr, kod pocztowy, miejscowość" />
+              </div>
             </div>
             <div class="flex flex-col gap-1.5">
               <label class={labelCls} for="r2_telefon">Telefon</label>
-              <input type="tel" id="r2_telefon" name="r2_telefon" class={inputCls} placeholder="600 000 000" />
+              <input type="tel" id="r2_telefon" name="r2_telefon" class={inputCls} value="+48 " />
             </div>
             <div class="flex flex-col gap-1.5">
               <label class={labelCls} for="r2_email">E-mail</label>
@@ -438,6 +434,26 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
       blokR2.classList.toggle('hidden', chkBrakR2.checked);
     });
 
+    // Adresy rodziców — domyślnie taki sam jak dziecka.
+    var chkR1Adres = document.getElementById('r1_adres_jak_dziecko');
+    var blokR1Adres = document.getElementById('blok-r1-adres');
+    chkR1Adres.addEventListener('change', function () {
+      blokR1Adres.classList.toggle('hidden', chkR1Adres.checked);
+    });
+
+    var chkR2Adres = document.getElementById('r2_adres_jak_dziecko');
+    var blokR2Adres = document.getElementById('blok-r2-adres');
+    chkR2Adres.addEventListener('change', function () {
+      blokR2Adres.classList.toggle('hidden', chkR2Adres.checked);
+    });
+
+    function adresDziecka() {
+      var ulica = document.getElementById('dziecko_ulica').value.trim();
+      var kod = document.getElementById('dziecko_kod').value.trim();
+      var miasto = document.getElementById('dziecko_miasto').value.trim();
+      return [ulica, [kod, miasto].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+    }
+
     /* ── Walidacja PESEL ──────────────────────────────────────
        Checksum per the official algorithm, plus a cross-check of the
        encoded birth date against the date field (catches typos in
@@ -532,13 +548,26 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
       var dane = Object.fromEntries(new FormData(form).entries());
       dane.kod_dostepu = kod;
 
-      // If the parent kept "same as residence", copy the address across so
-      // the contract template always has both fields filled.
+      // Skopiuj adresy tam, gdzie rodzic zaznaczył „taki sam" — dzięki temu
+      // szablon umowy zawsze ma komplet pól.
       if (chkZamel.checked) {
         dane.zamel_ulica = dane.dziecko_ulica;
         dane.zamel_kod = dane.dziecko_kod;
         dane.zamel_miasto = dane.dziecko_miasto;
         dane.zamel_dzielnica = dane.dziecko_dzielnica;
+      }
+      if (chkR1Adres.checked) dane.r1_adres = adresDziecka();
+      if (!chkBrakR2.checked && chkR2Adres.checked) dane.r2_adres = adresDziecka();
+
+      function przywrocPrzycisk() {
+        btn.disabled = false;
+        btn.textContent = 'Wyślij dane do umowy';
+      }
+
+      if (!endpoint) {
+        pokazBlad('Formularz nie jest jeszcze podłączony (brak adresu zapisu). Skontaktuj się z przedszkolem: 605 657 366');
+        przywrocPrzycisk();
+        return;
       }
 
       try {
@@ -548,7 +577,20 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(dane),
         });
-        var wynik = await res.json();
+
+        // Apps Script zwraca stronę logowania (HTML) zamiast JSON, jeśli
+        // wdrożenie nie ma dostępu „Wszyscy" — rozróżniamy to od zwykłej
+        // awarii, żeby komunikat wskazywał realną przyczynę.
+        var tekst = await res.text();
+        var wynik;
+        try {
+          wynik = JSON.parse(tekst);
+        } catch (e) {
+          console.error('Odpowiedź nie jest JSON-em:', tekst.slice(0, 300));
+          pokazBlad('Formularz nie jest poprawnie podłączony (skrypt nie odpowiada danymi). Zgłoś to w przedszkolu: 605 657 366');
+          przywrocPrzycisk();
+          return;
+        }
 
         if (wynik.status === 'ok') {
           form.classList.add('hidden');
@@ -556,15 +598,16 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else if (wynik.status === 'bad-code') {
           pokazBlad('Nieprawidłowy kod dostępu. Sprawdź wiadomość od przedszkola lub zadzwoń: 605 657 366');
-          btn.disabled = false;
-          btn.textContent = 'Wyślij dane do umowy';
+          przywrocPrzycisk();
         } else {
-          throw new Error(wynik.message || 'Błąd zapisu');
+          console.error('Błąd skryptu:', wynik);
+          pokazBlad('Zapis się nie powiódł: ' + (wynik.message || 'nieznany błąd') + '. Zadzwoń: 605 657 366');
+          przywrocPrzycisk();
         }
       } catch (err) {
-        pokazBlad('Nie udało się wysłać danych. Spróbuj ponownie lub zadzwoń: 605 657 366');
-        btn.disabled = false;
-        btn.textContent = 'Wyślij dane do umowy';
+        console.error('Błąd wysyłki:', err);
+        pokazBlad('Nie udało się połączyć z serwerem. Sprawdź internet i spróbuj ponownie lub zadzwoń: 605 657 366');
+        przywrocPrzycisk();
       }
     });
   });
