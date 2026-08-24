@@ -161,6 +161,25 @@ logo_xml = f'''<w:p xmlns:w="{W}" xmlns:r="{R}" xmlns:wp="{WP}" xmlns:a="{A}" xm
 body.insert(0, ET.fromstring(logo_xml))
 tree.write(doc_path, xml_declaration=True, encoding='UTF-8')
 
+
+# ── 4b. Stopka: adres strony nad numeracją ───────────────────────────────
+ftr_path = os.path.join(work, 'word/footer1.xml')
+if os.path.exists(ftr_path):
+    ftr = open(ftr_path, encoding='utf-8').read()
+    if 'koloroweprzedszkole.com' not in ftr:
+        akapit = (
+            '<w:p><w:pPr><w:pStyle w:val="Stopka"/><w:jc w:val="center"/>'
+            '<w:spacing w:after="0"/></w:pPr>'
+            f'<w:r><w:rPr><w:rFonts w:ascii="{FONT}" w:hAnsi="{FONT}" w:cs="{FONT}"/>'
+            f'<w:color w:val="{NAVY}"/><w:sz w:val="15"/><w:szCs w:val="15"/></w:rPr>'
+            '<w:t>www.koloroweprzedszkole.com</w:t></w:r></w:p>'
+        )
+        # wstawiamy przed pierwszym akapitem stopki (nad numerem strony)
+        i = ftr.index('<w:p ')
+        ftr = ftr[:i] + akapit + ftr[i:]
+        open(ftr_path, 'w', encoding='utf-8').write(ftr)
+        print('Stopka: dodano adres strony')
+
 # ── 5. Spakowanie ────────────────────────────────────────────────────────
 out = 'Umowa_SZABLON_2026_2027_brand.docx'
 if os.path.exists(out): os.remove(out)
