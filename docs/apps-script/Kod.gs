@@ -86,6 +86,16 @@ const NAGLOWKI = [
 
 function doPost(e) {
   try {
+    // Uruchomiona ręcznie przyciskiem „Uruchom" nie dostaje żadnych danych.
+    // To normalne — doPost obsługuje wysyłkę z formularza. Do sprawdzenia
+    // konfiguracji służy testKonfiguracji().
+    if (!e || !e.postData) {
+      throw new Error(
+        'Ta funkcja odbiera dane z formularza i nie działa po kliknięciu „Uruchom". ' +
+        'Aby sprawdzić ustawienia, uruchom funkcję testKonfiguracji().'
+      );
+    }
+
     const dane = JSON.parse(e.postData.contents);
 
     // Kod dostępu sprawdzamy po stronie serwera — brama na stronie tylko
@@ -174,6 +184,78 @@ function zlozAdres(ulica, kod, miasto) {
 function zlozUpowaznienie(imie, dokument) {
   if (!imie) return '';
   return dokument ? imie + ' (' + dokument + ')' : imie;
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// 1b. SPRAWDZENIE KONFIGURACJI
+// ─────────────────────────────────────────────────────────────────────────
+
+/**
+ * Bezpiecznie uruchamiana ręcznie (przycisk „Uruchom"). Sprawdza, czy
+ * wszystko jest poprawnie ustawione, i wypisuje wynik w dzienniku.
+ * Za pierwszym razem Google poprosi o autoryzację — to właśnie ta funkcja
+ * jest do tego najlepsza.
+ */
+function testKonfiguracji() {
+  const ok = [];
+  const problemy = [];
+
+  // Arkusz
+  try {
+    const a = arkuszDanych();
+    ok.push('Arkusz „' + a.getName() + '" gotowy (wierszy z danymi: ' + Math.max(0, a.getLastRow() - 1) + ')');
+  } catch (e) {
+    problemy.push('Arkusz: ' + e.message);
+  }
+
+  // Szablon umowy
+  if (CONFIG.ID_SZABLONU_UMOWY === 'WKLEJ_ID_SZABLONU') {
+    problemy.push('Nie uzupełniono ID_SZABLONU_UMOWY w sekcji CONFIG');
+  } else {
+    try {
+      const plik = DriveApp.getFileById(CONFIG.ID_SZABLONU_UMOWY);
+      if (plik.getMimeType() !== MimeType.GOOGLE_DOCS) {
+        problemy.push('Szablon „' + plik.getName() + '" nie jest Dokumentem Google — otwórz plik .docx przez „Otwórz za pomocą → Dokumenty Google" i użyj ID nowego pliku');
+      } else {
+        ok.push('Szablon umowy: ' + plik.getName());
+      }
+    } catch (e) {
+      problemy.push('Nie mogę otworzyć szablonu — sprawdź ID_SZABLONU_UMOWY');
+    }
+  }
+
+  // Folder na umowy
+  if (CONFIG.ID_FOLDERU_UMOW === 'WKLEJ_ID_FOLDERU') {
+    problemy.push('Nie uzupełniono ID_FOLDERU_UMOW w sekcji CONFIG');
+  } else {
+    try {
+      ok.push('Folder na umowy: ' + DriveApp.getFolderById(CONFIG.ID_FOLDERU_UMOW).getName());
+    } catch (e) {
+      problemy.push('Nie mogę otworzyć folderu — sprawdź ID_FOLDERU_UMOW');
+    }
+  }
+
+  // Kod dostępu
+  if (!CONFIG.KOD_DOSTEPU || CONFIG.KOD_DOSTEPU.length < 4) {
+    problemy.push('KOD_DOSTEPU jest pusty albo zbyt krótki');
+  } else {
+    ok.push('Kod dostępu ustawiony (link dla rodziców: /dla-rodzicow?kod=' + CONFIG.KOD_DOSTEPU + ')');
+  }
+
+  // Limit wysyłki maili
+  try {
+    ok.push('Pozostały limit e-maili na dziś: ' + MailApp.getRemainingDailyQuota());
+  } catch (e) {
+    problemy.push('Brak uprawnień do wysyłki e-maili');
+  }
+
+  const raport =
+    (problemy.length ? '❌ DO POPRAWY:\n• ' + problemy.join('\n• ') + '\n\n' : '✅ Konfiguracja kompletna.\n\n') +
+    'Sprawdzone:\n• ' + ok.join('\n• ');
+
+  console.log(raport);
+  try { SpreadsheetApp.getUi().alert(raport); } catch (e) { /* uruchomione z edytora — wystarczy dziennik */ }
+  return raport;
 }
 
 // ─────────────────────────────────────────────────────────────────────────
