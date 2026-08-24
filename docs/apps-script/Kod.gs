@@ -99,8 +99,20 @@ function doPost(e) {
     const dane = JSON.parse(e.postData.contents);
 
     // Kod dostępu sprawdzamy po stronie serwera — brama na stronie tylko
-    // odsłania formularz, nie chroni danych.
-    if (String(dane.kod_dostepu || '').trim() !== CONFIG.KOD_DOSTEPU) {
+    // odsłania formularz, nie chroni danych. Porównanie bez rozróżniania
+    // wielkości liter i z obciętymi spacjami: rodzic przepisujący kod
+    // ręcznie nie powinien wpaść przez capsa albo spację z kopiowania.
+    const otrzymany = String(dane.kod_dostepu || '').trim();
+    const oczekiwany = String(CONFIG.KOD_DOSTEPU || '').trim();
+
+    if (otrzymany.toLowerCase() !== oczekiwany.toLowerCase()) {
+      // Do dziennika wykonań (widocznego tylko dla właściciela skryptu) —
+      // bez tego 'nieprawidłowy kod' jest nie do zdiagnozowania.
+      console.warn(
+        'Odrzucono zgłoszenie — kod się nie zgadza.\n' +
+        'Otrzymano: "' + otrzymany + '" (znaków: ' + otrzymany.length + ')\n' +
+        'Oczekiwano: "' + oczekiwany + '" (znaków: ' + oczekiwany.length + ')'
+      );
       return odpowiedz({ status: 'bad-code' });
     }
 

@@ -546,7 +546,9 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
       btn.textContent = 'Wysyłanie…';
 
       var dane = Object.fromEntries(new FormData(form).entries());
-      dane.kod_dostepu = kod;
+      // Czytamy też z pola, nie tylko ze zmiennej — gdyby skrypt
+      // przeinicjalizował się po nawigacji, zmienna mogłaby być pusta.
+      dane.kod_dostepu = kod || (kodInput.value || '').trim();
 
       // Skopiuj adresy tam, gdzie rodzic zaznaczył „taki sam" — dzięki temu
       // szablon umowy zawsze ma komplet pól.
