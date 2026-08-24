@@ -52,11 +52,13 @@ export default defineConfig({
       // - /brandbook — private partner page (robots noindex on the page
       //   itself; deliberately NOT in robots.txt Disallow, which would
       //   advertise the URL)
+      // - /dla-rodzicow — parent-only contract data form, same reasoning
       // - /category/* and /tag/* — the blog template still generates these
       //   pages, but vercel.json 308-redirects them all to /porady, so
       //   listing them would put redirecting URLs in the sitemap
       filter: (page) =>
         !page.includes('/brandbook') &&
+        !page.includes('/dla-rodzicow') &&
         !page.includes('/category/') &&
         !page.includes('/tag/'),
       serialize(item) {

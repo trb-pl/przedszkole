@@ -1,0 +1,518 @@
+---
+// Parent-only data form feeding the 2026/2027 contract.
+//
+// Access: unlisted URL + robots noindex + excluded from the sitemap, plus a
+// shared access code that the Apps Script endpoint verifies server-side
+// (the client-side gate is UX only — the real check happens on submit).
+//
+// Data flow: form → Google Apps Script Web App (PUBLIC_FORM_ENDPOINT) →
+// row in the school's Google Sheet + confirmation e-mail to the parent +
+// notification to the school. No personal data touches this site's build
+// or any third-party form service.
+import Layout from '~/layouts/PageLayout.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+
+const metadata = {
+  title: 'Formularz danych do umowy — Kolorowe Przedszkole',
+  description: 'Formularz danych do umowy na rok szkolny 2026/2027 dla rodziców Kolorowego Przedszkola.',
+  robots: { index: false, follow: false },
+};
+
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+
+// Shared input styling — kept in one place so every field stays consistent.
+const inputCls =
+  'font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/25 focus:outline-none focus:border-brand-teal transition-colors duration-200 w-full';
+const labelCls = 'font-sans text-sm font-semibold text-brand-navy';
+const hintCls = 'font-sans text-xs text-brand-navy/45';
+const cardCls = 'bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-6 md:p-8';
+const legendCls = 'font-sans italic text-[clamp(1.4rem,2.4vw,2rem)] text-brand-navy leading-tight mb-1';
+const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-brand-teal';
+---
+
+<Layout metadata={metadata}>
+
+  <HeroMazy title="formularz" seoHeading="Formularz danych do umowy — Kolorowe Przedszkole" />
+
+  <!-- ─── Gate: access code ──────────────────────────────────── -->
+  <section id="brama" class="bg-brand-cream py-16 md:py-24">
+    <div class="max-w-lg mx-auto px-6 text-center">
+      <p class={eyebrowCls}>Rok szkolny 2026/2027</p>
+      <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.8rem)] text-brand-navy leading-tight mt-3 mb-4">
+        Formularz danych do umowy
+      </h2>
+      <p class="font-sans text-brand-navy/70 leading-relaxed mb-8">
+        Ta strona jest przeznaczona wyłącznie dla rodziców dzieci przyjętych do Kolorowego Przedszkola.
+        Wpisz kod dostępu, który otrzymałeś od nas mailem lub w przedszkolu.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input
+          type="password"
+          id="kod-dostepu"
+          autocomplete="off"
+          placeholder="Kod dostępu"
+          class={`${inputCls} text-center sm:text-left`}
+        />
+        <button
+          type="button"
+          id="odblokuj"
+          class="cta-pop shrink-0 bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3 rounded-lg hover:bg-brand-coral cursor-pointer"
+        >
+          Przejdź dalej
+        </button>
+      </div>
+
+      <p id="kod-blad" class="hidden font-sans text-sm text-brand-coral mt-4">
+        Nieprawidłowy kod. Sprawdź wiadomość od przedszkola lub zadzwoń: 605 657 366
+      </p>
+
+      <p class="font-sans text-xs text-brand-navy/45 mt-8 leading-relaxed">
+        Nie masz kodu? Napisz na
+        <a href="mailto:przedszkole@kolorowe.eu" class="text-brand-teal underline hover:text-brand-coral transition-colors duration-200">przedszkole@kolorowe.eu</a>
+        lub zadzwoń pod <a href="tel:605657366" class="text-brand-teal underline hover:text-brand-coral transition-colors duration-200">605 657 366</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── Formularz ──────────────────────────────────────────── -->
+  <section id="formularz-sekcja" class="hidden bg-brand-cream pb-20">
+    <div class="max-w-3xl mx-auto px-6">
+
+      <div class="text-center mb-10">
+        <p class={eyebrowCls}>Rok szkolny 2026/2027</p>
+        <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.8rem)] text-brand-navy leading-tight mt-3 mb-4">
+          Formularz danych do umowy
+        </h2>
+        <p class="font-sans text-brand-navy/70 leading-relaxed">
+          Na podstawie tych danych przygotujemy umowę na rok szkolny 2026/2027.
+          Wypełnioną i podpisaną przez dyrekcję umowę odbierzesz w przedszkolu.
+          Wypełnienie zajmuje około 5 minut.
+        </p>
+      </div>
+
+      <form id="umowa-form" class="flex flex-col gap-6" novalidate>
+
+        <!-- ── Placówka ── -->
+        <fieldset class={cardCls}>
+          <legend class={legendCls}>Placówka</legend>
+          <p class={`${hintCls} mb-4`}>Do której placówki uczęszcza dziecko?</p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <label class="flex-1 flex items-center gap-3 border border-brand-navy/15 rounded-lg px-4 py-3 cursor-pointer hover:border-brand-teal transition-colors duration-200 has-[:checked]:border-brand-teal has-[:checked]:bg-brand-teal/5">
+              <input type="radio" name="placowka" value="Przedszkole Niepubliczne, ul. Lotaryńska 18" class="accent-[#34BBA8]" required />
+              <span class="font-sans text-sm text-brand-navy">Lotaryńska 18<br /><span class={hintCls}>Przedszkole Niepubliczne</span></span>
+            </label>
+            <label class="flex-1 flex items-center gap-3 border border-brand-navy/15 rounded-lg px-4 py-3 cursor-pointer hover:border-brand-teal transition-colors duration-200 has-[:checked]:border-brand-teal has-[:checked]:bg-brand-teal/5">
+              <input type="radio" name="placowka" value="Punkt Przedszkolny, ul. Zakopiańska 8" class="accent-[#34BBA8]" required />
+              <span class="font-sans text-sm text-brand-navy">Zakopiańska 8<br /><span class={hintCls}>Punkt Przedszkolny</span></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- ── Dziecko ── -->
+        <fieldset class={cardCls}>
+          <legend class={legendCls}>Dane dziecka</legend>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <div class="flex flex-col gap-1.5">
+              <label class={labelCls} for="dziecko_imiona">Imiona <span class="text-brand-coral">*</span></label>
+              <input type="text" id="dziecko_imiona" name="dziecko_imiona" required class={inputCls} placeholder="np. Zofia Maria" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class={labelCls} for="dziecko_nazwisko">Nazwisko <span class="text-brand-coral">*</span></label>
+              <input type="text" id="dziecko_nazwisko" name="dziecko_nazwisko" required class={inputCls} />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class={labelCls} for="dziecko_data_ur">Data urodzenia <span class="text-brand-coral">*</span></label>
+              <input type="date" id="dziecko_data_ur" name="dziecko_data_ur" required class={inputCls} />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class={labelCls} for="dziecko_pesel">PESEL <span class="text-brand-coral">*</span></label>
+              <input type="text" id="dziecko_pesel" name="dziecko_pesel" required inputmode="numeric" maxlength="11" class={inputCls} placeholder="11 cyfr" />
+              <p id="pesel-info" class={hintCls}>Sprawdzamy poprawność numeru automatycznie.</p>
+            </div>
+          </div>
+
+          <p class="font-sans text-sm font-semibold text-brand-navy mt-7 mb-3">Adres zamieszkania dziecka</p>
+          <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
+            <div class="sm:col-span-4 flex flex-col gap-1.5">
+              <label class={labelCls} for="dziecko_ulica">Ulica i numer <span class="text-brand-coral">*</span></label>
+              <input type="text" id="dziecko_ulica" name="dziecko_ulica" required class={inputCls} placeholder="np. Lotaryńska 18 m. 5" />
+            </div>
+            <div class="sm:col-span-2 flex flex-col gap-1.5">
+              <label class={labelCls} for="dziecko_kod">Kod pocztowy <span class="text-brand-coral">*</span></label>
+              <input type="text" id="dziecko_kod" name="dziecko_kod" required class={inputCls} placeholder="00-000" />
+            </div>
+            <div class="sm:col-span-4 flex flex-col gap-1.5">
+              <label class={labelCls} for="dziecko_miasto">Miejscowość <span class="text-brand-coral">*</span></label>
+              <input type="text" id="dziecko_miasto" name="dziecko_miasto" required class={inputCls} value="Warszawa" />
+            </div>
+            <div class="sm:col-span-2 flex flex-col gap-1.5">
+              <label class={labelCls} for="dziecko_dzielnica">Dzielnica <span class="text-brand-coral">*</span></label>
+              <input type="text" id="dziecko_dzielnica" name="dziecko_dzielnica" required class={inputCls} placeholder="np. Praga-Południe" />
+            </div>
+          </div>
+
+          <label class="flex items-center gap-3 mt-6 cursor-pointer">
+            <input type="checkbox" id="zameldowanie_takie_samo" name="zameldowanie_takie_samo" checked class="w-4 h-4 accent-[#34BBA8]" />
+            <span class="font-sans text-sm text-brand-navy">Adres zameldowania jest taki sam jak zamieszkania</span>
+          </label>
+
+          <div id="blok-zameldowania" class="hidden mt-5">
+            <p class="font-sans text-sm font-semibold text-brand-navy mb-3">Adres zameldowania dziecka</p>
+            <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
+              <div class="sm:col-span-4 flex flex-col gap-1.5">
+                <label class={labelCls} for="zamel_ulica">Ulica i numer</label>
+                <input type="text" id="zamel_ulica" name="zamel_ulica" class={inputCls} />
+              </div>
+              <div class="sm:col-span-2 flex flex-col gap-1.5">
+                <label class={labelCls} for="zamel_kod">Kod pocztowy</label>
+                <input type="text" id="zamel_kod" name="zamel_kod" class={inputCls} placeholder="00-000" />
+              </div>
+              <div class="sm:col-span-4 flex flex-col gap-1.5">
+                <label class={labelCls} for="zamel_miasto">Miejscowość</label>
+                <input type="text" id="zamel_miasto" name="zamel_miasto" class={inputCls} />
+              </div>
+              <div class="sm:col-span-2 flex flex-col gap-1.5">
+                <label class={labelCls} for="zamel_dzielnica">Dzielnica</label>
+                <input type="text" id="zamel_dzielnica" name="zamel_dzielnica" class={inputCls} />
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- ── Rodzic 1 ── -->
+        <fieldset class={cardCls}>
+          <legend class={legendCls}>Rodzic / opiekun prawny 1</legend>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <div class="sm:col-span-2 flex flex-col gap-1.5">
+              <label class={labelCls} for="r1_imie">Imię i nazwisko <span class="text-brand-coral">*</span></label>
+              <input type="text" id="r1_imie" name="r1_imie" required class={inputCls} />
+            </div>
+            <div class="sm:col-span-2 flex flex-col gap-1.5">
+              <label class={labelCls} for="r1_adres">Adres zamieszkania <span class="text-brand-coral">*</span></label>
+              <input type="text" id="r1_adres" name="r1_adres" required class={inputCls} placeholder="ulica, nr, kod pocztowy, miejscowość" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class={labelCls} for="r1_telefon">Telefon <span class="text-brand-coral">*</span></label>
+              <input type="tel" id="r1_telefon" name="r1_telefon" required class={inputCls} placeholder="600 000 000" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class={labelCls} for="r1_email">E-mail <span class="text-brand-coral">*</span></label>
+              <input type="email" id="r1_email" name="r1_email" required class={inputCls} />
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- ── Rodzic 2 ── -->
+        <fieldset class={cardCls}>
+          <legend class={legendCls}>Rodzic / opiekun prawny 2</legend>
+          <label class="flex items-center gap-3 mt-3 mb-1 cursor-pointer">
+            <input type="checkbox" id="brak_rodzica2" name="brak_rodzica2" class="w-4 h-4 accent-[#34BBA8]" />
+            <span class="font-sans text-sm text-brand-navy">Umowę zawiera tylko jeden opiekun</span>
+          </label>
+
+          <div id="blok-rodzica2" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <div class="sm:col-span-2 flex flex-col gap-1.5">
+              <label class={labelCls} for="r2_imie">Imię i nazwisko</label>
+              <input type="text" id="r2_imie" name="r2_imie" class={inputCls} />
+            </div>
+            <div class="sm:col-span-2 flex flex-col gap-1.5">
+              <label class={labelCls} for="r2_adres">Adres zamieszkania</label>
+              <input type="text" id="r2_adres" name="r2_adres" class={inputCls} placeholder="ulica, nr, kod pocztowy, miejscowość" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class={labelCls} for="r2_telefon">Telefon</label>
+              <input type="tel" id="r2_telefon" name="r2_telefon" class={inputCls} placeholder="600 000 000" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class={labelCls} for="r2_email">E-mail</label>
+              <input type="email" id="r2_email" name="r2_email" class={inputCls} />
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- ── Rozliczenia ── -->
+        <fieldset class={cardCls}>
+          <legend class={legendCls}>Rozliczenia</legend>
+          <div class="flex flex-col gap-1.5 mt-4">
+            <label class={labelCls} for="email_rachunki">E-mail do wysyłki rachunków <span class="text-brand-coral">*</span></label>
+            <input type="email" id="email_rachunki" name="email_rachunki" required class={inputCls} />
+            <p class={hintCls}>Na ten adres będziemy wysyłać miesięczne rachunki (§ 8 umowy).</p>
+          </div>
+        </fieldset>
+
+        <!-- ── Osoby upoważnione ── -->
+        <fieldset class={cardCls}>
+          <legend class={legendCls}>Osoby upoważnione do odbioru dziecka</legend>
+          <p class={`${hintCls} mb-5`}>
+            Możesz wskazać do czterech osób. Osoba upoważniona może zostać poproszona o okazanie dokumentu tożsamości przy odbiorze dziecka.
+            Pola możesz zostawić puste.
+          </p>
+          <div class="flex flex-col gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
+                <div class="flex flex-col gap-1.5">
+                  <label class={labelCls} for={`upow${i}_imie`}>{i}. Imię i nazwisko</label>
+                  <input type="text" id={`upow${i}_imie`} name={`upow${i}_imie`} class={inputCls} />
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class={labelCls} for={`upow${i}_dokument`}>Rodzaj, seria i numer dokumentu</label>
+                  <input type="text" id={`upow${i}_dokument`} name={`upow${i}_dokument`} class={inputCls} placeholder="np. dowód osobisty ABC 123456" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </fieldset>
+
+        <!-- ── Zgody ── -->
+        <fieldset class={cardCls}>
+          <legend class={legendCls}>Potwierdzenie</legend>
+
+          <label class="flex items-start gap-3 mt-4 cursor-pointer">
+            <input type="checkbox" name="zgoda_prawdziwosc" required class="mt-1 w-4 h-4 shrink-0 accent-[#34BBA8]" />
+            <span class="font-sans text-sm text-brand-navy/80 leading-relaxed">
+              Potwierdzam, że podane dane są aktualne i zgodne z prawdą. <span class="text-brand-coral">*</span>
+            </span>
+          </label>
+
+          <label class="flex items-start gap-3 mt-4 cursor-pointer">
+            <input type="checkbox" name="zgoda_rodo" required class="mt-1 w-4 h-4 shrink-0 accent-[#34BBA8]" />
+            <span class="font-sans text-sm text-brand-navy/80 leading-relaxed">
+              Zapoznałem się z informacją o przetwarzaniu danych osobowych. <span class="text-brand-coral">*</span>
+            </span>
+          </label>
+
+          <details class="mt-6 border-t border-brand-navy/10 pt-5">
+            <summary class="font-sans text-sm font-semibold text-brand-teal cursor-pointer">
+              Informacja o przetwarzaniu danych osobowych (RODO)
+            </summary>
+            <div class="font-sans text-xs text-brand-navy/60 leading-relaxed mt-4 flex flex-col gap-2">
+              <p><strong class="text-brand-navy/80">Administrator danych:</strong> Olga Trębicka, Przedszkole Niepubliczne „Kolorowe Przedszkole", ul. Lotaryńska 18, 03-974 Warszawa, e-mail: przedszkole@kolorowe.eu, tel. 605 657 366.</p>
+              <p><strong class="text-brand-navy/80">Cel i podstawa:</strong> dane przetwarzamy w celu przygotowania i realizacji umowy o świadczenie usług przedszkolnych (art. 6 ust. 1 lit. b RODO) oraz wypełnienia obowiązków prawnych ciążących na placówce (art. 6 ust. 1 lit. c RODO).</p>
+              <p><strong class="text-brand-navy/80">Odbiorcy:</strong> dane mogą być powierzone dostawcom usług informatycznych obsługujących przedszkole, na podstawie umów powierzenia przetwarzania.</p>
+              <p><strong class="text-brand-navy/80">Okres przechowywania:</strong> przez czas trwania umowy oraz przez okres wymagany przepisami prawa (m.in. podatkowymi i o rachunkowości).</p>
+              <p><strong class="text-brand-navy/80">Twoje prawa:</strong> dostęp do danych, ich sprostowanie, usunięcie lub ograniczenie przetwarzania, przenoszenie danych, sprzeciw, a także skarga do Prezesa Urzędu Ochrony Danych Osobowych.</p>
+              <p><strong class="text-brand-navy/80">Dobrowolność:</strong> podanie danych jest dobrowolne, ale niezbędne do zawarcia umowy.</p>
+            </div>
+          </details>
+        </fieldset>
+
+        <!-- Honeypot -->
+        <input type="text" name="firma" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+        <div id="form-blad" class="hidden bg-brand-coral/10 border border-brand-coral/30 rounded-xl px-6 py-4">
+          <p id="form-blad-tekst" class="font-sans text-sm text-brand-coral font-semibold"></p>
+        </div>
+
+        <button
+          type="submit"
+          id="wyslij"
+          class="cta-pop w-full bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-4 rounded-lg hover:bg-brand-coral cursor-pointer"
+        >
+          Wyślij dane do umowy
+        </button>
+
+        <p class={`${hintCls} text-center`}>
+          Po wysłaniu otrzymasz na e-mail kopię wypełnionych danych.
+        </p>
+      </form>
+
+      <!-- Sukces -->
+      <div id="form-sukces" class="hidden bg-white rounded-2xl border border-brand-teal/30 shadow-sm px-8 py-12 text-center flex flex-col items-center gap-3">
+        <p class="text-5xl">✓</p>
+        <p class="font-sans italic text-2xl md:text-3xl text-brand-navy">Dziękujemy!</p>
+        <p class="font-sans text-brand-navy/70 leading-relaxed max-w-md">
+          Dane zostały wysłane. Kopia trafiła na Twój adres e-mail.
+          Przygotujemy umowę — podpisany egzemplarz będzie czekał na Ciebie w przedszkolu.
+        </p>
+        <a href="/" class="cta-pop mt-4 inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg hover:bg-brand-coral">
+          Wróć na stronę główną
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</Layout>
+
+<script is:inline define:vars={{ endpoint }}>
+  document.addEventListener('astro:page-load', function () {
+    var form = document.getElementById('umowa-form');
+    if (!form || form.__init) return;
+    form.__init = true;
+
+    var brama = document.getElementById('brama');
+    var sekcja = document.getElementById('formularz-sekcja');
+    var kodInput = document.getElementById('kod-dostepu');
+    var kodBlad = document.getElementById('kod-blad');
+    var sukces = document.getElementById('form-sukces');
+    var blad = document.getElementById('form-blad');
+    var bladTekst = document.getElementById('form-blad-tekst');
+    var btn = document.getElementById('wyslij');
+    var kod = '';
+
+    /* ── Brama: kod dostępu ────────────────────────────────────
+       Gate is UX only — it just reveals the form. The code travels
+       with the submission and the Apps Script endpoint rejects it
+       server-side if wrong. */
+    function odblokuj() {
+      var v = (kodInput.value || '').trim();
+      if (!v) {
+        kodBlad.classList.remove('hidden');
+        return;
+      }
+      kod = v;
+      kodBlad.classList.add('hidden');
+      brama.classList.add('hidden');
+      sekcja.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    document.getElementById('odblokuj').addEventListener('click', odblokuj);
+    kodInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); odblokuj(); }
+    });
+
+    /* ── Pola warunkowe ──────────────────────────────────────── */
+    var chkZamel = document.getElementById('zameldowanie_takie_samo');
+    var blokZamel = document.getElementById('blok-zameldowania');
+    chkZamel.addEventListener('change', function () {
+      blokZamel.classList.toggle('hidden', chkZamel.checked);
+    });
+
+    var chkBrakR2 = document.getElementById('brak_rodzica2');
+    var blokR2 = document.getElementById('blok-rodzica2');
+    chkBrakR2.addEventListener('change', function () {
+      blokR2.classList.toggle('hidden', chkBrakR2.checked);
+    });
+
+    /* ── Walidacja PESEL ──────────────────────────────────────
+       Checksum per the official algorithm, plus a cross-check of the
+       encoded birth date against the date field (catches typos in
+       either one). */
+    var peselInput = document.getElementById('dziecko_pesel');
+    var peselInfo = document.getElementById('pesel-info');
+
+    function peselPoprawny(p) {
+      if (!/^\d{11}$/.test(p)) return false;
+      var w = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
+      var suma = 0;
+      for (var i = 0; i < 10; i++) suma += parseInt(p[i], 10) * w[i];
+      return (10 - (suma % 10)) % 10 === parseInt(p[10], 10);
+    }
+
+    function peselDataUr(p) {
+      var rok = parseInt(p.substring(0, 2), 10);
+      var mies = parseInt(p.substring(2, 4), 10);
+      var dzien = parseInt(p.substring(4, 6), 10);
+      var stulecia = { 0: 1900, 20: 2000, 40: 2100, 60: 2200, 80: 1800 };
+      var przesuniecie = Math.floor(mies / 20) * 20;
+      var baza = stulecia[przesuniecie];
+      if (baza === undefined) return null;
+      var m = mies - przesuniecie;
+      return baza + rok + '-' + String(m).padStart(2, '0') + '-' + String(dzien).padStart(2, '0');
+    }
+
+    function sprawdzPesel() {
+      var p = (peselInput.value || '').trim();
+      if (!p) {
+        peselInfo.textContent = 'Sprawdzamy poprawność numeru automatycznie.';
+        peselInfo.className = 'font-sans text-xs text-brand-navy/45';
+        return;
+      }
+      if (!peselPoprawny(p)) {
+        peselInfo.textContent = 'Ten numer PESEL wygląda na nieprawidłowy — sprawdź, czy nie ma literówki.';
+        peselInfo.className = 'font-sans text-xs text-brand-coral';
+        return;
+      }
+      var data = peselDataUr(p);
+      var wpisana = document.getElementById('dziecko_data_ur').value;
+      if (data && wpisana && data !== wpisana) {
+        peselInfo.textContent = 'PESEL wskazuje datę urodzenia ' + data + ' — sprawdź, czy zgadza się z wpisaną powyżej.';
+        peselInfo.className = 'font-sans text-xs text-brand-coral';
+        return;
+      }
+      peselInfo.textContent = 'Numer PESEL poprawny ✓';
+      peselInfo.className = 'font-sans text-xs text-brand-teal';
+    }
+    peselInput.addEventListener('blur', sprawdzPesel);
+    document.getElementById('dziecko_data_ur').addEventListener('change', sprawdzPesel);
+
+    /* ── Wysyłka ─────────────────────────────────────────────── */
+    function pokazBlad(tekst) {
+      bladTekst.textContent = tekst;
+      blad.classList.remove('hidden');
+      blad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      blad.classList.add('hidden');
+
+      // Honeypot — silent no-op for bots.
+      if (form.querySelector('[name="firma"]').value) return;
+
+      // Required fields, skipping blocks the user switched off.
+      var brakujace = [];
+      form.querySelectorAll('[required]').forEach(function (el) {
+        if (el.closest('.hidden')) return;
+        var ok = el.type === 'checkbox' || el.type === 'radio'
+          ? form.querySelector('[name="' + el.name + '"]:checked')
+          : (el.value || '').trim();
+        if (!ok) brakujace.push(el);
+      });
+      if (brakujace.length) {
+        pokazBlad('Uzupełnij pola oznaczone gwiazdką — brakuje ' + brakujace.length + '.');
+        brakujace[0].focus();
+        return;
+      }
+
+      var pesel = (peselInput.value || '').trim();
+      if (!peselPoprawny(pesel)) {
+        pokazBlad('Numer PESEL dziecka jest nieprawidłowy. Sprawdź, czy nie ma literówki.');
+        peselInput.focus();
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Wysyłanie…';
+
+      var dane = Object.fromEntries(new FormData(form).entries());
+      dane.kod_dostepu = kod;
+
+      // If the parent kept "same as residence", copy the address across so
+      // the contract template always has both fields filled.
+      if (chkZamel.checked) {
+        dane.zamel_ulica = dane.dziecko_ulica;
+        dane.zamel_kod = dane.dziecko_kod;
+        dane.zamel_miasto = dane.dziecko_miasto;
+        dane.zamel_dzielnica = dane.dziecko_dzielnica;
+      }
+
+      try {
+        // text/plain avoids a CORS preflight — Apps Script parses the body.
+        var res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(dane),
+        });
+        var wynik = await res.json();
+
+        if (wynik.status === 'ok') {
+          form.classList.add('hidden');
+          sukces.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (wynik.status === 'bad-code') {
+          pokazBlad('Nieprawidłowy kod dostępu. Sprawdź wiadomość od przedszkola lub zadzwoń: 605 657 366');
+          btn.disabled = false;
+          btn.textContent = 'Wyślij dane do umowy';
+        } else {
+          throw new Error(wynik.message || 'Błąd zapisu');
+        }
+      } catch (err) {
+        pokazBlad('Nie udało się wysłać danych. Spróbuj ponownie lub zadzwoń: 605 657 366');
+        btn.disabled = false;
+        btn.textContent = 'Wyślij dane do umowy';
+      }
+    });
+  });
+</script>
