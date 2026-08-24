@@ -408,15 +408,30 @@ function przetworzWiersze(arkusz, od, doW, tylkoBrakujace) {
   }
 
   const folder = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_UMOW));
-  const kolWygenerowana = NAGLOWKI.indexOf('Umowa wygenerowana') + 1;
+
+  // Czytamy nagłówki z samego arkusza, a nie z listy NAGLOWKI. Gdyby obie
+  // się rozjechały (np. arkusz powstał przy starszej wersji skryptu),
+  // dopasowanie po nazwie kolumny nadal jest poprawne — inaczej wszystkie
+  // dane w umowie przesuwają się o jedną pozycję.
+  const naglowki = arkusz.getRange(1, 1, 1, arkusz.getLastColumn()).getValues()[0]
+    .map(function (n) { return String(n).trim(); });
+
+  const kolWygenerowana = naglowki.indexOf('Umowa wygenerowana') + 1;
+  const kolNazwisko = naglowki.indexOf('Dziecko — nazwisko');
+
+  if (kolWygenerowana === 0 || kolNazwisko === -1) {
+    ui.alert('Nie rozpoznaję nagłówków w arkuszu. Sprawdź, czy pierwszy wiersz zawiera oryginalne nazwy kolumn (m.in. „Umowa wygenerowana" i „Dziecko — nazwisko").');
+    return;
+  }
+
   let zrobione = 0;
 
   for (let r = od; r <= doW; r++) {
-    const wiersz = arkusz.getRange(r, 1, 1, NAGLOWKI.length).getValues()[0];
-    if (!wiersz[NAGLOWKI.indexOf('Dziecko — nazwisko')]) continue;
+    const wiersz = arkusz.getRange(r, 1, 1, naglowki.length).getValues()[0];
+    if (!wiersz[kolNazwisko]) continue;
     if (tylkoBrakujace && wiersz[kolWygenerowana - 1]) continue;
 
-    const plik = generujUmoweDlaWiersza(wiersz, folder);
+    const plik = generujUmoweDlaWiersza(wiersz, folder, naglowki);
     arkusz.getRange(r, kolWygenerowana).setValue(new Date());
     arkusz.getRange(r, kolWygenerowana).setNote(plik.getUrl());
     zrobione++;
@@ -429,9 +444,9 @@ function przetworzWiersze(arkusz, od, doW, tylkoBrakujace) {
   );
 }
 
-function generujUmoweDlaWiersza(wiersz, folder) {
+function generujUmoweDlaWiersza(wiersz, folder, naglowki) {
   const d = {};
-  NAGLOWKI.forEach(function (naglowek, i) { d[naglowek] = wiersz[i]; });
+  naglowki.forEach(function (naglowek, i) { d[naglowek] = wiersz[i]; });
 
   const dziecko = (d['Dziecko — imiona'] + ' ' + d['Dziecko — nazwisko']).trim();
   const nazwaPliku = 'Umowa ' + String(d['Nr umowy']).replace(/\//g, '-') + ' — ' + dziecko;
@@ -481,7 +496,9 @@ function generujUmoweDlaWiersza(wiersz, folder) {
   };
 
   Object.keys(podstawienia).forEach(function (klucz) {
-    body.replaceText(escapeRegex(klucz), String(podstawienia[klucz] || ''));
+    // Apostrof wymuszający tekst w arkuszu nie może trafić do umowy.
+    const wartosc = String(podstawienia[klucz] || '').replace(/^'/, '');
+    body.replaceText(escapeRegex(klucz), wartosc);
   });
 
   dok.saveAndClose();
