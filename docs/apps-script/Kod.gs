@@ -122,38 +122,48 @@ function doPost(e) {
     const adresZam = zlozAdres(dane.dziecko_ulica, dane.dziecko_kod, dane.dziecko_miasto);
     const adresZamel = zlozAdres(dane.zamel_ulica, dane.zamel_kod, dane.zamel_miasto);
 
-    arkusz.appendRow([
-      new Date(),
-      nrUmowy,
-      CONFIG.CZESNE_PODSTAWOWE, // Olga zmienia ręcznie na stawkę rodzeństwa
-      '', // znacznik wygenerowania umowy
-      dane.dziecko_imiona || '',
-      dane.dziecko_nazwisko || '',
-      dane.dziecko_data_ur || '',
-      jakoTekst(dane.dziecko_pesel),
-      adresZam,
-      dane.dziecko_dzielnica || '',
-      adresZamel,
-      dane.zamel_dzielnica || dane.dziecko_dzielnica || '',
-      dane.r1_imie || '',
-      dane.r1_adres || '',
-      jakoTekst(dane.r1_telefon),
-      dane.r1_email || '',
-      dane.r2_imie || '',
-      dane.r2_adres || '',
-      jakoTekst(dane.r2_telefon),
-      dane.r2_email || '',
-      dane.email_rachunki || '',
-      zlozUpowaznienie(dane.upow1_imie, dane.upow1_dokument),
-      zlozUpowaznienie(dane.upow2_imie, dane.upow2_dokument),
-      zlozUpowaznienie(dane.upow3_imie, dane.upow3_dokument),
-      zlozUpowaznienie(dane.upow4_imie, dane.upow4_dokument),
-      dane.wiz_aplikacja || 'NIE',
-      dane.wiz_www || 'NIE',
-      dane.wiz_facebook || 'NIE',
-      dane.wiz_instagram || 'NIE',
-      dane.wiz_druk || 'NIE',
-    ]);
+    // Wartości opisane nazwą kolumny, nie pozycją. Dzięki temu zapis trafia
+    // tam, gdzie wskazuje nagłówek arkusza — nawet jeśli arkusz powstał przy
+    // innej wersji skryptu i ma dodatkowe albo przestawione kolumny.
+    const wartosci = {
+      'Data zgłoszenia': new Date(),
+      'Nr umowy': nrUmowy,
+      'Stawka': CONFIG.CZESNE_PODSTAWOWE, // Olga zmienia ręcznie dla rodzeństwa
+      'Umowa wygenerowana': '',
+      'Dziecko — imiona': dane.dziecko_imiona || '',
+      'Dziecko — nazwisko': dane.dziecko_nazwisko || '',
+      'Data urodzenia': dane.dziecko_data_ur || '',
+      'PESEL': jakoTekst(dane.dziecko_pesel),
+      'Adres zamieszkania': adresZam,
+      'Dzielnica zamieszkania': dane.dziecko_dzielnica || '',
+      'Adres zameldowania': adresZamel,
+      'Dzielnica zameldowania': dane.zamel_dzielnica || dane.dziecko_dzielnica || '',
+      'Rodzic 1 — imię i nazwisko': dane.r1_imie || '',
+      'Rodzic 1 — adres': dane.r1_adres || '',
+      'Rodzic 1 — telefon': jakoTekst(dane.r1_telefon),
+      'Rodzic 1 — e-mail': dane.r1_email || '',
+      'Rodzic 2 — imię i nazwisko': dane.r2_imie || '',
+      'Rodzic 2 — adres': dane.r2_adres || '',
+      'Rodzic 2 — telefon': jakoTekst(dane.r2_telefon),
+      'Rodzic 2 — e-mail': dane.r2_email || '',
+      'E-mail do rachunków': dane.email_rachunki || '',
+      'Upoważniona 1': zlozUpowaznienie(dane.upow1_imie, dane.upow1_dokument),
+      'Upoważniona 2': zlozUpowaznienie(dane.upow2_imie, dane.upow2_dokument),
+      'Upoważniona 3': zlozUpowaznienie(dane.upow3_imie, dane.upow3_dokument),
+      'Upoważniona 4': zlozUpowaznienie(dane.upow4_imie, dane.upow4_dokument),
+      'Wizerunek — aplikacja dla rodziców': dane.wiz_aplikacja || 'NIE',
+      'Wizerunek — strona www': dane.wiz_www || 'NIE',
+      'Wizerunek — Facebook': dane.wiz_facebook || 'NIE',
+      'Wizerunek — Instagram': dane.wiz_instagram || 'NIE',
+      'Wizerunek — materiały drukowane': dane.wiz_druk || 'NIE',
+    };
+
+    const naglowkiArkusza = arkusz.getRange(1, 1, 1, arkusz.getLastColumn()).getValues()[0]
+      .map(function (n) { return String(n).trim(); });
+
+    arkusz.appendRow(naglowkiArkusza.map(function (naglowek) {
+      return wartosci[naglowek] !== undefined ? wartosci[naglowek] : '';
+    }));
 
     wyslijKopieRodzicowi(dane, nrUmowy);
     wyslijPowiadomienieDoPrzedszkola(dane, nrUmowy);
