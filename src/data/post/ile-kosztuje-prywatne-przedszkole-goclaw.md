@@ -39,7 +39,7 @@ Rodzice pytają nas o koszty zazwyczaj jeszcze przed pierwszą wizytą — i sł
 
 ## Ile wynosi czesne w Kolorowym Przedszkolu?
 
-Czesne podstawowe wynosi **2 250 zł miesięcznie** — identycznie w obu naszych lokalizacjach: na ul. Lotaryńskiej 18 i ul. Zakopiańskiej 8 na Saskiej Kępie.
+Czesne podstawowe wynosi **2 350 zł miesięcznie** — identycznie w obu naszych lokalizacjach: na ul. Lotaryńskiej 18 i ul. Zakopiańskiej 8 na Saskiej Kępie.
 
 Kwota miesięczna wynika z rocznej umowy — całkowity koszt roku szkolnego jest wyliczony z góry i podzielony równo na 12 rat. Dzięki temu miesięczna płatność jest przewidywalna przez cały rok, niezależnie od liczby dni roboczych w danym miesiącu.
 
@@ -76,24 +76,25 @@ Kolorowe Przedszkole działa przez cały rok. Przerwy w roku szkolnym 2026/2027 
 
 | Przerwa | Termin |
 |---|---|
-| Przerwa świąteczna (Boże Narodzenie) | zgodna z kalendarzem MEN |
-| Ferie zimowe | 1 tydzień w czasie 2-tygodniowych ferii województwa mazowieckiego — termin ustalany z rodzicami |
-| Przerwa wielkanocna | Wielki Piątek |
-| Przerwa wakacyjna | 2 tygodnie na przełomie lipca i sierpnia |
+| Przerwa bożonarodzeniowa | 23–31 grudnia 2026 |
+| Ferie zimowe | 8–12 lutego 2027 |
+| Wiosenna przerwa świąteczna | 26–29 marca 2027 |
+| Długi weekend (Boże Ciało) | 27–30 maja 2027 |
+| Przerwa wakacyjna | 26 lipca – 6 sierpnia 2027 |
 
 Letnia przerwa istnieje po to, żeby nasza kadra — tak jak dzieci — miała czas na prawdziwy odpoczynek. Poza tymi terminami przedszkole jest otwarte, również w lipcu i sierpniu.
 
 ## Zniżki
 
-Oferujemy zniżkę dla rodzeństwa. Jeśli do Kolorowego uczęszcza więcej niż jedno Twoje dziecko, skontaktuj się z nami bezpośrednio — omówimy warunki indywidualnie.
+Jeśli do Kolorowego uczęszcza więcej niż jedno Twoje dziecko, czesne dla każdego z rodzeństwa wynosi **2 150 zł miesięcznie** zamiast 2 350 zł — czyli 200 zł mniej na dziecko, co daje 25 800 zł rocznie zamiast 28 200 zł.
 
 ## Pełne zestawienie kosztów miesięcznych
 
 | Pozycja | Kwota |
 |---|---|
-| Czesne podstawowe | 2 250 zł |
+| Czesne podstawowe | 2 350 zł |
 | Wyżywienie (przy 20 dniach) | ~500 zł |
-| **Razem miesięcznie** | **~2 750 zł** |
+| **Razem miesięcznie** | **~2 850 zł** |
 | Wpisowe (jednorazowo, przy zapisie) | 1 800 zł |
 
 Wpisowe płacisz raz. Zajęcia dodatkowe — według wyboru, bez rocznych zobowiązań.
