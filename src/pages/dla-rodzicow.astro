@@ -599,7 +599,13 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
           sukces.classList.remove('hidden');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else if (wynik.status === 'bad-code') {
-          pokazBlad('Nieprawidłowy kod dostępu. Sprawdź wiadomość od przedszkola lub zadzwoń: 605 657 366');
+          // Pokazujemy wysłany kod — bez tego rodzic (i my przy wdrożeniu)
+          // nie ma jak sprawdzić, czy pomyłka jest w linku, czy po stronie
+          // przedszkola.
+          pokazBlad(
+            'Nieprawidłowy kod dostępu. Wysłany kod: „' + dane.kod_dostepu + '". ' +
+            'Sprawdź link od przedszkola lub zadzwoń: 605 657 366'
+          );
           przywrocPrzycisk();
         } else {
           console.error('Błąd skryptu:', wynik);
