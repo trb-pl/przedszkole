@@ -30,6 +30,10 @@ const CONFIG = {
   // docs.google.com/document/d/  TO_JEST_ID  /edit
   ID_SZABLONU_UMOWY: 'WKLEJ_ID_SZABLONU',
 
+  // ID szablonu Załącznika nr 2 (zgoda na wizerunek). Zostaw pusty ciąg,
+  // jeśli załącznik ma nie być generowany.
+  ID_SZABLONU_ZALACZNIKA: 'WKLEJ_ID_ZALACZNIKA',
+
   // ID folderu na Dysku, w którym mają lądować wygenerowane umowy.
   // Znajdziesz je w adresie folderu: drive.google.com/drive/folders/ TO_JEST_ID
   ID_FOLDERU_UMOW: 'WKLEJ_ID_FOLDERU',
@@ -332,6 +336,21 @@ function testKonfiguracji() {
   }
 
   // Folder na umowy
+  if (czystyId(CONFIG.ID_SZABLONU_ZALACZNIKA) === 'WKLEJ_ID_ZALACZNIKA' || !CONFIG.ID_SZABLONU_ZALACZNIKA) {
+    ok.push('Załącznik nr 2 nie będzie generowany (ID_SZABLONU_ZALACZNIKA puste)');
+  } else {
+    try {
+      const zal = DriveApp.getFileById(czystyId(CONFIG.ID_SZABLONU_ZALACZNIKA));
+      if (zal.getMimeType() !== MimeType.GOOGLE_DOCS) {
+        problemy.push('Załącznik „' + zal.getName() + '" nie jest Dokumentem Google — otwórz .docx przez „Otwórz za pomocą → Dokumenty Google"');
+      } else {
+        ok.push('Szablon załącznika: ' + zal.getName());
+      }
+    } catch (e) {
+      problemy.push('Nie mogę otworzyć szablonu załącznika — sprawdź ID_SZABLONU_ZALACZNIKA');
+    }
+  }
+
   if (CONFIG.ID_FOLDERU_UMOW === 'WKLEJ_ID_FOLDERU') {
     problemy.push('Nie uzupełniono ID_FOLDERU_UMOW w sekcji CONFIG');
   } else {
@@ -517,7 +536,9 @@ function przetworzWiersze(arkusz, od, doW, tylkoBrakujace) {
   ui.alert(
     zrobione === 0
       ? 'Nie wygenerowano żadnej umowy — sprawdź, czy zaznaczone wiersze zawierają dane.'
-      : 'Gotowe. Wygenerowano umów: ' + zrobione + '.\n\nZnajdziesz je w folderze na Dysku, jako pliki PDF gotowe do wydruku.'
+      : 'Gotowe. Wygenerowano kompletów dokumentów: ' + zrobione + '.\n\n' +
+        'Dla każdego dziecka powstała umowa oraz Załącznik nr 2 (zgoda na wizerunek) — ' +
+        'w folderze na Dysku, jako pliki PDF gotowe do wydruku.'
   );
 }
 
@@ -581,6 +602,58 @@ function generujUmoweDlaWiersza(wiersz, folder, naglowki) {
   dok.saveAndClose();
 
   // PDF obok dokumentu — to jego drukuje przedszkole.
+  folder.createFile(kopia.getAs('application/pdf')).setName(nazwaPliku + '.pdf');
+
+  // Załącznik nr 2 powstaje razem z umową — rodzic dostaje do podpisu komplet.
+  generujZalacznikWizerunek(d, dziecko, folder);
+
+  return kopia;
+}
+
+/**
+ * Załącznik nr 2 — zgoda na wykorzystanie wizerunku, z decyzjami rodzica
+ * przeniesionymi wprost z formularza. Dzięki temu rodzic nie zaznacza zgód
+ * drugi raz na papierze: jest jedno źródło prawdy i zero rozjazdu między
+ * tym, co kliknął online, a tym, co podpisze w przedszkolu.
+ */
+function generujZalacznikWizerunek(d, dziecko, folder) {
+  const idSzablonu = czystyId(CONFIG.ID_SZABLONU_ZALACZNIKA);
+  if (!idSzablonu || idSzablonu === 'WKLEJ_ID_ZALACZNIKA') return null;
+
+  const nazwaPliku = 'Zalacznik 2 wizerunek ' +
+    String(d['Nr umowy']).replace(/\//g, '-') + ' — ' + dziecko;
+
+  const kopia = DriveApp.getFileById(idSzablonu).makeCopy(nazwaPliku, folder);
+  const dok = DocumentApp.openById(kopia.getId());
+  const body = dok.getBody();
+
+  const zgody = {
+    APLIKACJA: d['Wizerunek — aplikacja dla rodziców'],
+    WWW: d['Wizerunek — strona www'],
+    FACEBOOK: d['Wizerunek — Facebook'],
+    INSTAGRAM: d['Wizerunek — Instagram'],
+    DRUK: d['Wizerunek — materiały drukowane'],
+  };
+
+  const podstawienia = {
+    '{{NR_UMOWY}}': d['Nr umowy'],
+    '{{ROK_SZKOLNY}}': CONFIG.ROK_SZKOLNY,
+    '{{DZIECKO}}': dziecko,
+  };
+
+  // Krzyżyk trafia do kolumny odpowiadającej decyzji, druga zostaje pusta.
+  // Brak wartości traktujemy jak „NIE" — zgoda musi być czynna i wyraźna.
+  Object.keys(zgody).forEach(function (klucz) {
+    const tak = String(zgody[klucz] || 'NIE').trim().toUpperCase() === 'TAK';
+    podstawienia['{{WIZ_' + klucz + '_TAK}}'] = tak ? 'X' : '';
+    podstawienia['{{WIZ_' + klucz + '_NIE}}'] = tak ? '' : 'X';
+  });
+
+  Object.keys(podstawienia).forEach(function (klucz) {
+    body.replaceText(escapeRegex(klucz), String(podstawienia[klucz] || '').replace(/^'/, ''));
+  });
+
+  dok.saveAndClose();
   folder.createFile(kopia.getAs('application/pdf')).setName(nazwaPliku + '.pdf');
   return kopia;
 }
