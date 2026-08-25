@@ -17,10 +17,12 @@ metadata:
     follow: true
   openGraph:
     site_name: Kolorowe Przedszkole
+    # Adres bezwzględny, nie import z ~/assets — WhatsApp i iMessage czytają
+    # surowy tag og:image i nie radzą sobie ze ścieżkami względnymi.
     images:
-      - url: '~/assets/images/default.png'
+      - url: 'https://koloroweprzedszkole.com/og-default.jpg'
         width: 1200
-        height: 628
+        height: 630
     type: website
   twitter:
     handle: '@koloroweprzedszkole'
