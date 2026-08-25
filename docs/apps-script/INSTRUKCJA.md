@@ -156,19 +156,13 @@ przebudowaniu).
 
 ## Co dostaje rodzic po wysłaniu formularza
 
-Na adres e-mail rodzica 1 idzie od razu:
+Na adres e-mail rodzica 1 idzie kopia wpisanych danych — do sprawdzenia, czy
+nie ma literówki w PESEL-u albo adresie. Bez załączników: PESEL dziecka
+nie krąży niepotrzebnie po skrzynkach pocztowych.
 
-1. **Kopia wpisanych danych** w treści maila — do sprawdzenia, czy nie ma
-   literówki w PESEL-u albo adresie.
-2. **Wzór umowy w PDF** wypełniony jego danymi.
-3. **Wzór Załącznika nr 2** (zgody na wizerunek) z zaznaczonymi decyzjami.
+Treść umowy i zgód rodzic czyta przed wypełnieniem formularza — puste wzory
+w PDF są do pobrania na stronie `/dla-rodzicow`. Generuje je
+`scripts/make-wzory-pdf.py` z tych samych plików .docx, z których powstają
+egzemplarze finalne, więc obie wersje nie mogą się rozjechać.
 
-Oba PDF-y mają na każdej stronie nagłówek **„W Z Ó R · dokument poglądowy,
-nie do podpisu"**. To dokumenty do zapoznania się z treścią — egzemplarze
-do podpisu drukuje przedszkole z menu `📄 Umowy` w arkuszu.
-
-Kopie robocze użyte do wygenerowania wzorów kasują się same — na Dysku
-zostają wyłącznie dokumenty finalne.
-
-Jeśli `ID_SZABLONU_UMOWY` albo `ID_SZABLONU_ZALACZNIKA` nie są uzupełnione,
-mail wychodzi bez załączników, a zgłoszenie i tak zapisuje się w arkuszu.
+Egzemplarze do podpisu drukuje przedszkole z menu `📄 Umowy` w arkuszu.

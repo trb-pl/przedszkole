@@ -91,6 +91,45 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
         </p>
       </div>
 
+      <!-- ── Wzory dokumentów ──
+           Puste wzory do przeczytania przed wypełnieniem formularza.
+           Generowane z tych samych szablonów .docx, z których powstają
+           egzemplarze do podpisu (scripts/make-wzory-pdf.py). -->
+      <div class="bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-6 md:p-8 mb-6">
+        <p class={eyebrowCls}>Zanim wypełnisz</p>
+        <p class="font-sans italic text-xl md:text-2xl text-brand-navy leading-tight mt-2 mb-2">
+          Wzory dokumentów do pobrania
+        </p>
+        <p class="font-sans text-sm text-brand-navy/65 leading-relaxed mb-5">
+          Puste wzory — bez danych, wyłącznie do zapoznania się z treścią.
+          Nie drukuj ich ani nie podpisuj: gotowe egzemplarze, wypełnione Twoimi danymi
+          i podpisane przez dyrekcję, będą czekać w przedszkolu.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {[
+            { plik: '/dokumenty/wzor-umowy-2026-2027.pdf', tytul: 'Umowa 2026/2027', opis: 'PDF · pełna treść umowy' },
+            { plik: '/dokumenty/wzor-zgody-na-wizerunek-2026-2027.pdf', tytul: 'Zgoda na wizerunek', opis: 'PDF · załącznik nr 2' },
+          ].map((d) => (
+            <a
+              href={d.plik}
+              target="_blank"
+              rel="noopener"
+              class="group flex items-center gap-3 border border-brand-navy/10 rounded-xl px-4 py-3.5
+                     hover:border-brand-teal hover:bg-brand-teal/5 transition-colors duration-200"
+            >
+              <svg class="w-5 h-5 shrink-0 text-brand-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16" />
+              </svg>
+              <span class="flex flex-col">
+                <span class="font-sans text-sm font-semibold text-brand-navy">{d.tytul}</span>
+                <span class="font-sans text-xs text-brand-navy/45">{d.opis}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+
       <form id="umowa-form" class="flex flex-col gap-6" novalidate>
 
         <!-- ── Dziecko ── -->
@@ -358,9 +397,8 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
         <p class="text-5xl">✓</p>
         <p class="font-sans italic text-2xl md:text-3xl text-brand-navy">Dziękujemy!</p>
         <p class="font-sans text-brand-navy/70 leading-relaxed max-w-md">
-          Dane zostały wysłane. Na Twój adres e-mail trafiła kopia oraz wzory dokumentów
-          w PDF — umowa i załącznik ze zgodami, wypełnione Twoimi danymi.
-          Nie musisz ich drukować: podpisane przez dyrekcję egzemplarze będą czekać w przedszkolu.
+          Dane zostały wysłane. Kopia trafiła na Twój adres e-mail.
+          Przygotujemy umowę — podpisany egzemplarz będzie czekał na Ciebie w przedszkolu.
         </p>
         <a href="/" class="cta-pop mt-4 inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg hover:bg-brand-coral">
           Wróć na stronę główną
@@ -544,10 +582,7 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
       }
 
       btn.disabled = true;
-      // Serwer w tym czasie generuje wzory umowy i załącznika w PDF, więc
-      // odpowiedź potrafi przyjść po kilkunastu sekundach — komunikat mówi
-      // wprost, że tak ma być, zamiast wyglądać na zawieszenie.
-      btn.textContent = 'Wysyłanie i przygotowywanie dokumentów…';
+      btn.textContent = 'Wysyłanie…';
 
       var dane = Object.fromEntries(new FormData(form).entries());
       // Czytamy też z pola, nie tylko ze zmiennej — gdyby skrypt
