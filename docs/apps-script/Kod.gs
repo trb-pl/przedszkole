@@ -226,7 +226,6 @@ function ustawFormatTekstowy(arkusz) {
   });
 }
 
-/** Numeracja ciągła w formacie 2026/2027/001. */
 /**
  * Odzyskuje numery telefonów i PESEL-e, które Arkusze zamieniły w #ERROR!
  * (bo zaczynały się od „+" i zostały uznane za formułę). Wpisana wartość
@@ -271,6 +270,7 @@ function naprawBledneKomorki() {
   );
 }
 
+/** Numeracja ciągła w formacie 2026/2027/001. */
 function nastepnyNumerUmowy(arkusz) {
   const kolejny = Math.max(0, arkusz.getLastRow() - 1) + 1;
   return CONFIG.ROK_SZKOLNY + '/' + String(kolejny).padStart(3, '0');
