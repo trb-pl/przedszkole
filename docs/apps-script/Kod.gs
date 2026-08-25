@@ -524,8 +524,9 @@ function przetworzWiersze(arkusz, od, doW, tylkoBrakujace) {
   if (brakujace.length) {
     ui.alert(
       'Nie znalazłem szablonów w folderze szablonów:\n\n• ' + brakujace.join('\n• ') +
-      '\n\nNazwa Dokumentu Google musi zgadzać się co do znaku. ' +
-      'Uruchom „Pokaż szablony", żeby zobaczyć, co skrypt widzi w folderze.'
+      '\n\nSprawdź, czy dokument leży w folderze szablonów, ma zbliżoną nazwę ' +
+      'i jest Dokumentem Google, a nie plikiem .docx. Menu „Pokaż szablony" ' +
+      'wypisuje zawartość folderu obok nazw, których szuka skrypt.'
     );
     return;
   }
