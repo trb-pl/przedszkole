@@ -13,6 +13,7 @@ treść umowy i trzeba będzie zbudować szablon od nowa.
 | `style_template.py` | Nakłada markę: logo, font Nunito, kolory, kursywa na polach |
 | `make_zalacznik2.py` | Buduje Załącznik nr 2 (zgoda na wizerunek) na bazie szablonu umowy |
 | `make_szablony.py` | Buduje załączniki 1, 3, 4 i ankietę — marka + pola `{{...}}` |
+| `make_powierzenie.py` | Umowa powierzenia danych: przedszkole → TRBK (do podpisu, bez pól) |
 | `extract.py` | Wypisuje treść pliku .docx — do sprawdzenia wyniku |
 | `logo.png` | Logo przycięte i przeskalowane (1000×247), gotowe do osadzenia |
 
