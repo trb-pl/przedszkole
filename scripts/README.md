@@ -8,7 +8,7 @@ Pythona ani żadnej z tych bibliotek.
 |---|---|---|
 | `make-og-image.py` | Karta podglądu linku (WhatsApp, iMessage, Messenger) | `public/og-default.jpg` |
 | `przygotuj-fonty.py` | Wycina statyczne odmiany Nunito z pakietu Fontsource | `scripts/fonty/*.ttf` (poza gitem) |
-| `make-wzory-pdf.py` | Puste wzory umowy i zgody do pobrania ze strony | `public/dokumenty/*.pdf` |
+| `make-wzory-pdf.py` | Komplet pustych dokumentów do pobrania ze strony | `public/dokumenty/*.pdf` |
 
 ## Środowisko
 
@@ -33,6 +33,17 @@ Za każdym razem, gdy zmieni się treść umowy albo załącznika:
 `make-wzory-pdf.py`) — te same, z których Apps Script generuje egzemplarze
 do podpisu. Jedno źródło treści, więc wzór na stronie nie może rozjechać się
 z umową, którą rodzic dostaje w przedszkolu.
+
+Powstaje siedem plików: umowa, cztery załączniki, ankieta „Informacje
+o dziecku" i informacja RODO. Pakiet czterech załączników jest w źródle
+jednym dokumentem — skrypt rozbija go po wierszach „Załącznik nr.N do umowy",
+żeby rodzic pobierał pojedynczy formularz, a nie wszystko naraz.
+
+Umowa i załącznik nr 2 mają własne, ostylowane szablony `.docx` (patrz
+`docs/apps-script/szablon/`). Pozostałe przychodzą bez formatowania, więc
+markę — logo, kolory nagłówków, stopkę — nakłada sam skrypt przy składzie.
+Informacja RODO jako jedyna nie dostaje nagłówka „WZÓR": niczego się na niej
+nie podpisuje, więc jest pełnoprawnym dokumentem, a nie wzorem.
 
 Pola `{{...}}` zamieniają się na kropkowaną linię, a na każdej stronie
 pojawia się nagłówek „WZÓR · dokument poglądowy, nie do podpisu".

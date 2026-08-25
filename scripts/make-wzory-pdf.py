@@ -43,11 +43,32 @@ TURKUS = colors.HexColor('#34BBA8')
 KORAL = colors.HexColor('#F2795D')
 LINIA = colors.HexColor('#CACCDB')
 
-ZRODLA = [
-    (os.path.expanduser('~/Downloads/Umowa_SZABLON_2026_2027_brand.docx'),
+POBRANE = os.path.expanduser('~/Downloads')
+LOGO = os.path.join(ROOT, 'docs/apps-script/szablon/logo.png')
+
+# Szablony już ostylowane (logo w środku, kolory marki) — bierzemy je 1:1.
+ZRODLA_GOTOWE = [
+    (os.path.join(POBRANE, 'Umowa_SZABLON_2026_2027_brand.docx'),
      'wzor-umowy-2026-2027.pdf'),
-    (os.path.expanduser('~/Downloads/Zalacznik2_Wizerunek_SZABLON.docx'),
-     'wzor-zgody-na-wizerunek-2026-2027.pdf'),
+    (os.path.join(POBRANE, 'Zalacznik2_Wizerunek_SZABLON.docx'),
+     'wzor-zgoda-wizerunek.pdf'),
+]
+
+# Pakiet czterech załączników w jednym pliku. Rozbijamy go na osobne PDF-y —
+# rodzic ma pobrać ten jeden dokument, którego szuka, a nie ośmiostronicowy
+# plik. Załącznik nr 2 pomijamy: ma własny, ostylowany szablon powyżej.
+PAKIET = (os.path.join(POBRANE, 'Pakiet_formularzy_dla_rodzicow_2026_2027 (003).docx'), {
+    1: 'wzor-zalacznik-1-postepowanie-przy-zachorowaniu.pdf',
+    3: 'wzor-zalacznik-3-zgoda-piesze-wyjscia.pdf',
+    4: 'wzor-zalacznik-4-zajecia-dodatkowe.pdf',
+})
+
+# Dokumenty bez identyfikacji wizualnej — markę nakładamy przy składzie PDF.
+ZRODLA_SUROWE = [
+    (os.path.join(POBRANE, 'Informacja_RODO_dla_rodzicow_Kolorowe_Przedszkole_2026_2027.docx'),
+     'informacja-rodo.pdf', False),
+    (os.path.join(POBRANE, 'Informacje_o_dziecku_ankieta_dla_rodzicow_2026_2027 (003).docx'),
+     'wzor-ankieta-informacje-o-dziecku.pdf', True),
 ]
 
 for wariant in ('Regular', 'Bold', 'Italic', 'BoldItalic'):
@@ -79,9 +100,12 @@ def bez_pol(tekst):
 def zbierz_akapit(p):
     """Zamienia w:p na (html, styl) dla Platypusa."""
     pPr = p.find(W + 'pPr')
-    jc, przed, po, ramka = 'left', 0, 0, False
+    jc, przed, po, ramka, nazwa_stylu = 'left', 0, 0, False, ''
 
     if pPr is not None:
+        el = pPr.find(W + 'pStyle')
+        if el is not None:
+            nazwa_stylu = el.get(W + 'val', '')
         el = pPr.find(W + 'jc')
         if el is not None:
             jc = el.get(W + 'val', 'left')
@@ -120,7 +144,9 @@ def zbierz_akapit(p):
                 czesci.append(' ')
 
         frag = ''.join(czesci)
-        if not frag.replace('<br/>', '').strip():
+        # Uwaga: pojedyncza spacja też bywa osobnym runem („120 " + "zł" +
+        # " " + "miesięcznie"). Odsiewanie po .strip() sklejało wyrazy.
+        if not frag:
             continue
         if bold:
             frag = '<b>%s</b>' % frag
@@ -136,7 +162,45 @@ def zbierz_akapit(p):
         'po': po,
         'ramka': ramka,
         'rozmiar': rozmiar,
+        'styl': nazwa_stylu,
     }
+
+
+def marka(html, opis, tekst):
+    """Nadaje kolory marki dokumentom, które przyszły bez formatowania.
+
+    Rozpoznajemy po tym, co niesie sam plik .docx: tytuł jest jedynym
+    akapitem 14 pt, nagłówki sekcji mają 11 pt i pogrubienie. Reszta to
+    treść. Dzięki temu nie trzeba utrzymywać listy nagłówków dla każdego
+    z dokumentów osobno.
+    """
+    kreska = False
+
+    # Kolory ze źródła zdejmujemy tam, gdzie nakładamy własne — inaczej
+    # zagnieżdżony <font> z docx wygrywa i nagłówek zostaje w barwie Worda.
+    def bez_koloru(t):
+        return re.sub(r'</?font[^>]*>', '', t)
+
+    if tekst.lower().startswith('załącznik nr'):
+        opis = dict(opis, jc=TA_CENTER, rozmiar=9.5)
+        html = '<font color="#34BBA8">%s</font>' % bez_koloru(html)
+
+    elif opis['rozmiar'] >= 14 or (tekst.isupper() and len(tekst) > 25):
+        # Tytuł dokumentu: albo wyraźnie większy stopień pisma, albo
+        # wersaliki. W pakiecie załączników bywa raz tak, raz tak.
+        opis = dict(opis, jc=TA_CENTER, przed=6, po=10, rozmiar=max(opis['rozmiar'], 14))
+        html = '<b><font color="#2D346F">%s</font></b>' % bez_koloru(html)
+
+    elif 'rok szkolny' in tekst and 'Przedszkole Niepubliczne' in tekst:
+        opis = dict(opis, jc=TA_CENTER, rozmiar=9.5, po=14)
+
+    elif opis['styl'].startswith('Nag') or (
+            opis['rozmiar'] >= 11 and '<b>' in html and len(tekst) < 70 and not tekst.endswith('.')):
+        opis = dict(opis, przed=10, po=5)
+        html = '<b><font color="#34BBA8">%s</font></b>' % bez_koloru(html)
+        kreska = True
+
+    return html, dict(opis, ramka=opis['ramka'] or kreska)
 
 
 def styl(opis):
@@ -153,29 +217,38 @@ def styl(opis):
     )
 
 
-def zbuduj(zrodlo, nazwa_pdf):
-    z = zipfile.ZipFile(zrodlo)
-    korzen = ET.fromstring(z.read('word/document.xml'))
-    body = korzen.find(W + 'body')
+def logo_flowable(bajty):
+    obraz = Image(io.BytesIO(bajty), width=48 * mm, height=48 * mm * 247 / 1000)
+    obraz.hAlign = 'CENTER'
+    return obraz
 
-    logo_bajty = z.read('word/media/logo.png') if 'word/media/logo.png' in z.namelist() else None
 
+def zbuduj(elementy, nazwa_pdf, logo_bajty=None, wlasna_marka=False, wzor=True):
+    """Składa PDF z listy elementów body dokumentu Word.
+
+    wlasna_marka=True oznacza plik źródłowy bez identyfikacji wizualnej —
+    logo dokładamy z zewnątrz, a kolory nakłada marka().
+    """
     tresc = []
-    for el in body:
+    if wlasna_marka and logo_bajty:
+        tresc += [logo_flowable(logo_bajty), Spacer(1, 8 * mm)]
+
+    for el in elementy:
         etykieta = el.tag.replace(W, '')
 
         if etykieta == 'p':
             # Akapit z logo — wstawiamy obrazek zamiast pustego tekstu.
             if el.find('.//' + W + 'drawing') is not None and logo_bajty:
-                obraz = Image(io.BytesIO(logo_bajty), width=48 * mm, height=48 * mm * 247 / 1000)
-                obraz.hAlign = 'CENTER'
-                tresc += [obraz, Spacer(1, 8 * mm)]
+                tresc += [logo_flowable(logo_bajty), Spacer(1, 8 * mm)]
                 continue
 
             html, opis = zbierz_akapit(el)
             if not html.strip():
                 tresc.append(Spacer(1, max(opis['po'], 4)))
                 continue
+
+            if wlasna_marka:
+                html, opis = marka(html, opis, czysty_tekst(el))
 
             s = styl(opis)
             if opis['ramka']:
@@ -223,10 +296,13 @@ def zbuduj(zrodlo, nazwa_pdf):
         canvas.saveState()
 
         # „WZÓR" na każdej stronie — to nie jest egzemplarz do podpisu.
-        canvas.setFont('Nunito-Bold', 8.5)
-        canvas.setFillColor(KORAL)
-        canvas.drawCentredString(A4[0] / 2, A4[1] - 12 * mm,
-                                 'W Z Ó R  ·  dokument poglądowy, nie do podpisu')
+        # Informacja RODO wyjątkiem: niczego się na niej nie podpisuje,
+        # więc jest pełnoprawnym dokumentem, nie wzorem.
+        if wzor:
+            canvas.setFont('Nunito-Bold', 8.5)
+            canvas.setFillColor(KORAL)
+            canvas.drawCentredString(A4[0] / 2, A4[1] - 12 * mm,
+                                     'W Z Ó R  ·  dokument poglądowy, nie do podpisu')
 
         # Stopka: kreska, adres na środku, numer strony po prawej.
         canvas.setStrokeColor(LINIA)
@@ -255,5 +331,49 @@ def zbuduj(zrodlo, nazwa_pdf):
     print('→ %s (%d KB)' % (sciezka, os.path.getsize(sciezka) // 1024))
 
 
-for zrodlo, nazwa in ZRODLA:
-    zbuduj(zrodlo, nazwa)
+def czysty_tekst(p):
+    return ''.join(t.text or '' for t in p.iter(W + 't')).strip()
+
+
+def elementy_body(sciezka):
+    korzen = ET.fromstring(zipfile.ZipFile(sciezka).read('word/document.xml'))
+    return list(korzen.find(W + 'body'))
+
+
+def logo_z_docx(sciezka):
+    z = zipfile.ZipFile(sciezka)
+    return z.read('word/media/logo.png') if 'word/media/logo.png' in z.namelist() else None
+
+
+def podziel_pakiet(elementy):
+    """Dzieli pakiet na załączniki po wierszach „Załącznik nr.N do umowy"."""
+    czesci, numer, biezaca = {}, None, []
+
+    for el in elementy:
+        if el.tag == W + 'p':
+            tekst = czysty_tekst(el)
+            dopasowanie = re.match(r'Załącznik nr\.?\s*(\d)', tekst)
+            if dopasowanie:
+                if numer:
+                    czesci[numer] = biezaca
+                numer, biezaca = int(dopasowanie.group(1)), []
+        if numer:
+            biezaca.append(el)
+
+    if numer:
+        czesci[numer] = biezaca
+    return czesci
+
+
+logo_marki = open(LOGO, 'rb').read()
+
+for zrodlo, nazwa in ZRODLA_GOTOWE:
+    zbuduj(elementy_body(zrodlo), nazwa, logo_z_docx(zrodlo))
+
+zrodlo, mapowanie = PAKIET
+zalaczniki = podziel_pakiet(elementy_body(zrodlo))
+for numer, nazwa in mapowanie.items():
+    zbuduj(zalaczniki[numer], nazwa, logo_marki, wlasna_marka=True)
+
+for zrodlo, nazwa, wzor in ZRODLA_SUROWE:
+    zbuduj(elementy_body(zrodlo), nazwa, logo_marki, wlasna_marka=True, wzor=wzor)

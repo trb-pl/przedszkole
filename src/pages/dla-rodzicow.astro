@@ -91,45 +91,6 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
         </p>
       </div>
 
-      <!-- ── Wzory dokumentów ──
-           Puste wzory do przeczytania przed wypełnieniem formularza.
-           Generowane z tych samych szablonów .docx, z których powstają
-           egzemplarze do podpisu (scripts/make-wzory-pdf.py). -->
-      <div class="bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-6 md:p-8 mb-6">
-        <p class={eyebrowCls}>Zanim wypełnisz</p>
-        <p class="font-sans italic text-xl md:text-2xl text-brand-navy leading-tight mt-2 mb-2">
-          Wzory dokumentów do pobrania
-        </p>
-        <p class="font-sans text-sm text-brand-navy/65 leading-relaxed mb-5">
-          Puste wzory — bez danych, wyłącznie do zapoznania się z treścią.
-          Nie drukuj ich ani nie podpisuj: gotowe egzemplarze, wypełnione Twoimi danymi
-          i podpisane przez dyrekcję, będą czekać w przedszkolu.
-        </p>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {[
-            { plik: '/dokumenty/wzor-umowy-2026-2027.pdf', tytul: 'Umowa 2026/2027', opis: 'PDF · pełna treść umowy' },
-            { plik: '/dokumenty/wzor-zgody-na-wizerunek-2026-2027.pdf', tytul: 'Zgoda na wizerunek', opis: 'PDF · załącznik nr 2' },
-          ].map((d) => (
-            <a
-              href={d.plik}
-              target="_blank"
-              rel="noopener"
-              class="group flex items-center gap-3 border border-brand-navy/10 rounded-xl px-4 py-3.5
-                     hover:border-brand-teal hover:bg-brand-teal/5 transition-colors duration-200"
-            >
-              <svg class="w-5 h-5 shrink-0 text-brand-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16" />
-              </svg>
-              <span class="flex flex-col">
-                <span class="font-sans text-sm font-semibold text-brand-navy">{d.tytul}</span>
-                <span class="font-sans text-xs text-brand-navy/45">{d.opis}</span>
-              </span>
-            </a>
-          ))}
-        </div>
-      </div>
-
       <form id="umowa-form" class="flex flex-col gap-6" novalidate>
 
         <!-- ── Dziecko ── -->
@@ -391,6 +352,55 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
           Po wysłaniu otrzymasz na e-mail kopię wypełnionych danych.
         </p>
       </form>
+
+      <!-- ── Dokumenty do zapoznania ──
+           Puste wzory pod formularzem — rodzic może je przejrzeć przed
+           wypełnieniem albo wrócić do nich później. Generowane przez
+           scripts/make-wzory-pdf.py z tych samych plików .docx, z których
+           przedszkole drukuje egzemplarze do podpisu. -->
+      <div id="dokumenty" class="bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-6 md:p-8 mt-10">
+        <p class={eyebrowCls}>Do wglądu</p>
+        <p class="font-sans italic text-xl md:text-2xl text-brand-navy leading-tight mt-2 mb-2">
+          Zapoznaj się z dokumentami
+        </p>
+        <p class="font-sans text-sm text-brand-navy/65 leading-relaxed mb-6">
+          Puste wzory, bez danych — wyłącznie do przeczytania. Nie musisz ich drukować
+          ani podpisywać: umowę i zgodę na wizerunek przygotujemy z danych z formularza,
+          a pozostałe dokumenty wypełnisz na miejscu w przedszkolu.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {[
+            { plik: 'wzor-umowy-2026-2027.pdf',                          tytul: 'Umowa 2026/2027',              opis: 'Pełna treść umowy' },
+            { plik: 'wzor-zalacznik-1-postepowanie-przy-zachorowaniu.pdf', tytul: 'Załącznik nr 1',              opis: 'Postępowanie przy nagłym zachorowaniu' },
+            { plik: 'wzor-zgoda-wizerunek.pdf',                           tytul: 'Załącznik nr 2',              opis: 'Zgoda na wizerunek i głos dziecka' },
+            { plik: 'wzor-zalacznik-3-zgoda-piesze-wyjscia.pdf',          tytul: 'Załącznik nr 3',              opis: 'Całoroczna zgoda na piesze wyjścia' },
+            { plik: 'wzor-zalacznik-4-zajecia-dodatkowe.pdf',             tytul: 'Załącznik nr 4',              opis: 'Deklaracja zajęć dodatkowych' },
+            { plik: 'wzor-ankieta-informacje-o-dziecku.pdf',              tytul: 'Informacje o dziecku',        opis: 'Ankieta do wypełnienia w domu' },
+            { plik: 'informacja-rodo.pdf',                                tytul: 'Informacja RODO',             opis: 'Jak przetwarzamy dane osobowe' },
+          ].map((d) => (
+            <a
+              href={`/dokumenty/${d.plik}`}
+              target="_blank"
+              rel="noopener"
+              class="group flex items-center gap-3 border border-brand-navy/10 rounded-xl px-4 py-3.5
+                     hover:border-brand-teal hover:bg-brand-teal/5 transition-colors duration-200"
+            >
+              <svg class="w-5 h-5 shrink-0 text-brand-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16" />
+              </svg>
+              <span class="flex flex-col">
+                <span class="font-sans text-sm font-semibold text-brand-navy">{d.tytul}</span>
+                <span class="font-sans text-xs text-brand-navy/45">{d.opis}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+
+        <p class="font-sans text-xs text-brand-navy/40 mt-5 leading-relaxed">
+          Wszystkie pliki w formacie PDF, na rok szkolny 2026/2027.
+        </p>
+      </div>
 
       <!-- Sukces -->
       <div id="form-sukces" class="hidden bg-white rounded-2xl border border-brand-teal/30 shadow-sm px-8 py-12 text-center flex flex-col items-center gap-3">
