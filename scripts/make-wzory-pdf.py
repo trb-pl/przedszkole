@@ -46,29 +46,25 @@ LINIA = colors.HexColor('#CACCDB')
 POBRANE = os.path.expanduser('~/Downloads')
 LOGO = os.path.join(ROOT, 'docs/apps-script/szablon/logo.png')
 
-# Szablony już ostylowane (logo w środku, kolory marki) — bierzemy je 1:1.
+# Szablony ostylowane, z polami {{...}} — te same pliki, z których Apps
+# Script generuje wypełnione egzemplarze. Na stronie pola zamieniają się
+# w kropkowaną linię, więc wzór i dokument do podpisu mają jedno źródło.
 ZRODLA_GOTOWE = [
-    (os.path.join(POBRANE, 'Umowa_SZABLON_2026_2027_brand.docx'),
-     'wzor-umowy-2026-2027.pdf'),
-    (os.path.join(POBRANE, 'Zalacznik2_Wizerunek_SZABLON.docx'),
-     'wzor-zgoda-wizerunek.pdf'),
+    ('Umowa_SZABLON_2026_2027_brand.docx',        'wzor-umowy-2026-2027.pdf'),
+    ('Zalacznik1_Zachorowanie_SZABLON.docx',      'wzor-zalacznik-1-postepowanie-przy-zachorowaniu.pdf'),
+    ('Zalacznik2_Wizerunek_SZABLON.docx',         'wzor-zgoda-wizerunek.pdf'),
+    ('Zalacznik3_Piesze_wyjscia_SZABLON.docx',    'wzor-zalacznik-3-zgoda-piesze-wyjscia.pdf'),
+    ('Zalacznik4_Zajecia_dodatkowe_SZABLON.docx', 'wzor-zalacznik-4-zajecia-dodatkowe.pdf'),
+    ('Ankieta_Informacje_o_dziecku_SZABLON.docx', 'wzor-ankieta-informacje-o-dziecku.pdf'),
 ]
-
-# Pakiet czterech załączników w jednym pliku. Rozbijamy go na osobne PDF-y —
-# rodzic ma pobrać ten jeden dokument, którego szuka, a nie ośmiostronicowy
-# plik. Załącznik nr 2 pomijamy: ma własny, ostylowany szablon powyżej.
-PAKIET = (os.path.join(POBRANE, 'Pakiet_formularzy_dla_rodzicow_2026_2027 (003).docx'), {
-    1: 'wzor-zalacznik-1-postepowanie-przy-zachorowaniu.pdf',
-    3: 'wzor-zalacznik-3-zgoda-piesze-wyjscia.pdf',
-    4: 'wzor-zalacznik-4-zajecia-dodatkowe.pdf',
-})
+ZRODLA_GOTOWE = [(os.path.join(POBRANE, z), n) for z, n in ZRODLA_GOTOWE]
 
 # Dokumenty bez identyfikacji wizualnej — markę nakładamy przy składzie PDF.
+# Informacja RODO nie jest formularzem — nie ma pól do wypełnienia, więc
+# zostaje w oryginale, a markę nakładamy dopiero przy składzie PDF.
 ZRODLA_SUROWE = [
     (os.path.join(POBRANE, 'Informacja_RODO_dla_rodzicow_Kolorowe_Przedszkole_2026_2027.docx'),
      'informacja-rodo.pdf', False),
-    (os.path.join(POBRANE, 'Informacje_o_dziecku_ankieta_dla_rodzicow_2026_2027 (003).docx'),
-     'wzor-ankieta-informacje-o-dziecku.pdf', True),
 ]
 
 for wariant in ('Regular', 'Bold', 'Italic', 'BoldItalic'):
@@ -86,7 +82,7 @@ def escape(t):
     return t.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
 
 
-def bez_pol(tekst):
+def bez_pol(tekst, kropek=26):
     """Puste miejsce zamiast pola z danymi.
 
     Pola zgód w załączniku to komórki tabeli do odhaczenia — tam kropki
@@ -94,11 +90,15 @@ def bez_pol(tekst):
     czyli to, czego rodzic spodziewa się po formularzu.
     """
     tekst = re.sub(r'\{\{WIZ_[A-Z_]+\}\}', '', tekst)
-    return re.sub(r'\{\{[A-Z_0-9]+\}\}', '.' * 26, tekst)
+    return re.sub(r'\{\{[A-Z_0-9]+\}\}', '.' * kropek, tekst)
 
 
-def zbierz_akapit(p):
-    """Zamienia w:p na (html, styl) dla Platypusa."""
+def zbierz_akapit(p, kropek=26):
+    """Zamienia w:p na (html, styl) dla Platypusa.
+
+    kropek — długość kropkowanej linii w miejscu pola. W wąskiej komórce
+    tabeli pełnej długości linia łamie się na dwa wiersze, więc tam skracamy.
+    """
     pPr = p.find(W + 'pPr')
     jc, przed, po, ramka, nazwa_stylu = 'left', 0, 0, False, ''
 
@@ -137,7 +137,7 @@ def zbierz_akapit(p):
         for dziecko in r:
             etykieta_r = dziecko.tag.replace(W, '')
             if etykieta_r == 't':
-                czesci.append(escape(bez_pol(dziecko.text or '')))
+                czesci.append(escape(bez_pol(dziecko.text or '', kropek)))
             elif etykieta_r == 'br':
                 czesci.append('<br/>')
             elif etykieta_r == 'tab':
@@ -267,7 +267,7 @@ def zbuduj(elementy, nazwa_pdf, logo_bajty=None, wlasna_marka=False, wzor=True):
                 for tc in tr.findall(W + 'tc'):
                     czesci = []
                     for p in tc.findall(W + 'p'):
-                        html, opis = zbierz_akapit(p)
+                        html, opis = zbierz_akapit(p, kropek=10)
                         if html.strip():
                             czesci.append(Paragraph(html, styl(opis)))
                     komorki.append(czesci or '')
@@ -345,35 +345,10 @@ def logo_z_docx(sciezka):
     return z.read('word/media/logo.png') if 'word/media/logo.png' in z.namelist() else None
 
 
-def podziel_pakiet(elementy):
-    """Dzieli pakiet na załączniki po wierszach „Załącznik nr.N do umowy"."""
-    czesci, numer, biezaca = {}, None, []
-
-    for el in elementy:
-        if el.tag == W + 'p':
-            tekst = czysty_tekst(el)
-            dopasowanie = re.match(r'Załącznik nr\.?\s*(\d)', tekst)
-            if dopasowanie:
-                if numer:
-                    czesci[numer] = biezaca
-                numer, biezaca = int(dopasowanie.group(1)), []
-        if numer:
-            biezaca.append(el)
-
-    if numer:
-        czesci[numer] = biezaca
-    return czesci
-
-
 logo_marki = open(LOGO, 'rb').read()
 
 for zrodlo, nazwa in ZRODLA_GOTOWE:
     zbuduj(elementy_body(zrodlo), nazwa, logo_z_docx(zrodlo))
-
-zrodlo, mapowanie = PAKIET
-zalaczniki = podziel_pakiet(elementy_body(zrodlo))
-for numer, nazwa in mapowanie.items():
-    zbuduj(zalaczniki[numer], nazwa, logo_marki, wlasna_marka=True)
 
 for zrodlo, nazwa, wzor in ZRODLA_SUROWE:
     zbuduj(elementy_body(zrodlo), nazwa, logo_marki, wlasna_marka=True, wzor=wzor)

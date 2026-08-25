@@ -14,34 +14,43 @@ zewnętrznej firmy.
 
 ---
 
-## Krok 2 — Folder na gotowe umowy
+## Krok 2 — Dwa foldery na Dysku
 
-1. Wejdź na [drive.google.com](https://drive.google.com), utwórz folder
-   **„Umowy 2026/2027"**.
-2. Wejdź do folderu i skopiuj **ID z adresu przeglądarki**:
+Na [drive.google.com](https://drive.google.com) utwórz dwa foldery:
 
-   ```
-   drive.google.com/drive/folders/1AbC...XyZ
-                                   ^^^^^^^^^^  ← to jest ID
-   ```
+1. **„Szablony dokumentów 2026/2027"** — tu wgrasz sześć szablonów
+2. **„Teczki dzieci 2026/2027"** — tu skrypt utworzy folder dla każdego dziecka
+
+Z każdego skopiuj **ID z adresu przeglądarki**:
+
+```
+drive.google.com/drive/folders/1AbC...XyZ
+                                ^^^^^^^^^^  ← to jest ID
+```
 
 ---
 
-## Krok 3 — Szablon umowy
+## Krok 3 — Sześć szablonów
 
-1. Wgraj na Dysk plik **`Umowa_SZABLON_2026_2027.docx`** (jest w Twoich
-   Pobranych — przygotowałem go z wstawionymi już polami `{{...}}`).
-2. Kliknij plik prawym → **Otwórz za pomocą → Dokumenty Google**.
-3. Zapisze się jako dokument Google. **Skopiuj jego ID z adresu:**
+Wgraj na Dysk pliki z Pobranych, każdy kliknij prawym →
+**Otwórz za pomocą → Dokumenty Google**, a powstały dokument **nazwij
+dokładnie tak** (skrypt szuka ich po nazwie):
 
-   ```
-   docs.google.com/document/d/1DeF...UvW/edit
-                              ^^^^^^^^^^  ← to jest ID
-   ```
+| Plik z Pobranych | Nazwa Dokumentu Google |
+|---|---|
+| `Umowa_SZABLON_2026_2027_brand.docx` | `SZABLON - Umowa` |
+| `Zalacznik1_Zachorowanie_SZABLON.docx` | `SZABLON - Zalacznik 1` |
+| `Zalacznik2_Wizerunek_SZABLON.docx` | `SZABLON - Zalacznik 2` |
+| `Zalacznik3_Piesze_wyjscia_SZABLON.docx` | `SZABLON - Zalacznik 3` |
+| `Zalacznik4_Zajecia_dodatkowe_SZABLON.docx` | `SZABLON - Zalacznik 4` |
+| `Ankieta_Informacje_o_dziecku_SZABLON.docx` | `SZABLON - Informacje o dziecku` |
 
-4. Przejrzyj dokument — w miejscach danych zobaczysz `{{NR_UMOWY}}`,
-   `{{DZIECKO_IMIONA}}` itd. Nie zmieniaj ich pisowni; resztę treści
-   możesz swobodnie edytować.
+Wszystkie sześć wrzuć do folderu **„Szablony dokumentów 2026/2027"**
+i skasuj z niego pliki `.docx` — zostają wyłącznie Dokumenty Google.
+
+Nazwy bez polskich znaków są celowe: literówka w „ą" jest nie do
+wypatrzenia, a skrypt porównuje nazwy znak po znaku. Funkcja
+`Sprawdź konfigurację` wypisze, którego szablonu nie znalazła.
 
 ---
 
@@ -53,10 +62,9 @@ zewnętrznej firmy.
 3. Na górze pliku uzupełnij sekcję `CONFIG`:
 
    ```js
-   KOD_DOSTEPU: 'KOLOROWE2027',            // hasło, które dostaną rodzice
-   ID_SZABLONU_UMOWY: '1DeF...UvW',        // z kroku 3
-   ID_SZABLONU_ZALACZNIKA: '1GhI...RsT',   // Załącznik nr 2, tak samo jak krok 3
-   ID_FOLDERU_UMOW: '1AbC...XyZ',          // z kroku 2
+   KOD_DOSTEPU: 'KOLOROWE2027',              // hasło, które dostaną rodzice
+   ID_FOLDERU_SZABLONOW: '1DeF...UvW',       // folder „Szablony dokumentów"
+   ID_FOLDERU_UMOW: '1AbC...XyZ',            // folder „Teczki dzieci"
    EMAIL_PRZEDSZKOLA: 'przedszkole@kolorowe.eu',
    ```
 
@@ -107,14 +115,15 @@ przebudowaniu).
 
 ---
 
-## Codzienne użycie — jak Olga drukuje umowy
+## Codzienne użycie — jak Olga przygotowuje teczki
 
 1. Otwiera arkusz.
 2. W kolumnie **Stawka** zostawia `2350` albo wpisuje `2150`, jeśli to
    rodzeństwo.
 3. Menu **📄 Umowy → Generuj wszystkie brakujące**.
-4. W folderze „Umowy 2026/2027" pojawiają się gotowe pliki **PDF** —
-   otwiera i drukuje.
+4. W folderze „Teczki dzieci 2026/2027" pojawia się folder na każde dziecko,
+   a w nim sześć **PDF-ów** ponumerowanych w kolejności do wpięcia —
+   otwiera folder, drukuje wszystko, wpina do teczki.
 5. Kolumna „Umowa wygenerowana" wypełnia się datą, więc przy kolejnym
    kliknięciu skrypt pominie już zrobione.
 
@@ -129,11 +138,16 @@ przebudowaniu).
   Twoim Workspace. To wymóg RODO, nie formalność.
 - **Kod dostępu** przekaż rodzicom mailem lub przy odbiorze dziecka.
 - **Raz w roku:** w `CONFIG` zmień `ROK_SZKOLNY`, `DATA_UMOWY` i stawki,
-  a szablon umowy podmień na nowy.
+  a szablony podmień na nowe (zachowując ich nazwy).
 
 ---
 
-## Lista pól w szablonie
+## Lista pól w szablonach
+
+Wszystkie szablony dostają ten sam zestaw pól — każdy używa tylu, ile
+potrzebuje. Pole, którego w danym dokumencie nie ma, jest po prostu
+pomijane, więc dopisanie `{{DZIECKO_PESEL}}` do kolejnego załącznika nie
+wymaga zmiany w skrypcie.
 
 | Placeholder | Skąd pochodzi |
 |---|---|
@@ -150,7 +164,41 @@ przebudowaniu).
 | `{{PLACOWKA}}` | Lotaryńska 18 albo Zakopiańska 8 |
 | `{{EMAIL_RACHUNKI}}` | § 8 pkt 8 umowy |
 | `{{UPOWAZNIONA_1}}`…`{{UPOWAZNIONA_4}}` | § 9, format: `imię nazwisko (dokument)` |
+| `{{DZIECKO}}` | imiona i nazwisko dziecka w jednym polu |
+| `{{R1_IMIE}}`, `{{R1_TELEFON}}`, `{{R1_EMAIL}}` | rodzic 1 — osobno, do załączników |
+| `{{R2_IMIE}}`, `{{R2_TELEFON}}`, `{{R2_EMAIL}}` | rodzic 2 — osobno, do załączników |
+| `{{WIZ_*_TAK}}`, `{{WIZ_*_NIE}}` | krzyżyk w kolumnie zgodnej z decyzją rodzica |
 
+
+---
+
+## Co powstaje po kliknięciu „Generuj teczki"
+
+Dla każdego zaznaczonego wiersza skrypt tworzy w folderze teczek podfolder
+`2026-2027-001 — Jan Kowalski`, a w nim sześć dokumentów — każdy jako
+Dokument Google (gdyby coś trzeba było poprawić) i PDF (do druku):
+
+| Plik | Co jest wypełnione |
+|---|---|
+| `1. Umowa` | wszystko |
+| `2. Zalacznik 1 - postepowanie przy zachorowaniu` | dziecko, data urodzenia, imiona i telefony rodziców |
+| `3. Zalacznik 2 - zgoda na wizerunek` | wszystko, z decyzjami rodzica |
+| `4. Zalacznik 3 - piesze wyjscia` | dziecko, numer umowy |
+| `5. Zalacznik 4 - zajecia dodatkowe` | dziecko, numer umowy |
+| `6. Informacje o dziecku - ankieta` | dziecko, PESEL, kontakty do rodziców |
+
+Numery z przodu ustawiają pliki w kolejności do wpięcia w teczkę — drukujesz
+folder po folderze i od razu masz komplet.
+
+Puste zostaje wszystko, co dotyczy zdrowia, diety, trudności i wyborów
+rodzica. To dane szczególnej kategorii (art. 9 RODO) albo decyzje, których
+formularz nie zbiera — rodzic uzupełnia je na miejscu.
+
+Adres teczki zapisuje się jako komentarz w kolumnie „Umowa wygenerowana" —
+najedź na komórkę, żeby go zobaczyć.
+
+Ponowne uruchomienie dla tego samego wiersza używa istniejącej teczki,
+więc nie robią się duplikaty folderów.
 
 ---
 

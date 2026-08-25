@@ -11,8 +11,8 @@
  *                       dostępu, dopisuje wiersz do arkusza, wysyła kopię
  *                       rodzicowi i powiadomienie do przedszkola.
  *  2. generujUmowy()  — z menu arkusza: dla zaznaczonych wierszy tworzy
- *                       wypełnione umowy (PDF + Google Doc) w folderze na
- *                       Dysku, gotowe do wydruku.
+ *                       na Dysku teczkę dziecka z kompletem dokumentów
+ *                       (Google Doc + PDF), gotowych do wydruku.
  *
  * Dane osobowe (PESEL, adresy) nie opuszczają Google Workspace.
  */
@@ -25,17 +25,14 @@ const CONFIG = {
   // Kod dostępu, który przekazujesz rodzicom. Zmień na własny.
   KOD_DOSTEPU: 'KOLOROWE2027',
 
-  // ID szablonu umowy (Google Doc z placeholderami {{...}}).
-  // Znajdziesz je w adresie dokumentu:
-  // docs.google.com/document/d/  TO_JEST_ID  /edit
-  ID_SZABLONU_UMOWY: 'WKLEJ_ID_SZABLONU',
-
-  // ID szablonu Załącznika nr 2 (zgoda na wizerunek). Zostaw pusty ciąg,
-  // jeśli załącznik ma nie być generowany.
-  ID_SZABLONU_ZALACZNIKA: 'WKLEJ_ID_ZALACZNIKA',
-
-  // ID folderu na Dysku, w którym mają lądować wygenerowane umowy.
+  // ID folderu z szablonami (Dokumenty Google z polami {{...}}).
+  // Jeden folder zamiast sześciu osobnych ID — skrypt znajduje w nim
+  // dokumenty po nazwie, więc dołożenie kolejnego załącznika nie wymaga
+  // przeklejania niczego do konfiguracji.
   // Znajdziesz je w adresie folderu: drive.google.com/drive/folders/ TO_JEST_ID
+  ID_FOLDERU_SZABLONOW: 'WKLEJ_ID_FOLDERU_SZABLONOW',
+
+  // ID folderu, w którym mają powstawać teczki dzieci.
   ID_FOLDERU_UMOW: 'WKLEJ_ID_FOLDERU',
 
   // Adres, na który przychodzą powiadomienia o nowym zgłoszeniu.
@@ -49,6 +46,18 @@ const CONFIG = {
   OPLATA_ROCZNA_PODSTAWOWA: 28200,
   OPLATA_ROCZNA_RODZENSTWO: 25800,
 };
+
+// Komplet dokumentów w teczce dziecka. Nazwa po lewej to dokładna nazwa
+// Dokumentu Google w folderze szablonów, po prawej — nazwa pliku w teczce.
+// Numeracja z przodu ustawia je w kolejności do wpięcia w segregator.
+const SZABLONY = [
+  { szablon: 'SZABLON - Umowa',                 wynik: '1. Umowa' },
+  { szablon: 'SZABLON - Zalacznik 1',           wynik: '2. Zalacznik 1 - postepowanie przy zachorowaniu' },
+  { szablon: 'SZABLON - Zalacznik 2',           wynik: '3. Zalacznik 2 - zgoda na wizerunek' },
+  { szablon: 'SZABLON - Zalacznik 3',           wynik: '4. Zalacznik 3 - piesze wyjscia' },
+  { szablon: 'SZABLON - Zalacznik 4',           wynik: '5. Zalacznik 4 - zajecia dodatkowe' },
+  { szablon: 'SZABLON - Informacje o dziecku',  wynik: '6. Informacje o dziecku - ankieta' },
+];
 
 // Kolejność kolumn w arkuszu. Nie zmieniaj bez zmiany funkcji poniżej.
 const NAGLOWKI = [
@@ -319,43 +328,36 @@ function testKonfiguracji() {
     problemy.push('Arkusz: ' + e.message);
   }
 
-  // Szablon umowy
-  if (CONFIG.ID_SZABLONU_UMOWY === 'WKLEJ_ID_SZABLONU') {
-    problemy.push('Nie uzupełniono ID_SZABLONU_UMOWY w sekcji CONFIG');
+  // Folder z szablonami — sprawdzamy komplet, bo brak jednego pliku
+  // ujawniłby się dopiero przy generowaniu teczki.
+  if (czystyId(CONFIG.ID_FOLDERU_SZABLONOW) === 'WKLEJ_ID_FOLDERU_SZABLONOW') {
+    problemy.push('Nie uzupełniono ID_FOLDERU_SZABLONOW w sekcji CONFIG');
   } else {
     try {
-      const plik = DriveApp.getFileById(czystyId(CONFIG.ID_SZABLONU_UMOWY));
-      if (plik.getMimeType() !== MimeType.GOOGLE_DOCS) {
-        problemy.push('Szablon „' + plik.getName() + '" nie jest Dokumentem Google — otwórz plik .docx przez „Otwórz za pomocą → Dokumenty Google" i użyj ID nowego pliku');
-      } else {
-        ok.push('Szablon umowy: ' + plik.getName());
-      }
+      const folderSzablonow = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_SZABLONOW));
+      ok.push('Folder szablonów: ' + folderSzablonow.getName());
+
+      SZABLONY.forEach(function (pozycja) {
+        const plik = szablonPoNazwie(folderSzablonow, pozycja.szablon);
+        if (!plik) {
+          problemy.push('Brakuje szablonu „' + pozycja.szablon + '" w folderze szablonów');
+        } else if (plik.getMimeType() !== MimeType.GOOGLE_DOCS) {
+          problemy.push('„' + pozycja.szablon + '" nie jest Dokumentem Google — otwórz plik .docx przez „Otwórz za pomocą → Dokumenty Google" i skasuj .docx');
+        } else {
+          ok.push('Szablon: ' + pozycja.szablon);
+        }
+      });
     } catch (e) {
-      problemy.push('Nie mogę otworzyć szablonu — sprawdź ID_SZABLONU_UMOWY');
+      problemy.push('Nie mogę otworzyć folderu szablonów — sprawdź ID_FOLDERU_SZABLONOW');
     }
   }
 
-  // Folder na umowy
-  if (czystyId(CONFIG.ID_SZABLONU_ZALACZNIKA) === 'WKLEJ_ID_ZALACZNIKA' || !CONFIG.ID_SZABLONU_ZALACZNIKA) {
-    ok.push('Załącznik nr 2 nie będzie generowany (ID_SZABLONU_ZALACZNIKA puste)');
-  } else {
-    try {
-      const zal = DriveApp.getFileById(czystyId(CONFIG.ID_SZABLONU_ZALACZNIKA));
-      if (zal.getMimeType() !== MimeType.GOOGLE_DOCS) {
-        problemy.push('Załącznik „' + zal.getName() + '" nie jest Dokumentem Google — otwórz .docx przez „Otwórz za pomocą → Dokumenty Google"');
-      } else {
-        ok.push('Szablon załącznika: ' + zal.getName());
-      }
-    } catch (e) {
-      problemy.push('Nie mogę otworzyć szablonu załącznika — sprawdź ID_SZABLONU_ZALACZNIKA');
-    }
-  }
-
+  // Folder na teczki
   if (CONFIG.ID_FOLDERU_UMOW === 'WKLEJ_ID_FOLDERU') {
     problemy.push('Nie uzupełniono ID_FOLDERU_UMOW w sekcji CONFIG');
   } else {
     try {
-      ok.push('Folder na umowy: ' + DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_UMOW)).getName());
+      ok.push('Folder na teczki: ' + DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_UMOW)).getName());
     } catch (e) {
       problemy.push('Nie mogę otworzyć folderu — sprawdź ID_FOLDERU_UMOW');
     }
@@ -474,7 +476,7 @@ function wyslijPowiadomienieDoPrzedszkola(dane, nrUmowy) {
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('📄 Umowy')
-    .addItem('Generuj umowy dla zaznaczonych wierszy', 'generujUmowy')
+    .addItem('Generuj teczki dla zaznaczonych wierszy', 'generujUmowy')
     .addItem('Generuj wszystkie brakujące', 'generujBrakujace')
     .addSeparator()
     .addItem('Napraw komórki z #ERROR!', 'naprawBledneKomorki')
@@ -498,8 +500,9 @@ function generujBrakujace() {
 function przetworzWiersze(arkusz, od, doW, tylkoBrakujace) {
   const ui = SpreadsheetApp.getUi();
 
-  if (CONFIG.ID_SZABLONU_UMOWY === 'WKLEJ_ID_SZABLONU') {
-    ui.alert('Najpierw uzupełnij ID_SZABLONU_UMOWY i ID_FOLDERU_UMOW w skrypcie (menu Rozszerzenia → Apps Script).');
+  if (czystyId(CONFIG.ID_FOLDERU_SZABLONOW) === 'WKLEJ_ID_FOLDERU_SZABLONOW' ||
+      CONFIG.ID_FOLDERU_UMOW === 'WKLEJ_ID_FOLDERU') {
+    ui.alert('Najpierw uzupełnij ID_FOLDERU_SZABLONOW i ID_FOLDERU_UMOW w skrypcie (menu Rozszerzenia → Apps Script).');
     return;
   }
 
@@ -527,44 +530,81 @@ function przetworzWiersze(arkusz, od, doW, tylkoBrakujace) {
     if (!wiersz[kolNazwisko]) continue;
     if (tylkoBrakujace && wiersz[kolWygenerowana - 1]) continue;
 
-    const plik = generujUmoweDlaWiersza(wiersz, folder, naglowki);
+    const teczka = generujUmoweDlaWiersza(wiersz, folder, naglowki);
     arkusz.getRange(r, kolWygenerowana).setValue(new Date());
-    arkusz.getRange(r, kolWygenerowana).setNote(plik.getUrl());
+    arkusz.getRange(r, kolWygenerowana).setNote(teczka.getUrl());
     zrobione++;
   }
 
   ui.alert(
     zrobione === 0
-      ? 'Nie wygenerowano żadnej umowy — sprawdź, czy zaznaczone wiersze zawierają dane.'
-      : 'Gotowe. Wygenerowano kompletów dokumentów: ' + zrobione + '.\n\n' +
-        'Dla każdego dziecka powstała umowa oraz Załącznik nr 2 (zgoda na wizerunek) — ' +
-        'w folderze na Dysku, jako pliki PDF gotowe do wydruku.'
+      ? 'Nie wygenerowano żadnej teczki — sprawdź, czy zaznaczone wiersze zawierają dane.'
+      : 'Gotowe. Teczek: ' + zrobione + '.\n\n' +
+        'Każde dziecko ma na Dysku własny folder z kompletem dokumentów ' +
+        '(Dokument Google + PDF), ponumerowanych w kolejności do wpięcia. ' +
+        'Adres folderu jest w komentarzu w kolumnie „Umowa wygenerowana".'
   );
 }
 
-function generujUmoweDlaWiersza(wiersz, folder, naglowki) {
+/**
+ * Teczka jednego dziecka: podfolder z kompletem dokumentów, każdy jako
+ * Dokument Google (do ewentualnej poprawki) i PDF (do druku). Pliki są
+ * ponumerowane, więc drukowanie folderu po folderze daje od razu komplet
+ * ułożony w kolejności do wpięcia.
+ */
+function generujUmoweDlaWiersza(wiersz, folderGlowny, naglowki) {
   const d = {};
   naglowki.forEach(function (naglowek, i) { d[naglowek] = wiersz[i]; });
 
   const dziecko = (d['Dziecko — imiona'] + ' ' + d['Dziecko — nazwisko']).trim();
+  const teczka = teczkaDziecka(folderGlowny, d['Nr umowy'], dziecko);
+  const podstawienia = zbudujPodstawienia(d, dziecko);
+  const folderSzablonow = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_SZABLONOW));
 
-  const umowa = zbudujUmowe(d, folder);
+  SZABLONY.forEach(function (pozycja) {
+    const szablon = szablonPoNazwie(folderSzablonow, pozycja.szablon);
+    if (!szablon) {
+      // Brak jednego szablonu nie może zablokować pozostałych — teczka
+      // powstaje niekompletna, a w dzienniku zostaje ślad czego brakuje.
+      console.warn('Nie znalazłem szablonu „' + pozycja.szablon + '" w folderze szablonów.');
+      return;
+    }
 
-  // Załącznik nr 2 powstaje razem z umową — rodzic dostaje do podpisu komplet.
-  generujZalacznikWizerunek(d, dziecko, folder);
+    const nazwa = pozycja.wynik + ' — ' + dziecko;
+    const kopia = szablon.makeCopy(nazwa, teczka);
+    const dok = DocumentApp.openById(kopia.getId());
+    const body = dok.getBody();
 
-  return umowa;
+    Object.keys(podstawienia).forEach(function (klucz) {
+      body.replaceText(escapeRegex(klucz), podstawienia[klucz]);
+    });
+
+    dok.saveAndClose();
+    teczka.createFile(kopia.getAs('application/pdf')).setName(nazwa + '.pdf');
+  });
+
+  return teczka;
 }
 
-/** Wypełnia szablon umowy danymi z jednego wiersza arkusza. */
-function zbudujUmowe(d, folder) {
-  const dziecko = (d['Dziecko — imiona'] + ' ' + d['Dziecko — nazwisko']).trim();
-  const nazwaPliku = 'Umowa ' + String(d['Nr umowy']).replace(/\//g, '-') + ' — ' + dziecko;
+/** Podfolder „2026-2027-001 — Jan Kowalski". Istniejący reużywamy. */
+function teczkaDziecka(folderGlowny, nrUmowy, dziecko) {
+  const nazwa = String(nrUmowy).replace(/\//g, '-') + ' — ' + dziecko;
+  const istniejace = folderGlowny.getFoldersByName(nazwa);
+  return istniejace.hasNext() ? istniejace.next() : folderGlowny.createFolder(nazwa);
+}
 
-  // Kopia szablonu → podmiana placeholderów → PDF.
-  const kopia = DriveApp.getFileById(czystyId(CONFIG.ID_SZABLONU_UMOWY)).makeCopy(nazwaPliku, folder);
-  const dok = DocumentApp.openById(kopia.getId());
-  const body = dok.getBody();
+function szablonPoNazwie(folder, nazwa) {
+  const pliki = folder.getFilesByName(nazwa);
+  return pliki.hasNext() ? pliki.next() : null;
+}
+
+/**
+ * Jeden zestaw pól dla wszystkich dokumentów. Pola nieużywane w danym
+ * szablonie po prostu nie mają czego podmienić — dzięki temu nie trzeba
+ * utrzymywać osobnej mapy dla każdego załącznika.
+ */
+function zbudujPodstawienia(d, dziecko) {
+  const bezApostrofu = function (v) { return String(v || '').replace(/^'/, ''); };
 
   const stawka = Number(d['Stawka']) || CONFIG.CZESNE_PODSTAWOWE;
   const roczna = stawka === CONFIG.CZESNE_RODZENSTWO
@@ -573,26 +613,37 @@ function zbudujUmowe(d, folder) {
 
   const rodzice = [d['Rodzic 1 — imię i nazwisko'], d['Rodzic 2 — imię i nazwisko']]
     .filter(Boolean).join(', ');
-  const bezApostrofu = function (v) { return String(v || '').replace(/^'/, ''); };
-  const telefony = [d['Rodzic 1 — telefon'], d['Rodzic 2 — telefon']].map(bezApostrofu).filter(Boolean).join(', ');
+  const telefony = [d['Rodzic 1 — telefon'], d['Rodzic 2 — telefon']]
+    .map(bezApostrofu).filter(Boolean).join(', ');
   const maile = [d['Rodzic 1 — e-mail'], d['Rodzic 2 — e-mail']].filter(Boolean).join(', ');
 
-  const podstawienia = {
+  const pola = {
     '{{NR_UMOWY}}': d['Nr umowy'],
     '{{DATA_UMOWY}}': CONFIG.DATA_UMOWY,
     '{{ROK_SZKOLNY}}': CONFIG.ROK_SZKOLNY,
-    '{{RODZICE}}': rodzice,
-    '{{RODZICE_ADRES}}': d['Rodzic 1 — adres'],
-    '{{RODZICE_TELEFON}}': telefony,
-    '{{RODZICE_EMAIL}}': maile,
+
+    '{{DZIECKO}}': dziecko,
     '{{DZIECKO_IMIONA}}': d['Dziecko — imiona'],
     '{{DZIECKO_NAZWISKO}}': d['Dziecko — nazwisko'],
     '{{DZIECKO_DATA_UR}}': formatujDate(d['Data urodzenia']),
-    '{{DZIECKO_PESEL}}': String(d['PESEL']).replace(/^'/, ''),
+    '{{DZIECKO_PESEL}}': d['PESEL'],
     '{{DZIECKO_ADRES_ZAM}}': d['Adres zamieszkania'],
     '{{DZIECKO_ADRES_ZAMEL}}': d['Adres zameldowania'],
     '{{DZIELNICA_ZAM}}': d['Dzielnica zamieszkania'],
     '{{DZIELNICA_ZAMEL}}': d['Dzielnica zameldowania'],
+
+    '{{RODZICE}}': rodzice,
+    '{{RODZICE_ADRES}}': d['Rodzic 1 — adres'],
+    '{{RODZICE_TELEFON}}': telefony,
+    '{{RODZICE_EMAIL}}': maile,
+
+    '{{R1_IMIE}}': d['Rodzic 1 — imię i nazwisko'],
+    '{{R1_TELEFON}}': d['Rodzic 1 — telefon'],
+    '{{R1_EMAIL}}': d['Rodzic 1 — e-mail'],
+    '{{R2_IMIE}}': d['Rodzic 2 — imię i nazwisko'],
+    '{{R2_TELEFON}}': d['Rodzic 2 — telefon'],
+    '{{R2_EMAIL}}': d['Rodzic 2 — e-mail'],
+
     // Obie placówki zostają w druku — niepotrzebną skreśla się przy podpisie.
     '{{PLACOWKA}}': 'Przedszkola Niepublicznego (ul. Lotaryńska 18) / Punktu Przedszkolnego (ul. Zakopiańska 8)',
     '{{EMAIL_RACHUNKI}}': d['E-mail do rachunków'],
@@ -605,36 +656,8 @@ function zbudujUmowe(d, folder) {
     '{{UPOWAZNIONA_4}}': d['Upoważniona 4'],
   };
 
-  Object.keys(podstawienia).forEach(function (klucz) {
-    // Apostrof wymuszający tekst w arkuszu nie może trafić do umowy.
-    const wartosc = String(podstawienia[klucz] || '').replace(/^'/, '');
-    body.replaceText(escapeRegex(klucz), wartosc);
-  });
-
-  dok.saveAndClose();
-
-  // PDF obok dokumentu — to jego drukuje przedszkole.
-  folder.createFile(kopia.getAs('application/pdf')).setName(nazwaPliku + '.pdf');
-  return kopia;
-}
-
-/**
- * Załącznik nr 2 — zgoda na wykorzystanie wizerunku, z decyzjami rodzica
- * przeniesionymi wprost z formularza. Dzięki temu rodzic nie zaznacza zgód
- * drugi raz na papierze: jest jedno źródło prawdy i zero rozjazdu między
- * tym, co kliknął online, a tym, co podpisze w przedszkolu.
- */
-function generujZalacznikWizerunek(d, dziecko, folder) {
-  const idSzablonu = czystyId(CONFIG.ID_SZABLONU_ZALACZNIKA);
-  if (!idSzablonu || idSzablonu === 'WKLEJ_ID_ZALACZNIKA') return null;
-
-  const nazwaPliku = 'Zalacznik 2 wizerunek ' +
-    String(d['Nr umowy']).replace(/\//g, '-') + ' — ' + dziecko;
-
-  const kopia = DriveApp.getFileById(idSzablonu).makeCopy(nazwaPliku, folder);
-  const dok = DocumentApp.openById(kopia.getId());
-  const body = dok.getBody();
-
+  // Zgody na wizerunek: krzyżyk w kolumnie zgodnej z decyzją rodzica.
+  // Brak wartości traktujemy jak „NIE" — zgoda musi być czynna i wyraźna.
   const zgody = {
     APLIKACJA: d['Wizerunek — aplikacja dla rodziców'],
     WWW: d['Wizerunek — strona www'],
@@ -643,27 +666,18 @@ function generujZalacznikWizerunek(d, dziecko, folder) {
     DRUK: d['Wizerunek — materiały drukowane'],
   };
 
-  const podstawienia = {
-    '{{NR_UMOWY}}': d['Nr umowy'],
-    '{{ROK_SZKOLNY}}': CONFIG.ROK_SZKOLNY,
-    '{{DZIECKO}}': dziecko,
-  };
-
-  // Krzyżyk trafia do kolumny odpowiadającej decyzji, druga zostaje pusta.
-  // Brak wartości traktujemy jak „NIE" — zgoda musi być czynna i wyraźna.
   Object.keys(zgody).forEach(function (klucz) {
     const tak = String(zgody[klucz] || 'NIE').trim().toUpperCase() === 'TAK';
-    podstawienia['{{WIZ_' + klucz + '_TAK}}'] = tak ? 'X' : '';
-    podstawienia['{{WIZ_' + klucz + '_NIE}}'] = tak ? '' : 'X';
+    pola['{{WIZ_' + klucz + '_TAK}}'] = tak ? 'X' : '';
+    pola['{{WIZ_' + klucz + '_NIE}}'] = tak ? '' : 'X';
   });
 
-  Object.keys(podstawienia).forEach(function (klucz) {
-    body.replaceText(escapeRegex(klucz), String(podstawienia[klucz] || '').replace(/^'/, ''));
+  // Apostrof wymuszający tekst w arkuszu nie może trafić do dokumentu.
+  Object.keys(pola).forEach(function (klucz) {
+    pola[klucz] = bezApostrofu(pola[klucz]);
   });
 
-  dok.saveAndClose();
-  folder.createFile(kopia.getAs('application/pdf')).setName(nazwaPliku + '.pdf');
-  return kopia;
+  return pola;
 }
 
 function escapeRegex(s) {

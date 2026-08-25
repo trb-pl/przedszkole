@@ -12,6 +12,7 @@ treść umowy i trzeba będzie zbudować szablon od nowa.
 | `make_template.py` | Wstawia pola `{{...}}` w miejsce kropek w oryginalnej umowie |
 | `style_template.py` | Nakłada markę: logo, font Nunito, kolory, kursywa na polach |
 | `make_zalacznik2.py` | Buduje Załącznik nr 2 (zgoda na wizerunek) na bazie szablonu umowy |
+| `make_szablony.py` | Buduje załączniki 1, 3, 4 i ankietę — marka + pola `{{...}}` |
 | `extract.py` | Wypisuje treść pliku .docx — do sprawdzenia wyniku |
 | `logo.png` | Logo przycięte i przeskalowane (1000×247), gotowe do osadzenia |
 
@@ -26,6 +27,9 @@ python3 style_template.py           # → Umowa_SZABLON_2026_2027_brand.docx
 
 # 3. Załącznik nr 2 — dziedziczy logo, fonty i stopkę po szablonie umowy
 python3 make_zalacznik2.py          # → Zalacznik2_Wizerunek_SZABLON.docx
+
+# 3b. Załączniki 1, 3, 4 i ankieta — z oryginalnych formularzy przedszkola
+python3 make_szablony.py            # → cztery pliki *_SZABLON.docx
 
 # 4. Sprawdzenie
 python3 extract.py Umowa_SZABLON_2026_2027_brand.docx
