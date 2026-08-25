@@ -162,23 +162,49 @@ body.insert(0, ET.fromstring(logo_xml))
 tree.write(doc_path, xml_declaration=True, encoding='UTF-8')
 
 
-# ── 4b. Stopka: adres strony nad numeracją ───────────────────────────────
+# ── 4b. Stopka: kreska, adres na środku, numer strony po prawej ──────────
+# Szerokość kolumny tekstu = strona (12240) minus marginesy (2×1134).
+SZER_TEKSTU = 12240 - 1134 - 1134
+TAB_SRODEK  = SZER_TEKSTU // 2
+LINIA       = 'CACCDB'          # granat rozjaśniony — subtelna kreska
+
 ftr_path = os.path.join(work, 'word/footer1.xml')
 if os.path.exists(ftr_path):
     ftr = open(ftr_path, encoding='utf-8').read()
-    if 'koloroweprzedszkole.com' not in ftr:
-        akapit = (
-            '<w:p><w:pPr><w:pStyle w:val="Stopka"/><w:jc w:val="center"/>'
-            '<w:spacing w:after="0"/></w:pPr>'
-            f'<w:r><w:rPr><w:rFonts w:ascii="{FONT}" w:hAnsi="{FONT}" w:cs="{FONT}"/>'
-            f'<w:color w:val="{NAVY}"/><w:sz w:val="15"/><w:szCs w:val="15"/></w:rPr>'
-            '<w:t>www.koloroweprzedszkole.com</w:t></w:r></w:p>'
-        )
-        # wstawiamy przed pierwszym akapitem stopki (nad numerem strony)
-        i = ftr.index('<w:p ')
-        ftr = ftr[:i] + akapit + ftr[i:]
-        open(ftr_path, 'w', encoding='utf-8').write(ftr)
-        print('Stopka: dodano adres strony')
+
+    styl = (f'<w:rPr><w:rFonts w:ascii="{FONT}" w:hAnsi="{FONT}" w:cs="{FONT}"/>'
+            f'<w:color w:val="{NAVY}"/><w:sz w:val="15"/><w:szCs w:val="15"/></w:rPr>')
+
+    def pole(nazwa, domyslna):
+        return ('<w:r><w:fldChar w:fldCharType="begin"/></w:r>'
+                f'<w:r><w:instrText>{nazwa}</w:instrText></w:r>'
+                '<w:r><w:fldChar w:fldCharType="separate"/></w:r>'
+                f'<w:r>{styl}<w:t>{domyslna}</w:t></w:r>'
+                '<w:r><w:fldChar w:fldCharType="end"/></w:r>')
+
+    akapit = (
+        '<w:p><w:pPr><w:pStyle w:val="Stopka"/>'
+        f'<w:pBdr><w:top w:val="single" w:sz="4" w:space="8" w:color="{LINIA}"/></w:pBdr>'
+        '<w:tabs>'
+        f'<w:tab w:val="center" w:pos="{TAB_SRODEK}"/>'
+        f'<w:tab w:val="right" w:pos="{SZER_TEKSTU}"/>'
+        '</w:tabs><w:spacing w:after="0"/></w:pPr>'
+        '<w:r><w:tab/></w:r>'
+        f'<w:r>{styl}<w:t>www.koloroweprzedszkole.com</w:t></w:r>'
+        '<w:r><w:tab/></w:r>'
+        f'<w:r>{styl}<w:t xml:space="preserve">Strona </w:t></w:r>'
+        + pole('PAGE', '1') +
+        f'<w:r>{styl}<w:t xml:space="preserve"> z </w:t></w:r>'
+        + pole('NUMPAGES', '5') +
+        '</w:p>'
+    )
+
+    # Podmieniamy całą zawartość stopki na jeden akapit z trzema strefami.
+    poczatek = ftr.index('>', ftr.index('<w:ftr')) + 1
+    koniec = ftr.index('</w:ftr>')
+    ftr = ftr[:poczatek] + akapit + ftr[koniec:]
+    open(ftr_path, 'w', encoding='utf-8').write(ftr)
+    print('Stopka: kreska + adres na środku + numer strony po prawej')
 
 # ── 5. Spakowanie ────────────────────────────────────────────────────────
 out = 'Umowa_SZABLON_2026_2027_brand.docx'
