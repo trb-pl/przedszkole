@@ -33,32 +33,37 @@ drive.google.com/drive/folders/1AbC...XyZ
 ## Krok 3 — Sześć szablonów
 
 Wgraj na Dysk pliki z Pobranych, każdy kliknij prawym →
-**Otwórz za pomocą → Dokumenty Google**, a powstały dokument **nazwij
-dokładnie tak** (skrypt szuka ich po nazwie):
+**Otwórz za pomocą → Dokumenty Google**, i wrzuć powstałe dokumenty do
+folderu **„Szablony dokumentów 2026/2027"**. Pliki `.docx` z tego folderu
+skasuj — zostają wyłącznie Dokumenty Google.
 
-| Plik z Pobranych | Nazwa Dokumentu Google |
+Nazwy zostają takie, jakie nadała konwersja:
+
+| Szablon | Dokument w skrypcie |
 |---|---|
-| `Umowa_SZABLON_2026_2027_brand.docx` | `SZABLON - Umowa` |
-| `Zalacznik1_Zachorowanie_SZABLON.docx` | `SZABLON - Zalacznik 1` |
-| `Zalacznik2_Wizerunek_SZABLON.docx` | `SZABLON - Zalacznik 2` |
-| `Zalacznik3_Piesze_wyjscia_SZABLON.docx` | `SZABLON - Zalacznik 3` |
-| `Zalacznik4_Zajecia_dodatkowe_SZABLON.docx` | `SZABLON - Zalacznik 4` |
-| `Ankieta_Informacje_o_dziecku_SZABLON.docx` | `SZABLON - Informacje o dziecku` |
+| `Umowa_SZABLON_2026_2027` | umowa |
+| `Zalacznik1_Zachorowanie_SZABLON` | postępowanie przy zachorowaniu |
+| `Zalacznik2_Wizerunek_SZABLON` | zgoda na wizerunek |
+| `Zalacznik3_Piesze_wyjscia_SZABLON` | piesze wyjścia |
+| `Zalacznik4_Zajecia_dodatkowe_SZABLON` | zajęcia dodatkowe |
+| `Ankieta_Informacje_o_dziecku_SZABLON` | ankieta o dziecku |
 
-Wszystkie sześć wrzuć do folderu **„Szablony dokumentów 2026/2027"**
-i skasuj z niego pliki `.docx` — zostają wyłącznie Dokumenty Google.
+Porównanie nazw pomija wielkość liter, spacje, podkreślenia, myślniki
+i polskie ogonki, więc `Zalacznik1_Zachorowanie_SZABLON`,
+`Załącznik 1 zachorowanie szablon` i `zalacznik-1-zachorowanie-szablon`
+trafiają na to samo. Zmieniasz nazwę na Dysku — dopisz ją w `SZABLONY`
+w skrypcie.
 
-Nazwy bez polskich znaków są celowe: literówka w „ą" jest nie do
-wypatrzenia, a skrypt porównuje nazwy znak po znaku.
+**Jeśli wolisz nie zależeć od nazw**, każda pozycja w `SZABLONY` ma pole
+`id`. Wklej tam ID dokumentu (z adresu `docs.google.com/document/d/TO_JEST_ID/edit`),
+a nazwa przestaje mieć znaczenie:
 
-> **Uwaga na nazwę po konwersji.** Otwarcie `.docx` jako Dokument Google
-> tworzy dokument o nazwie pliku, np. `Umowa_SZABLON_2026_2027_brand`.
-> Trzeba go **zmienić na** `SZABLON - Umowa`. Sam plik `.docx` skasuj —
-> zostaje mylącym duplikatem o podobnej nazwie.
+```js
+{ szablon: 'Umowa_SZABLON_2026_2027', id: '1MJciGY...VS5M', wynik: '1. Umowa' },
+```
 
-Menu **📄 Umowy → Pokaż szablony** wypisuje obok siebie to, co naprawdę
-leży w folderze, i to, czego skrypt szuka. Przy problemie z nazwą różnicę
-widać od razu.
+Menu **📄 Umowy → Pokaż szablony** wypisuje obok siebie zawartość folderu
+i to, czego skrypt szuka — przy problemie różnicę widać od razu.
 
 ---
 

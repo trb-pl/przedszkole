@@ -47,16 +47,25 @@ const CONFIG = {
   OPLATA_ROCZNA_RODZENSTWO: 25800,
 };
 
-// Komplet dokumentów w teczce dziecka. Nazwa po lewej to dokładna nazwa
-// Dokumentu Google w folderze szablonów, po prawej — nazwa pliku w teczce.
-// Numeracja z przodu ustawia je w kolejności do wpięcia w segregator.
+// Komplet dokumentów w teczce dziecka.
+//
+//   szablon — nazwa Dokumentu Google w folderze szablonów. Porównanie
+//             pomija wielkość liter, spacje, podkreślenia i myślniki,
+//             więc „Umowa_SZABLON_2026_2027" i „umowa szablon 2026 2027"
+//             to dla skryptu to samo.
+//   id      — opcjonalne ID dokumentu. Wpisane, ma pierwszeństwo przed
+//             nazwą i przestaje zależeć od tego, jak plik się nazywa.
+//             Przydaje się, gdy dwa szablony mają podobne nazwy albo gdy
+//             ktoś zmienia je na Dysku.
+//   wynik   — nazwa pliku w teczce; numer z przodu ustawia kolejność
+//             do wpięcia w segregator.
 const SZABLONY = [
-  { szablon: 'SZABLON - Umowa',                 wynik: '1. Umowa' },
-  { szablon: 'SZABLON - Zalacznik 1',           wynik: '2. Zalacznik 1 - postepowanie przy zachorowaniu' },
-  { szablon: 'SZABLON - Zalacznik 2',           wynik: '3. Zalacznik 2 - zgoda na wizerunek' },
-  { szablon: 'SZABLON - Zalacznik 3',           wynik: '4. Zalacznik 3 - piesze wyjscia' },
-  { szablon: 'SZABLON - Zalacznik 4',           wynik: '5. Zalacznik 4 - zajecia dodatkowe' },
-  { szablon: 'SZABLON - Informacje o dziecku',  wynik: '6. Informacje o dziecku - ankieta' },
+  { szablon: 'Umowa_SZABLON_2026_2027',        id: '', wynik: '1. Umowa' },
+  { szablon: 'Zalacznik1_Zachorowanie_SZABLON', id: '', wynik: '2. Zalacznik 1 - postepowanie przy zachorowaniu' },
+  { szablon: 'Zalacznik2_Wizerunek_SZABLON',    id: '', wynik: '3. Zalacznik 2 - zgoda na wizerunek' },
+  { szablon: 'Zalacznik3_Piesze_wyjscia_SZABLON', id: '', wynik: '4. Zalacznik 3 - piesze wyjscia' },
+  { szablon: 'Zalacznik4_Zajecia_dodatkowe_SZABLON', id: '', wynik: '5. Zalacznik 4 - zajecia dodatkowe' },
+  { szablon: 'Ankieta_Informacje_o_dziecku_SZABLON', id: '', wynik: '6. Informacje o dziecku - ankieta' },
 ];
 
 // Kolejność kolumn w arkuszu. Nie zmieniaj bez zmiany funkcji poniżej.
@@ -338,7 +347,7 @@ function testKonfiguracji() {
       ok.push('Folder szablonów: ' + folderSzablonow.getName());
 
       SZABLONY.forEach(function (pozycja) {
-        const plik = szablonPoNazwie(folderSzablonow, pozycja.szablon);
+        const plik = szablonPoNazwie(folderSzablonow, pozycja);
         if (!plik) {
           problemy.push('Brakuje szablonu „' + pozycja.szablon + '" w folderze szablonów');
         } else if (plik.getMimeType() !== MimeType.GOOGLE_DOCS) {
@@ -575,7 +584,7 @@ function generujUmoweDlaWiersza(wiersz, folderGlowny, naglowki) {
   const folderSzablonow = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_SZABLONOW));
 
   SZABLONY.forEach(function (pozycja) {
-    const szablon = szablonPoNazwie(folderSzablonow, pozycja.szablon);
+    const szablon = szablonPoNazwie(folderSzablonow, pozycja);
     if (!szablon) throw new Error('Brak szablonu „' + pozycja.szablon + '" w folderze szablonów.');
 
     const nazwa = pozycja.wynik + ' — ' + dziecko;
@@ -606,7 +615,7 @@ function brakujaceSzablony() {
   const folder = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_SZABLONOW));
 
   return SZABLONY.filter(function (pozycja) {
-    const plik = szablonPoNazwie(folder, pozycja.szablon);
+    const plik = szablonPoNazwie(folder, pozycja);
     return !plik || plik.getMimeType() !== MimeType.GOOGLE_DOCS;
   }).map(function (pozycja) { return pozycja.szablon; });
 }
@@ -629,7 +638,7 @@ function pokazSzablony() {
   }
 
   const oczekiwane = SZABLONY.map(function (pozycja) {
-    const plik = szablonPoNazwie(folder, pozycja.szablon);
+    const plik = szablonPoNazwie(folder, pozycja);
     const stan = !plik ? '❌ nie znaleziono'
       : plik.getMimeType() !== MimeType.GOOGLE_DOCS ? '⚠️ nie jest Dokumentem Google'
       : '✅';
@@ -646,9 +655,46 @@ function pokazSzablony() {
   return raport;
 }
 
-function szablonPoNazwie(folder, nazwa) {
-  const pliki = folder.getFilesByName(nazwa);
-  return pliki.hasNext() ? pliki.next() : null;
+/**
+ * Sprowadza nazwę do porównywalnej postaci: małe litery, bez polskich
+ * ogonków i bez znaków rozdzielających. Dzięki temu „Zalacznik 1",
+ * „zalacznik_1" i „Załącznik-1" trafiają na ten sam szablon — nazwa pliku
+ * na Dysku nie musi być przepisana co do znaku.
+ */
+function znormalizuj(nazwa) {
+  return String(nazwa || '')
+    // „ł" nie jest literą z osobnym znakiem diakrytycznym, więc rozkład
+    // NFD go nie rusza — trzeba podmienić ręcznie, inaczej „Załącznik"
+    // i „Zalacznik" to dla skryptu dwie różne nazwy.
+    .replace(/ł/g, 'l').replace(/Ł/g, 'L')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+}
+
+/** Szuka szablonu: najpierw po ID, potem po nazwie (dokładnej i luźnej). */
+function szablonPoNazwie(folder, pozycja) {
+  const opis = typeof pozycja === 'string' ? { szablon: pozycja, id: '' } : pozycja;
+
+  if (opis.id) {
+    try {
+      return DriveApp.getFileById(czystyId(opis.id));
+    } catch (e) {
+      throw new Error('Nie mogę otworzyć szablonu o ID „' + opis.id + '" (' + opis.szablon + ').');
+    }
+  }
+
+  const dokladne = folder.getFilesByName(opis.szablon);
+  if (dokladne.hasNext()) return dokladne.next();
+
+  const szukane = znormalizuj(opis.szablon);
+  const pliki = folder.getFiles();
+  while (pliki.hasNext()) {
+    const plik = pliki.next();
+    if (znormalizuj(plik.getName()) === szukane) return plik;
+  }
+
+  return null;
 }
 
 /**
