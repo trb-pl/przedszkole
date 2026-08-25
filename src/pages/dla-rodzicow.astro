@@ -358,8 +358,9 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
         <p class="text-5xl">✓</p>
         <p class="font-sans italic text-2xl md:text-3xl text-brand-navy">Dziękujemy!</p>
         <p class="font-sans text-brand-navy/70 leading-relaxed max-w-md">
-          Dane zostały wysłane. Kopia trafiła na Twój adres e-mail.
-          Przygotujemy umowę — podpisany egzemplarz będzie czekał na Ciebie w przedszkolu.
+          Dane zostały wysłane. Na Twój adres e-mail trafiła kopia oraz wzory dokumentów
+          w PDF — umowa i załącznik ze zgodami, wypełnione Twoimi danymi.
+          Nie musisz ich drukować: podpisane przez dyrekcję egzemplarze będą czekać w przedszkolu.
         </p>
         <a href="/" class="cta-pop mt-4 inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg hover:bg-brand-coral">
           Wróć na stronę główną
@@ -543,7 +544,10 @@ const eyebrowCls = 'font-sans font-bold uppercase tracking-widest text-xs text-b
       }
 
       btn.disabled = true;
-      btn.textContent = 'Wysyłanie…';
+      // Serwer w tym czasie generuje wzory umowy i załącznika w PDF, więc
+      // odpowiedź potrafi przyjść po kilkunastu sekundach — komunikat mówi
+      // wprost, że tak ma być, zamiast wyglądać na zawieszenie.
+      btn.textContent = 'Wysyłanie i przygotowywanie dokumentów…';
 
       var dane = Object.fromEntries(new FormData(form).entries());
       // Czytamy też z pola, nie tylko ze zmiennej — gdyby skrypt

@@ -169,7 +169,7 @@ function doPost(e) {
       return wartosci[naglowek] !== undefined ? wartosci[naglowek] : '';
     }));
 
-    wyslijKopieRodzicowi(dane, nrUmowy);
+    wyslijKopieRodzicowi(dane, nrUmowy, zalacznikiWzor(wartosci));
     wyslijPowiadomienieDoPrzedszkola(dane, nrUmowy);
 
     return odpowiedz({ status: 'ok', nr: nrUmowy });
@@ -177,6 +177,68 @@ function doPost(e) {
     console.error(err);
     return odpowiedz({ status: 'error', message: String(err) });
   }
+}
+
+/**
+ * Buduje wzory umowy i załącznika do wysyłki mailem. Dokumenty powstają
+ * poza folderem docelowym i są kasowane od razu po wyciągnięciu PDF-a —
+ * w Dysku mają zostać wyłącznie egzemplarze finalne, wygenerowane przez
+ * przedszkole. Rodzic dostaje to samo, ale opisane jako WZÓR.
+ *
+ * Błąd generowania nie może wywrócić całego zgłoszenia: dane są już
+ * w arkuszu, więc w najgorszym razie rodzic dostaje mail bez załączników.
+ */
+function zalacznikiWzor(wartosci) {
+  const pliki = [];
+  const doSprzatniecia = [];
+
+  try {
+    if (czystyId(CONFIG.ID_SZABLONU_UMOWY) !== 'WKLEJ_ID_SZABLONU') {
+      const umowa = zbudujUmowe(wartosci, { folder: null, wzor: true });
+      pliki.push(umowa.pdf);
+      doSprzatniecia.push(umowa.plik);
+    }
+
+    const dziecko = (wartosci['Dziecko — imiona'] + ' ' + wartosci['Dziecko — nazwisko']).trim();
+    const zal = generujZalacznikWizerunek(wartosci, dziecko, null, true);
+    if (zal) {
+      pliki.push(zal.pdf);
+      doSprzatniecia.push(zal.plik);
+    }
+  } catch (e) {
+    console.error('Nie udało się przygotować wzorów do maila: ' + e);
+  }
+
+  // Kopie robocze znikają — PDF-y są już w pamięci jako blob.
+  doSprzatniecia.forEach(function (f) {
+    try { f.setTrashed(true); } catch (e) { console.warn('Nie udało się usunąć kopii roboczej: ' + e); }
+  });
+
+  return pliki;
+}
+
+/**
+ * Nagłówek „WZÓR" na każdej stronie. Dokumenty Google nie mają znaku
+ * wodnego dostępnego ze skryptu, ale nagłówek powtarza się na każdej
+ * kartce i jest widoczny także po wydruku — spełnia tę samą rolę:
+ * nikt nie pomyli wzoru z egzemplarzem do podpisu.
+ */
+function oznaczJakoWzor(dok) {
+  const naglowek = dok.getHeader() || dok.addHeader();
+  naglowek.clear();
+
+  const p = naglowek.appendParagraph('W Z Ó R  ·  dokument poglądowy, nie do podpisu');
+  p.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+  p.editAsText()
+    .setBold(true)
+    .setFontSize(10)
+    .setForegroundColor('#F2795D');
+
+  // Po clear() potrafi zostać pusty akapit — usuwamy, żeby nagłówek
+  // nie spychał treści w dół.
+  naglowek.getParagraphs().forEach(function (x) {
+    if (!x.getText().trim() && naglowek.getNumChildren() > 1) x.removeFromParent();
+  });
 }
 
 function odpowiedz(obj) {
@@ -388,7 +450,7 @@ function testKonfiguracji() {
 // 2. E-MAILE
 // ─────────────────────────────────────────────────────────────────────────
 
-function wyslijKopieRodzicowi(dane, nrUmowy) {
+function wyslijKopieRodzicowi(dane, nrUmowy, zalaczniki) {
   const odbiorca = dane.r1_email;
   if (!odbiorca) return;
 
@@ -434,6 +496,14 @@ function wyslijKopieRodzicowi(dane, nrUmowy) {
         'Poniżej kopia danych, które przesłałeś do umowy na rok szkolny ' + CONFIG.ROK_SZKOLNY + '. ' +
         'Przygotujemy umowę — podpisany przez dyrekcję egzemplarz będzie czekał na Ciebie w przedszkolu.' +
       '</p>' +
+      (zalaczniki && zalaczniki.length
+        ? '<p style="color:#2D346F;opacity:.75;line-height:1.6;margin:0 0 24px;">' +
+            'W załączniku znajdziesz <strong>wzory dokumentów</strong> wypełnione Twoimi danymi — ' +
+            'umowę oraz załącznik ze zgodami na wizerunek. Są oznaczone jako WZÓR i służą wyłącznie ' +
+            'do zapoznania się z treścią. <strong>Nie musisz ich drukować ani podpisywać</strong> — ' +
+            'gotowe egzemplarze czekają w przedszkolu.' +
+          '</p>'
+        : '') +
       '<div style="background:#fff;border-radius:16px;padding:24px;">' +
         '<p style="color:#34BBA8;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;margin:0 0 16px;">Umowa nr ' + nrUmowy + '</p>' +
         '<table style="width:100%;border-collapse:collapse;font-size:14px;">' + tabela + '</table>' +
@@ -449,6 +519,7 @@ function wyslijKopieRodzicowi(dane, nrUmowy) {
     subject: 'Kolorowe Przedszkole — kopia danych do umowy ' + nrUmowy,
     htmlBody: html,
     name: 'Kolorowe Przedszkole',
+    attachments: zalaczniki || [],
   });
 }
 
@@ -547,10 +618,31 @@ function generujUmoweDlaWiersza(wiersz, folder, naglowki) {
   naglowki.forEach(function (naglowek, i) { d[naglowek] = wiersz[i]; });
 
   const dziecko = (d['Dziecko — imiona'] + ' ' + d['Dziecko — nazwisko']).trim();
-  const nazwaPliku = 'Umowa ' + String(d['Nr umowy']).replace(/\//g, '-') + ' — ' + dziecko;
+
+  const umowa = zbudujUmowe(d, { folder: folder, wzor: false });
+
+  // Załącznik nr 2 powstaje razem z umową — rodzic dostaje do podpisu komplet.
+  generujZalacznikWizerunek(d, dziecko, folder, false);
+
+  return umowa.plik;
+}
+
+/**
+ * Wypełnia szablon umowy danymi. Ta sama funkcja obsługuje egzemplarz
+ * finalny (z menu arkusza) i wzór wysyłany rodzicowi mailem — różnica
+ * sprowadza się do nagłówka „WZÓR" i tego, czy PDF zostaje na Dysku.
+ *
+ * opcje.folder — folder docelowy albo null (kopia robocza, do skasowania)
+ * opcje.wzor   — czy dopisać nagłówek „WZÓR"
+ */
+function zbudujUmowe(d, opcje) {
+  const dziecko = (d['Dziecko — imiona'] + ' ' + d['Dziecko — nazwisko']).trim();
+  const nazwaPliku = 'Umowa ' + (opcje.wzor ? 'WZOR ' : '') +
+    String(d['Nr umowy']).replace(/\//g, '-') + ' — ' + dziecko;
 
   // Kopia szablonu → podmiana placeholderów → PDF.
-  const kopia = DriveApp.getFileById(czystyId(CONFIG.ID_SZABLONU_UMOWY)).makeCopy(nazwaPliku, folder);
+  const szablon = DriveApp.getFileById(czystyId(CONFIG.ID_SZABLONU_UMOWY));
+  const kopia = opcje.folder ? szablon.makeCopy(nazwaPliku, opcje.folder) : szablon.makeCopy(nazwaPliku);
   const dok = DocumentApp.openById(kopia.getId());
   const body = dok.getBody();
 
@@ -599,15 +691,15 @@ function generujUmoweDlaWiersza(wiersz, folder, naglowki) {
     body.replaceText(escapeRegex(klucz), wartosc);
   });
 
+  if (opcje.wzor) oznaczJakoWzor(dok);
   dok.saveAndClose();
 
-  // PDF obok dokumentu — to jego drukuje przedszkole.
-  folder.createFile(kopia.getAs('application/pdf')).setName(nazwaPliku + '.pdf');
+  const pdf = kopia.getAs('application/pdf').setName(nazwaPliku + '.pdf');
+  // PDF obok dokumentu — to jego drukuje przedszkole. Przy wzorze pomijamy:
+  // plik żyje tylko jako załącznik do maila.
+  if (opcje.folder) opcje.folder.createFile(pdf);
 
-  // Załącznik nr 2 powstaje razem z umową — rodzic dostaje do podpisu komplet.
-  generujZalacznikWizerunek(d, dziecko, folder);
-
-  return kopia;
+  return { plik: kopia, pdf: pdf };
 }
 
 /**
@@ -616,14 +708,15 @@ function generujUmoweDlaWiersza(wiersz, folder, naglowki) {
  * drugi raz na papierze: jest jedno źródło prawdy i zero rozjazdu między
  * tym, co kliknął online, a tym, co podpisze w przedszkolu.
  */
-function generujZalacznikWizerunek(d, dziecko, folder) {
+function generujZalacznikWizerunek(d, dziecko, folder, wzor) {
   const idSzablonu = czystyId(CONFIG.ID_SZABLONU_ZALACZNIKA);
   if (!idSzablonu || idSzablonu === 'WKLEJ_ID_ZALACZNIKA') return null;
 
-  const nazwaPliku = 'Zalacznik 2 wizerunek ' +
+  const nazwaPliku = 'Zalacznik 2 wizerunek ' + (wzor ? 'WZOR ' : '') +
     String(d['Nr umowy']).replace(/\//g, '-') + ' — ' + dziecko;
 
-  const kopia = DriveApp.getFileById(idSzablonu).makeCopy(nazwaPliku, folder);
+  const szablon = DriveApp.getFileById(idSzablonu);
+  const kopia = folder ? szablon.makeCopy(nazwaPliku, folder) : szablon.makeCopy(nazwaPliku);
   const dok = DocumentApp.openById(kopia.getId());
   const body = dok.getBody();
 
@@ -653,9 +746,13 @@ function generujZalacznikWizerunek(d, dziecko, folder) {
     body.replaceText(escapeRegex(klucz), String(podstawienia[klucz] || '').replace(/^'/, ''));
   });
 
+  if (wzor) oznaczJakoWzor(dok);
   dok.saveAndClose();
-  folder.createFile(kopia.getAs('application/pdf')).setName(nazwaPliku + '.pdf');
-  return kopia;
+
+  const pdf = kopia.getAs('application/pdf').setName(nazwaPliku + '.pdf');
+  if (folder) folder.createFile(pdf);
+
+  return { plik: kopia, pdf: pdf };
 }
 
 function escapeRegex(s) {

@@ -53,9 +53,10 @@ zewnętrznej firmy.
 3. Na górze pliku uzupełnij sekcję `CONFIG`:
 
    ```js
-   KOD_DOSTEPU: 'KOLOROWE2027',        // hasło, które dostaną rodzice
-   ID_SZABLONU_UMOWY: '1DeF...UvW',    // z kroku 3
-   ID_FOLDERU_UMOW: '1AbC...XyZ',      // z kroku 2
+   KOD_DOSTEPU: 'KOLOROWE2027',            // hasło, które dostaną rodzice
+   ID_SZABLONU_UMOWY: '1DeF...UvW',        // z kroku 3
+   ID_SZABLONU_ZALACZNIKA: '1GhI...RsT',   // Załącznik nr 2, tak samo jak krok 3
+   ID_FOLDERU_UMOW: '1AbC...XyZ',          // z kroku 2
    EMAIL_PRZEDSZKOLA: 'przedszkole@kolorowe.eu',
    ```
 
@@ -149,3 +150,25 @@ przebudowaniu).
 | `{{PLACOWKA}}` | Lotaryńska 18 albo Zakopiańska 8 |
 | `{{EMAIL_RACHUNKI}}` | § 8 pkt 8 umowy |
 | `{{UPOWAZNIONA_1}}`…`{{UPOWAZNIONA_4}}` | § 9, format: `imię nazwisko (dokument)` |
+
+
+---
+
+## Co dostaje rodzic po wysłaniu formularza
+
+Na adres e-mail rodzica 1 idzie od razu:
+
+1. **Kopia wpisanych danych** w treści maila — do sprawdzenia, czy nie ma
+   literówki w PESEL-u albo adresie.
+2. **Wzór umowy w PDF** wypełniony jego danymi.
+3. **Wzór Załącznika nr 2** (zgody na wizerunek) z zaznaczonymi decyzjami.
+
+Oba PDF-y mają na każdej stronie nagłówek **„W Z Ó R · dokument poglądowy,
+nie do podpisu"**. To dokumenty do zapoznania się z treścią — egzemplarze
+do podpisu drukuje przedszkole z menu `📄 Umowy` w arkuszu.
+
+Kopie robocze użyte do wygenerowania wzorów kasują się same — na Dysku
+zostają wyłącznie dokumenty finalne.
+
+Jeśli `ID_SZABLONU_UMOWY` albo `ID_SZABLONU_ZALACZNIKA` nie są uzupełnione,
+mail wychodzi bez załączników, a zgłoszenie i tak zapisuje się w arkuszu.
