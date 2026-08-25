@@ -111,8 +111,7 @@ body.append(para(run('Załącznik nr 2 do umowy nr {{NR_UMOWY}}', color=TEAL, bo
 body.append(para(run('ZGODA NA UTRWALANIE I ROZPOWSZECHNIANIE WIZERUNKU ORAZ GŁOSU DZIECKA', bold=True, color=NAVY, size=28), jc='center', po=60))
 body.append(para(run('Przedszkole Niepubliczne „Kolorowe Przedszkole" · rok szkolny {{ROK_SZKOLNY}}', size=18, color=NAVY), jc='center', po=240))
 
-body.append(para(run('Imię i nazwisko dziecka: ', size=20) + run('{{DZIECKO}}', italic=True, bold=True, color=NAVY, size=20), po=80))
-body.append(para(run('Grupa: ', size=20) + run('.........................................................', size=20), po=200))
+body.append(para(run('Imię i nazwisko dziecka: ', size=20) + run('{{DZIECKO}}', italic=True, bold=True, color=NAVY, size=20), po=200))
 
 body.append(para(run('Administrator danych', bold=True, color=NAVY, size=20), po=60, border=True))
 body.append(para(run('Olga Trębicka, Przedszkole Niepubliczne „Kolorowe Przedszkole", ul. Lotaryńska 18, 03-974 Warszawa. '
