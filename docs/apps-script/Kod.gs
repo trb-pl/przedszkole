@@ -479,6 +479,7 @@ function onOpen() {
     .addItem('Generuj teczki dla zaznaczonych wierszy', 'generujUmowy')
     .addItem('Generuj wszystkie brakujące', 'generujBrakujace')
     .addSeparator()
+    .addItem('Pokaż szablony', 'pokazSzablony')
     .addItem('Napraw komórki z #ERROR!', 'naprawBledneKomorki')
     .addItem('Sprawdź konfigurację', 'testKonfiguracji')
     .addToUi();
@@ -507,6 +508,18 @@ function przetworzWiersze(arkusz, od, doW, tylkoBrakujace) {
   }
 
   const folder = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_UMOW));
+
+  // Szablony sprawdzamy zanim cokolwiek powstanie. Wcześniej brak szablonu
+  // kończył się pustą teczką i wpisem w dzienniku, którego nikt nie czyta.
+  const brakujace = brakujaceSzablony();
+  if (brakujace.length) {
+    ui.alert(
+      'Nie znalazłem szablonów w folderze szablonów:\n\n• ' + brakujace.join('\n• ') +
+      '\n\nNazwa Dokumentu Google musi zgadzać się co do znaku. ' +
+      'Uruchom „Pokaż szablony", żeby zobaczyć, co skrypt widzi w folderze.'
+    );
+    return;
+  }
 
   // Czytamy nagłówki z samego arkusza, a nie z listy NAGLOWKI. Gdyby obie
   // się rozjechały (np. arkusz powstał przy starszej wersji skryptu),
@@ -563,12 +576,7 @@ function generujUmoweDlaWiersza(wiersz, folderGlowny, naglowki) {
 
   SZABLONY.forEach(function (pozycja) {
     const szablon = szablonPoNazwie(folderSzablonow, pozycja.szablon);
-    if (!szablon) {
-      // Brak jednego szablonu nie może zablokować pozostałych — teczka
-      // powstaje niekompletna, a w dzienniku zostaje ślad czego brakuje.
-      console.warn('Nie znalazłem szablonu „' + pozycja.szablon + '" w folderze szablonów.');
-      return;
-    }
+    if (!szablon) throw new Error('Brak szablonu „' + pozycja.szablon + '" w folderze szablonów.');
 
     const nazwa = pozycja.wynik + ' — ' + dziecko;
     const kopia = szablon.makeCopy(nazwa, teczka);
@@ -591,6 +599,51 @@ function teczkaDziecka(folderGlowny, nrUmowy, dziecko) {
   const nazwa = String(nrUmowy).replace(/\//g, '-') + ' — ' + dziecko;
   const istniejace = folderGlowny.getFoldersByName(nazwa);
   return istniejace.hasNext() ? istniejace.next() : folderGlowny.createFolder(nazwa);
+}
+
+/** Lista szablonów, których nie ma w folderze albo nie są Dokumentami Google. */
+function brakujaceSzablony() {
+  const folder = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_SZABLONOW));
+
+  return SZABLONY.filter(function (pozycja) {
+    const plik = szablonPoNazwie(folder, pozycja.szablon);
+    return !plik || plik.getMimeType() !== MimeType.GOOGLE_DOCS;
+  }).map(function (pozycja) { return pozycja.szablon; });
+}
+
+/**
+ * Wypisuje, co skrypt naprawdę widzi w folderze szablonów. Najczęstsza
+ * przyczyna pustej teczki to nazwa różniąca się o jeden znak — spację,
+ * półpauzę zamiast myślnika albo zostawione „.docx" na końcu. Porównanie
+ * dwóch list obok siebie pokazuje to od razu.
+ */
+function pokazSzablony() {
+  const folder = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_SZABLONOW));
+
+  const wFolderze = [];
+  const pliki = folder.getFiles();
+  while (pliki.hasNext()) {
+    const plik = pliki.next();
+    const typ = plik.getMimeType() === MimeType.GOOGLE_DOCS ? 'Dokument Google' : 'NIE Dokument Google';
+    wFolderze.push('„' + plik.getName() + '"  (' + typ + ')');
+  }
+
+  const oczekiwane = SZABLONY.map(function (pozycja) {
+    const plik = szablonPoNazwie(folder, pozycja.szablon);
+    const stan = !plik ? '❌ nie znaleziono'
+      : plik.getMimeType() !== MimeType.GOOGLE_DOCS ? '⚠️ nie jest Dokumentem Google'
+      : '✅';
+    return stan + '  „' + pozycja.szablon + '"';
+  });
+
+  const raport =
+    'W folderze „' + folder.getName() + '" jest ' + wFolderze.length + ' plików:\n\n' +
+    (wFolderze.length ? wFolderze.join('\n') : '(pusto)') +
+    '\n\n───────────────\n\nSkrypt szuka tych nazw:\n\n' + oczekiwane.join('\n');
+
+  console.log(raport);
+  try { SpreadsheetApp.getUi().alert(raport); } catch (e) { /* z edytora — wystarczy dziennik */ }
+  return raport;
 }
 
 function szablonPoNazwie(folder, nazwa) {

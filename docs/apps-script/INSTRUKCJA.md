@@ -49,8 +49,16 @@ Wszystkie sześć wrzuć do folderu **„Szablony dokumentów 2026/2027"**
 i skasuj z niego pliki `.docx` — zostają wyłącznie Dokumenty Google.
 
 Nazwy bez polskich znaków są celowe: literówka w „ą" jest nie do
-wypatrzenia, a skrypt porównuje nazwy znak po znaku. Funkcja
-`Sprawdź konfigurację` wypisze, którego szablonu nie znalazła.
+wypatrzenia, a skrypt porównuje nazwy znak po znaku.
+
+> **Uwaga na nazwę po konwersji.** Otwarcie `.docx` jako Dokument Google
+> tworzy dokument o nazwie pliku, np. `Umowa_SZABLON_2026_2027_brand`.
+> Trzeba go **zmienić na** `SZABLON - Umowa`. Sam plik `.docx` skasuj —
+> zostaje mylącym duplikatem o podobnej nazwie.
+
+Menu **📄 Umowy → Pokaż szablony** wypisuje obok siebie to, co naprawdę
+leży w folderze, i to, czego skrypt szuka. Przy problemie z nazwą różnicę
+widać od razu.
 
 ---
 
