@@ -165,7 +165,7 @@ wymaga zmiany w skrypcie.
 | Placeholder | Skąd pochodzi |
 |---|---|
 | `{{NR_UMOWY}}` | generowany automatycznie: `2026/2027/001` |
-| `{{DATA_UMOWY}}` | `CONFIG.DATA_UMOWY` |
+| `{{DATA_UMOWY}}` | `CONFIG.DATA_UMOWY` — data podpisania, ta sama na umowie i wszystkich załącznikach |
 | `{{RODZICE}}` | imiona i nazwiska obojga rodziców |
 | `{{RODZICE_ADRES}}` | adres rodzica 1 |
 | `{{RODZICE_TELEFON}}`, `{{RODZICE_EMAIL}}` | oba kontakty połączone przecinkiem |

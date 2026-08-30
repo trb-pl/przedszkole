@@ -133,10 +133,16 @@ body.append(para(run(WYCOFANIE, size=18), po=240))
 body.append(para(run('☐  ', size=22) + run('Potwierdzam, że przed podjęciem decyzji wysłuchałem/am zdania dziecka w sposób '
                                            'odpowiedni do jego wieku i dojrzałości.', size=18), po=400))
 
+# Data podpisania jest wspólna dla całej teczki i wchodzi z CONFIG.DATA_UMOWY,
+# więc rodzic wpisuje przy podpisie tylko swoje nazwisko. Jedna data na
+# umowie i załącznikach zamiast czterech pisanych ręcznie.
+body.append(para(run('Warszawa, dnia ', size=18) +
+                 run('{{DATA_UMOWY}}', bold=True, italic=True, size=18), jc='right', po=300))
+
 body.append(para(run('.................................................                    '
                      '.................................................', size=18), jc='center', po=40))
-body.append(para(run('data i czytelny podpis rodzica / opiekuna 1                    '
-                     'data i czytelny podpis rodzica / opiekuna 2', size=14, color=NAVY), jc='center', po=0))
+body.append(para(run('czytelny podpis rodzica / opiekuna 1                    '
+                     'czytelny podpis rodzica / opiekuna 2', size=14, color=NAVY), jc='center', po=0))
 
 nowy = naglowek_xml + ''.join(body) + sectpr + '</w:body></w:document>'
 open(doc_path, 'w', encoding='utf-8').write(nowy)

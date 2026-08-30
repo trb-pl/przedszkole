@@ -111,6 +111,39 @@ def pole_dla(etykieta, sekcja_rodzica):
     return POLA.get(etykieta)
 
 
+def data_podpisania():
+    """Akapit „Warszawa, dnia {{DATA_UMOWY}}" wstawiany nad linią podpisu."""
+    p = ET.Element(w + 'p')
+    ppr = ET.SubElement(p, w + 'pPr')
+    jc = ET.SubElement(ppr, w + 'jc')
+    jc.set(w + 'val', 'right')
+    spacing = ET.SubElement(ppr, w + 'spacing')
+    spacing.set(w + 'before', '240')
+    spacing.set(w + 'after', '240')
+    p.append(nowy_run('Warszawa, dnia ', kolor=NAVY))
+    p.append(nowy_run('{{DATA_UMOWY}}', bold=True, italic=True, kolor=NAVY))
+    return p
+
+
+def wstaw_date_podpisania(body):
+    """Wstawia datę nad blokiem podpisu.
+
+    Blok podpisu to dwa akapity: kropkowana kreska, a pod nią etykieta
+    („czytelny podpis rodzica…"). Data musi trafić nad kreskę — wstawiona
+    między nie rozdzielałaby linię od jej opisu.
+    """
+    for i, el in enumerate(list(body)):
+        if el.tag != w + 'p' or 'czytelny podpis' not in tekst(el):
+            continue
+
+        gdzie = i
+        if i > 0 and set(tekst(body[i - 1])) <= set('. '):
+            gdzie = i - 1   # nad kreską, nie pod nią
+
+        body.insert(gdzie, data_podpisania())
+        return
+
+
 def przetworz_akapit(p, sekcja_rodzica):
     """Zwraca False, jeśli akapit ma zniknąć z szablonu."""
     tresc = tekst(p)
@@ -120,6 +153,14 @@ def przetworz_akapit(p, sekcja_rodzica):
     # grupy zajmuje się przedszkole, nie umowa.
     if re.match(r'^Grupa\s*:', tresc):
         return False
+
+    # Skoro data jest już wydrukowana nad podpisem, etykieta nie może prosić
+    # o nią po raz drugi.
+    if 'czytelny podpis' in tresc:
+        for run in p.findall(w + 'r'):
+            for t in run.findall(w + 't'):
+                if t.text:
+                    t.text = t.text.replace('data i czytelny podpis', 'czytelny podpis')
 
     dopasowanie = re.match(r'^([^:]{2,40}?)\s*:\s*\.{4,}', tresc)
     if dopasowanie:
@@ -244,6 +285,7 @@ def zbuduj(elementy, nazwa_wyjscia, numer_zalacznika=None):
         if przetworz_akapit(kopia, sekcja_rodzica):
             body.append(kopia)
 
+    wstaw_date_podpisania(body)
     body.append(sectpr)
     ET.ElementTree(korzen).write(sciezka_xml, encoding='UTF-8', xml_declaration=True)
 
