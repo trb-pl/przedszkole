@@ -56,17 +56,11 @@ ZRODLA_GOTOWE = [
     ('Zalacznik3_Piesze_wyjscia_SZABLON.docx',    'wzor-zalacznik-3-zgoda-piesze-wyjscia.pdf'),
     ('Zalacznik4_Zajecia_dodatkowe_SZABLON.docx', 'wzor-zalacznik-4-zajecia-dodatkowe.pdf'),
     ('Ankieta_Informacje_o_dziecku_SZABLON.docx', 'wzor-ankieta-informacje-o-dziecku.pdf'),
+    ('Informacja_RODO_SZABLON.docx',              'informacja-rodo.pdf'),
 ]
 ZRODLA_GOTOWE = [(os.path.join(POBRANE, z), n) for z, n in ZRODLA_GOTOWE]
 
 # Dokumenty bez identyfikacji wizualnej — markę nakładamy przy składzie PDF.
-# Informacja RODO nie jest formularzem — nie ma pól do wypełnienia, więc
-# zostaje w oryginale, a markę nakładamy dopiero przy składzie PDF.
-ZRODLA_SUROWE = [
-    (os.path.join(POBRANE, 'Informacja_RODO_dla_rodzicow_Kolorowe_Przedszkole_2026_2027.docx'),
-     'informacja-rodo.pdf', False),
-]
-
 for wariant in ('Regular', 'Bold', 'Italic', 'BoldItalic'):
     pdfmetrics.registerFont(TTFont('Nunito-' + wariant, os.path.join(FONTY, 'Nunito-%s.ttf' % wariant)))
 # Rodzinę rejestrujemy pod nazwą bazowej odmiany — inaczej reportlab nie wie,
@@ -345,10 +339,8 @@ def logo_z_docx(sciezka):
     return z.read('word/media/logo.png') if 'word/media/logo.png' in z.namelist() else None
 
 
-logo_marki = open(LOGO, 'rb').read()
-
 for zrodlo, nazwa in ZRODLA_GOTOWE:
     zbuduj(elementy_body(zrodlo), nazwa, logo_z_docx(zrodlo))
 
-for zrodlo, nazwa, wzor in ZRODLA_SUROWE:
-    zbuduj(elementy_body(zrodlo), nazwa, logo_marki, wlasna_marka=True, wzor=wzor)
+# Informacja RODO ma w treści miejsce na podpis potwierdzający odbiór,
+# więc nagłówek „WZÓR" jest na niej na miejscu tak samo jak na reszcie.

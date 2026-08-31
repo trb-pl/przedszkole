@@ -66,6 +66,7 @@ const SZABLONY = [
   { szablon: 'Zalacznik3_Piesze_wyjscia_SZABLON', id: '', wynik: '4. Zalacznik 3 - piesze wyjscia' },
   { szablon: 'Zalacznik4_Zajecia_dodatkowe_SZABLON', id: '', wynik: '5. Zalacznik 4 - zajecia dodatkowe' },
   { szablon: 'Ankieta_Informacje_o_dziecku_SZABLON', id: '', wynik: '6. Informacje o dziecku - ankieta' },
+  { szablon: 'Informacja_RODO_SZABLON',              id: '', wynik: '7. Informacja RODO' },
 ];
 
 // Kolejność kolumn w arkuszu. Nie zmieniaj bez zmiany funkcji poniżej.
@@ -487,6 +488,7 @@ function onOpen() {
     .createMenu('📄 Umowy')
     .addItem('Generuj teczki dla zaznaczonych wierszy', 'generujUmowy')
     .addItem('Generuj wszystkie brakujące', 'generujBrakujace')
+    .addItem('Uzupełnij teczki o brakujące dokumenty', 'uzupelnijTeczki')
     .addSeparator()
     .addItem('Pokaż szablony', 'pokazSzablony')
     .addItem('Napraw komórki z #ERROR!', 'naprawBledneKomorki')
@@ -505,6 +507,52 @@ function generujUmowy() {
 function generujBrakujace() {
   const arkusz = arkuszDanych();
   przetworzWiersze(arkusz, 2, arkusz.getLastRow(), true);
+}
+
+/**
+ * Dokłada do istniejących teczek dokumenty, których w nich nie ma — np. gdy
+ * do kompletu doszedł nowy załącznik już po wygenerowaniu wszystkich teczek.
+ * Pliki obecne w teczce zostają nietknięte, więc nie przepadają ręczne
+ * poprawki ani podpisy złożone na wydrukach.
+ */
+function uzupelnijTeczki() {
+  const ui = SpreadsheetApp.getUi();
+  const arkusz = arkuszDanych();
+
+  const brakujace = brakujaceSzablony();
+  if (brakujace.length) {
+    ui.alert('Najpierw wgraj brakujące szablony:\n\n• ' + brakujace.join('\n• '));
+    return;
+  }
+
+  const naglowki = arkusz.getRange(1, 1, 1, arkusz.getLastColumn()).getValues()[0]
+    .map(function (n) { return String(n).trim(); });
+  const kolWygenerowana = naglowki.indexOf('Umowa wygenerowana') + 1;
+  const kolNazwisko = naglowki.indexOf('Dziecko — nazwisko');
+
+  if (kolWygenerowana === 0 || kolNazwisko === -1) {
+    ui.alert('Nie rozpoznaję nagłówków w arkuszu.');
+    return;
+  }
+
+  const folder = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_UMOW));
+  let teczek = 0;
+
+  for (let r = 2; r <= arkusz.getLastRow(); r++) {
+    const wiersz = arkusz.getRange(r, 1, 1, naglowki.length).getValues()[0];
+    if (!wiersz[kolNazwisko]) continue;
+    if (!wiersz[kolWygenerowana - 1]) continue;   // teczki jeszcze nie ma
+
+    generujUmoweDlaWiersza(wiersz, folder, naglowki, true);
+    teczek++;
+  }
+
+  ui.alert(
+    teczek === 0
+      ? 'Nie znalazłem teczek do uzupełnienia.'
+      : 'Sprawdzono teczek: ' + teczek + '.\n\n' +
+        'Brakujące dokumenty zostały dogenerowane, istniejące zostały nietknięte.'
+  );
 }
 
 function przetworzWiersze(arkusz, od, doW, tylkoBrakujace) {
@@ -575,7 +623,7 @@ function przetworzWiersze(arkusz, od, doW, tylkoBrakujace) {
  * ponumerowane, więc drukowanie folderu po folderze daje od razu komplet
  * ułożony w kolejności do wpięcia.
  */
-function generujUmoweDlaWiersza(wiersz, folderGlowny, naglowki) {
+function generujUmoweDlaWiersza(wiersz, folderGlowny, naglowki, tylkoBrakujace) {
   const d = {};
   naglowki.forEach(function (naglowek, i) { d[naglowek] = wiersz[i]; });
 
@@ -585,10 +633,16 @@ function generujUmoweDlaWiersza(wiersz, folderGlowny, naglowki) {
   const folderSzablonow = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_SZABLONOW));
 
   SZABLONY.forEach(function (pozycja) {
+    const nazwa = pozycja.wynik + ' — ' + dziecko;
+
+    // Przy uzupełnianiu teczek pomijamy to, co już w nich leży — dokumenty
+    // raz wygenerowane mogły zostać poprawione ręcznie i nadpisanie ich
+    // skasowałoby te poprawki.
+    if (tylkoBrakujace && teczka.getFilesByName(nazwa).hasNext()) return;
+
     const szablon = szablonPoNazwie(folderSzablonow, pozycja);
     if (!szablon) throw new Error('Brak szablonu „' + pozycja.szablon + '" w folderze szablonów.');
 
-    const nazwa = pozycja.wynik + ' — ' + dziecko;
     const kopia = szablon.makeCopy(nazwa, teczka);
     const dok = DocumentApp.openById(kopia.getId());
     const body = dok.getBody();

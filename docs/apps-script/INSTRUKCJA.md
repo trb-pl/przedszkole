@@ -47,6 +47,7 @@ Nazwy zostają takie, jakie nadała konwersja:
 | `Zalacznik3_Piesze_wyjscia_SZABLON` | piesze wyjścia |
 | `Zalacznik4_Zajecia_dodatkowe_SZABLON` | zajęcia dodatkowe |
 | `Ankieta_Informacje_o_dziecku_SZABLON` | ankieta o dziecku |
+| `Informacja_RODO_SZABLON` | informacja o przetwarzaniu danych |
 
 Porównanie nazw pomija wielkość liter, spacje, podkreślenia, myślniki
 i polskie ogonki, więc `Zalacznik1_Zachorowanie_SZABLON`,
@@ -199,6 +200,7 @@ Dokument Google (gdyby coś trzeba było poprawić) i PDF (do druku):
 | `4. Zalacznik 3 - piesze wyjscia` | dziecko, numer umowy |
 | `5. Zalacznik 4 - zajecia dodatkowe` | dziecko, numer umowy |
 | `6. Informacje o dziecku - ankieta` | dziecko, PESEL, kontakty do rodziców |
+| `7. Informacja RODO` | dziecko i rodzic w potwierdzeniu odbioru |
 
 Numery z przodu ustawiają pliki w kolejności do wpięcia w teczkę — drukujesz
 folder po folderze i od razu masz komplet.
@@ -212,6 +214,15 @@ najedź na komórkę, żeby go zobaczyć.
 
 Ponowne uruchomienie dla tego samego wiersza używa istniejącej teczki,
 więc nie robią się duplikaty folderów.
+
+### Gdy do kompletu dojdzie nowy dokument
+
+Menu **📄 Umowy → Uzupełnij teczki o brakujące dokumenty** przechodzi po
+wszystkich teczkach i dokłada wyłącznie te pliki, których w nich nie ma.
+Dokumenty już istniejące zostają nietknięte — nie przepadają ręczne
+poprawki ani nic, co zostało wydrukowane i podpisane.
+
+Tą drogą dołożyliśmy informację RODO po wygenerowaniu wszystkich teczek.
 
 ---
 

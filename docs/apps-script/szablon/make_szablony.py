@@ -29,6 +29,7 @@ POBRANE = os.path.expanduser('~/Downloads')
 KONTENER = os.path.join(POBRANE, 'Umowa_SZABLON_2026_2027_brand.docx')
 PAKIET = os.path.join(POBRANE, 'Pakiet_formularzy_dla_rodzicow_2026_2027 (003).docx')
 ANKIETA = os.path.join(POBRANE, 'Informacje_o_dziecku_ankieta_dla_rodzicow_2026_2027 (003).docx')
+RODO = os.path.join(POBRANE, 'Informacja_RODO_dla_rodzicow_Kolorowe_Przedszkole_2026_2027.docx')
 
 # Etykieta w dokumencie → pole, którym wypełni ją Apps Script.
 POLA = {
@@ -125,6 +126,13 @@ def data_podpisania():
     return p
 
 
+def tekst_nastepnego(elementy, el):
+    """Tekst akapitu następującego po podanym — potrzebny przy kreskach,
+    których opis stoi dopiero pod nimi."""
+    i = elementy.index(el)
+    return tekst(elementy[i + 1]) if i + 1 < len(elementy) else ''
+
+
 def wstaw_date_podpisania(body):
     """Wstawia datę nad blokiem podpisu.
 
@@ -132,6 +140,11 @@ def wstaw_date_podpisania(body):
     („czytelny podpis rodzica…"). Data musi trafić nad kreskę — wstawiona
     między nie rozdzielałaby linię od jej opisu.
     """
+    # Dokument, który datę ma już w treści (np. informacja RODO), nie
+    # potrzebuje drugiej.
+    if any('{{DATA_UMOWY}}' in tekst(el) for el in body):
+        return
+
     for i, el in enumerate(list(body)):
         if el.tag != w + 'p' or 'czytelny podpis' not in tekst(el):
             continue
@@ -144,9 +157,32 @@ def wstaw_date_podpisania(body):
         return
 
 
-def przetworz_akapit(p, sekcja_rodzica):
+# Bloki „____ / opis pod spodem" (potwierdzenie odbioru w informacji RODO).
+# Opis stoi pod kreską, więc pole rozpoznajemy po tym, co następuje.
+POLA_POD_KRESKA = {
+    'imię i nazwisko dziecka': '{{DZIECKO}}',
+    'imię i nazwisko rodzica/opiekuna prawnego': '{{R1_IMIE}}',
+}
+
+
+def przetworz_akapit(p, sekcja_rodzica, nastepny=''):
     """Zwraca False, jeśli akapit ma zniknąć z szablonu."""
     tresc = tekst(p)
+
+    # Pusta kreska, pod którą jest opis pola — wypełniamy danymi.
+    if set(tresc) <= set('_ ') and tresc and nastepny.lower() in POLA_POD_KRESKA:
+        zastap_runy(p, [nowy_run(POLA_POD_KRESKA[nastepny.lower()],
+                                 bold=True, italic=True, kolor=NAVY)])
+        return True
+
+    # Ręcznie wpisywana data przy podpisie — wchodzi z konfiguracji.
+    if re.match(r'^Warszawa,\s*_+\s*/', tresc):
+        zastap_runy(p, [
+            nowy_run('Warszawa, dnia ', kolor=NAVY),
+            nowy_run('{{DATA_UMOWY}}', bold=True, italic=True, kolor=NAVY),
+            nowy_run('                              ____________________________________________', kolor=NAVY),
+        ])
+        return True
 
     # „Grupa" jest ustalana we wrześniu, więc w dokumencie generowanym
     # w sierpniu byłaby pustym polem do ręcznego dopisania. Przydziałem
@@ -186,10 +222,17 @@ def przetworz_akapit(p, sekcja_rodzica):
         jc = ET.SubElement(ppr, w + 'jc')
         jc.set(w + 'val', 'center')
 
-    # Nagłówek sekcji („1. DANE DZIECKA", „Kontakty alarmowe") — turkus.
+    # Nagłówek sekcji („1. DANE DZIECKA", „Kontakty alarmowe", nagłówki
+    # informacji RODO) — turkus. Styl Worda rozpoznajemy obok wzorców
+    # tekstowych, bo w RODO nagłówki nie mają numeracji ani pogrubienia.
+    ppr = p.find(w + 'pPr')
+    styl_word = ppr.find(w + 'pStyle') if ppr is not None else None
     naglowek = (
+        (styl_word is not None and str(styl_word.get(w + 'val', '')).startswith('Nag'))
+        or (
         re.match(r'^\d+\.\s+[A-ZĄĆĘŁŃÓŚŹŻ ,/-]{4,}$', tresc)
         or (len(tresc) < 60 and tresc.endswith(('alarmowe', 'sytuacji', 'zgody', 'Zasady', 'Decyzja', 'prawnego')))
+        )
     )
     kolor = TEAL if naglowek else NAVY
 
@@ -282,7 +325,7 @@ def zbuduj(elementy, nazwa_wyjscia, numer_zalacznika=None):
             body.append(kopia)
             continue
 
-        if przetworz_akapit(kopia, sekcja_rodzica):
+        if przetworz_akapit(kopia, sekcja_rodzica, tekst_nastepnego(elementy, el)):
             body.append(kopia)
 
     wstaw_date_podpisania(body)
@@ -329,3 +372,7 @@ if __name__ == '__main__':
     zbuduj(zalaczniki[3], 'Zalacznik3_Piesze_wyjscia_SZABLON.docx', numer_zalacznika=3)
     zbuduj(zalaczniki[4], 'Zalacznik4_Zajecia_dodatkowe_SZABLON.docx', numer_zalacznika=4)
     zbuduj(elementy_body(ANKIETA), 'Ankieta_Informacje_o_dziecku_SZABLON.docx')
+
+    # Informacja RODO nie ma pól do wypełnienia ani miejsca na podpis —
+    # przechodzi tędy wyłącznie po to, żeby wyglądać jak reszta teczki.
+    zbuduj(elementy_body(RODO), 'Informacja_RODO_SZABLON.docx')
