@@ -490,6 +490,7 @@ function onOpen() {
     .addItem('Generuj wszystkie brakujące', 'generujBrakujace')
     .addItem('Uzupełnij teczki o brakujące dokumenty', 'uzupelnijTeczki')
     .addSeparator()
+    .addItem('Raport teczek — czego brakuje', 'raportTeczek')
     .addItem('Pokaż szablony', 'pokazSzablony')
     .addItem('Napraw komórki z #ERROR!', 'naprawBledneKomorki')
     .addItem('Sprawdź konfigurację', 'testKonfiguracji')
@@ -594,6 +595,11 @@ function uzupelnijTeczki() {
     (teczek === 0 && !bledy.length
       ? 'Nie znalazłem teczek do uzupełnienia — wszystkie mają komplet dokumentów.'
       : 'Uzupełniono teczek: ' + teczek + '.') +
+    '\nPrzejrzano wiersze od ' + odWiersza + ' do ' + (przerwane || arkusz.getLastRow()) + '.' +
+    (odWiersza > 2
+      ? '\n\n⚠️ Start od wiersza ' + odWiersza + ', bo poprzedni przebieg został przerwany. ' +
+        'Wcześniejsze wiersze zostały pominięte — uruchom jeszcze raz, żeby je sprawdzić.'
+      : '') +
     (przerwane
       ? '\n\n⏸ Przerwano przed limitem czasu Google (wiersz ' + przerwane + '). ' +
         'Uruchom „Uzupełnij teczki" jeszcze raz — skrypt ruszy od tego miejsca.'
@@ -757,6 +763,70 @@ function pokazSzablony() {
   console.log(raport);
   try { SpreadsheetApp.getUi().alert(raport); } catch (e) { /* z edytora — wystarczy dziennik */ }
   return raport;
+}
+
+/**
+ * Wypisuje teczki, w których brakuje dokumentów. Szybsze niż klikanie po
+ * folderach na Dysku i mówi wprost, czy „Uzupełnij teczki" ma jeszcze co
+ * robić — nic nie generuje, tylko sprawdza.
+ */
+function raportTeczek() {
+  const ui = SpreadsheetApp.getUi();
+  const arkusz = arkuszDanych();
+
+  const naglowki = arkusz.getRange(1, 1, 1, arkusz.getLastColumn()).getValues()[0]
+    .map(function (n) { return String(n).trim(); });
+  const kolWygenerowana = naglowki.indexOf('Umowa wygenerowana') + 1;
+  const kolNazwisko = naglowki.indexOf('Dziecko — nazwisko');
+  const kolImiona = naglowki.indexOf('Dziecko — imiona');
+  const kolNr = naglowki.indexOf('Nr umowy');
+
+  const folder = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_UMOW));
+  const niekompletne = [];
+  let kompletnych = 0;
+  let bezTeczki = 0;
+
+  for (let r = 2; r <= arkusz.getLastRow(); r++) {
+    const wiersz = arkusz.getRange(r, 1, 1, naglowki.length).getValues()[0];
+    if (!wiersz[kolNazwisko]) continue;
+
+    if (!wiersz[kolWygenerowana - 1]) {
+      bezTeczki++;
+      continue;
+    }
+
+    const dziecko = (wiersz[kolImiona] + ' ' + wiersz[kolNazwisko]).trim();
+    const nazwaTeczki = String(wiersz[kolNr]).replace(/\//g, '-') + ' — ' + dziecko;
+
+    const foldery = folder.getFoldersByName(nazwaTeczki);
+    if (!foldery.hasNext()) {
+      niekompletne.push('w. ' + r + ' ' + dziecko + ' — BRAK TECZKI');
+      continue;
+    }
+
+    const teczka = foldery.next();
+    const braki = SZABLONY.filter(function (pozycja) {
+      return !teczka.getFilesByName(pozycja.wynik + ' — ' + dziecko).hasNext();
+    }).map(function (pozycja) { return pozycja.wynik.split('.')[0]; });
+
+    if (braki.length) {
+      niekompletne.push('w. ' + r + ' ' + dziecko + ' — brak dok. ' + braki.join(', '));
+    } else {
+      kompletnych++;
+    }
+  }
+
+  const raport =
+    'Teczki kompletne (po ' + SZABLONY.length + ' dokumentów): ' + kompletnych + '\n' +
+    'Teczki z brakami: ' + niekompletne.length + '\n' +
+    'Wiersze bez teczki (nie generowano): ' + bezTeczki +
+    (niekompletne.length
+      ? '\n\n' + niekompletne.slice(0, 40).join('\n') +
+        (niekompletne.length > 40 ? '\n… i ' + (niekompletne.length - 40) + ' więcej (pełna lista w dzienniku)' : '')
+      : '');
+
+  console.log(raport + (niekompletne.length > 40 ? '\n\nPEŁNA LISTA:\n' + niekompletne.join('\n') : ''));
+  ui.alert(raport);
 }
 
 /**
