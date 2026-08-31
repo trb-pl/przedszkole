@@ -514,12 +514,33 @@ function generujBrakujace() {
  * do kompletu doszedł nowy załącznik już po wygenerowaniu wszystkich teczek.
  * Pliki obecne w teczce zostają nietknięte, więc nie przepadają ręczne
  * poprawki ani podpisy złożone na wydrukach.
+ *
+ * Google przerywa skrypt po 6 minutach, a jedna teczka to kopiowanie
+ * dokumentu i konwersja do PDF — przy kilkudziesięciu dzieciach limit jest
+ * w zasięgu. Dlatego przerywamy sami po 4,5 minuty i zapamiętujemy, na
+ * którym wierszu skończyliśmy: kolejne uruchomienie kontynuuje od tego
+ * miejsca zamiast zaczynać od zera.
  */
 function uzupelnijTeczki() {
   const ui = SpreadsheetApp.getUi();
   const arkusz = arkuszDanych();
+  const start = Date.now();
+  const LIMIT_MS = 4.5 * 60 * 1000;
 
-  const brakujace = brakujaceSzablony();
+  if (czystyId(CONFIG.ID_FOLDERU_SZABLONOW) === 'WKLEJ_ID_FOLDERU_SZABLONOW' ||
+      CONFIG.ID_FOLDERU_UMOW === 'WKLEJ_ID_FOLDERU') {
+    ui.alert('Najpierw uzupełnij ID_FOLDERU_SZABLONOW i ID_FOLDERU_UMOW w sekcji CONFIG.');
+    return;
+  }
+
+  let brakujace;
+  try {
+    brakujace = brakujaceSzablony();
+  } catch (e) {
+    ui.alert('Nie mogę otworzyć folderu szablonów:\n\n' + e.message);
+    return;
+  }
+
   if (brakujace.length) {
     ui.alert('Najpierw wgraj brakujące szablony:\n\n• ' + brakujace.join('\n• '));
     return;
@@ -535,24 +556,52 @@ function uzupelnijTeczki() {
     return;
   }
 
-  const folder = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_UMOW));
-  let teczek = 0;
+  const pamiec = PropertiesService.getDocumentProperties();
+  const odWiersza = Math.max(2, Number(pamiec.getProperty('uzupelnianie_od')) || 2);
 
-  for (let r = 2; r <= arkusz.getLastRow(); r++) {
+  const folder = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_UMOW));
+  const bledy = [];
+  let teczek = 0;
+  let przerwane = 0;
+
+  for (let r = odWiersza; r <= arkusz.getLastRow(); r++) {
+    if (Date.now() - start > LIMIT_MS) {
+      przerwane = r;
+      break;
+    }
+
     const wiersz = arkusz.getRange(r, 1, 1, naglowki.length).getValues()[0];
     if (!wiersz[kolNazwisko]) continue;
     if (!wiersz[kolWygenerowana - 1]) continue;   // teczki jeszcze nie ma
 
-    generujUmoweDlaWiersza(wiersz, folder, naglowki, true);
-    teczek++;
+    // Błąd na jednym dziecku nie może zatrzymać reszty — zbieramy go
+    // i pokazujemy na końcu razem z numerem wiersza.
+    try {
+      generujUmoweDlaWiersza(wiersz, folder, naglowki, true);
+      teczek++;
+    } catch (e) {
+      bledy.push('wiersz ' + r + ' (' + wiersz[kolNazwisko] + '): ' + e.message);
+    }
   }
 
-  ui.alert(
-    teczek === 0
-      ? 'Nie znalazłem teczek do uzupełnienia.'
-      : 'Sprawdzono teczek: ' + teczek + '.\n\n' +
-        'Brakujące dokumenty zostały dogenerowane, istniejące zostały nietknięte.'
-  );
+  if (przerwane) {
+    pamiec.setProperty('uzupelnianie_od', String(przerwane));
+  } else {
+    pamiec.deleteProperty('uzupelnianie_od');
+  }
+
+  const raport =
+    (teczek === 0 && !bledy.length
+      ? 'Nie znalazłem teczek do uzupełnienia — wszystkie mają komplet dokumentów.'
+      : 'Uzupełniono teczek: ' + teczek + '.') +
+    (przerwane
+      ? '\n\n⏸ Przerwano przed limitem czasu Google (wiersz ' + przerwane + '). ' +
+        'Uruchom „Uzupełnij teczki" jeszcze raz — skrypt ruszy od tego miejsca.'
+      : '') +
+    (bledy.length ? '\n\n❌ Nie udało się:\n• ' + bledy.join('\n• ') : '');
+
+  console.log(raport);
+  ui.alert(raport);
 }
 
 function przetworzWiersze(arkusz, od, doW, tylkoBrakujace) {
