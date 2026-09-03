@@ -1,0 +1,310 @@
+---
+/**
+ * Schema.astro — dane strukturalne (JSON-LD) dla koloroweprzedszkole.com
+ *
+ * UŻYCIE (w <head> layoutu lub strony):
+ *   <Schema type="home" />
+ *   <Schema type="location" location="lotarynska" />
+ *   <Schema type="article" article={{ title, description, slug, image, datePublished, dateModified }} />
+ *   <Schema type="page" breadcrumbs={[{ name: 'O nas', url: '/o-nas/historia' }]} />
+ *
+ * ⚠️ PRZED WDROŻENIEM UZUPEŁNIJ WSZYSTKIE POLA OZNACZONE "TODO".
+ *    Nieprawdziwe dane strukturalne są gorsze niż ich brak.
+ *
+ * ⚠️ NIE WŁĄCZAJ RAZEM ze starymi SchemaOrg.astro / SchemaFAQ.astro —
+ *    obie wersje opisują tę samą placówkę i Google dostałby dwie
+ *    sprzeczne encje Organization. Ten komponent ma je zastąpić, nie
+ *    uzupełnić.
+ *
+ * ⚠️ ŚWIADOMIE NIE MA TU AggregateRating ANI Review.
+ *    Google od 2019 ignoruje (a bywa, że karze) opinie publikowane przez firmę
+ *    o samej sobie. Opinie zbierajcie w wizytówce Google — stamtąd trafią do
+ *    wyników wyszukiwania automatycznie.
+ */
+
+const SITE = 'https://koloroweprzedszkole.com';
+
+// ─────────────────────────────────────────────────────────────
+// DANE STAŁE — jedno miejsce do edycji
+// ─────────────────────────────────────────────────────────────
+const DANE = {
+  nazwa: 'Kolorowe Przedszkole',
+  telefon: '+48605657366',
+  email: 'przedszkole@kolorowe.eu',
+  rokZalozenia: '1991',
+  // Godziny z wizytówek Google: pon–pt 7:30–17:00, weekendy zamknięte
+  otwarte: { od: '07:30', do: '17:00' },
+  // Świadomie bez konkretnej kwoty. '$$' to ogólny wskaźnik poziomu cen —
+  // nie ujawnia stawki, a Google używa go do dopasowania w wynikach lokalnych.
+  // Jeśli i to ma zniknąć, usuń tę linię oraz oba odwołania do DANE.priceRange niżej.
+  priceRange: '$$',
+  profile: [
+    'https://www.instagram.com/koloroweprzedszkole',
+    'https://www.facebook.com/koloroweprzedszkole',
+    'https://www.google.com/maps/place/?q=place_id:ChIJnT12agnNHkcRWQWupyrqP28',
+    'https://www.google.com/maps/place/?q=place_id:ChIJW_Tbt4fNHkcRVmNzF8h0wo4',
+  ],
+};
+
+const LOKALIZACJE = {
+  lotarynska: {
+    id: `${SITE}/lokalizacje/lotarynska-18#miejsce`,
+    url: `${SITE}/lokalizacje/lotarynska-18`,
+    nazwa: 'Kolorowe Przedszkole — Lotaryńska 18',
+    ulica: 'ul. Lotaryńska 18',
+    kod: '03-974',
+    opis:
+      'Rodzinny dom, w którym w 1991 roku powstało Kolorowe Przedszkole. ' +
+      'Kameralne grupy dla najmłodszych dzieci, od 2,5 roku życia.',
+    lat: 52.2238775,
+    lng: 21.0622589,
+    placeId: 'ChIJnT12agnNHkcRWQWupyrqP28',
+  },
+  zakopianska: {
+    id: `${SITE}/lokalizacje/zakopianska-8#miejsce`,
+    url: `${SITE}/lokalizacje/zakopianska-8`,
+    nazwa: 'Kolorowe Przedszkole — Zakopiańska 8',
+    ulica: 'ul. Zakopiańska 8',
+    kod: '03-934',
+    opis:
+      'Willa w sercu Saskiej Kępy z ogrodem o powierzchni ponad 1200 m². ' +
+      'Sala do integracji sensorycznej (SI) oraz gabinet psychologiczno-logopedyczny. ' +
+      'Grupy starsze, od 4 lat.',
+    lat: 52.2282810,
+    lng: 21.0538187,
+    placeId: 'ChIJW_Tbt4fNHkcRVmNzF8h0wo4',
+  },
+} as const;
+
+// ─────────────────────────────────────────────────────────────
+// TYPY
+// ─────────────────────────────────────────────────────────────
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+interface Crumb {
+  name: string;
+  url: string;
+}
+interface ArticleData {
+  title: string;
+  description: string;
+  slug: string;
+  image?: string;
+  datePublished: string;
+  dateModified?: string;
+  authorSlug?: string;
+  authorName?: string;
+}
+interface Props {
+  type: 'home' | 'location' | 'article' | 'page';
+  location?: keyof typeof LOKALIZACJE;
+  article?: ArticleData;
+  faq?: FaqItem[];
+  breadcrumbs?: Crumb[];
+}
+
+const { type, location, article, faq, breadcrumbs } = Astro.props as Props;
+
+// ─────────────────────────────────────────────────────────────
+// ENCJE WSPÓŁDZIELONE
+// ─────────────────────────────────────────────────────────────
+
+/** Założycielka — encja Person, do której odwołują się artykuły */
+const olga = {
+  '@type': 'Person',
+  '@id': `${SITE}/#olga-trebicka`,
+  name: 'Olga Trębicka',
+  // Osobna strona o Oldze jeszcze nie istnieje — wskazujemy historię
+  // placówki, gdzie jest opisana. Adres w danych strukturalnych musi się
+  // otwierać; link do /o-nas/olga-trebicka byłby dziś błędem 404.
+  // TODO: podmień, gdy powstanie dedykowana strona.
+  url: `${SITE}/o-nas/historia`,
+  jobTitle: 'Założycielka i dyrektorka',
+  description:
+    'Założycielka Kolorowego Przedszkola. Prowadzi placówkę na Saskiej Kępie od 1991 roku.',
+  worksFor: { '@id': `${SITE}/#organizacja` },
+  // TODO: dodaj, jeśli istnieją — profil LinkedIn, wywiady, wystąpienia
+  // sameAs: ['...'],
+};
+
+/** Pojedyncza lokalizacja jako oddział */
+const oddzial = (klucz: keyof typeof LOKALIZACJE) => {
+  const l = LOKALIZACJE[klucz];
+  return {
+    '@type': ['Preschool', 'LocalBusiness'],
+    '@id': l.id,
+    name: l.nazwa,
+    url: l.url,
+    description: l.opis,
+    parentOrganization: { '@id': `${SITE}/#organizacja` },
+    telephone: DANE.telefon,
+    email: DANE.email,
+    priceRange: DANE.priceRange,
+    currenciesAccepted: 'PLN',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: l.ulica,
+      addressLocality: 'Warszawa',
+      addressRegion: 'mazowieckie',
+      postalCode: l.kod,
+      addressCountry: 'PL',
+    },
+    geo: { '@type': 'GeoCoordinates', latitude: l.lat, longitude: l.lng },
+    hasMap: `https://www.google.com/maps/place/?q=place_id:${l.placeId}`,
+    sameAs: [`https://www.google.com/maps/place/?q=place_id:${l.placeId}`],
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: DANE.otwarte.od,
+        closes: DANE.otwarte.do,
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Saturday', 'Sunday'],
+        opens: '00:00',
+        closes: '00:00',
+      },
+    ],
+  };
+};
+
+/** Główna encja placówki */
+const organizacja = {
+  '@type': ['Preschool', 'LocalBusiness'],
+  '@id': `${SITE}/#organizacja`,
+  name: DANE.nazwa,
+  alternateName: 'Kolorowe Przedszkole Saska Kępa',
+  url: SITE,
+  // Stabilny adres, nie hash z /_astro — ten zmienia się przy każdym buildzie.
+  // Google przyjmuje logo w formacie rastrowym, stąd PNG zamiast SVG.
+  logo: `${SITE}/logo.png`,
+  image: `${SITE}/og-default.jpg`,
+  description:
+    'Prywatne, niepubliczne przedszkole na Saskiej Kępie w Warszawie, tuż przy Gocławiu, ' +
+    'działające od 1991 roku. Dwie lokalizacje, kameralne grupy, dzieci od 2,5 roku życia. ' +
+    'Codzienny kontakt z językiem angielskim, sala integracji sensorycznej i domowe obiady ' +
+    'gotowane na miejscu.',
+  slogan: 'Między domem a szkołą od 1991 roku',
+  foundingDate: DANE.rokZalozenia,
+  founder: { '@id': olga['@id'] },
+  telephone: DANE.telefon,
+  email: DANE.email,
+  priceRange: DANE.priceRange,
+  knowsLanguage: ['pl', 'en'],
+  sameAs: DANE.profile,
+  // Adres główny — Google wymaga jednego na encję nadrzędną
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: LOKALIZACJE.lotarynska.ulica,
+    addressLocality: 'Warszawa',
+    addressRegion: 'mazowieckie',
+    postalCode: LOKALIZACJE.lotarynska.kod,
+    addressCountry: 'PL',
+  },
+  department: [oddzial('lotarynska'), oddzial('zakopianska')],
+  areaServed: [
+    { '@type': 'Place', name: 'Saska Kępa, Warszawa' },
+    { '@type': 'Place', name: 'Gocław, Warszawa' },
+    { '@type': 'Place', name: 'Praga-Południe, Warszawa' },
+  ],
+  audience: {
+    '@type': 'EducationalAudience',
+    educationalRole: 'student',
+    audienceType: 'Dzieci w wieku od 2,5 do 7 lat',
+  },
+  // TODO: numer wpisu do ewidencji szkół i placówek niepublicznych m.st. Warszawy
+  // identifier: { '@type': 'PropertyValue', name: 'Wpis do ewidencji', value: '...' },
+};
+
+/** Witryna — pomaga Google zrozumieć strukturę serwisu */
+const witryna = {
+  '@type': 'WebSite',
+  '@id': `${SITE}/#witryna`,
+  url: SITE,
+  name: DANE.nazwa,
+  inLanguage: 'pl-PL',
+  publisher: { '@id': `${SITE}/#organizacja` },
+};
+
+// ─────────────────────────────────────────────────────────────
+// SKŁADANIE GRAFU DLA KONKRETNEGO TYPU STRONY
+// ─────────────────────────────────────────────────────────────
+const graf: Record<string, unknown>[] = [];
+
+if (type === 'home') {
+  graf.push(witryna, organizacja, olga);
+}
+
+if (type === 'location' && location) {
+  graf.push(witryna, organizacja, oddzial(location));
+}
+
+if (type === 'page') {
+  graf.push(witryna, organizacja);
+}
+
+if (type === 'article' && article) {
+  const url = `${SITE}/porady/${article.slug}`;
+  const autor = article.authorSlug
+    ? {
+        '@type': 'Person',
+        '@id': `${SITE}/o-nas/${article.authorSlug}#osoba`,
+        name: article.authorName ?? 'Olga Trębicka',
+        url: `${SITE}/o-nas/${article.authorSlug}`,
+        worksFor: { '@id': `${SITE}/#organizacja` },
+      }
+    : olga;
+
+  graf.push(witryna, organizacja, autor, {
+    '@type': 'BlogPosting',
+    '@id': `${url}#artykul`,
+    headline: article.title.slice(0, 110), // Google ucina powyżej ~110 znaków
+    description: article.description,
+    url,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    image: article.image ?? `${SITE}/og-default.jpg`,
+    datePublished: article.datePublished,
+    dateModified: article.dateModified ?? article.datePublished,
+    inLanguage: 'pl-PL',
+    author: { '@id': autor['@id'] },
+    publisher: { '@id': `${SITE}/#organizacja` },
+    isPartOf: { '@id': `${SITE}/porady#blog` },
+  });
+}
+
+// FAQ — dodawaj TYLKO gdy pytania i odpowiedzi są widoczne na stronie
+if (faq?.length) {
+  graf.push({
+    '@type': 'FAQPage',
+    '@id': `${Astro.url.href}#faq`,
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  });
+}
+
+// Okruszki — pomijamy na stronie głównej
+if (breadcrumbs?.length) {
+  graf.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Strona główna', item: SITE },
+      ...breadcrumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 2,
+        name: c.name,
+        item: c.url.startsWith('http') ? c.url : `${SITE}${c.url}`,
+      })),
+    ],
+  });
+}
+
+const jsonld = { '@context': 'https://schema.org', '@graph': graf };
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
