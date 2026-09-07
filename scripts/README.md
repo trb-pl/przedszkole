@@ -64,9 +64,20 @@ szkolnego. Kratka na dzień, dni wolne wyszarzone — weekendy, święta
 ustawowe i przerwy wynikające z § 3 umowy.
 
 **Dane dzieci nie leżą w repozytorium.** Repo jest publiczne, a to dane
-osobowe, więc skrypt czyta listę z `~/Downloads/dzieci_2026_2027.txt`
-w formacie `Imiona<TAB>Nazwisko`, gdzie pusta linia oddziela grupy
-(pierwsza — Lotaryńska, druga — Zakopiańska).
+osobowe, więc skrypt czyta listę z `~/Downloads/dzieci_2026_2027.txt`:
+
+```
+# Zakopiańska
+Barbara<TAB>Dowgiałło
+…
+
+# Lotaryńska
+Lena<TAB>Komorowska-Konys
+…
+```
+
+Nazwa grupy stoi nad jej listą, a nie w kodzie — przestawienie bloków
+w pliku nie podmieni wtedy nagłówków na kartach.
 
 Sortowanie alfabetyczne po nazwisku realizuje własna tablica polskiego
 alfabetu, a nie `locale` — ustawienia regionalne bywają nieobecne na innej

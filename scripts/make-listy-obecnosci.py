@@ -8,9 +8,10 @@ nie trzeba było pamiętać, które to.
 Dane dzieci NIE są w repozytorium — to dane osobowe, a repo jest publiczne.
 Skrypt czyta je z pliku poza projektem (patrz LISTA poniżej) w formacie:
 
+    # Zakopiańska          ← nazwa grupy (opcjonalna, ale zalecana)
     Imiona<TAB>Nazwisko
     ...
-    (pusta linia oddziela grupy — pierwsza to Lotaryńska, druga Zakopiańska)
+    (pusta linia oddziela grupy)
 
 Uruchamianie:
     ./venv/bin/python scripts/przygotuj-fonty.py     # raz, jeśli brak fontów
@@ -120,20 +121,35 @@ def popraw_zapis(tekst):
 
 
 def wczytaj_grupy(sciezka):
-    grupy, biezaca = [], []
+    """Zwraca [(nazwa grupy, [(nazwisko, imiona), …]), …].
+
+    Nazwa grupy pochodzi z linii „# Nazwa" nad listą. Trzymanie jej przy
+    danych, a nie w kodzie, jest odporne na przestawienie bloków w pliku —
+    inaczej zamiana miejscami dwóch grup po cichu podmienia nagłówki kart.
+    """
+    grupy, biezaca, nazwa = [], [], None
+
+    def zamknij():
+        if biezaca:
+            grupy.append((nazwa or 'Grupa %d' % (len(grupy) + 1), list(biezaca)))
+
     for linia in open(sciezka, encoding='utf-8'):
         if not linia.strip():
-            if biezaca:
-                grupy.append(biezaca)
-                biezaca = []
+            zamknij()
+            biezaca, nazwa = [], None
             continue
+
+        if linia.lstrip().startswith('#'):
+            nazwa = linia.lstrip().lstrip('#').strip()
+            continue
+
         imiona, nazwisko = [c.strip() for c in linia.rstrip('\n').split('\t')]
         biezaca.append((popraw_zapis(nazwisko), popraw_zapis(imiona)))
-    if biezaca:
-        grupy.append(biezaca)
 
-    return [sorted(g, key=lambda o: (klucz_alfabetyczny(o[0]), klucz_alfabetyczny(o[1])))
-            for g in grupy]
+    zamknij()
+
+    return [(n, sorted(g, key=lambda o: (klucz_alfabetyczny(o[0]), klucz_alfabetyczny(o[1]))))
+            for n, g in grupy]
 
 
 def dni_miesiaca(rok, miesiac):
@@ -243,18 +259,18 @@ def main():
         raise SystemExit('Brak pliku z listą dzieci: ' + LISTA)
 
     grupy = wczytaj_grupy(LISTA)
-    nazwy = ['Lotaryńska', 'Zakopiańska']
 
     c = canvas_mod.Canvas(WYNIK, pagesize=landscape(A4))
     c.setTitle('Listy obecności 2026/2027')
     c.setAuthor('Kolorowe Przedszkole')
 
-    for grupa, dzieci in zip(nazwy, grupy):
+    for grupa, dzieci in grupy:
+        print('   %-14s %2d dzieci' % (grupa, len(dzieci)))
         for rok, miesiac in OKRES:
             karta(c, grupa, dzieci, rok, miesiac)
 
     c.save()
-    print('→ %s (%d stron, %d KB)' % (WYNIK, len(nazwy) * len(OKRES),
+    print('→ %s (%d stron, %d KB)' % (WYNIK, len(grupy) * len(OKRES),
                                       os.path.getsize(WYNIK) // 1024))
 
 
