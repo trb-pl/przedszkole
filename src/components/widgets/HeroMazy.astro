@@ -24,6 +24,13 @@ interface Props {
 
 const { title, seoHeading } = Astro.props;
 const heading = seoHeading || title;
+
+// Jedna lista klas dla obu kopii napisu. Rozjazd choćby o pół piksela
+// rozmyłby obrys, więc typografia nie może istnieć w dwóch miejscach.
+const napisCls =
+  'block px-6 text-center font-sans font-black text-[clamp(4.5rem,16vw,12rem)] ' +
+  'text-brand-cream leading-[0.85] tracking-tight lowercase ' +
+  'translate-y-[13%] md:translate-y-[17%]';
 ---
 
 <div class="relative">
@@ -42,22 +49,46 @@ const heading = seoHeading || title;
   <h1 class="sr-only">{heading}</h1>
 
   <!-- Visible knockout-bleed wordmark — decorative only (aria-hidden so
-       screen readers don't double-announce the page topic). -->
+       screen readers don't double-announce the page topic).
+
+       Dwie kopie tego samego słowa leżą dokładnie na sobie. Widoczna jest
+       zawsze pierwsza — czysty krem, bez żadnego obrysu. Druga niesie
+       wyłącznie włosową kreskę i jest przycięta do fragmentu poniżej paska,
+       więc obrys pojawia się tylko tam, gdzie litera wchodzi na kremowe tło
+       i inaczej by zniknęła. Na kolorowym pasku napis zostaje nietknięty. -->
   <div class="absolute inset-x-0 bottom-0 pointer-events-none" aria-hidden="true">
-    <span class="napis block px-6 text-center font-sans font-black text-[clamp(4.5rem,16vw,12rem)] text-brand-cream leading-[0.85] tracking-tight lowercase translate-y-[13%] md:translate-y-[17%]">
-      {title}
-    </span>
+    <div class="relative">
+      <span class={napisCls}>{title}</span>
+      <span class={`${napisCls} napis-dol absolute inset-0`}>{title}</span>
+    </div>
   </div>
 </div>
 
 <style>
-  /* Napis wychodzi poza pasek na kremowe tło — kremowe litery znikają wtedy
-     w dolnej części. Włos granatu obrysowuje kształt i przywraca czytelność.
-     paint-order rysuje obrys pod wypełnieniem, więc widać wyłącznie jego
-     zewnętrzną połowę: litera nie chudnie, a na kolorowym pasku obrys jest
-     na tyle delikatny, że nie zmienia charakteru napisu. */
-  .napis {
-    -webkit-text-stroke: 1.5px rgb(45 52 111 / 0.22);
+  /* Kreska w kolorze o włos ciemniejszym od kremu (#FCF6F0) — ma domknąć
+     kształt litery, a nie rysować ramkę. 0.75 px to najcieńsza linia, jaka
+     wychodzi równo także na ekranie 1×; przy 0.5 px przeglądarki zaczynają
+     ją gubić na łagodnych łukach. Kolor #E4D8CA to krem przyciemniony
+     o kilka procent — widać kształt, nie widać obwódki.
+
+     paint-order rysuje obrys pod wypełnieniem, więc litera nie chudnie —
+     widać wyłącznie zewnętrzną połowę kreski.
+
+     Cięcie: napis jest przesunięty w dół o 13% (md: 17%) własnej wysokości,
+     czyli dokładnie tyle wystaje poniżej paska. Wielokąt zaczyna się więc
+     na 87% (md: 83%) wysokości i sięga daleko w dół, żeby zmieścić ogonki
+     liter wychodzące poza pudełko wiersza. Styk cięcia wypada co do piksela
+     na krawędzi paska, gdzie tło i tak zmienia kolor — dlatego jest
+     niewidoczny. */
+  .napis-dol {
+    -webkit-text-stroke: 0.75px #E4D8CA;
     paint-order: stroke fill;
+    clip-path: polygon(-5% 87%, 105% 87%, 105% 300%, -5% 300%);
+  }
+
+  @media (min-width: 768px) {
+    .napis-dol {
+      clip-path: polygon(-5% 83%, 105% 83%, 105% 300%, -5% 300%);
+    }
   }
 </style>
