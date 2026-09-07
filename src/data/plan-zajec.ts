@@ -84,16 +84,21 @@ export const PLAN: Zajecia[] = [
   },
   {
     nazwa: 'Judo',
-    terminy: {},
+    terminy: {
+      piątek: '15.15–16.15',
+    },
   },
   {
     nazwa: 'Basen',
-    terminy: {},
+    terminy: {
+      wtorek: '13.15–15.15',
+    },
   },
   {
     nazwa: 'Robotyka',
-    // Poniedziałek potwierdzony, godzina do uzupełnienia.
-    terminy: {},
+    terminy: {
+      poniedziałek: '15.15–15.45',
+    },
   },
   {
     nazwa: 'Akrobatyka',
