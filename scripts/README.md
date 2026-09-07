@@ -9,7 +9,7 @@ Pythona ani żadnej z tych bibliotek.
 | `make-og-image.py` | Karta podglądu linku (WhatsApp, iMessage, Messenger) | `public/og-default.jpg` |
 | `przygotuj-fonty.py` | Wycina statyczne odmiany Nunito z pakietu Fontsource | `scripts/fonty/*.ttf` (poza gitem) |
 | `make-wzory-pdf.py` | Komplet pustych dokumentów do pobrania ze strony | `public/dokumenty/*.pdf` |
-| `make-listy-obecnosci.py` | Listy obecności na cały rok szkolny, do druku | `~/Downloads/Listy_obecnosci_*.pdf` |
+| `make-listy-obecnosci.py` | Listy obecności dzieci i personelu na rok szkolny | `~/Downloads/Listy_obecnosci_*.pdf` |
 
 ## Środowisko
 
@@ -86,3 +86,17 @@ maszynie i wtedy „Ł" wypada za „Z".
 Kalendarz świąt jest wpisany na sztywno na rok 2026/2027 (z Wigilią, która
 jest dniem ustawowo wolnym od 2025 roku). Na kolejny rok trzeba go
 zaktualizować razem z datami przerw z umowy.
+
+### Karta obecności personelu
+
+Powstaje z `~/Downloads/pracownicy_2026_2027.txt` (jedna osoba lub zajęcia
+w wierszu, bez tabulatora) jako osobny PDF, 12 stron. Dwie różnice wobec
+kart dla dzieci:
+
+- **kolejność zostaje taka jak w pliku** — listy personelu układa się wg
+  funkcji, nie alfabetu;
+- **wyszarzone są tylko weekendy i święta ustawowe**, bez przerw z umowy.
+  Przerwa wakacyjna zamyka przedszkole dla dzieci, ale personel bywa wtedy
+  na dyżurze albo urlopie i musi mieć gdzie to odnotować.
+
+Jeśli pliku nie ma, skrypt generuje same karty dzieci i mówi o tym wprost.

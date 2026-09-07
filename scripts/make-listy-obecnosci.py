@@ -34,6 +34,9 @@ LOGO = os.path.join(ROOT, 'docs/apps-script/szablon/logo.png')
 LISTA = os.path.expanduser('~/Downloads/dzieci_2026_2027.txt')
 WYNIK = os.path.expanduser('~/Downloads/Listy_obecnosci_2026_2027.pdf')
 
+LISTA_PRACOWNIKOW = os.path.expanduser('~/Downloads/pracownicy_2026_2027.txt')
+WYNIK_PRACOWNIKOW = os.path.expanduser('~/Downloads/Listy_obecnosci_pracownikow_2026_2027.pdf')
+
 GRANAT = colors.HexColor('#2D346F')
 TURKUS = colors.HexColor('#34BBA8')
 LINIA = colors.HexColor('#B9BCD0')
@@ -93,7 +96,18 @@ PRZERWY = (
 
 
 def wolny(d):
+    """Dzień wolny dla dzieci: weekend, święto albo przerwa z umowy."""
     return d.weekday() >= 5 or d in SWIETA or d in PRZERWY
+
+
+def wolny_dla_pracownika(d):
+    """Dla personelu wyszarzamy tylko weekendy i święta ustawowe.
+
+    Przerwy z umowy zamykają przedszkole dla dzieci, ale personel bywa
+    wtedy na dyżurze albo na urlopie — to trzeba móc odnotować, więc te
+    dni zostają białe.
+    """
+    return d.weekday() >= 5 or d in SWIETA
 
 
 # Polski porządek alfabetyczny. locale bywa niedostępne na innej maszynie,
@@ -120,7 +134,7 @@ def popraw_zapis(tekst):
     )
 
 
-def wczytaj_grupy(sciezka):
+def wczytaj_grupy(sciezka, sortuj=True):
     """Zwraca [(nazwa grupy, [(nazwisko, imiona), …]), …].
 
     Nazwa grupy pochodzi z linii „# Nazwa" nad listą. Trzymanie jej przy
@@ -143,10 +157,20 @@ def wczytaj_grupy(sciezka):
             nazwa = linia.lstrip().lstrip('#').strip()
             continue
 
-        imiona, nazwisko = [c.strip() for c in linia.rstrip('\n').split('\t')]
-        biezaca.append((popraw_zapis(nazwisko), popraw_zapis(imiona)))
+        czesci = [c.strip() for c in linia.rstrip('\n').split('\t')]
+        if len(czesci) == 1:
+            # Lista bez tabulatora — cały wiersz jest podpisem wiersza
+            # (personel, zajęcia dodatkowe). Nie rozbijamy go na części,
+            # bo „Marianna Marciniak Kaczmarek" to nie imię plus nazwisko.
+            biezaca.append((popraw_zapis(czesci[0]), ''))
+        else:
+            imiona, nazwisko = czesci[0], czesci[1]
+            biezaca.append((popraw_zapis(nazwisko), popraw_zapis(imiona)))
 
     zamknij()
+
+    if not sortuj:
+        return grupy
 
     return [(n, sorted(g, key=lambda o: (klucz_alfabetyczny(o[0]), klucz_alfabetyczny(o[1]))))
             for n, g in grupy]
@@ -161,7 +185,11 @@ def dni_miesiaca(rok, miesiac):
     return dni
 
 
-def karta(c, grupa, dzieci, rok, miesiac):
+def karta(c, grupa, dzieci, rok, miesiac, *,
+          tytul='LISTA OBECNOŚCI', etykieta='Imię i nazwisko dziecka',
+          czy_wolny=wolny, podpis_grupy='Grupa %s',
+          legenda='Obecność zaznacz znakiem X.  Pola wyszarzone — dni wolne '
+                  '(weekendy, święta, przerwy wynikające z umowy).'):
     szer, wys = landscape(A4)
     margines = 12 * mm
     dni = dni_miesiaca(rok, miesiac)
@@ -173,12 +201,14 @@ def karta(c, grupa, dzieci, rok, miesiac):
 
     c.setFont('Nunito-Bold', 15)
     c.setFillColor(GRANAT)
-    c.drawCentredString(szer / 2, wys - 15 * mm, 'LISTA OBECNOŚCI')
+    c.drawCentredString(szer / 2, wys - 15 * mm, tytul)
 
     c.setFont('Nunito-Bold', 11)
     c.setFillColor(TURKUS)
     c.drawCentredString(szer / 2, wys - 21 * mm,
-                        'Grupa %s  ·  %s %d' % (grupa, MIESIACE_M[miesiac - 1], rok))
+                        (podpis_grupy + '  ·  %s %d') % (grupa, MIESIACE_M[miesiac - 1], rok)
+                        if '%s' in podpis_grupy else
+                        '%s  ·  %s %d' % (podpis_grupy, MIESIACE_M[miesiac - 1], rok))
 
     c.setFont('Nunito-Regular', 8)
     c.setFillColor(SZARY)
@@ -196,7 +226,7 @@ def karta(c, grupa, dzieci, rok, miesiac):
 
     # ── Tło dni wolnych: jeden pas przez całą wysokość tabeli ──────────
     for i, d in enumerate(dni):
-        if not wolny(d):
+        if not czy_wolny(d):
             continue
         x = margines + kol_nazwisko + i * szer_dnia
         c.setFillColor(WOLNE)
@@ -205,11 +235,11 @@ def karta(c, grupa, dzieci, rok, miesiac):
     # ── Nagłówek tabeli ─────────────────────────────────────────────────
     c.setFillColor(GRANAT)
     c.setFont('Nunito-Bold', 9)
-    c.drawString(margines + 3 * mm, gora - 5.8 * mm, 'Imię i nazwisko dziecka')
+    c.drawString(margines + 3 * mm, gora - 5.8 * mm, etykieta)
 
     for i, d in enumerate(dni):
         x = margines + kol_nazwisko + i * szer_dnia + szer_dnia / 2
-        c.setFillColor(SZARY if wolny(d) else GRANAT)
+        c.setFillColor(SZARY if czy_wolny(d) else GRANAT)
         c.setFont('Nunito-Bold', 8)
         c.drawCentredString(x, gora - 4 * mm, str(d.day))
         c.setFont('Nunito-Regular', 6.5)
@@ -220,7 +250,7 @@ def karta(c, grupa, dzieci, rok, miesiac):
     for n, (nazwisko, imiona) in enumerate(dzieci):
         y = gora - wys_naglowka - (n + 1) * wys_wiersza + 2.6 * mm
         c.setFillColor(GRANAT)
-        c.drawString(margines + 3 * mm, y, '%s %s' % (nazwisko, imiona))
+        c.drawString(margines + 3 * mm, y, ('%s %s' % (nazwisko, imiona)).strip())
 
     # ── Siatka ──────────────────────────────────────────────────────────
     c.setStrokeColor(LINIA)
@@ -247,9 +277,7 @@ def karta(c, grupa, dzieci, rok, miesiac):
     # ── Legenda ─────────────────────────────────────────────────────────
     c.setFont('Nunito-Regular', 7)
     c.setFillColor(SZARY)
-    c.drawString(margines, dol_tabeli - 5 * mm,
-                 'Obecność zaznacz znakiem X.  Pola wyszarzone — dni wolne '
-                 '(weekendy, święta, przerwy wynikające z umowy).')
+    c.drawString(margines, dol_tabeli - 5 * mm, legenda)
 
     c.showPage()
 
@@ -261,7 +289,7 @@ def main():
     grupy = wczytaj_grupy(LISTA)
 
     c = canvas_mod.Canvas(WYNIK, pagesize=landscape(A4))
-    c.setTitle('Listy obecności 2026/2027')
+    c.setTitle('Listy obecności dzieci 2026/2027')
     c.setAuthor('Kolorowe Przedszkole')
 
     for grupa, dzieci in grupy:
@@ -272,6 +300,33 @@ def main():
     c.save()
     print('→ %s (%d stron, %d KB)' % (WYNIK, len(grupy) * len(OKRES),
                                       os.path.getsize(WYNIK) // 1024))
+
+    if not os.path.exists(LISTA_PRACOWNIKOW):
+        print('   (pominięto personel — brak pliku %s)' % LISTA_PRACOWNIKOW)
+        return
+
+    # Kolejność z pliku zostaje nietknięta: listy personelu układa się
+    # zwykle wg funkcji, nie alfabetu.
+    personel = wczytaj_grupy(LISTA_PRACOWNIKOW, sortuj=False)
+
+    c = canvas_mod.Canvas(WYNIK_PRACOWNIKOW, pagesize=landscape(A4))
+    c.setTitle('Listy obecności personelu 2026/2027')
+    c.setAuthor('Kolorowe Przedszkole')
+
+    for grupa, osoby in personel:
+        print('   %-14s %2d pozycji' % (grupa, len(osoby)))
+        for rok, miesiac in OKRES:
+            karta(c, grupa, osoby, rok, miesiac,
+                  tytul='KARTA OBECNOŚCI PERSONELU',
+                  etykieta='Imię i nazwisko / zajęcia',
+                  czy_wolny=wolny_dla_pracownika,
+                  podpis_grupy='%s',
+                  legenda='Obecność zaznacz znakiem X.  Pola wyszarzone — '
+                          'weekendy i święta ustawowo wolne od pracy.')
+
+    c.save()
+    print('→ %s (%d stron, %d KB)' % (WYNIK_PRACOWNIKOW, len(personel) * len(OKRES),
+                                      os.path.getsize(WYNIK_PRACOWNIKOW) // 1024))
 
 
 if __name__ == '__main__':
