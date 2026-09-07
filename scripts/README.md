@@ -10,6 +10,7 @@ Pythona ani żadnej z tych bibliotek.
 | `przygotuj-fonty.py` | Wycina statyczne odmiany Nunito z pakietu Fontsource | `scripts/fonty/*.ttf` (poza gitem) |
 | `make-wzory-pdf.py` | Komplet pustych dokumentów do pobrania ze strony | `public/dokumenty/*.pdf` |
 | `make-listy-obecnosci.py` | Listy obecności dzieci i personelu na rok szkolny | `~/Downloads/Listy_obecnosci_*.pdf` |
+| `make-plan-zajec-pdf.py` | Plan zajęć do pobrania ze strony | `public/dokumenty/plan-zajec-*.pdf` |
 
 ## Środowisko
 
@@ -100,3 +101,18 @@ kart dla dzieci:
   na dyżurze albo urlopie i musi mieć gdzie to odnotować.
 
 Jeśli pliku nie ma, skrypt generuje same karty dzieci i mówi o tym wprost.
+
+## Plan zajęć
+
+```bash
+./venv/bin/python scripts/make-plan-zajec-pdf.py
+```
+
+Godziny są w `src/data/plan-zajec.ts` — tym samym pliku, z którego renderuje
+się podstrona `/plan-zajec`. Skrypt czyta go wprost (prostym parserem, bez
+duplikowania danych do JSON-a), więc po zmianie godziny wystarczy
+przegenerować PDF i strona z wydrukiem nie mogą się rozjechać.
+
+Zajęcia z pustym `terminy: {}` nie trafiają do siatki — lądują pod nią jako
+„terminy w ustaleniu". Pusty wiersz w tabeli wygląda jak błąd, a to tylko
+brak ustalonej godziny.
