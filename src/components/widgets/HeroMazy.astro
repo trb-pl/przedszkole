@@ -44,8 +44,20 @@ const heading = seoHeading || title;
   <!-- Visible knockout-bleed wordmark — decorative only (aria-hidden so
        screen readers don't double-announce the page topic). -->
   <div class="absolute inset-x-0 bottom-0 pointer-events-none" aria-hidden="true">
-    <span class="block px-6 text-center font-sans font-black text-[clamp(4.5rem,16vw,12rem)] text-brand-cream leading-[0.85] tracking-tight lowercase translate-y-[13%] md:translate-y-[17%]">
+    <span class="napis block px-6 text-center font-sans font-black text-[clamp(4.5rem,16vw,12rem)] text-brand-cream leading-[0.85] tracking-tight lowercase translate-y-[13%] md:translate-y-[17%]">
       {title}
     </span>
   </div>
 </div>
+
+<style>
+  /* Napis wychodzi poza pasek na kremowe tło — kremowe litery znikają wtedy
+     w dolnej części. Włos granatu obrysowuje kształt i przywraca czytelność.
+     paint-order rysuje obrys pod wypełnieniem, więc widać wyłącznie jego
+     zewnętrzną połowę: litera nie chudnie, a na kolorowym pasku obrys jest
+     na tyle delikatny, że nie zmienia charakteru napisu. */
+  .napis {
+    -webkit-text-stroke: 1.5px rgb(45 52 111 / 0.22);
+    paint-order: stroke fill;
+  }
+</style>
