@@ -50,8 +50,8 @@ export const PLAN: Zajecia[] = [
     // była pomyłką przy przepisywaniu planu z kartki.
     nazwa: 'Rytmika',
     terminy: {
-      środa: '11.00–11.30',
-      piątek: '11.00–11.30',
+      wtorek: '11.30–12.00',
+      piątek: '11.30–12.00',
     },
   },
   {
