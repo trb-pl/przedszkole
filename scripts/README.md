@@ -9,6 +9,7 @@ Pythona ani żadnej z tych bibliotek.
 | `make-og-image.py` | Karta podglądu linku (WhatsApp, iMessage, Messenger) | `public/og-default.jpg` |
 | `przygotuj-fonty.py` | Wycina statyczne odmiany Nunito z pakietu Fontsource | `scripts/fonty/*.ttf` (poza gitem) |
 | `make-wzory-pdf.py` | Komplet pustych dokumentów do pobrania ze strony | `public/dokumenty/*.pdf` |
+| `make-listy-obecnosci.py` | Listy obecności na cały rok szkolny, do druku | `~/Downloads/Listy_obecnosci_*.pdf` |
 
 ## Środowisko
 
@@ -50,3 +51,27 @@ pojawia się nagłówek „WZÓR · dokument poglądowy, nie do podpisu".
 
 Katalog `public/dokumenty/` dostaje nagłówek `X-Robots-Tag: noindex`
 (w `vercel.json`) — to dokumenty dla rodziców, nie treść do wyszukiwarki.
+
+
+## Listy obecności
+
+```bash
+./venv/bin/python scripts/make-listy-obecnosci.py
+```
+
+Jeden PDF, 24 strony poziome: dwie grupy × dwanaście miesięcy roku
+szkolnego. Kratka na dzień, dni wolne wyszarzone — weekendy, święta
+ustawowe i przerwy wynikające z § 3 umowy.
+
+**Dane dzieci nie leżą w repozytorium.** Repo jest publiczne, a to dane
+osobowe, więc skrypt czyta listę z `~/Downloads/dzieci_2026_2027.txt`
+w formacie `Imiona<TAB>Nazwisko`, gdzie pusta linia oddziela grupy
+(pierwsza — Lotaryńska, druga — Zakopiańska).
+
+Sortowanie alfabetyczne po nazwisku realizuje własna tablica polskiego
+alfabetu, a nie `locale` — ustawienia regionalne bywają nieobecne na innej
+maszynie i wtedy „Ł" wypada za „Z".
+
+Kalendarz świąt jest wpisany na sztywno na rok 2026/2027 (z Wigilią, która
+jest dniem ustawowo wolnym od 2025 roku). Na kolejny rok trzeba go
+zaktualizować razem z datami przerw z umowy.
