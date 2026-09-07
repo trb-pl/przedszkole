@@ -46,12 +46,11 @@ export const PLAN: Zajecia[] = [
     },
   },
   {
+    // Umowa (§ 4): zajęcia rytmiczne dwa razy w tygodniu — codzienna rytmika
+    // była pomyłką przy przepisywaniu planu z kartki.
     nazwa: 'Rytmika',
     terminy: {
-      poniedziałek: '11.00–11.30',
-      wtorek: '11.00–11.30',
       środa: '11.00–11.30',
-      czwartek: '11.00–11.30',
       piątek: '11.00–11.30',
     },
   },

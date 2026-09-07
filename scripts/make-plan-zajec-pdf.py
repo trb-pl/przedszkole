@@ -8,7 +8,7 @@ pokazywać innej godziny niż strona.
 Uruchamianie:
     ./venv/bin/python scripts/make-plan-zajec-pdf.py
 """
-import json
+
 import os
 import re
 
@@ -48,13 +48,26 @@ def wczytaj_plan():
     rok = re.search(r"ROK_SZKOLNY = '([^']+)'", tekst).group(1)
     dni = re.findall(r"'([a-ząćęłńóśźż]+)'", re.search(r'export const DNI = \[(.*?)\]', tekst, re.S).group(1))
 
+    # Bloki dzielimy po wcięciu zamykającym wpis, a nie po „{ nazwa:" —
+    # komentarz nad polem `nazwa` odciął kiedyś cały wiersz od PDF-a, i to
+    # bez żadnego błędu, bo parser po prostu go nie dopasował.
     plan = []
-    for blok in re.findall(r'\{\s*nazwa:.*?\n  \},', tekst, re.S):
+    ciało = re.search(r'export const PLAN: Zajecia\[\] = \[(.*)\n\];', tekst, re.S).group(1)
+    for blok in re.split(r'\n  \},', ciało):
+        if 'nazwa:' not in blok:
+            continue
         nazwa = re.search(r"nazwa: '([^']+)'", blok).group(1)
         opis = re.search(r"opis: '([^']+)'", blok)
         terminy = dict(re.findall(r"(\w+): '([^']+)'",
                                   re.search(r'terminy: \{(.*?)\}', blok, re.S).group(1)))
         plan.append({'nazwa': nazwa, 'opis': opis.group(1) if opis else None, 'terminy': terminy})
+
+    # Liczba wpisów musi zgadzać się z liczbą pól `nazwa` w pliku źródłowym.
+    # Bez tego cicha zmiana formatowania danych znów zjadłaby wiersz.
+    oczekiwane = len(re.findall(r'^    nazwa:', tekst, re.M))
+    if len(plan) != oczekiwane:
+        raise SystemExit('Odczytano %d zajęć, a w pliku jest %d — sprawdź parser.'
+                         % (len(plan), oczekiwane))
 
     return rok, dni, plan
 
