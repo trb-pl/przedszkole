@@ -59,7 +59,7 @@ export const PLAN: Zajecia[] = [
     nazwa: 'Gimnastyka',
     terminy: {
       poniedziałek: '12.30–13.00',
-      czwartek: '15.15–15.45',
+      środa: '15.15–15.45',
     },
   },
   {
