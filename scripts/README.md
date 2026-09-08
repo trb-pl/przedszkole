@@ -120,3 +120,8 @@ tabeli. W logach builda widać, które źródło zadziałało.
 PDF powstaje w Node (pdfkit), nie w Pythonie, bo musi wykonać się na Vercelu
 przy każdym wdrożeniu. Fonty Nunito leżą w `scripts/fonty/` i są w repo —
 bez nich build na Vercelu nie miałby czym złożyć wydruku.
+
+Przebudowę po edycji arkusza wyzwala Apps Script wpięty w ten arkusz —
+`docs/apps-script/plan/Kod.gs`. Czeka trzy minuty od ostatniej zmiany, więc
+seria poprawek kończy się jednym buildem, a Google zdąży opublikować nową
+wersję CSV (robi to z kilkuminutowym opóźnieniem).
