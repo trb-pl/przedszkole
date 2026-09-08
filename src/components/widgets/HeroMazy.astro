@@ -68,8 +68,9 @@ const napisCls =
   /* Kreska w kolorze o włos ciemniejszym od kremu (#FCF6F0) — ma domknąć
      kształt litery, a nie rysować ramkę. 0.75 px to najcieńsza linia, jaka
      wychodzi równo także na ekranie 1×; przy 0.5 px przeglądarki zaczynają
-     ją gubić na łagodnych łukach. Kolor #E4D8CA to krem przyciemniony
-     o kilka procent — widać kształt, nie widać obwódki.
+     ją gubić na łagodnych łukach. Kolor #DDCEB9 to krem przyciemniony
+     o kilkanaście procent — na tyle, żeby kreska była widoczna z odległości
+     ręki, i na tyle mało, żeby nie czytała się jako obwódka.
 
      paint-order rysuje obrys pod wypełnieniem, więc litera nie chudnie —
      widać wyłącznie zewnętrzną połowę kreski.
@@ -81,7 +82,7 @@ const napisCls =
      na krawędzi paska, gdzie tło i tak zmienia kolor — dlatego jest
      niewidoczny. */
   .napis-dol {
-    -webkit-text-stroke: 0.75px #E4D8CA;
+    -webkit-text-stroke: 0.75px #DDCEB9;
     paint-order: stroke fill;
     clip-path: polygon(-5% 87%, 105% 87%, 105% 300%, -5% 300%);
   }
