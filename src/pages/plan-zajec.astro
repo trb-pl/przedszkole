@@ -8,7 +8,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 import HeroMazy from '~/components/widgets/HeroMazy.astro';
 import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
-import { PLAN, DNI, ROK_SZKOLNY } from '~/data/plan-zajec';
+import { wczytajPlan, DNI, ROK_SZKOLNY } from '~/data/plan-zajec.mjs';
 
 const metadata = {
   title: `Plan zajęć ${ROK_SZKOLNY} – Kolorowe Przedszkole Saska Kępa`,
@@ -18,6 +18,11 @@ const metadata = {
   ignoreTitleTemplate: true,
   robots: { index: true, follow: true },
 };
+
+// Plan pochodzi z Arkusza Google; przy niedostępnym arkuszu wraca ostatni
+// znany plan z repozytorium (patrz src/data/plan-zajec.ts).
+const { plan: PLAN, zrodlo } = await wczytajPlan();
+console.log('[plan zajęć] źródło danych: ' + zrodlo);
 
 // Zajęcia z ustalonym terminem trafiają do tabeli, reszta na listę pod nią —
 // pusty wiersz w siatce wygląda jak błąd, a to po prostu jeszcze nieustalony

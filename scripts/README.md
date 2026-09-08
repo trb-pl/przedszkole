@@ -10,7 +10,7 @@ Pythona ani żadnej z tych bibliotek.
 | `przygotuj-fonty.py` | Wycina statyczne odmiany Nunito z pakietu Fontsource | `scripts/fonty/*.ttf` (poza gitem) |
 | `make-wzory-pdf.py` | Komplet pustych dokumentów do pobrania ze strony | `public/dokumenty/*.pdf` |
 | `make-listy-obecnosci.py` | Listy obecności dzieci i personelu na rok szkolny | `~/Downloads/Listy_obecnosci_*.pdf` |
-| `make-plan-zajec-pdf.py` | Plan zajęć do pobrania ze strony | `public/dokumenty/plan-zajec-*.pdf` |
+| `plan-pdf.mjs` | Plan zajęć do pobrania — uruchamiany automatycznie przy `npm run build` | `public/dokumenty/plan-zajec-*.pdf` |
 
 ## Środowisko
 
@@ -104,15 +104,19 @@ Jeśli pliku nie ma, skrypt generuje same karty dzieci i mówi o tym wprost.
 
 ## Plan zajęć
 
-```bash
-./venv/bin/python scripts/make-plan-zajec-pdf.py
-```
+Godziny **nie są w repozytorium** — pochodzą z Arkusza Google, który edytuje
+dyrekcja. Adres arkusza (opublikowanego jako CSV) siedzi w zmiennej
+`PUBLIC_PLAN_CSV`.
 
-Godziny są w `src/data/plan-zajec.ts` — tym samym pliku, z którego renderuje
-się podstrona `/plan-zajec`. Skrypt czyta go wprost (prostym parserem, bez
-duplikowania danych do JSON-a), więc po zmianie godziny wystarczy
-przegenerować PDF i strona z wydrukiem nie mogą się rozjechać.
+`src/data/plan-zajec.mjs` pobiera arkusz i parsuje CSV. Ten sam moduł czyta
+podstrona `/plan-zajec` i `scripts/plan-pdf.mjs`, który przy każdym budowaniu
+generuje PDF do pobrania. Jedno pobranie danych na build, więc strona
+i wydruk nie mogą pokazać różnych godzin.
 
-Zajęcia z pustym `terminy: {}` nie trafiają do siatki — lądują pod nią jako
-„terminy w ustaleniu". Pusty wiersz w tabeli wygląda jak błąd, a to tylko
-brak ustalonej godziny.
+Gdy arkusz jest niedostępny, oba używają `PLAN_ZAPASOWY` z tego samego
+pliku — awaria Google nie wywala budowania ani nie pokazuje rodzicom pustej
+tabeli. W logach builda widać, które źródło zadziałało.
+
+PDF powstaje w Node (pdfkit), nie w Pythonie, bo musi wykonać się na Vercelu
+przy każdym wdrożeniu. Fonty Nunito leżą w `scripts/fonty/` i są w repo —
+bez nich build na Vercelu nie miałby czym złożyć wydruku.

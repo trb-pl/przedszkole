@@ -26,4 +26,3 @@ pnpm-lock.yaml
 
 .astro
 # Odmiany Nunito wycinane z node_modules przez scripts/przygotuj-fonty.py
-scripts/fonty/
