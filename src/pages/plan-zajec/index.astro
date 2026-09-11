@@ -1,0 +1,78 @@
+---
+// Wybór grupy. Każda grupa ma własny plan, więc ta strona tylko kieruje
+// rodzica dalej — adres /plan-zajec zostaje, bo mógł już trafić do rodziców.
+import Layout from '~/layouts/PageLayout.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
+import dane from '~/data/plan-zajec.json';
+
+const metadata = {
+  title: `Plan zajęć ${dane.rokSzkolny} – Kolorowe Przedszkole Saska Kępa`,
+  description:
+    'Tygodniowe plany zajęć grup Kolorowego Przedszkola: zajęcia dydaktyczne, język angielski, rytmika, gimnastyka, taniec i zajęcia dodatkowe.',
+  canonical: 'https://koloroweprzedszkole.com/plan-zajec',
+  ignoreTitleTemplate: true,
+  robots: { index: true, follow: true },
+};
+
+const grupy = dane.grupy.map((g) => ({
+  ...g,
+  liczbaZajec: g.zajecia.filter((z) => Object.keys(z.terminy).length > 0).length,
+}));
+---
+
+<Layout metadata={metadata}>
+  <HeroMazy title="plan" seoHeading={`Plan zajęć ${dane.rokSzkolny} — Kolorowe Przedszkole`} />
+
+  <section class="bg-brand-cream pt-16 md:pt-24 pb-20">
+    <div class="max-w-4xl mx-auto px-6">
+
+      <div class="text-center mb-10 md:mb-14">
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">
+          Rok szkolny {dane.rokSzkolny}
+        </p>
+        <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.8rem)] text-brand-navy leading-tight mt-3 mb-4">
+          Plan zajęć
+        </h2>
+        <p class="font-sans text-brand-navy/70 leading-relaxed max-w-xl mx-auto">
+          Każda grupa ma własny plan tygodnia. Wybierz grupę swojego dziecka —
+          plan pobierzesz w PDF albo dodasz do kalendarza w telefonie.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {grupy.map((g) => (
+          <a
+            href={`/plan-zajec/${g.slug}`}
+            class="group bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-7 text-center
+                   hover:border-brand-teal hover:shadow-md transition-all duration-200"
+          >
+            <p class="font-sans italic text-2xl text-brand-navy group-hover:text-brand-teal transition-colors duration-200">
+              {g.nazwa}
+            </p>
+            <p class="font-sans text-xs text-brand-navy/45 mt-2">
+              {g.liczbaZajec}{' '}
+              {g.liczbaZajec === 1
+                ? 'rodzaj'
+                : [2, 3, 4].includes(g.liczbaZajec % 10) && ![12, 13, 14].includes(g.liczbaZajec % 100)
+                  ? 'rodzaje'
+                  : 'rodzajów'}{' '}
+              zajęć
+            </p>
+            <p class="font-sans text-xs font-bold uppercase tracking-wider text-brand-teal mt-5">
+              Zobacz plan →
+            </p>
+          </a>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <SchemaBreadcrumbs
+    items={[
+      { name: 'Strona główna', url: 'https://koloroweprzedszkole.com/' },
+      { name: 'Plan zajęć', url: 'https://koloroweprzedszkole.com/plan-zajec' },
+    ]}
+  />
+</Layout>

@@ -1,72 +1,58 @@
 /**
- * Plan zajęć — dane pobierane z Arkusza Google przy budowaniu strony.
+ * Plan zajęć — odczyt Arkusza Google z planami wszystkich grup.
  *
- * Dyrekcja edytuje arkusz, Apps Script po zapisie woła Deploy Hook Vercela,
- * a strona przebudowuje się z nowymi godzinami. Rodzic dostaje statyczny
- * HTML, więc plan wyświetla się natychmiast i nie miga przy ładowaniu.
+ * Arkusz ma jedną zakładkę, a w niej grupy jedna pod drugą:
  *
- * PLAN_ZAPASOWY to ostatni znany plan wpisany do repozytorium. Używamy go,
- * gdy arkusz jest niedostępny — awaria Google nie może wywalić budowania ani
- * pokazać rodzicom pustej tabeli.
+ *   Gwiazdki                                  ← nazwa grupy
+ *   Zajęcia | Opis | Poniedziałek | … | Piątek ← nagłówek
+ *   Rytmika |      |              | … |        ← zajęcia
+ *   (puste wiersze)
+ *   Liski
+ *   Zajęcia | Opis | …
  *
- * Adres arkusza (opublikowanego jako CSV) siedzi w PUBLIC_PLAN_CSV.
+ * Moduł jest zwykłym JS-em, bo czyta go skrypt budujący (Node) — ten sam
+ * parser dla stron, PDF-ów i kalendarzy, więc nie mogą się rozjechać.
  *
- * Plik jest zwykłym JS-em, nie TS-em, bo korzysta z niego również skrypt
- * budujący PDF uruchamiany w Node — inaczej parser istniałby w dwóch
- * kopiach, a rozjazd między nimi to dokładnie ten rodzaj błędu, którego
- * nikt nie zauważa aż do wydruku.
+ * Arkusz pobiera wyłącznie scripts/plan-pliki.mjs, raz na build, i zapisuje
+ * wynik do src/data/plan-zajec.json. Strony czytają już tylko ten plik.
  */
 
 export const DNI = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek'];
-
-/**
- * @typedef {Object} Zajecia
- * @property {string} nazwa
- * @property {Object<string, string>} terminy  termin w danym dniu; brak klucza = nie ma zajęć
- * @property {string} [opis]                   krótkie wyjaśnienie pod nazwą
- */
-
 export const ROK_SZKOLNY = '2026/2027';
 
-/** @type {Zajecia[]} */
-const PLAN_ZAPASOWY = [
-  {
-    nazwa: 'Zajęcia dydaktyczne',
-    opis: 'Codziennie, w każdej grupie',
-    terminy: {
-      poniedziałek: '9.15–10.30',
-      wtorek: '9.15–10.30',
-      środa: '9.15–10.30',
-      czwartek: '9.15–10.30',
-      piątek: '9.15–10.30',
-    },
-  },
-  {
-    nazwa: 'Język angielski',
-    opis: 'Codziennie',
-    terminy: {
-      poniedziałek: '11.00–11.30',
-      wtorek: '11.30–12.00',
-      środa: '11.00–11.30',
-      czwartek: '11.00–11.30',
-      piątek: '11.00–11.30',
-    },
-  },
-  { nazwa: 'Rytmika', terminy: { wtorek: '11.30–12.00', piątek: '11.30–12.00' } },
-  { nazwa: 'Gimnastyka', terminy: { poniedziałek: '12.30–13.00', środa: '15.15–15.45' } },
-  { nazwa: 'Taniec — ciocia Weronika', terminy: { czwartek: '14.00–14.30' } },
-  { nazwa: 'Taniec nowoczesny', terminy: { poniedziałek: '13.30–14.00' } },
-  { nazwa: 'Plastyka', terminy: {} },
-  { nazwa: 'Szachy', terminy: {} },
-  { nazwa: 'Judo', terminy: { piątek: '15.15–16.15' } },
-  { nazwa: 'Basen', terminy: { wtorek: '13.15–15.15' } },
-  { nazwa: 'Robotyka', terminy: { poniedziałek: '15.15–15.45' } },
-  { nazwa: 'Akrobatyka', terminy: {} },
-];
+/** „Wiewiórki" → „wiewiorki". Adresy URL i nazwy plików bez ogonków. */
+export function naSlug(tekst) {
+  return String(tekst)
+    .replace(/ł/g, 'l').replace(/Ł/g, 'L')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+/**
+ * Sprowadza wpisaną godzinę do jednej postaci.
+ *
+ * Dyrekcja wpisuje raz „12:00–12.30", raz „10:45-11:15", raz „9.15–10.30".
+ * Na stronie i w PDF-ie ma to wyglądać jednakowo, a kalendarz potrzebuje
+ * godzin, które da się policzyć. Wpis, którego nie da się odczytać, zostaje
+ * pokazany dosłownie — ale nie trafia do kalendarza.
+ */
+export function normalizujTermin(surowy) {
+  const tekst = String(surowy).trim();
+  const m = tekst.match(/^(\d{1,2})[.:](\d{2})\s*[-–—]\s*(\d{1,2})[.:](\d{2})$/);
+  if (!m) return { tekst };
+
+  const [, h1, m1, h2, m2] = m;
+  return {
+    tekst: `${Number(h1)}.${m1}–${Number(h2)}.${m2}`,
+    od: `${h1.padStart(2, '0')}:${m1}`,
+    do: `${h2.padStart(2, '0')}:${m2}`,
+  };
+}
 
 /** Rozbija wiersz CSV z uwzględnieniem pól w cudzysłowach. */
 function podzielWiersz(linia) {
-  /** @type {string[]} */
   const pola = [];
   let biezace = '';
   let wCudzyslowie = false;
@@ -98,57 +84,94 @@ function podzielWiersz(linia) {
   return pola.map((p) => p.trim());
 }
 
-function zParsujCsv(csv) {
-  const linie = csv.split(/\r?\n/).filter((l) => l.trim().length > 0);
-  if (linie.length < 2) throw new Error('Arkusz nie zawiera danych');
+const pusty = (wiersz) => wiersz.every((pole) => !pole);
 
-  const naglowki = podzielWiersz(linie[0]).map((n) => n.toLowerCase());
-  const kolumnaDnia = DNI.map((d) => naglowki.indexOf(d));
-  const kolumnaOpisu = naglowki.indexOf('opis');
+/**
+ * Dzieli arkusz na grupy.
+ *
+ * Kotwicą jest wiersz nagłówka („Zajęcia | Opis | …"), a nazwą grupy —
+ * najbliższy niepusty wiersz nad nim. Nie da się rozpoznać nazwy grupy po
+ * samym wyglądzie wiersza: „Akrobatyka" bez żadnej godziny wygląda
+ * identycznie jak „Liski". Różni je tylko to, że pod nazwą grupy stoi nagłówek.
+ */
+export function parsujArkusz(csv) {
+  const wiersze = csv.split(/\r?\n/).map(podzielWiersz);
+  const naglowki = wiersze
+    .map((w, i) => (w[0]?.toLowerCase() === 'zajęcia' ? i : -1))
+    .filter((i) => i >= 0);
 
-  if (kolumnaDnia.some((i) => i === -1)) {
-    throw new Error('W arkuszu brakuje kolumny z którymś dniem tygodnia');
-  }
+  if (!naglowki.length) throw new Error('W arkuszu nie ma wiersza nagłówka „Zajęcia"');
 
-  return linie.slice(1).map((linia) => {
-    const pola = podzielWiersz(linia);
-    const terminy = {};
+  // Wiersz z nazwą grupy nad każdym nagłówkiem (albo brak, gdy nagłówek
+  // stoi na samej górze).
+  const wierszeNazw = naglowki.map((h) => {
+    for (let i = h - 1; i >= 0; i--) {
+      if (!pusty(wiersze[i])) return i;
+    }
+    return -1;
+  });
 
-    DNI.forEach((dzien, i) => {
-      const wartosc = pola[kolumnaDnia[i]];
-      if (wartosc) terminy[dzien] = wartosc;
-    });
+  return naglowki.map((h, k) => {
+    const kolumny = wiersze[h].map((n) => n.toLowerCase());
+    const kolumnaDnia = DNI.map((d) => kolumny.indexOf(d));
+    const kolumnaOpisu = kolumny.indexOf('opis');
 
-    const opis = kolumnaOpisu >= 0 ? pola[kolumnaOpisu] : '';
-    return { nazwa: pola[0], terminy, ...(opis ? { opis } : {}) };
-  }).filter((z) => z.nazwa);
+    if (kolumnaDnia.some((i) => i === -1)) {
+      throw new Error(`W nagłówku grupy nr ${k + 1} brakuje któregoś dnia tygodnia`);
+    }
+
+    // Zajęcia kończą się tuż przed nazwą następnej grupy.
+    const koniec = k + 1 < naglowki.length ? wierszeNazw[k + 1] : wiersze.length;
+    const nazwa = wierszeNazw[k] >= 0 ? wiersze[wierszeNazw[k]][0] : `Grupa ${k + 1}`;
+
+    const zajecia = wiersze.slice(h + 1, koniec)
+      .filter((w) => w[0])
+      .map((w) => {
+        const terminy = {};
+        DNI.forEach((dzien, i) => {
+          if (w[kolumnaDnia[i]]) terminy[dzien] = normalizujTermin(w[kolumnaDnia[i]]);
+        });
+        const opis = kolumnaOpisu >= 0 ? w[kolumnaOpisu] : '';
+        return { nazwa: w[0], ...(opis ? { opis } : {}), terminy };
+      });
+
+    return { nazwa, slug: naSlug(nazwa), zajecia };
+  });
 }
 
 /**
- * Plan z arkusza, a gdy się nie uda — ostatni znany z repozytorium.
- * Budowanie strony nigdy nie przerywa się przez Google.
+ * Wyłapuje nakładające się zajęcia w tej samej grupie i dniu. Przy ręcznym
+ * przepisywaniu planu to dokładnie ten błąd, który inaczej wychodzi dopiero
+ * pod drzwiami sali.
  */
-export async function wczytajPlan() {
-  // Astro podaje zmienne przez import.meta.env, Node przez process.env —
-  // ten moduł czyta oba, bo używa go i strona, i skrypt generujący PDF.
-  const adres =
-    (typeof process !== 'undefined' && process.env?.PUBLIC_PLAN_CSV) ||
-    (typeof import.meta !== 'undefined' && import.meta.env?.PUBLIC_PLAN_CSV) ||
-    '';
-  if (!adres) return { plan: PLAN_ZAPASOWY, zrodlo: 'repozytorium' };
+export function znajdzKolizje(grupy) {
+  const kolizje = [];
 
-  try {
-    const odpowiedz = await fetch(adres, { signal: AbortSignal.timeout(10_000) });
-    if (!odpowiedz.ok) throw new Error('HTTP ' + odpowiedz.status);
+  for (const grupa of grupy) {
+    for (const dzien of DNI) {
+      const tegoDnia = grupa.zajecia
+        .filter((z) => z.terminy[dzien]?.od)
+        .map((z) => ({ nazwa: z.nazwa, ...z.terminy[dzien] }))
+        .sort((a, b) => a.od.localeCompare(b.od));
 
-    const plan = zParsujCsv(await odpowiedz.text());
-    if (!plan.length) throw new Error('Arkusz jest pusty');
-
-    return { plan, zrodlo: 'arkusz' };
-  } catch (blad) {
-    console.warn('[plan zajęć] Nie udało się pobrać arkusza, używam planu z repozytorium:', blad);
-    return { plan: PLAN_ZAPASOWY, zrodlo: 'repozytorium' };
+      for (let i = 1; i < tegoDnia.length; i++) {
+        if (tegoDnia[i].od < tegoDnia[i - 1].do) {
+          kolizje.push(`${grupa.nazwa}, ${dzien}: ${tegoDnia[i - 1].nazwa} `
+            + `(${tegoDnia[i - 1].tekst}) nachodzi na ${tegoDnia[i].nazwa} (${tegoDnia[i].tekst})`);
+        }
+      }
+    }
   }
+
+  return kolizje;
 }
 
-export { PLAN_ZAPASOWY };
+/** Pobiera i parsuje arkusz. Rzuca błędem — decyzję o planie B podejmuje wołający. */
+export async function pobierzGrupy(adres) {
+  const odpowiedz = await fetch(adres, { signal: AbortSignal.timeout(15_000) });
+  if (!odpowiedz.ok) throw new Error('HTTP ' + odpowiedz.status);
+
+  const grupy = parsujArkusz(await odpowiedz.text());
+  if (!grupy.some((g) => g.zajecia.length)) throw new Error('Arkusz nie zawiera żadnych zajęć');
+  return grupy;
+}

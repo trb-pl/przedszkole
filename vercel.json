@@ -40,7 +40,9 @@
     { "source": "/services",         "destination": "/",               "permanent": true },
     { "source": "/pricing",          "destination": "/porady/ile-kosztuje-prywatne-przedszkole-goclaw", "permanent": true },
     { "source": "/homes/:slug*",     "destination": "/",               "permanent": true },
-    { "source": "/landing/:slug*",   "destination": "/",               "permanent": true }
+    { "source": "/landing/:slug*",   "destination": "/",               "permanent": true },
+
+    { "source": "/dokumenty/plan-zajec-2026-2027.pdf", "destination": "/plan-zajec", "permanent": true }
   ],
 
   "headers": [
@@ -60,6 +62,13 @@
           "key": "X-Robots-Tag",
           "value": "noindex, nofollow"
         }
+      ]
+    },
+    {
+      "source": "/kalendarz/(.*)",
+      "headers": [
+        { "key": "Content-Type", "value": "text/calendar; charset=utf-8" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
       ]
     }
   ]

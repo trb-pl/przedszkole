@@ -26,3 +26,9 @@ pnpm-lock.yaml
 
 .astro
 # Odmiany Nunito wycinane z node_modules przez scripts/przygotuj-fonty.py
+
+# Plan zajęć — PDF-y i kalendarze powstają przy każdym buildzie z Arkusza
+# Google (scripts/plan-pliki.mjs). W repo zostaje tylko migawka danych
+# src/data/plan-zajec.json jako plan B.
+public/kalendarz/
+public/dokumenty/plan-zajec-*.pdf

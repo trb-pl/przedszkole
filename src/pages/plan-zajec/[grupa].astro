@@ -1,0 +1,231 @@
+---
+// Plan zajęć jednej grupy. Dane z src/data/plan-zajec.json — migawki arkusza
+// zapisanej przez scripts/plan-pliki.mjs w tym samym buildzie, z którego
+// powstają PDF i kalendarz. Strona, wydruk i telefon rodzica pokazują więc
+// dokładnie te same godziny.
+import Layout from '~/layouts/PageLayout.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
+import dane from '~/data/plan-zajec.json';
+import { DNI } from '~/data/plan-zajec.mjs';
+
+export function getStaticPaths() {
+  return dane.grupy.map((grupa) => ({ params: { grupa: grupa.slug }, props: { grupa } }));
+}
+
+const { grupa } = Astro.props;
+const adres = `https://koloroweprzedszkole.com/plan-zajec/${grupa.slug}`;
+
+const metadata = {
+  title: `Plan zajęć — grupa ${grupa.nazwa} ${dane.rokSzkolny} – Kolorowe Przedszkole`,
+  description: `Tygodniowy plan zajęć grupy ${grupa.nazwa} w Kolorowym Przedszkolu na Saskiej Kępie. Pobierz w PDF albo dodaj do kalendarza.`,
+  canonical: adres,
+  ignoreTitleTemplate: true,
+  robots: { index: true, follow: true },
+};
+
+// Zajęcia z terminem idą do tabeli, reszta pod nią — pusty wiersz w siatce
+// wygląda jak błąd, a to tylko jeszcze nieustalona godzina.
+const zPlanem = grupa.zajecia.filter((z) => Object.keys(z.terminy).length > 0);
+const bezTerminu = grupa.zajecia.filter((z) => Object.keys(z.terminy).length === 0);
+
+// Widok mobilny idzie dzień po dniu, w kolejności godzin — rodzic patrzy
+// zwykle na „co dziś", nie na cały tydzień.
+const wgDni = DNI.map((dzien) => ({
+  dzien,
+  pozycje: zPlanem
+    .filter((z) => z.terminy[dzien])
+    .map((z) => ({ nazwa: z.nazwa, termin: z.terminy[dzien] }))
+    .sort((a, b) => (a.termin.od ?? a.termin.tekst).localeCompare(b.termin.od ?? b.termin.tekst)),
+}));
+
+// Kalendarz: subskrypcja (webcal) aktualizuje się sama po zmianie planu,
+// plik .ics to jednorazowy import dla tych, którzy wolą kopię.
+const plikIcs = `koloroweprzedszkole.com/kalendarz/plan-${grupa.slug}.ics`;
+const webcal = `webcal://${plikIcs}`;
+const googleKalendarz = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(webcal)}`;
+
+const kartaCls = 'bg-white rounded-2xl border border-brand-navy/6 shadow-sm';
+const przyciskCls =
+  'inline-flex items-center justify-center gap-2 font-sans font-bold uppercase tracking-wider text-sm ' +
+  'px-6 py-3.5 rounded-lg transition-colors duration-200 cursor-pointer';
+---
+
+<Layout metadata={metadata}>
+  <HeroMazy title={grupa.nazwa.toLowerCase()} seoHeading={`Plan zajęć — grupa ${grupa.nazwa}`} />
+
+  <section class="bg-brand-cream pt-16 md:pt-24 pb-20">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <!-- Przełącznik grup — rodzeństwo bywa w różnych grupach -->
+      <nav aria-label="Grupy" class="flex flex-wrap justify-center gap-2 mb-10">
+        {dane.grupy.map((g) => (
+          <a
+            href={`/plan-zajec/${g.slug}`}
+            aria-current={g.slug === grupa.slug ? 'page' : undefined}
+            class={`font-sans text-sm font-semibold px-4 py-2 rounded-full border transition-colors duration-200 ${
+              g.slug === grupa.slug
+                ? 'bg-brand-navy text-brand-cream border-brand-navy'
+                : 'text-brand-navy border-brand-navy/15 hover:border-brand-teal hover:text-brand-teal'
+            }`}
+          >
+            {g.nazwa}
+          </a>
+        ))}
+      </nav>
+
+      <div class="text-center mb-10 md:mb-14">
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">
+          Rok szkolny {dane.rokSzkolny}
+        </p>
+        <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.8rem)] text-brand-navy leading-tight mt-3 mb-8">
+          Plan zajęć — {grupa.nazwa}
+        </h2>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href={`/dokumenty/plan-zajec-${grupa.slug}.pdf`}
+            target="_blank"
+            rel="noopener"
+            class={`${przyciskCls} cta-pop bg-brand-teal text-brand-cream hover:bg-brand-coral`}
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16" />
+            </svg>
+            Pobierz PDF
+          </a>
+
+          <!-- <details> otwiera listę bez JavaScriptu; skrypt na dole tylko
+               domyka ją po kliknięciu obok -->
+          <details class="relative" data-rozwijane>
+            <summary class={`${przyciskCls} list-none [&::-webkit-details-marker]:hidden bg-white text-brand-navy border border-brand-navy/15 hover:border-brand-teal`}>
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                <rect x="3" y="5" width="18" height="16" rx="2" />
+                <path stroke-linecap="round" d="M3 10h18M8 3v4M16 3v4" />
+              </svg>
+              Dodaj do kalendarza
+            </summary>
+
+            <div class={`${kartaCls} absolute left-1/2 -translate-x-1/2 mt-2 w-72 p-2 z-20 text-left`}>
+              <a href={googleKalendarz} target="_blank" rel="noopener"
+                 class="block rounded-lg px-4 py-3 hover:bg-brand-teal/8 transition-colors duration-150">
+                <span class="block font-sans text-sm font-semibold text-brand-navy">Kalendarz Google</span>
+                <span class="block font-sans text-xs text-brand-navy/50">Konto Google — także na Androidzie</span>
+              </a>
+              <a href={webcal}
+                 class="block rounded-lg px-4 py-3 hover:bg-brand-teal/8 transition-colors duration-150">
+                <span class="block font-sans text-sm font-semibold text-brand-navy">iPhone, Mac, Outlook</span>
+                <span class="block font-sans text-xs text-brand-navy/50">Otwiera aplikację kalendarza</span>
+              </a>
+              <a href={`/kalendarz/plan-${grupa.slug}.ics`} download
+                 class="block rounded-lg px-4 py-3 hover:bg-brand-teal/8 transition-colors duration-150">
+                <span class="block font-sans text-sm font-semibold text-brand-navy">Pobierz plik .ics</span>
+                <span class="block font-sans text-xs text-brand-navy/50">Jednorazowa kopia, bez aktualizacji</span>
+              </a>
+              <p class="font-sans text-[11px] text-brand-navy/45 leading-relaxed px-4 pt-2 pb-2 border-t border-brand-navy/8 mt-1">
+                Dodany kalendarz sam pobiera zmiany w planie (z opóźnieniem do doby).
+                Święta i przerwy są już wyłączone.
+              </p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- ── Tabela tygodniowa (od tabletu w górę) ───────────────── -->
+      <div class={`${kartaCls} hidden md:block overflow-hidden`}>
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="bg-brand-navy/4">
+              <th class="text-left font-sans text-sm font-bold text-brand-navy px-5 py-4 w-56">Zajęcia</th>
+              {DNI.map((dzien) => (
+                <th class="font-sans text-sm font-bold text-brand-navy px-3 py-4 capitalize border-l border-brand-navy/8">
+                  {dzien}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {zPlanem.map((z, i) => (
+              <tr class={i % 2 ? 'bg-brand-navy/2' : ''}>
+                <th scope="row" class="text-left align-top px-5 py-3.5 border-t border-brand-navy/8">
+                  <span class="font-sans text-sm font-semibold text-brand-navy">{z.nazwa}</span>
+                  {z.opis && <span class="block font-sans text-xs text-brand-navy/45 mt-0.5">{z.opis}</span>}
+                </th>
+                {DNI.map((dzien) => (
+                  <td class="text-center px-3 py-3.5 border-t border-l border-brand-navy/8">
+                    {z.terminy[dzien] ? (
+                      <span class="inline-block font-sans text-sm font-semibold text-brand-navy bg-brand-teal/10 rounded-md px-2.5 py-1 whitespace-nowrap">
+                        {z.terminy[dzien].tekst}
+                      </span>
+                    ) : (
+                      <span class="font-sans text-brand-navy/20" aria-hidden="true">—</span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Widok dzienny (telefon) ──────────────────────────────── -->
+      <div class="md:hidden flex flex-col gap-4">
+        {wgDni.map(({ dzien, pozycje }) => (
+          <div class={`${kartaCls} p-5`}>
+            <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3 capitalize">{dzien}</p>
+            {pozycje.length ? (
+              <ul class="flex flex-col gap-2.5">
+                {pozycje.map((p) => (
+                  <li class="flex items-baseline justify-between gap-4">
+                    <span class="font-sans text-sm text-brand-navy">{p.nazwa}</span>
+                    <span class="font-sans text-sm font-semibold text-brand-navy whitespace-nowrap">{p.termin.tekst}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="font-sans text-sm text-brand-navy/45">Brak zajęć w planie.</p>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {bezTerminu.length > 0 && (
+        <div class={`${kartaCls} p-6 md:p-8 mt-6`}>
+          <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">Terminy w ustaleniu</p>
+          <p class="font-sans text-sm text-brand-navy/65 leading-relaxed mb-4">
+            Te zajęcia są w ofercie, ale ich godziny jeszcze ustalamy. Podamy je, gdy tylko będą znane.
+          </p>
+          <ul class="flex flex-wrap gap-2">
+            {bezTerminu.map((z) => (
+              <li class="font-sans text-sm text-brand-navy border border-brand-navy/10 rounded-lg px-3.5 py-1.5">{z.nazwa}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <p class="font-sans text-xs text-brand-navy/45 mt-8 text-center leading-relaxed">
+        Plan może się zmienić — o każdej zmianie informujemy rodziców.
+        Pytania? Zadzwoń: <a href="tel:605657366" class="text-brand-teal underline hover:text-brand-coral transition-colors duration-200">605 657 366</a>
+      </p>
+
+    </div>
+  </section>
+
+  <SchemaBreadcrumbs
+    items={[
+      { name: 'Strona główna', url: 'https://koloroweprzedszkole.com/' },
+      { name: 'Plan zajęć', url: 'https://koloroweprzedszkole.com/plan-zajec' },
+      { name: grupa.nazwa, url: adres },
+    ]}
+  />
+</Layout>
+
+<script>
+  // Lista „Dodaj do kalendarza" zamyka się po kliknięciu obok — inaczej
+  // zostaje otwarta nad tabelą, dopóki ktoś nie trafi z powrotem w przycisk.
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll<HTMLDetailsElement>('details[data-rozwijane][open]').forEach((el) => {
+      if (!el.contains(e.target as Node)) el.open = false;
+    });
+  });
+</script>

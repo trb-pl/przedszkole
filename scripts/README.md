@@ -10,7 +10,7 @@ Pythona ani żadnej z tych bibliotek.
 | `przygotuj-fonty.py` | Wycina statyczne odmiany Nunito z pakietu Fontsource | `scripts/fonty/*.ttf` (poza gitem) |
 | `make-wzory-pdf.py` | Komplet pustych dokumentów do pobrania ze strony | `public/dokumenty/*.pdf` |
 | `make-listy-obecnosci.py` | Listy obecności dzieci i personelu na rok szkolny | `~/Downloads/Listy_obecnosci_*.pdf` |
-| `plan-pdf.mjs` | Plan zajęć do pobrania — uruchamiany automatycznie przy `npm run build` | `public/dokumenty/plan-zajec-*.pdf` |
+| `plan-pliki.mjs` | Plan zajęć grup: dane stron, PDF-y i kalendarze — uruchamiany automatycznie przy `npm run build` | `src/data/plan-zajec.json`, `public/dokumenty/plan-zajec-*.pdf`, `public/kalendarz/plan-*.ics` |
 
 ## Środowisko
 
@@ -108,14 +108,35 @@ Godziny **nie są w repozytorium** — pochodzą z Arkusza Google, który edytuj
 dyrekcja. Adres arkusza (opublikowanego jako CSV) siedzi w zmiennej
 `PUBLIC_PLAN_CSV`.
 
-`src/data/plan-zajec.mjs` pobiera arkusz i parsuje CSV. Ten sam moduł czyta
-podstrona `/plan-zajec` i `scripts/plan-pdf.mjs`, który przy każdym budowaniu
-generuje PDF do pobrania. Jedno pobranie danych na build, więc strona
-i wydruk nie mogą pokazać różnych godzin.
+Arkusz ma jedną zakładkę, a w niej grupy jedna pod drugą: wiersz z nazwą
+grupy, pod nim nagłówek `Zajęcia | Opis | Poniedziałek | … | Piątek`, dalej
+zajęcia. Grupa dopisana w ten sam sposób dostaje własną podstronę, PDF
+i kalendarz bez zmian w kodzie.
 
-Gdy arkusz jest niedostępny, oba używają `PLAN_ZAPASOWY` z tego samego
-pliku — awaria Google nie wywala budowania ani nie pokazuje rodzicom pustej
-tabeli. W logach builda widać, które źródło zadziałało.
+`scripts/plan-pliki.mjs` pobiera arkusz **raz na build** i zapisuje:
+
+- `src/data/plan-zajec.json` — migawkę, z której budują się `/plan-zajec`
+  i `/plan-zajec/<grupa>`,
+- `public/dokumenty/plan-zajec-<grupa>.pdf` — wydruk,
+- `public/kalendarz/plan-<grupa>.ics` — kalendarz do subskrypcji.
+
+Jedno pobranie, bo Google publikuje zmiany z opóźnieniem — dwa pobrania
+w odstępie sekund potrafią zwrócić różne wersje i strona rozjechałaby się
+z PDF-em. Parser (`src/data/plan-zajec.mjs`) ujednolica zapis godzin
+(`10:45-11:15` → `10.45–11.15`) i ostrzega w logach o nakładających się
+zajęciach.
+
+Gdy arkusz jest niedostępny, zostaje ostatnia migawka zapisana w repo —
+awaria Google nie wywala budowania ani nie pokazuje rodzicom pustej tabeli.
+W logach builda widać, które źródło zadziałało. Lokalny `npm run build`
+odświeża migawkę — warto ją commitować, żeby plan B był aktualny.
+
+Kalendarz to wydarzenia cotygodniowe od 1 września do 31 sierpnia
+z wyłączonymi świętami i przerwami z umowy. Daty są
+w `src/data/kalendarz-szkolny.mjs` i powtarzają te z
+`make-listy-obecnosci.py` — na nowy rok szkolny trzeba zmienić oba pliki.
+Kto subskrybuje kalendarz (Google, iPhone), dostaje zmiany planu sam,
+z opóźnieniem do doby.
 
 PDF powstaje w Node (pdfkit), nie w Pythonie, bo musi wykonać się na Vercelu
 przy każdym wdrożeniu. Fonty Nunito leżą w `scripts/fonty/` i są w repo —

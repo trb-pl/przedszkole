@@ -1,0 +1,442 @@
+{
+  "rokSzkolny": "2026/2027",
+  "grupy": [
+    {
+      "nazwa": "Gwiazdki",
+      "slug": "gwiazdki",
+      "zajecia": [
+        {
+          "nazwa": "Zajęcia dydaktyczne",
+          "opis": "Codziennie, w każdej grupie",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "9.15–10.30",
+              "od": "09:15",
+              "do": "10:30"
+            },
+            "wtorek": {
+              "tekst": "9.15–10.15",
+              "od": "09:15",
+              "do": "10:15"
+            },
+            "środa": {
+              "tekst": "9.15–10.30",
+              "od": "09:15",
+              "do": "10:30"
+            },
+            "czwartek": {
+              "tekst": "9.15–10.30",
+              "od": "09:15",
+              "do": "10:30"
+            },
+            "piątek": {
+              "tekst": "9.15–10.30",
+              "od": "09:15",
+              "do": "10:30"
+            }
+          }
+        },
+        {
+          "nazwa": "Język angielski",
+          "opis": "Codziennie, 30 min na grupę",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "12.00–12.30",
+              "od": "12:00",
+              "do": "12:30"
+            },
+            "wtorek": {
+              "tekst": "10.45–11.15",
+              "od": "10:45",
+              "do": "11:15"
+            },
+            "środa": {
+              "tekst": "11.00–11.30",
+              "od": "11:00",
+              "do": "11:30"
+            },
+            "czwartek": {
+              "tekst": "11.00–11.30",
+              "od": "11:00",
+              "do": "11:30"
+            },
+            "piątek": {
+              "tekst": "11.00–11.30",
+              "od": "11:00",
+              "do": "11:30"
+            }
+          }
+        },
+        {
+          "nazwa": "Rytmika",
+          "opis": "30 min na grupę",
+          "terminy": {
+            "wtorek": {
+              "tekst": "11.15–11.45",
+              "od": "11:15",
+              "do": "11:45"
+            },
+            "piątek": {
+              "tekst": "11.30–12.00",
+              "od": "11:30",
+              "do": "12:00"
+            }
+          }
+        },
+        {
+          "nazwa": "Gimnastyka",
+          "opis": "30 min na grupę",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "12.30–13.00",
+              "od": "12:30",
+              "do": "13:00"
+            },
+            "środa": {
+              "tekst": "16.15–16.45",
+              "od": "16:15",
+              "do": "16:45"
+            }
+          }
+        },
+        {
+          "nazwa": "Taniec — ciocia Weronika",
+          "terminy": {
+            "czwartek": {
+              "tekst": "13.30–14.00",
+              "od": "13:30",
+              "do": "14:00"
+            }
+          }
+        },
+        {
+          "nazwa": "Taniec nowoczesny",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "13.30–14.00",
+              "od": "13:30",
+              "do": "14:00"
+            }
+          }
+        },
+        {
+          "nazwa": "Szachy",
+          "terminy": {
+            "środa": {
+              "tekst": "12.30–13.00",
+              "od": "12:30",
+              "do": "13:00"
+            }
+          }
+        },
+        {
+          "nazwa": "Judo",
+          "terminy": {
+            "piątek": {
+              "tekst": "15.45–16.15",
+              "od": "15:45",
+              "do": "16:15"
+            }
+          }
+        },
+        {
+          "nazwa": "Basen",
+          "terminy": {
+            "wtorek": {
+              "tekst": "13.15–15.15",
+              "od": "13:15",
+              "do": "15:15"
+            }
+          }
+        },
+        {
+          "nazwa": "Robotyka",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "15.15–15.45",
+              "od": "15:15",
+              "do": "15:45"
+            }
+          }
+        },
+        {
+          "nazwa": "Akrobatyka",
+          "terminy": {}
+        }
+      ]
+    },
+    {
+      "nazwa": "Liski",
+      "slug": "liski",
+      "zajecia": [
+        {
+          "nazwa": "Zajęcia dydaktyczne",
+          "opis": "Codziennie, w każdej grupie",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "9.15–10.00",
+              "od": "09:15",
+              "do": "10:00"
+            },
+            "wtorek": {
+              "tekst": "9.15–10.00",
+              "od": "09:15",
+              "do": "10:00"
+            },
+            "środa": {
+              "tekst": "9.15–10.00",
+              "od": "09:15",
+              "do": "10:00"
+            },
+            "czwartek": {
+              "tekst": "9.15–10.00",
+              "od": "09:15",
+              "do": "10:00"
+            },
+            "piątek": {
+              "tekst": "9.15–10.00",
+              "od": "09:15",
+              "do": "10:00"
+            }
+          }
+        },
+        {
+          "nazwa": "Język angielski",
+          "opis": "Codziennie, 30 min na grupę",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "12.30–13.00",
+              "od": "12:30",
+              "do": "13:00"
+            },
+            "wtorek": {
+              "tekst": "10.20–10.45",
+              "od": "10:20",
+              "do": "10:45"
+            },
+            "środa": {
+              "tekst": "10.30–11.00",
+              "od": "10:30",
+              "do": "11:00"
+            },
+            "czwartek": {
+              "tekst": "10.30–11.00",
+              "od": "10:30",
+              "do": "11:00"
+            },
+            "piątek": {
+              "tekst": "12.30–13.00",
+              "od": "12:30",
+              "do": "13:00"
+            }
+          }
+        },
+        {
+          "nazwa": "Rytmika",
+          "opis": "30 min na grupę",
+          "terminy": {
+            "wtorek": {
+              "tekst": "10.45–11.15",
+              "od": "10:45",
+              "do": "11:15"
+            },
+            "piątek": {
+              "tekst": "12.00–12.30",
+              "od": "12:00",
+              "do": "12:30"
+            }
+          }
+        },
+        {
+          "nazwa": "Gimnastyka",
+          "opis": "30 min na grupę",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "12.00–12.30",
+              "od": "12:00",
+              "do": "12:30"
+            },
+            "środa": {
+              "tekst": "15.45–16.15",
+              "od": "15:45",
+              "do": "16:15"
+            }
+          }
+        },
+        {
+          "nazwa": "Taniec — ciocia Weronika",
+          "terminy": {
+            "czwartek": {
+              "tekst": "14.00–14.30",
+              "od": "14:00",
+              "do": "14:30"
+            }
+          }
+        },
+        {
+          "nazwa": "Taniec nowoczesny",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "14.00–14.30",
+              "od": "14:00",
+              "do": "14:30"
+            }
+          }
+        },
+        {
+          "nazwa": "Szachy",
+          "terminy": {
+            "środa": {
+              "tekst": "12.30–13.00",
+              "od": "12:30",
+              "do": "13:00"
+            }
+          }
+        },
+        {
+          "nazwa": "Judo",
+          "terminy": {
+            "piątek": {
+              "tekst": "15.15–15.45",
+              "od": "15:15",
+              "do": "15:45"
+            }
+          }
+        },
+        {
+          "nazwa": "Basen",
+          "terminy": {}
+        },
+        {
+          "nazwa": "Robotyka",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "15.15–15.45",
+              "od": "15:15",
+              "do": "15:45"
+            }
+          }
+        },
+        {
+          "nazwa": "Akrobatyka",
+          "terminy": {}
+        }
+      ]
+    },
+    {
+      "nazwa": "Wiewiórki",
+      "slug": "wiewiorki",
+      "zajecia": [
+        {
+          "nazwa": "Zajęcia dydaktyczne",
+          "opis": "Codziennie, w każdej grupie",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "10.00–10.30",
+              "od": "10:00",
+              "do": "10:30"
+            },
+            "wtorek": {
+              "tekst": "10.30–11.00",
+              "od": "10:30",
+              "do": "11:00"
+            },
+            "środa": {
+              "tekst": "10.00–10.30",
+              "od": "10:00",
+              "do": "10:30"
+            },
+            "czwartek": {
+              "tekst": "10.00–10.30",
+              "od": "10:00",
+              "do": "10:30"
+            },
+            "piątek": {
+              "tekst": "10.00–10.30",
+              "od": "10:00",
+              "do": "10:30"
+            }
+          }
+        },
+        {
+          "nazwa": "Język angielski",
+          "opis": "Codziennie, 30 min na grupę",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "9.00–9.30",
+              "od": "09:00",
+              "do": "09:30"
+            },
+            "wtorek": {
+              "tekst": "9.00–9.30",
+              "od": "09:00",
+              "do": "09:30"
+            },
+            "środa": {
+              "tekst": "9.00–9.30",
+              "od": "09:00",
+              "do": "09:30"
+            },
+            "czwartek": {
+              "tekst": "9.00–9.30",
+              "od": "09:00",
+              "do": "09:30"
+            },
+            "piątek": {
+              "tekst": "9.00–9.30",
+              "od": "09:00",
+              "do": "09:30"
+            }
+          }
+        },
+        {
+          "nazwa": "Rytmika",
+          "opis": "30 min na grupę",
+          "terminy": {
+            "wtorek": {
+              "tekst": "10.00–10.30",
+              "od": "10:00",
+              "do": "10:30"
+            },
+            "piątek": {
+              "tekst": "10.45–11.15",
+              "od": "10:45",
+              "do": "11:15"
+            }
+          }
+        },
+        {
+          "nazwa": "Gimnastyka",
+          "opis": "30 min na grupę",
+          "terminy": {
+            "poniedziałek": {
+              "tekst": "11.30–11.50",
+              "od": "11:30",
+              "do": "11:50"
+            }
+          }
+        },
+        {
+          "nazwa": "Taniec — ciocia Weronika",
+          "terminy": {
+            "czwartek": {
+              "tekst": "12.15–12.45",
+              "od": "12:15",
+              "do": "12:45"
+            }
+          }
+        },
+        {
+          "nazwa": "Gordonki",
+          "terminy": {
+            "środa": {
+              "tekst": "10.30–11.15",
+              "od": "10:30",
+              "do": "11:15"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
