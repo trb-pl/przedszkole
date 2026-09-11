@@ -5,6 +5,7 @@
 // dokładnie te same godziny.
 import Layout from '~/layouts/PageLayout.astro';
 import HeroMazy from '~/components/widgets/HeroMazy.astro';
+import PopupOpinia from '~/components/widgets/PopupOpinia.astro';
 import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 import dane from '~/data/plan-zajec.json';
 import { DNI } from '~/data/plan-zajec.mjs';
@@ -219,6 +220,10 @@ const przyciskCls =
       { name: grupa.nazwa, url: adres },
     ]}
   />
+
+  <!-- Prośba o opinię w Google: po 8 s, tylko raz. Tylko na planach grup,
+       bo link zależy od grupy — strona wyboru grupy go nie zna. -->
+  <PopupOpinia grupa={grupa.slug} />
 </Layout>
 
 <script>
