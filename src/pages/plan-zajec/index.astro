@@ -12,7 +12,8 @@ const metadata = {
     'Tygodniowe plany zajęć grup Kolorowego Przedszkola: zajęcia dydaktyczne, język angielski, rytmika, gimnastyka, taniec i zajęcia dodatkowe.',
   canonical: 'https://koloroweprzedszkole.com/plan-zajec',
   ignoreTitleTemplate: true,
-  robots: { index: true, follow: true },
+  // Plan jest dla rodziców z linku, nie dla wyszukiwarki — jak /dla-rodzicow.
+  robots: { index: false, follow: false },
 };
 
 const grupy = dane.grupy.map((g) => ({
