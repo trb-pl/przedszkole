@@ -20,7 +20,7 @@
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "fix:eslint": "eslint --fix .",
     "fix:prettier": "prettier -w .",
-    "prebuild": "node scripts/plan-pliki.mjs"
+    "prebuild": "node scripts/plan-pliki.mjs && node scripts/wydarzenia-pdf.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.18",

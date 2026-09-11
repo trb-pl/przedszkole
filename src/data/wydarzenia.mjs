@@ -82,6 +82,30 @@ export function miesiacWydarzen(lista) {
   return MIESIACE[Number(lista[0].data.slice(5, 7)) - 1];
 }
 
+/** „Wrzesień w Kolorowym Przedszkolu" — nagłówek strony i PDF-u. */
+export function tytulMiesiaca(lista) {
+  const miesiac = miesiacWydarzen(lista);
+  return `${miesiac.charAt(0).toUpperCase() + miesiac.slice(1)} w Kolorowym Przedszkolu`;
+}
+
+/** Nazwa PDF-u z miesiącem i rokiem — plik w Pobranych od razu mówi, czego dotyczy. */
+export function plikPdfWydarzen(lista) {
+  return `wydarzenia-${naSlug(miesiacWydarzen(lista))}-${lista[0].data.slice(0, 4)}.pdf`;
+}
+
+/** Części daty do karty: 10 · września · czwartek. */
+export function opisDaty(iso) {
+  // Południe UTC, żeby żadna strefa czasowa nie przesunęła daty o dzień.
+  const d = new Date(iso + 'T12:00:00Z');
+  return {
+    dzien: d.getUTCDate(),
+    miesiac: d
+      .toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', timeZone: 'UTC' })
+      .replace(/^\d+\s*/, ''),
+    tydzien: d.toLocaleDateString('pl-PL', { weekday: 'long', timeZone: 'UTC' }),
+  };
+}
+
 /** Stały identyfikator: z daty i tytułu, więc przeżyje przestawienie wierszy w arkuszu. */
 export function idWydarzenia(w) {
   const pelny = `${w.data}-${naSlug(w.tytul)}`;

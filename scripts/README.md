@@ -11,6 +11,7 @@ Pythona ani żadnej z tych bibliotek.
 | `make-wzory-pdf.py` | Komplet pustych dokumentów do pobrania ze strony | `public/dokumenty/*.pdf` |
 | `make-listy-obecnosci.py` | Listy obecności dzieci i personelu na rok szkolny | `~/Downloads/Listy_obecnosci_*.pdf` |
 | `plan-pliki.mjs` | Plan zajęć grup: dane stron, PDF-y i kalendarze — uruchamiany automatycznie przy `npm run build` | `src/data/plan-zajec.json`, `public/dokumenty/plan-zajec-*.pdf`, `public/kalendarz/plan-*.ics` |
+| `wydarzenia-pdf.mjs` | Wydarzenia miesiąca z `/wydarzenia` do wydruku — dane, kolory i ikony ze strony (`src/data/wydarzenia.mjs`, `src/data/ikony-wydarzen.mjs`); uruchamiany automatycznie przy `npm run build` | `public/dokumenty/wydarzenia-<miesiąc>-<rok>.pdf` |
 
 ## Środowisko
 
@@ -146,3 +147,25 @@ Przebudowę po edycji arkusza wyzwala Apps Script wpięty w ten arkusz —
 `docs/apps-script/plan/Kod.gs`. Czeka trzy minuty od ostatniej zmiany, więc
 seria poprawek kończy się jednym buildem, a Google zdąży opublikować nową
 wersję CSV (robi to z kilkuminutowym opóźnieniem).
+
+## Wydarzenia miesiąca
+
+Strona `/wydarzenia` i jej PDF budują się z `src/data/wydarzenia.mjs`. Na
+razie lista jest wpisana tam ręcznie; docelowo przyjdzie z Arkusza Google
+— pola wydarzenia odpowiadają przyszłym kolumnom, więc podmieni się tylko
+źródło listy.
+
+Kolor i ikona każdego rodzaju wydarzenia są w `src/data/ikony-wydarzen.mjs`.
+Z tego pliku korzystają i strona, i `wydarzenia-pdf.mjs`, więc wydruk
+wygląda jak strona. Trąbka i dynia są narysowane ręcznie na siatce Tablera,
+reszta ikon pochodzi z zestawu `@iconify-json/tabler` — PDF wyciąga z niego
+ścieżki SVG i rysuje je tą samą kreską.
+
+PDF nazywa się `wydarzenia-<miesiąc>-<rok>.pdf`; po zmianie miesiąca
+poprzedni plik jest usuwany. Minione wydarzenia są wyszarzane tylko na
+stronie (liczy to przeglądarka) — kartka nie wie, kiedy ktoś ją czyta.
+
+Do kalendarza każde wydarzenie trafia jako link do Kalendarza Google albo
+osobny plik `.ics` (`src/pages/kalendarz/[wydarzenie].ics.ts`), z tytułem
+„Przedszkole: …". Wyjazd trwa w kalendarzu od wyjazdu do powrotu; bez
+podanej godziny końca wpis zajmuje godzinę.

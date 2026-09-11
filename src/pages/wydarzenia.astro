@@ -13,14 +13,20 @@ import { ROK_SZKOLNY } from '~/data/plan-zajec.mjs';
 import {
   wydarzeniaPosortowane,
   miesiacWydarzen,
+  tytulMiesiaca,
+  plikPdfWydarzen,
+  opisDaty,
   pokazGodzine,
   idWydarzenia,
   linkGoogle,
 } from '~/data/wydarzenia.mjs';
+import { KOLOR_WYDARZENIA, DOMYSLNY_KOLOR } from '~/data/ikony-wydarzen.mjs';
 
 const wydarzenia = wydarzeniaPosortowane();
 const miesiac = miesiacWydarzen(wydarzenia);
-const tytul = `${miesiac.charAt(0).toUpperCase() + miesiac.slice(1)} w Kolorowym Przedszkolu`;
+const tytul = tytulMiesiaca(wydarzenia);
+// PDF powstaje przy buildzie (scripts/wydarzenia-pdf.mjs) z tych samych danych.
+const plikPdf = `/dokumenty/${plikPdfWydarzen(wydarzenia)}`;
 
 const metadata = {
   title: tytul,
@@ -30,22 +36,15 @@ const metadata = {
   robots: { index: false, follow: false },
 };
 
-// Kolor każdego rodzaju wydarzenia — wyłącznie z palety brandbooka.
-// Pełne nazwy klas (a nie sklejane), bo Tailwind szuka ich w tekście pliku.
-const KOLORY: Record<string, { kropka: string; ramka: string }> = {
-  trabka: { kropka: 'bg-brand-yellow text-brand-navy', ramka: 'border-brand-yellow' },
-  teatr: { kropka: 'bg-brand-navy text-brand-cream', ramka: 'border-brand-navy' },
-  guzik: { kropka: 'bg-brand-forest text-brand-cream', ramka: 'border-brand-forest' },
-  lisc: { kropka: 'bg-brand-teal text-brand-cream', ramka: 'border-brand-teal' },
-  dynia: { kropka: 'bg-brand-coral text-brand-cream', ramka: 'border-brand-coral' },
+// Klasy dla kolorów z palety brandbooka (przypisanie: src/data/ikony-wydarzen.mjs).
+// Pełne nazwy klas, a nie sklejane — Tailwind szuka ich w tekście pliku.
+const KLASY: Record<string, { kropka: string; ramka: string }> = {
+  yellow: { kropka: 'bg-brand-yellow text-brand-navy', ramka: 'border-brand-yellow' },
+  navy: { kropka: 'bg-brand-navy text-brand-cream', ramka: 'border-brand-navy' },
+  forest: { kropka: 'bg-brand-forest text-brand-cream', ramka: 'border-brand-forest' },
+  teal: { kropka: 'bg-brand-teal text-brand-cream', ramka: 'border-brand-teal' },
+  coral: { kropka: 'bg-brand-coral text-brand-cream', ramka: 'border-brand-coral' },
 };
-
-// Południe UTC, żeby żadna strefa czasowa nie przesunęła daty o dzień.
-const naDate = (iso: string) => new Date(iso + 'T12:00:00Z');
-const dzienMiesiaca = (iso: string) => naDate(iso).getUTCDate();
-const miesiacDopelniacz = (iso: string) =>
-  naDate(iso).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', timeZone: 'UTC' }).replace(/^\d+\s*/, '');
-const dzienTygodnia = (iso: string) => naDate(iso).toLocaleDateString('pl-PL', { weekday: 'long', timeZone: 'UTC' });
 
 const plakietkaCls =
   'inline-flex items-center gap-1.5 font-sans text-xs font-semibold text-brand-navy rounded-full px-3 py-1';
@@ -61,15 +60,26 @@ const opcjaCls = 'flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-brand-
         <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">
           Rok szkolny {ROK_SZKOLNY}
         </p>
-        <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.8rem)] text-brand-navy leading-tight mt-3">
+        <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.8rem)] text-brand-navy leading-tight mt-3 mb-8">
           {tytul}
         </h2>
+
+        <a
+          href={plikPdf}
+          target="_blank"
+          rel="noopener"
+          class="cta-pop inline-flex items-center justify-center gap-2 font-sans font-bold uppercase tracking-wider text-sm px-6 py-3.5 rounded-lg bg-brand-teal text-brand-cream hover:bg-brand-coral transition-colors duration-200"
+        >
+          <Icon name="tabler:download" class="w-4 h-4" aria-hidden="true" />
+          Pobierz PDF
+        </a>
       </div>
 
       <ol>
         {
           wydarzenia.map((w, i) => {
-            const k = KOLORY[w.ikona] ?? KOLORY.lisc;
+            const k = KLASY[KOLOR_WYDARZENIA[w.ikona] ?? DOMYSLNY_KOLOR];
+            const d = opisDaty(w.data);
             return (
               <li
                 class="wydarzenie relative grid grid-cols-[3.5rem_1fr] md:grid-cols-[1fr_4.5rem_1fr] gap-x-4 md:gap-x-6 pb-8 md:pb-10"
@@ -89,9 +99,9 @@ const opcjaCls = 'flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-brand-
                 >
                   <div class="flex items-center justify-between gap-3 mb-2">
                     <p class="font-sans text-brand-navy flex items-baseline gap-2 flex-wrap">
-                      <span class="text-3xl font-black leading-none">{dzienMiesiaca(w.data)}</span>
-                      <span class="text-sm font-bold">{miesiacDopelniacz(w.data)}</span>
-                      <span class="text-sm text-brand-navy/50">· {dzienTygodnia(w.data)}</span>
+                      <span class="text-3xl font-black leading-none">{d.dzien}</span>
+                      <span class="text-sm font-bold">{d.miesiac}</span>
+                      <span class="text-sm text-brand-navy/50">· {d.tydzien}</span>
                     </p>
                     <span
                       data-najblizsze

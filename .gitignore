@@ -32,3 +32,5 @@ pnpm-lock.yaml
 # src/data/plan-zajec.json jako plan B.
 public/kalendarz/
 public/dokumenty/plan-zajec-*.pdf
+# Tak samo PDF wydarzeń miesiąca (scripts/wydarzenia-pdf.mjs).
+public/dokumenty/wydarzenia-*.pdf
