@@ -22,7 +22,8 @@ export const WYDARZENIA = [
   {
     data: '2026-09-10',
     godzina: '11.40',
-    tytul: 'Koncert muzyczny z udziałem instrumentu trąbka',
+    tytul: 'Koncert „Muzyczny kropko-land”',
+    opis: 'Razem z trąbką pomożemy biedronce odnaleźć zaginione kropki.',
     ikona: 'trabka',
   },
   {
