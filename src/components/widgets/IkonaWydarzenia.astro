@@ -1,0 +1,58 @@
+---
+// Ikony wydarzeń. Trąbki i przyjaznej dyni nie ma w zestawie Tabler (jego
+// dynia jest halloweenowa, straszna), więc są narysowane tutaj — na tej
+// samej siatce 24 px i tą samą kreską 2 px z zaokrąglonymi końcami. Obok
+// ikon z zestawu nie odstają.
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  nazwa?: string;
+  class?: string;
+}
+
+const { nazwa = '', class: klasa = 'w-6 h-6' } = Astro.props;
+
+const Z_ZESTAWU: Record<string, string> = {
+  teatr: 'tabler:masks-theater',
+  lisc: 'tabler:leaf',
+  // Rysowany zwierzak z guzika w rozmiarze kropki czytał się jak budzik.
+  guzik: 'tabler:paw',
+};
+const wlasna = ['trabka', 'dynia'].includes(nazwa);
+---
+
+{
+  wlasna ? (
+    <svg
+      class={klasa}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      {nazwa === 'trabka' && (
+        <>
+          <path d="M2.5 10.5v3" />
+          <path d="M2.5 12H16" />
+          <path d="M16 9.5l5-3v11l-5-3z" />
+          <path d="M6 12v2.5A1.5 1.5 0 0 0 7.5 16h5a1.5 1.5 0 0 0 1.5-1.5V12" />
+          <path d="M7.5 12V9M10.5 12V9M13.5 12V9" />
+        </>
+      )}
+      {nazwa === 'dynia' && (
+        <>
+          <ellipse cx="12" cy="13.5" rx="8" ry="6.5" />
+          <path d="M12 7c-2.2 1.5-3.3 3.8-3.3 6.5s1.1 5 3.3 6.5" />
+          <path d="M12 7c2.2 1.5 3.3 3.8 3.3 6.5s-1.1 5-3.3 6.5" />
+          <path d="M12 7V4" />
+          <path d="M12 5c1-1.5 2.8-2 4.5-1.5-.5 1.7-2.5 2.5-4.5 1.5z" />
+        </>
+      )}
+    </svg>
+  ) : (
+    <Icon name={Z_ZESTAWU[nazwa] ?? 'tabler:star'} class={klasa} aria-hidden="true" />
+  )
+}

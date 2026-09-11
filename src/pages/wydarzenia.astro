@@ -1,0 +1,256 @@
+---
+// Wydarzenia miesiąca dla rodziców — oś czasu zamiast kalendarza, bo w
+// miesiącu jest kilka wydarzeń, a siatka 30 dni byłaby w większości pusta.
+//
+// Strona jest ukryta przed wyszukiwarką (noindex, poza mapą strony) i nie
+// ma jej w menu — rodzice dostają link, tak jak do planu zajęć. Adres jest
+// stały, zmienia się tylko miesiąc, więc link na WhatsAppie nie wygasa.
+import { Icon } from 'astro-icon/components';
+import Layout from '~/layouts/PageLayout.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+import IkonaWydarzenia from '~/components/widgets/IkonaWydarzenia.astro';
+import { ROK_SZKOLNY } from '~/data/plan-zajec.mjs';
+import {
+  wydarzeniaPosortowane,
+  miesiacWydarzen,
+  pokazGodzine,
+  idWydarzenia,
+  linkGoogle,
+} from '~/data/wydarzenia.mjs';
+
+const wydarzenia = wydarzeniaPosortowane();
+const miesiac = miesiacWydarzen(wydarzenia);
+const tytul = `${miesiac.charAt(0).toUpperCase() + miesiac.slice(1)} w Kolorowym Przedszkolu`;
+
+const metadata = {
+  title: tytul,
+  description: `Koncerty, spektakle i wyjazdy — ${miesiac} w Kolorowym Przedszkolu na Saskiej Kępie.`,
+  canonical: 'https://koloroweprzedszkole.com/wydarzenia',
+  ignoreTitleTemplate: true,
+  robots: { index: false, follow: false },
+};
+
+// Kolor każdego rodzaju wydarzenia — wyłącznie z palety brandbooka.
+// Pełne nazwy klas (a nie sklejane), bo Tailwind szuka ich w tekście pliku.
+const KOLORY: Record<string, { kropka: string; ramka: string }> = {
+  trabka: { kropka: 'bg-brand-yellow text-brand-navy', ramka: 'border-brand-yellow' },
+  teatr: { kropka: 'bg-brand-navy text-brand-cream', ramka: 'border-brand-navy' },
+  guzik: { kropka: 'bg-brand-forest text-brand-cream', ramka: 'border-brand-forest' },
+  lisc: { kropka: 'bg-brand-teal text-brand-cream', ramka: 'border-brand-teal' },
+  dynia: { kropka: 'bg-brand-coral text-brand-cream', ramka: 'border-brand-coral' },
+};
+
+// Południe UTC, żeby żadna strefa czasowa nie przesunęła daty o dzień.
+const naDate = (iso: string) => new Date(iso + 'T12:00:00Z');
+const dzienMiesiaca = (iso: string) => naDate(iso).getUTCDate();
+const miesiacDopelniacz = (iso: string) =>
+  naDate(iso).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', timeZone: 'UTC' }).replace(/^\d+\s*/, '');
+const dzienTygodnia = (iso: string) => naDate(iso).toLocaleDateString('pl-PL', { weekday: 'long', timeZone: 'UTC' });
+
+const plakietkaCls =
+  'inline-flex items-center gap-1.5 font-sans text-xs font-semibold text-brand-navy rounded-full px-3 py-1';
+const opcjaCls = 'flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-brand-teal/8 transition-colors duration-150';
+---
+
+<Layout metadata={metadata}>
+  <HeroMazy title={miesiac} seoHeading={tytul} />
+
+  <section class="bg-brand-cream pt-16 md:pt-24 pb-20">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-12 md:mb-16">
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">
+          Rok szkolny {ROK_SZKOLNY}
+        </p>
+        <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.8rem)] text-brand-navy leading-tight mt-3">
+          {tytul}
+        </h2>
+      </div>
+
+      <ol>
+        {
+          wydarzenia.map((w, i) => {
+            const k = KOLORY[w.ikona] ?? KOLORY.lisc;
+            return (
+              <li
+                class="wydarzenie relative grid grid-cols-[3.5rem_1fr] md:grid-cols-[1fr_4.5rem_1fr] gap-x-4 md:gap-x-6 pb-8 md:pb-10"
+                data-dzien={w.data}
+              >
+                <div class="col-start-1 md:col-start-2 row-start-1 flex justify-center">
+                  <span
+                    class={`kropka relative z-10 flex items-center justify-center w-14 h-14 rounded-full border-4 border-brand-cream ring-brand-sand transition-all duration-300 ${k.kropka}`}
+                  >
+                    <IkonaWydarzenia nazwa={w.ikona} class="w-7 h-7" />
+                  </span>
+                </div>
+
+                <article
+                  class={`karta col-start-2 row-start-1 ${i % 2 ? 'md:col-start-3' : 'md:col-start-1'} bg-white rounded-2xl border-2 border-transparent shadow-sm p-5 md:p-6 transition-all duration-300`}
+                  data-ramka={k.ramka}
+                >
+                  <div class="flex items-center justify-between gap-3 mb-2">
+                    <p class="font-sans text-brand-navy flex items-baseline gap-2 flex-wrap">
+                      <span class="text-3xl font-black leading-none">{dzienMiesiaca(w.data)}</span>
+                      <span class="text-sm font-bold">{miesiacDopelniacz(w.data)}</span>
+                      <span class="text-sm text-brand-navy/50">· {dzienTygodnia(w.data)}</span>
+                    </p>
+                    <span
+                      data-najblizsze
+                      hidden
+                      class={`font-sans text-[11px] font-bold uppercase tracking-wider rounded-full px-2.5 py-1 whitespace-nowrap ${k.kropka}`}
+                    >
+                      najbliższe
+                    </span>
+                    <span
+                      data-bylo
+                      hidden
+                      class="font-sans text-[11px] font-bold uppercase tracking-wider text-brand-navy/45 whitespace-nowrap"
+                    >
+                      było
+                    </span>
+                  </div>
+
+                  <p class="font-sans text-sm text-brand-navy/60 flex items-center gap-1.5">
+                    <Icon name="tabler:clock" class="w-4 h-4" aria-hidden="true" />
+                    godz. {pokazGodzine(w.godzina)}
+                  </p>
+
+                  <h3 class="font-sans font-bold text-lg md:text-xl text-brand-navy leading-snug mt-3">{w.tytul}</h3>
+                  {w.opis && <p class="font-sans text-sm text-brand-navy/60 mt-1">{w.opis}</p>}
+
+                  {(w.grupa || w.wyjazd || w.koszt) && (
+                    <div class="flex flex-wrap gap-2 mt-4">
+                      {w.grupa && (
+                        <span class={`${plakietkaCls} bg-brand-yellow/25`}>
+                          <Icon name="tabler:users" class="w-3.5 h-3.5" aria-hidden="true" />
+                          grupa {w.grupa}
+                        </span>
+                      )}
+                      {w.wyjazd && (
+                        <span class={`${plakietkaCls} bg-brand-teal/12`}>
+                          <Icon name="tabler:bus" class="w-3.5 h-3.5" aria-hidden="true" />
+                          wyjazd {pokazGodzine(w.wyjazd)}
+                          {w.powrot && ` · powrót ${pokazGodzine(w.powrot)}`}
+                        </span>
+                      )}
+                      {w.koszt && (
+                        <span class={`${plakietkaCls} bg-brand-coral/15`}>
+                          <Icon name="tabler:coin" class="w-3.5 h-3.5" aria-hidden="true" />
+                          koszt {w.koszt}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  <details class="relative mt-4" data-rozwijane data-kalendarz>
+                    <summary class="list-none [&::-webkit-details-marker]:hidden inline-flex items-center gap-2 cursor-pointer font-sans text-xs font-bold uppercase tracking-wider text-brand-teal hover:text-brand-coral transition-colors duration-200">
+                      <Icon name="tabler:calendar-plus" class="w-4 h-4" aria-hidden="true" />
+                      Dodaj do kalendarza
+                    </summary>
+                    <div class="absolute left-0 mt-2 w-64 p-2 z-20 bg-white rounded-2xl border border-brand-navy/6 shadow-lg">
+                      <a href={linkGoogle(w)} target="_blank" rel="noopener" class={opcjaCls}>
+                        <Icon name="tabler:brand-google" class="w-4 h-4 text-brand-navy/60" aria-hidden="true" />
+                        <span class="font-sans text-sm font-semibold text-brand-navy">Kalendarz Google</span>
+                      </a>
+                      <!-- Bez atrybutu download: iPhone otwiera wtedy plik wprost
+                           w Kalendarzu, zamiast odkładać go do Plików. -->
+                      <a href={`/kalendarz/wydarzenie-${idWydarzenia(w)}.ics`} class={opcjaCls}>
+                        <Icon name="tabler:brand-apple" class="w-4 h-4 text-brand-navy/60" aria-hidden="true" />
+                        <span class="font-sans text-sm font-semibold text-brand-navy">iPhone, Mac, Outlook</span>
+                      </a>
+                    </div>
+                  </details>
+                </article>
+              </li>
+            );
+          })
+        }
+      </ol>
+
+      <p class="font-sans text-xs text-brand-navy/45 mt-4 text-center leading-relaxed">
+        Pytania? Zadzwoń:
+        <a href="tel:605657366" class="text-brand-teal underline hover:text-brand-coral transition-colors duration-200">605 657 366</a>
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Kropkowana, falująca ścieżka od kropki do kropki. Każde wydarzenie
+     rysuje odcinek do następnego, więc ścieżka kończy się dokładnie na
+     ostatnim, bez względu na wysokość kart. Fala zaczyna i kończy kafel
+     w tym samym punkcie i pod tym samym kątem, więc odcinki łączą się
+     gładko. Na telefonie biegnie po lewej, na komputerze środkiem. */
+  .wydarzenie:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    top: 1.75rem;
+    bottom: -1.75rem;
+    left: 1.75rem;
+    width: 24px;
+    margin-left: -12px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='80'%3E%3Cpath d='M12 0C18 13 18 27 12 40S6 67 12 80' fill='none' stroke='%232D346F' stroke-opacity='.22' stroke-width='3' stroke-linecap='round' stroke-dasharray='.5 8'/%3E%3C/svg%3E")
+      repeat-y center top / 24px 80px;
+  }
+
+  @media (min-width: 768px) {
+    .wydarzenie:not(:last-child)::before {
+      left: 50%;
+    }
+  }
+
+  /* Minione wydarzenia zostają na osi — widać, co już było — ale cichną. */
+  .minione .karta {
+    opacity: 0.55;
+    box-shadow: none;
+  }
+
+  .minione .kropka {
+    filter: grayscale(1);
+    opacity: 0.45;
+  }
+</style>
+
+<script>
+  // Oznaczenia „było" i „najbliższe" liczy przeglądarka, a nie build —
+  // strona budowana raz na jakiś czas inaczej pokazywałaby przeszłość
+  // jako przyszłość. Bez JavaScriptu wszystkie wydarzenia wyglądają zwyczajnie.
+  function oznaczWydarzenia() {
+    const lista = [...document.querySelectorAll<HTMLElement>('.wydarzenie[data-dzien]')];
+    if (!lista.length) return;
+
+    // Dzień w Warszawie, niezależnie od strefy ustawionej w telefonie.
+    const dzis = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Warsaw' }).format(new Date());
+    const najblizsze = lista.find((el) => (el.dataset.dzien ?? '') >= dzis);
+
+    for (const el of lista) {
+      const dzien = el.dataset.dzien ?? '';
+      const minione = dzien < dzis;
+      const wyroznione = el === najblizsze;
+
+      el.classList.toggle('minione', minione);
+      el.querySelector<HTMLElement>('[data-bylo]')!.hidden = !minione;
+      // Do kalendarza nie ma sensu dodawać tego, co już się odbyło.
+      el.querySelector<HTMLElement>('[data-kalendarz]')!.hidden = minione;
+
+      const znacznik = el.querySelector<HTMLElement>('[data-najblizsze]')!;
+      znacznik.hidden = !wyroznione;
+      znacznik.textContent = dzien === dzis ? 'dziś' : 'najbliższe';
+
+      const karta = el.querySelector<HTMLElement>('.karta')!;
+      karta.classList.toggle(karta.dataset.ramka ?? '', wyroznione);
+      karta.classList.toggle('border-transparent', !wyroznione);
+      el.querySelector('.kropka')!.classList.toggle('ring-8', wyroznione);
+    }
+  }
+
+  // Strona korzysta z płynnych przejść (ClientRouter): skrypt wykonuje się
+  // raz, a astro:page-load przychodzi przy każdym wejściu na stronę.
+  document.addEventListener('astro:page-load', oznaczWydarzenia);
+
+  // Lista „Dodaj do kalendarza" zamyka się po kliknięciu obok.
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll<HTMLDetailsElement>('details[data-rozwijane][open]').forEach((el) => {
+      if (!el.contains(e.target as Node)) el.open = false;
+    });
+  });
+</script>
