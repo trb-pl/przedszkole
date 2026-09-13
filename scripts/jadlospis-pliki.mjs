@@ -78,10 +78,6 @@ const LINIA = '#D5D7E3';
 const PASEK = '#F7F5F2';
 const MM = 72 / 25.4;
 
-// Zdanie ze strony (porady: „Ile kosztuje prywatne przedszkole") — nie nowa obietnica.
-const DIETY =
-  'Dzieci na dietach eliminacyjnych (alergie, nietolerancje pokarmowe) otrzymują odpowiednio zmodyfikowane menu — bez dodatkowych opłat.';
-
 const naDuzaLitere = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 const krotkaData = (iso) => (iso ? `${Number(iso.slice(8, 10))}.${iso.slice(5, 7)}` : '');
 
@@ -208,7 +204,6 @@ function rysujPdf(dok, j) {
   dok.font('Bold').fontSize(7.5).fillColor(BRAND.teal).text('ALERGENY', margines, dol + 4 * MM, { lineBreak: false });
   dok.font('Regular').fontSize(7.5).fillColor(BRAND.navy)
     .text(legenda, margines + 18 * MM, dol + 4 * MM, { width: W - 2 * margines - 18 * MM });
-  dok.font('Italic').fontSize(7.5).fillColor(SZARY).text(DIETY, margines, dok.y + 1.5 * MM, { width: W - 2 * margines });
 
   dok.font('Regular').fontSize(7.5).fillColor(SZARY)
     .text('Kontakt: 605 657 366 · przedszkole@kolorowe.eu', margines, H - 10 * MM, { lineBreak: false });
