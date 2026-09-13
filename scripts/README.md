@@ -11,6 +11,7 @@ Pythona ani żadnej z tych bibliotek.
 | `make-wzory-pdf.py` | Komplet pustych dokumentów do pobrania ze strony | `public/dokumenty/*.pdf` |
 | `make-listy-obecnosci.py` | Listy obecności dzieci i personelu na rok szkolny | `~/Downloads/Listy_obecnosci_*.pdf` |
 | `plan-pliki.mjs` | Plan zajęć grup: dane stron, PDF-y i kalendarze — uruchamiany automatycznie przy `npm run build` | `src/data/plan-zajec.json`, `public/dokumenty/plan-zajec-*.pdf`, `public/kalendarz/plan-*.ics` |
+| `jadlospis-pliki.mjs` | Jadłospis tygodnia: dane strony `/jadlospis` i PDF — uruchamiany automatycznie przy `npm run build` | `src/data/jadlospis.json`, `public/dokumenty/jadlospis-<data>.pdf` |
 | `wydarzenia-pdf.mjs` | Wydarzenia miesiąca z `/wydarzenia` do wydruku — dane, kolory i ikony ze strony (`src/data/wydarzenia.mjs`, `src/data/ikony-wydarzen.mjs`); uruchamiany automatycznie przy `npm run build` | `public/dokumenty/wydarzenia-<miesiąc>-<rok>.pdf` |
 
 ## Środowisko
@@ -169,3 +170,23 @@ Do kalendarza każde wydarzenie trafia jako link do Kalendarza Google albo
 osobny plik `.ics` (`src/pages/kalendarz/[wydarzenie].ics.ts`), z tytułem
 „Przedszkole: …". Wyjazd trwa w kalendarzu od wyjazdu do powrotu; bez
 podanej godziny końca wpis zajmuje godzinę.
+
+## Jadłospis
+
+Strona `/jadlospis` (ukryta przed wyszukiwarką, jak plan i wydarzenia) i PDF
+budują się z Arkusza Google, który kuchnia co tydzień nadpisuje. Adres
+arkusza opublikowanego jako CSV siedzi w zmiennej `PUBLIC_JADLOSPIS_CSV`;
+bez niej — albo gdy arkusz jest niedostępny — build używa migawki
+`src/data/jadlospis.json`.
+
+Parser (`src/data/jadlospis.mjs`) szuka wierszy po treści: nagłówka z dniami
+od poniedziałku do piątku, posiłków pod nim i wiersza „Alergeny". Daty
+tygodnia bierze z tytułu („Jadłospis 14.09- 18.09.2026"). Numery alergenów
+zamienia na nazwy według unijnej listy 14 alergenów. Poprawia tylko
+typografię — spacje i łączniki w złożeniach („żytnio -razowe" →
+„żytnio-razowe") — treści nie zmienia, więc literówki trzeba poprawiać
+w arkuszu.
+
+Podświetlenie dzisiejszego dnia i informację, że jadłospis na nowy tydzień
+jeszcze się nie pojawił, liczy przeglądarka. PDF nazywa się
+`jadlospis-<pierwszy dzień tygodnia>.pdf`; poprzedni jest usuwany.

@@ -1,0 +1,157 @@
+{
+  "tytul": "Kolorowe Przedszkole - Jadłospis 14.09- 18.09.2026",
+  "tydzien": {
+    "od": "2026-09-14",
+    "do": "2026-09-18"
+  },
+  "dni": [
+    {
+      "dzien": "poniedziałek",
+      "data": "2026-09-14",
+      "alergeny": [
+        1,
+        3,
+        7,
+        9
+      ]
+    },
+    {
+      "dzien": "wtorek",
+      "data": "2026-09-15",
+      "alergeny": [
+        1,
+        3,
+        7,
+        9
+      ]
+    },
+    {
+      "dzien": "środa",
+      "data": "2026-09-16",
+      "alergeny": [
+        1,
+        3,
+        7,
+        9
+      ]
+    },
+    {
+      "dzien": "czwartek",
+      "data": "2026-09-17",
+      "alergeny": [
+        1,
+        3,
+        4,
+        7,
+        9
+      ]
+    },
+    {
+      "dzien": "piątek",
+      "data": "2026-09-18",
+      "alergeny": [
+        1,
+        3,
+        4,
+        7,
+        9
+      ]
+    }
+  ],
+  "posilki": [
+    {
+      "nazwa": "Drugie śniadanie",
+      "rodzaj": "sniadanie",
+      "pozycje": [
+        [
+          "Pieczywo żytnio-razowe z masłem, kiełbasa salami, mix warzyw",
+          "Herbata z cytryną"
+        ],
+        [
+          "Pieczywo żytnio-razowe z masłem, jajko ugotowane na półtwardo/jajecznica, mix warzyw",
+          "Herbata z cytryną, kakao naturalne"
+        ],
+        [
+          "Pieczywo żytnio-razowe z masłem, szynka biała, mix warzyw",
+          "Herbata z cytryną"
+        ],
+        [
+          "Pieczywo żytnio-razowe z masłem, pasta serowo-paprykowa/ser żółty, mix warzyw",
+          "Herbata z cytryną"
+        ],
+        [
+          "Pieczywo żytnio-razowe z masłem, polędwica z indyka, mix warzyw",
+          "Herbata z cytryną"
+        ]
+      ]
+    },
+    {
+      "nazwa": "Zupa",
+      "rodzaj": "zupa",
+      "pozycje": [
+        [
+          "Pomidorowa z ryżem, zielenina"
+        ],
+        [
+          "Krem z brokuł z groszkiem ptysiowym, zielenina"
+        ],
+        [
+          "Ogórkowa, zielenina"
+        ],
+        [
+          "Zacierkowa, zielenina"
+        ],
+        [
+          "Fasolowa z grzankami domowymi, zielenina"
+        ]
+      ]
+    },
+    {
+      "nazwa": "Drugie danie",
+      "rodzaj": "obiad",
+      "pozycje": [
+        [
+          "Pieczone udko kurczaka, kalafior podany z bułką tartą na maśle, surówka z marchewki i jabłka, ziemniaki",
+          "Woda z cytryną"
+        ],
+        [
+          "Spagetti z sosem bolońskim, parmezan, mix sałat z pomidorkami daktylowymi i pestkami dyni w sosie winegret",
+          "Woda z cytryną"
+        ],
+        [
+          "Pierogi leniwe z sosem jogurtowo-waniliowym, marchewka i kalarepka do chrupania",
+          "Woda z cytryną"
+        ],
+        [
+          "Kotlet mielony, jarzynka z buraków, ogórek, ziemniaki",
+          "Woda z cytryną"
+        ],
+        [
+          "Domowe paluszki rybne z halibuta, surówka colelav, ziemniaki",
+          "Woda z cytryną"
+        ]
+      ]
+    },
+    {
+      "nazwa": "Podwieczorek",
+      "rodzaj": "podwieczorek",
+      "pozycje": [
+        [
+          "Budyń waniliowy, chrupki kukurydziane, mix owoców, herbata owocowa"
+        ],
+        [
+          "Kruche ciasto ze śliwkami, mix owoców, herbata owocowa"
+        ],
+        [
+          "Pieczywo pełnoziarniste z humusem i ogórkiem, mix owoców, herbata owocowa"
+        ],
+        [
+          "Koktajl mleczno-bananowy, wafle ryżowe, mix owoców, herbata owocowa"
+        ],
+        [
+          "Kasza kuskus zapiekana z musem jabłkowym, mix owoców, herbata owocowa"
+        ]
+      ]
+    }
+  ]
+}

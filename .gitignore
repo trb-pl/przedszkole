@@ -34,3 +34,5 @@ public/kalendarz/
 public/dokumenty/plan-zajec-*.pdf
 # Tak samo PDF wydarzeń miesiąca (scripts/wydarzenia-pdf.mjs).
 public/dokumenty/wydarzenia-*.pdf
+# I jadłospisu (scripts/jadlospis-pliki.mjs) — w repo zostaje migawka src/data/jadlospis.json.
+public/dokumenty/jadlospis-*.pdf

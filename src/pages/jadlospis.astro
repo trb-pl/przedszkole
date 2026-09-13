@@ -1,0 +1,284 @@
+---
+// Jadłospis tygodnia dla rodziców. Jak plan zajęć i wydarzenia: ukryty przed
+// wyszukiwarką (noindex, poza mapą strony), bez linku w menu — rodzice
+// dostają link.
+//
+// Dane z src/data/jadlospis.json — migawki arkusza zapisanej przez
+// scripts/jadlospis-pliki.mjs w tym samym buildzie, z którego powstaje PDF.
+import { Icon } from 'astro-icon/components';
+import Layout from '~/layouts/PageLayout.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+import jadlospis from '~/data/jadlospis.json';
+import {
+  ALERGENY,
+  WYGLAD_POSILKU,
+  nazwyAlergenow,
+  opisTygodnia,
+  plikPdfJadlospisu,
+} from '~/data/jadlospis.mjs';
+
+const tydzien = opisTygodnia(jadlospis.tydzien);
+const plikPdf = `/dokumenty/${plikPdfJadlospisu(jadlospis)}`;
+
+const metadata = {
+  title: `Jadłospis${tydzien ? ` ${tydzien}` : ''} – Kolorowe Przedszkole`,
+  description: 'Tygodniowy jadłospis Kolorowego Przedszkola — posiłki gotowane na miejscu, z listą alergenów.',
+  canonical: 'https://koloroweprzedszkole.com/jadlospis',
+  ignoreTitleTemplate: true,
+  robots: { index: false, follow: false },
+};
+
+// Klasy dla kolorów z palety brandbooka (przypisanie: src/data/jadlospis.mjs).
+// Pełne nazwy klas, a nie sklejane — Tailwind szuka ich w tekście pliku.
+const KLASY: Record<string, string> = {
+  yellow: 'bg-brand-yellow text-brand-navy',
+  coral: 'bg-brand-coral text-brand-cream',
+  teal: 'bg-brand-teal text-brand-cream',
+  forest: 'bg-brand-forest text-brand-cream',
+};
+const wyglad = (rodzaj: string) => WYGLAD_POSILKU[rodzaj] ?? WYGLAD_POSILKU.obiad;
+const naDuzaLitere = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+const krotkaData = (iso: string | null) => (iso ? `${Number(iso.slice(8, 10))}.${iso.slice(5, 7)}` : '');
+
+// Po weekendzie, jeśli arkusz nie został jeszcze nadpisany, strona mówi
+// wprost, że to poprzedni tydzień — zamiast udawać, że menu jest aktualne.
+const koniecWaznosci = (() => {
+  if (!jadlospis.tydzien) return '';
+  const d = new Date(jadlospis.tydzien.do + 'T12:00:00Z');
+  d.setUTCDate(d.getUTCDate() + 2);
+  return d.toISOString().slice(0, 10);
+})();
+
+const kartaCls = 'bg-white rounded-2xl border-2 border-transparent shadow-sm';
+const DIETY =
+  'Dzieci na dietach eliminacyjnych (alergie, nietolerancje pokarmowe) otrzymują odpowiednio zmodyfikowane menu — bez dodatkowych opłat i bez konieczności przynoszenia jedzenia z domu.';
+---
+
+<Layout metadata={metadata}>
+  <HeroMazy title="jadłospis" seoHeading={`Jadłospis Kolorowego Przedszkola${tydzien ? ` — ${tydzien}` : ''}`} />
+
+  <section class="bg-brand-cream pt-16 md:pt-24 pb-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-10 md:mb-14">
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Jadłospis na tydzień</p>
+        <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.8rem)] text-brand-navy leading-tight mt-3 mb-8">
+          {tydzien || 'Jadłospis'}
+        </h2>
+
+        <p
+          data-nieaktualny
+          data-koniec={koniecWaznosci}
+          hidden
+          class="font-sans text-sm text-brand-navy/70 bg-brand-sand rounded-xl px-4 py-3 max-w-xl mx-auto -mt-2 mb-8"
+        >
+          Jadłospis na ten tydzień jeszcze się nie pojawił — poniżej poprzedni tydzień.
+        </p>
+
+        <a
+          href={plikPdf}
+          target="_blank"
+          rel="noopener"
+          class="cta-pop inline-flex items-center justify-center gap-2 font-sans font-bold uppercase tracking-wider text-sm px-6 py-3.5 rounded-lg bg-brand-teal text-brand-cream hover:bg-brand-coral transition-colors duration-200"
+        >
+          <Icon name="tabler:download" class="w-4 h-4" aria-hidden="true" />
+          Pobierz PDF
+        </a>
+      </div>
+
+      <!-- ── Tabela tygodniowa (od tabletu w górę) ───────────────── -->
+      <div class={`${kartaCls} hidden md:block overflow-hidden`}>
+        <table class="w-full border-collapse table-fixed">
+          <thead>
+            <tr class="bg-brand-navy/4">
+              <th class="text-left font-sans text-sm font-bold text-brand-navy px-5 py-4 w-44">Posiłek</th>
+              {
+                jadlospis.dni.map((d) => (
+                  <th class="px-3 py-3 border-l border-brand-navy/8 align-top" data-dzien={d.data ?? undefined}>
+                    <span class="block font-sans text-sm font-bold text-brand-navy">{naDuzaLitere(d.dzien)}</span>
+                    {d.data && <span class="block font-sans text-xs text-brand-navy/45">{krotkaData(d.data)}</span>}
+                    <span
+                      data-znacznik-dzis={d.data ?? undefined}
+                      hidden
+                      class="inline-block mt-1 font-sans text-[10px] font-bold uppercase tracking-wider rounded-full px-2 py-0.5 bg-brand-teal text-brand-cream"
+                    >
+                      dziś
+                    </span>
+                  </th>
+                ))
+              }
+            </tr>
+          </thead>
+          <tbody>
+            {
+              jadlospis.posilki.map((p, n) => (
+                <tr class={n % 2 ? 'bg-brand-navy/2' : ''}>
+                  <th scope="row" class="text-left align-top px-5 py-4 border-t border-brand-navy/8">
+                    <span class="flex items-center gap-2.5">
+                      <span
+                        class={`flex items-center justify-center w-8 h-8 rounded-full shrink-0 ${KLASY[wyglad(p.rodzaj).kolor]}`}
+                      >
+                        <Icon name={wyglad(p.rodzaj).ikona} class="w-4 h-4" aria-hidden="true" />
+                      </span>
+                      <span class="font-sans text-sm font-semibold text-brand-navy leading-tight">{p.nazwa}</span>
+                    </span>
+                  </th>
+                  {p.pozycje.map((linijki, i) => (
+                    <td
+                      class="align-top px-3 py-4 border-t border-l border-brand-navy/8"
+                      data-dzien={jadlospis.dni[i].data ?? undefined}
+                    >
+                      {linijki.length ? (
+                        linijki.map((l, k) => (
+                          <p
+                            class={`font-sans leading-snug ${k ? 'text-xs text-brand-navy/55 mt-1.5' : 'text-sm text-brand-navy'}`}
+                          >
+                            {l}
+                          </p>
+                        ))
+                      ) : (
+                        <span class="font-sans text-brand-navy/20" aria-hidden="true">
+                          —
+                        </span>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            }
+            <tr class="bg-brand-sand/60">
+              <th scope="row" class="text-left align-top px-5 py-4 border-t border-brand-navy/8">
+                <span class="flex items-center gap-2.5">
+                  <span class="flex items-center justify-center w-8 h-8 rounded-full shrink-0 bg-white text-brand-navy">
+                    <Icon name="tabler:info-circle" class="w-4 h-4" aria-hidden="true" />
+                  </span>
+                  <span class="font-sans text-sm font-semibold text-brand-navy">Alergeny</span>
+                </span>
+              </th>
+              {
+                jadlospis.dni.map((d) => (
+                  <td class="align-top px-3 py-4 border-t border-l border-brand-navy/8" data-dzien={d.data ?? undefined}>
+                    <p class="font-sans text-sm font-bold text-brand-navy">{d.alergeny.join(', ') || '—'}</p>
+                    {d.alergeny.length > 0 && (
+                      <p class="font-sans text-xs text-brand-navy/55 leading-snug mt-0.5">{nazwyAlergenow(d.alergeny)}</p>
+                    )}
+                  </td>
+                ))
+              }
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Widok dzienny (telefon) ──────────────────────────────── -->
+      <div class="md:hidden flex flex-col gap-4">
+        {
+          jadlospis.dni.map((d, i) => (
+            <article class={`karta-dnia ${kartaCls} p-5`} data-dzien={d.data ?? undefined}>
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <p class="font-sans text-brand-navy">
+                  <span class="font-bold">{naDuzaLitere(d.dzien)}</span>
+                  {d.data && <span class="text-brand-navy/45"> · {krotkaData(d.data)}</span>}
+                </p>
+                <span
+                  data-znacznik-dzis={d.data ?? undefined}
+                  hidden
+                  class="font-sans text-[11px] font-bold uppercase tracking-wider rounded-full px-2.5 py-1 bg-brand-teal text-brand-cream"
+                >
+                  dziś
+                </span>
+              </div>
+
+              <ul class="flex flex-col gap-4">
+                {jadlospis.posilki.map((p) => (
+                  <li class="flex gap-3">
+                    <span
+                      class={`flex items-center justify-center w-8 h-8 rounded-full shrink-0 ${KLASY[wyglad(p.rodzaj).kolor]}`}
+                    >
+                      <Icon name={wyglad(p.rodzaj).ikona} class="w-4 h-4" aria-hidden="true" />
+                    </span>
+                    <div>
+                      <p class="font-sans text-[11px] font-bold uppercase tracking-wider text-brand-teal">{p.nazwa}</p>
+                      {p.pozycje[i].length ? (
+                        p.pozycje[i].map((l, k) => (
+                          <p class={`font-sans leading-snug ${k ? 'text-xs text-brand-navy/55 mt-1' : 'text-sm text-brand-navy mt-0.5'}`}>
+                            {l}
+                          </p>
+                        ))
+                      ) : (
+                        <p class="font-sans text-sm text-brand-navy/30">—</p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <p class="font-sans text-xs text-brand-navy/60 border-t border-brand-navy/8 mt-4 pt-3">
+                <span class="font-bold text-brand-navy">Alergeny: {d.alergeny.join(', ') || '—'}</span>
+                {d.alergeny.length > 0 && <span> · {nazwyAlergenow(d.alergeny)}</span>}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+
+      <!-- ── Legenda alergenów ────────────────────────────────────── -->
+      <div class={`${kartaCls} p-6 md:p-8 mt-6`}>
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">Alergeny — numery</p>
+        <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-1.5">
+          {
+            Object.entries(ALERGENY).map(([n, a]) => (
+              <li class="font-sans text-sm text-brand-navy flex gap-2">
+                <span class="font-bold w-5 text-right shrink-0">{n}</span>
+                <span>{a.pelna}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="font-sans text-sm text-brand-navy/65 leading-relaxed mt-5">{DIETY}</p>
+      </div>
+
+      <p class="font-sans text-xs text-brand-navy/45 mt-8 text-center leading-relaxed">
+        Pytania? Zadzwoń:
+        <a href="tel:605657366" class="text-brand-teal underline hover:text-brand-coral transition-colors duration-200">605 657 366</a>
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Dzisiejszy dzień: delikatne turkusowe tło kolumny w tabeli i turkusowa
+     ramka karty na telefonie. */
+  td.dzis,
+  th.dzis {
+    background-color: rgb(52 187 168 / 0.08);
+  }
+
+  .karta-dnia.dzis {
+    border-color: #34bba8;
+  }
+</style>
+
+<script>
+  // „Dziś" i informację o nieaktualnym tygodniu liczy przeglądarka, a nie
+  // build — inaczej podświetlenie zostałoby na dniu, w którym zbudowano stronę.
+  function oznaczDzis() {
+    if (!document.querySelector('[data-nieaktualny]')) return;
+
+    // Dzień w Warszawie, niezależnie od strefy ustawionej w telefonie.
+    const dzis = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Warsaw' }).format(new Date());
+
+    document.querySelectorAll<HTMLElement>('[data-dzien]').forEach((el) => {
+      el.classList.toggle('dzis', el.dataset.dzien === dzis);
+    });
+    document.querySelectorAll<HTMLElement>('[data-znacznik-dzis]').forEach((el) => {
+      el.hidden = el.dataset.znacznikDzis !== dzis;
+    });
+
+    const info = document.querySelector<HTMLElement>('[data-nieaktualny]')!;
+    info.hidden = !info.dataset.koniec || dzis <= info.dataset.koniec;
+  }
+
+  // Strona korzysta z płynnych przejść (ClientRouter): astro:page-load
+  // przychodzi przy każdym wejściu na stronę.
+  document.addEventListener('astro:page-load', oznaczDzis);
+</script>
