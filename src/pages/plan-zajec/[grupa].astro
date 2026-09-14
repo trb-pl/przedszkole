@@ -6,6 +6,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 import HeroMazy from '~/components/widgets/HeroMazy.astro';
 import PopupOpinia from '~/components/widgets/PopupOpinia.astro';
+import NawigacjaRodzica from '~/components/widgets/NawigacjaRodzica.astro';
 import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
 import dane from '~/data/plan-zajec.json';
 import { DNI } from '~/data/plan-zajec.mjs';
@@ -58,6 +59,8 @@ const przyciskCls =
 
   <section class="bg-brand-cream pt-16 md:pt-24 pb-20">
     <div class="max-w-6xl mx-auto px-6">
+
+      <NawigacjaRodzica />
 
       <!-- Przełącznik grup — rodzeństwo bywa w różnych grupach -->
       <nav aria-label="Grupy" class="flex flex-wrap justify-center gap-2 mb-10">

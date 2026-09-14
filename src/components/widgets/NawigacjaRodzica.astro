@@ -1,0 +1,44 @@
+---
+// Mini nawigacja między stronami dla rodziców: plan zajęć, wydarzenia,
+// jadłospis. Te strony są ukryte przed wyszukiwarką i nie ma ich w menu,
+// więc rodzic, który wszedł z jednego linku, dociera stąd do pozostałych.
+//
+// Bieżącą sekcję rozpoznajemy po adresie, więc strony nie muszą niczego
+// przekazywać. Plan konkretnej grupy (/plan-zajec/liski) też podświetla
+// „Plan zajęć" — jako sekcję (aria-current="true"), a nie jako tę samą stronę.
+import { Icon } from 'astro-icon/components';
+
+const STRONY = [
+  { href: '/plan-zajec', nazwa: 'Plan zajęć', ikona: 'tabler:clock' },
+  { href: '/wydarzenia', nazwa: 'Wydarzenia', ikona: 'tabler:calendar-event' },
+  { href: '/jadlospis', nazwa: 'Jadłospis', ikona: 'tabler:tools-kitchen-2' },
+];
+
+const sciezka = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<nav aria-label="Strony dla rodziców" class="flex justify-center mb-10 md:mb-12">
+  <ul class="inline-flex items-center gap-1 p-1 bg-white rounded-full border border-brand-navy/8 shadow-sm">
+    {
+      STRONY.map((s) => {
+        const tutaj = sciezka === s.href;
+        const wSekcji = tutaj || sciezka.startsWith(s.href + '/');
+        return (
+          <li>
+            <a
+              href={s.href}
+              aria-current={tutaj ? 'page' : wSekcji ? 'true' : undefined}
+              class={`flex items-center gap-1.5 font-sans text-[13px] sm:text-sm font-semibold px-3 sm:px-4 py-2 rounded-full whitespace-nowrap transition-colors duration-200 ${
+                wSekcji ? 'bg-brand-navy text-brand-cream' : 'text-brand-navy hover:text-brand-teal'
+              }`}
+            >
+              {/* Na wąskim telefonie same napisy — z ikonami trzy pozycje nie mieszczą się w linii. */}
+              <Icon name={s.ikona} class="w-4 h-4 hidden sm:block" aria-hidden="true" />
+              {s.nazwa}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>

@@ -8,6 +8,7 @@
 import { Icon } from 'astro-icon/components';
 import Layout from '~/layouts/PageLayout.astro';
 import HeroMazy from '~/components/widgets/HeroMazy.astro';
+import NawigacjaRodzica from '~/components/widgets/NawigacjaRodzica.astro';
 import jadlospis from '~/data/jadlospis.json';
 import {
   ALERGENY,
@@ -57,6 +58,7 @@ const kartaCls = 'bg-white rounded-2xl border-2 border-transparent shadow-sm';
 
   <section class="bg-brand-cream pt-16 md:pt-24 pb-20">
     <div class="max-w-6xl mx-auto px-6">
+      <NawigacjaRodzica />
       <div class="text-center mb-10 md:mb-14">
         <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Jadłospis na tydzień</p>
         <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.8rem)] text-brand-navy leading-tight mt-3 mb-8">
