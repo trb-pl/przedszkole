@@ -1,13 +1,13 @@
 {
-  "tytul": "Kolorowe Przedszkole - Jadłospis 14.09- 18.09.2026",
+  "tytul": "Kolorowe Przedszkole - Jadłospis 21.09- 25.09.2026",
   "tydzien": {
-    "od": "2026-09-14",
-    "do": "2026-09-18"
+    "od": "2026-09-21",
+    "do": "2026-09-25"
   },
   "dni": [
     {
       "dzien": "poniedziałek",
-      "data": "2026-09-14",
+      "data": "2026-09-21",
       "alergeny": [
         1,
         3,
@@ -17,7 +17,7 @@
     },
     {
       "dzien": "wtorek",
-      "data": "2026-09-15",
+      "data": "2026-09-22",
       "alergeny": [
         1,
         3,
@@ -27,7 +27,7 @@
     },
     {
       "dzien": "środa",
-      "data": "2026-09-16",
+      "data": "2026-09-23",
       "alergeny": [
         1,
         3,
@@ -37,7 +37,7 @@
     },
     {
       "dzien": "czwartek",
-      "data": "2026-09-17",
+      "data": "2026-09-24",
       "alergeny": [
         1,
         3,
@@ -48,7 +48,7 @@
     },
     {
       "dzien": "piątek",
-      "data": "2026-09-18",
+      "data": "2026-09-25",
       "alergeny": [
         1,
         3,
@@ -64,23 +64,23 @@
       "rodzaj": "sniadanie",
       "pozycje": [
         [
-          "Pieczywo żytnio-razowe z masłem, kiełbasa salami, mix warzyw",
+          "Pieczywo żytnio-razowe z masłem, jajecznica ze szczypiorkiem, mix warzyw",
           "Herbata z cytryną"
         ],
         [
-          "Pieczywo żytnio-razowe z masłem, jajko ugotowane na półtwardo/jajecznica, mix warzyw",
+          "Pieczywo żytnio-razowe z masłem, twarożek śmietankowy z rzodkiewką i szczypiorkiem, mix warzyw",
           "Herbata z cytryną, kakao naturalne"
         ],
         [
-          "Pieczywo żytnio-razowe z masłem, szynka biała, mix warzyw",
+          "Pieczywo żytnio-razowe z masłem, filet z indyka, mix warzyw",
           "Herbata z cytryną"
         ],
         [
-          "Pieczywo żytnio-razowe z masłem, pasta serowo-paprykowa/ser żółty, mix warzyw",
+          "Pieczywo żytnio-razowe z masłem, ser żółty/pasta rybna, mix warzyw",
           "Herbata z cytryną"
         ],
         [
-          "Pieczywo żytnio-razowe z masłem, polędwica z indyka, mix warzyw",
+          "Pieczywo żytnio-razowe z masłem, szynka gotowana, mix warzyw",
           "Herbata z cytryną"
         ]
       ]
@@ -90,19 +90,19 @@
       "rodzaj": "zupa",
       "pozycje": [
         [
-          "Pomidorowa z ryżem, zielenina"
+          "Rosół z makaronem, zielenina"
         ],
         [
-          "Krem z brokuł z groszkiem ptysiowym, zielenina"
+          "Krem z białych warzyw, groszek ptysiowy, zielenina"
         ],
         [
-          "Ogórkowa, zielenina"
+          "Barszcz czerwony na wywarze warzywnym z fasolą, zielenina"
         ],
         [
-          "Zacierkowa, zielenina"
+          "Krupnik z kaszy jęczmiennej, zielenina"
         ],
         [
-          "Fasolowa z grzankami domowymi, zielenina"
+          "Grochówka z grzankami domowymi, zielenina"
         ]
       ]
     },
@@ -111,23 +111,23 @@
       "rodzaj": "obiad",
       "pozycje": [
         [
-          "Pieczone udko kurczaka, kalafior podany z bułką tartą na maśle, surówka z marchewki i jabłka, ziemniaki",
+          "Pierś z kurczaka w sosie chrzanowym, brokuły, surówka z marchewki i jabłka, ziemniaki",
           "Woda z cytryną"
         ],
         [
-          "Spagetti z sosem bolońskim, parmezan, mix sałat z pomidorkami daktylowymi i pestkami dyni w sosie winegret",
+          "Gulasz, pomidory z cebulką, kasza gryczana",
           "Woda z cytryną"
         ],
         [
-          "Pierogi leniwe z sosem jogurtowo-waniliowym, marchewka i kalarepka do chrupania",
+          "Naleśniki z białym serem/ serem ricotta i szpinakiem, marchewka i kalarepa do chrupania",
           "Woda z cytryną"
         ],
         [
-          "Kotlet mielony, jarzynka z buraków, ogórek, ziemniaki",
+          "Eskalopki z polędwicy wieprzowej, fasolka szparagowa, mizeria/ogórek, ziemniaki",
           "Woda z cytryną"
         ],
         [
-          "Domowe paluszki rybne z halibuta, surówka colelav, ziemniaki",
+          "Pieczony filet z morszczuka w delikatnej panierce, surówka z kiszonej kapusty, ziemniaki",
           "Woda z cytryną"
         ]
       ]
@@ -137,19 +137,19 @@
       "rodzaj": "podwieczorek",
       "pozycje": [
         [
-          "Budyń waniliowy, chrupki kukurydziane, mix owoców, herbata owocowa"
+          "Owsianka z borówkami, mix owoców, herbata owocowa"
         ],
         [
-          "Kruche ciasto ze śliwkami, mix owoców, herbata owocowa"
+          "Śliwki pod kruszonką, mix owoców, herbata owocowa"
         ],
         [
-          "Pieczywo pełnoziarniste z humusem i ogórkiem, mix owoców, herbata owocowa"
+          "Tosty żytnie z masłem, mix owoców, herbata owocowa"
         ],
         [
-          "Koktajl mleczno-bananowy, wafle ryżowe, mix owoców, herbata owocowa"
+          "Jogurt naturalny z bananem, chrupki kukurydziane, mix owoców, herbata owocowa"
         ],
         [
-          "Kasza kuskus zapiekana z musem jabłkowym, mix owoców, herbata owocowa"
+          "Szarlotka domowa, mix owoców, herbata owocowa"
         ]
       ]
     }
