@@ -9,8 +9,11 @@
 /** Kolory wyłącznie z palety brandbooka — nazwy jak tokeny brand-* w Tailwindzie. */
 export const KOLOR_WYDARZENIA = {
   trabka: 'yellow',
+  muzyka: 'yellow',
   teatr: 'navy',
+  halloween: 'navy',
   guzik: 'forest',
+  muzeum: 'forest',
   lisc: 'teal',
   dynia: 'coral',
 };
@@ -21,6 +24,10 @@ export const IKONY_Z_ZESTAWU = {
   lisc: 'tabler:leaf',
   // Rysowany zwierzak z guzika w rozmiarze kropki czytał się jak budzik.
   guzik: 'tabler:paw',
+  // Koncert bez trąbki (gitary) — nuta zamiast konkretnego instrumentu.
+  muzyka: 'tabler:music',
+  muzeum: 'tabler:building-bank',
+  halloween: 'tabler:ghost',
 };
 export const DOMYSLNA_IKONA = 'tabler:star';
 
