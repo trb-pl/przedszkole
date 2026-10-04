@@ -21,6 +21,7 @@ import {
   WYGLAD_POSILKU,
   nazwyAlergenow,
   opisTygodnia,
+  parsujJadlospis,
   plikPdfJadlospisu,
   pobierzJadlospis,
 } from '../src/data/jadlospis.mjs';
@@ -46,6 +47,17 @@ function wczytajEnv() {
 }
 
 async function wczytajDane() {
+  // Jadłospis przysłany jako plik (CSV z arkusza .xlsx — patrz
+  // scripts/jadlospis-z-xlsx.py) ma pierwszeństwo przed arkuszem w sieci.
+  // Tak wgrywamy tygodnie, które kuchnia przysyła mailem.
+  const zPliku = process.argv[2];
+  if (zPliku) {
+    const { jadlospis, ostrzezenia } = parsujJadlospis(fs.readFileSync(zPliku, 'utf8'));
+    for (const o of ostrzezenia) console.warn('[jadłospis] ⚠ ' + o);
+    fs.writeFileSync(MIGAWKA, JSON.stringify(jadlospis, null, 2) + '\n');
+    return { jadlospis, zrodlo: `plik ${path.basename(zPliku)}` };
+  }
+
   wczytajEnv();
   const adres = process.env.PUBLIC_JADLOSPIS_CSV;
 

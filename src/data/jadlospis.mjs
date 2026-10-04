@@ -106,6 +106,9 @@ function oczysc(tekst) {
     .replace(/(\p{Ll}o) ?- ?(\p{Ll})/gu, '$1-$2')
     // „masłem,jajko" → „masłem, jajko". Tylko przed literą, więc „1,5 kg" zostaje.
     .replace(/,(?=\p{L})/gu, ', ')
+    // „półtwardo/ jajecznica" → „półtwardo/jajecznica" — kuchnia pisze warianty
+    // dania przez ukośnik bez spacji, ale nie zawsze trafia w klawisz.
+    .replace(/(\p{L}) ?\/ ?(\p{L})/gu, '$1/$2')
     .trim();
 }
 

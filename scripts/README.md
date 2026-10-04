@@ -11,6 +11,7 @@ Pythona ani żadnej z tych bibliotek.
 | `make-wzory-pdf.py` | Komplet pustych dokumentów do pobrania ze strony | `public/dokumenty/*.pdf` |
 | `make-listy-obecnosci.py` | Listy obecności dzieci i personelu na rok szkolny | `~/Downloads/Listy_obecnosci_*.pdf` |
 | `plan-pliki.mjs` | Plan zajęć grup: dane stron, PDF-y i kalendarze — uruchamiany automatycznie przy `npm run build` | `src/data/plan-zajec.json`, `public/dokumenty/plan-zajec-*.pdf`, `public/kalendarz/plan-*.ics` |
+| `jadlospis-z-xlsx.py` | Jadłospis przysłany jako `.xlsx` → CSV dla generatora (sama biblioteka standardowa Pythona) | CSV na wyjściu |
 | `jadlospis-pliki.mjs` | Jadłospis tygodnia: dane strony `/jadlospis` i PDF — uruchamiany automatycznie przy `npm run build` | `src/data/jadlospis.json`, `public/dokumenty/jadlospis-<data>.pdf` |
 | `wydarzenia-pdf.mjs` | Wydarzenia miesiąca z `/wydarzenia` do wydruku — dane, kolory i ikony ze strony (`src/data/wydarzenia.mjs`, `src/data/ikony-wydarzen.mjs`); uruchamiany automatycznie przy `npm run build` | `public/dokumenty/wydarzenia-<miesiąc>-<rok>.pdf` |
 
@@ -183,10 +184,25 @@ Parser (`src/data/jadlospis.mjs`) szuka wierszy po treści: nagłówka z dniami
 od poniedziałku do piątku, posiłków pod nim i wiersza „Alergeny". Daty
 tygodnia bierze z tytułu („Jadłospis 14.09- 18.09.2026"). Numery alergenów
 zamienia na nazwy według unijnej listy 14 alergenów. Poprawia tylko
-typografię — spacje i łączniki w złożeniach („żytnio -razowe" →
-„żytnio-razowe") — treści nie zmienia, więc literówki trzeba poprawiać
-w arkuszu.
+typografię: spacje, łączniki w złożeniach („żytnio -razowe" →
+„żytnio-razowe"), spację po przecinku („masłem,jajko") i ukośnik między
+wariantami dania („półtwardo/ jajecznica"). Treści nie zmienia, więc literówki
+zgłaszamy kuchni.
 
 Podświetlenie dzisiejszego dnia i informację, że jadłospis na nowy tydzień
 jeszcze się nie pojawił, liczy przeglądarka. PDF nazywa się
 `jadlospis-<pierwszy dzień tygodnia>.pdf`; poprzedni jest usuwany.
+
+Kuchnia przysyła tydzień jako plik `.xlsx` (stan na 4.10.2026 — arkusz w sieci
+nie jest podpięty). Taki plik wgrywa się dwoma poleceniami:
+
+```bash
+python3 scripts/jadlospis-z-xlsx.py "~/Desktop/jadlospis.xlsx" > /tmp/j.csv
+node scripts/jadlospis-pliki.mjs /tmp/j.csv
+```
+
+Drugie polecenie zapisuje migawkę i PDF tak samo jak przy buildzie, tylko dane
+bierze z pliku zamiast z sieci. Potem zwykły `npm run build`, obejrzenie PDF-u
+i commit. Treści nie przepisujemy ręcznie — tak najłatwiej o literówkę w cudzej
+nazwie potrawy. Nazwa przysłanego pliku bywa myląca (bywa kopiowana z szablonu),
+więc tydzień bierzemy z tytułu w środku arkusza.
