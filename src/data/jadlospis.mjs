@@ -104,6 +104,8 @@ function oczysc(tekst) {
   return tekst
     .replace(/\s+/g, ' ')
     .replace(/(\p{Ll}o) ?- ?(\p{Ll})/gu, '$1-$2')
+    // „masłem,jajko" → „masłem, jajko". Tylko przed literą, więc „1,5 kg" zostaje.
+    .replace(/,(?=\p{L})/gu, ', ')
     .trim();
 }
 
