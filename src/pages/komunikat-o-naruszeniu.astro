@@ -25,7 +25,10 @@ const przebieg = [
     kiedy: '27–28 września',
     co: 'Nieuprawniona osoba ma dostęp do systemów Fakturowni i kopiuje część bazy danych.',
   },
-  { kiedy: '28 września', co: 'Dostawca wykrywa zdarzenie i odcina napastnikowi dostęp.' },
+  {
+    kiedy: '28 września',
+    co: 'Dostawca wykrywa zdarzenie, odcina napastnikowi dostęp, przenosi program na nowe serwery i unieważnia wykradzione klucze dostępu.',
+  },
   { kiedy: '29 września', co: 'Dostawca zgłasza zdarzenie Prezesowi UODO, CERT Polska i policji.' },
   {
     kiedy: '5 października',
@@ -59,14 +62,21 @@ const rady = [
     ikona: 'tabler:link-off',
     tekst: 'Prosimy nie otwierać linków ani załączników w nieoczekiwanych wiadomościach.',
   },
-  { ikona: 'tabler:lock', tekst: 'Nie prosimy o hasła ani kody z SMS — i nie robi tego żaden bank.' },
+  {
+    ikona: 'tabler:lock',
+    tekst: 'Prosimy nikomu nie podawać haseł, kodów z SMS, kodów BLIK ani danych karty. My o nie nie prosimy i nie robi tego żaden bank.',
+  },
   {
     ikona: 'tabler:phone',
     tekst: 'Przy telefonie rzekomo z przedszkola albo z banku najlepiej się rozłączyć i oddzwonić pod znany numer. Nasz to 605 657 366.',
   },
   {
     ikona: 'tabler:message-report',
-    tekst: 'Podejrzany SMS można bezpłatnie przesłać do CERT Polska na numer 8080. Jeśli doszło do oszustwa — prosimy od razu zawiadomić bank i policję.',
+    tekst: 'Podejrzany SMS można bezpłatnie przesłać do CERT Polska na numer 8080. Przy podejrzeniu oszustwa prosimy od razu skontaktować się z bankiem, a przy podejrzeniu przestępstwa — zawiadomić policję i zachować wiadomości oraz inne dowody.',
+  },
+  {
+    ikona: 'tabler:bell',
+    tekst: 'Prosimy dać nam znać o każdej próbie wykorzystania tych danych — dzięki temu ostrzeżemy pozostałych rodziców.',
   },
 ];
 
@@ -87,7 +97,7 @@ const link = 'text-brand-teal hover:text-brand-coral underline transition-colors
         </p>
         <h2 class={h2}>Komunikat o naruszeniu ochrony danych osobowych</h2>
         <p class={`${p} text-lg mt-5`}>
-          Szanowni Państwo, informujemy o naruszeniu ochrony danych osobowych u dostawcy programu, w którym
+          Szanowni Państwo, z przykrością informujemy o naruszeniu ochrony danych osobowych u dostawcy programu, w którym
           wystawiamy rachunki za pobyt dziecka — spółki Fakturownia sp. z o.o. Poniżej wyjaśniamy, co się stało,
           jakich danych może to dotyczyć i na co warto teraz uważać.
         </p>
@@ -222,6 +232,7 @@ const link = 'text-brand-teal hover:text-brand-coral underline transition-colors
           Przysługuje Państwu prawo wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych,
           ul. Moniuszki 1A, 00-014 Warszawa.
         </p>
+        <p class={`${p} mt-4`}>Przepraszamy za niepokój, jaki może wywołać ta sytuacja.</p>
         <p class="font-sans text-brand-navy mt-6">
           Olga Trębicka<br />
           <span class="text-brand-navy/60">Kolorowe Przedszkole</span>
