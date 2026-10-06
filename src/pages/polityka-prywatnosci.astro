@@ -17,7 +17,7 @@ const metadata = {
   robots: { index: true, follow: true },
 };
 
-const aktualizacja = '24 sierpnia 2026';
+const aktualizacja = '6 października 2026';
 
 const odbiorcy = [
   {
@@ -25,6 +25,12 @@ const odbiorcy = [
     nip: 'NIP 1132537306',
     rola: 'Obsługa techniczna strony internetowej, hosting formularzy i przechowywanie danych przesłanych przez formularz danych do umowy.',
     lokalizacja: 'Polska',
+  },
+  {
+    nazwa: 'Fakturownia sp. z o.o.',
+    nip: 'KRS 0000572426',
+    rola: 'Program do wystawiania rachunków za pobyt dziecka (imię i nazwisko, adres, e-mail i telefon rodzica, imię i nazwisko dziecka w opisie rachunku, kwoty rachunków).',
+    lokalizacja: 'Polska (siedziba)',
   },
   {
     nazwa: 'Vercel Inc.',
@@ -88,7 +94,7 @@ const prawa = [
   'przenoszenia danych — w zakresie danych przetwarzanych na podstawie zgody lub umowy',
   'wniesienia sprzeciwu wobec przetwarzania opartego na prawnie uzasadnionym interesie',
   'cofnięcia zgody w dowolnym momencie — bez wpływu na zgodność z prawem przetwarzania sprzed cofnięcia',
-  'wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa)',
+  'wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych (ul. Moniuszki 1A, 00-014 Warszawa)',
 ];
 
 const h2 = 'font-sans italic text-[clamp(1.6rem,2.8vw,2.3rem)] text-brand-navy leading-tight';
@@ -121,6 +127,7 @@ const card = 'bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-6 md:p
           Administratorem Twoich danych osobowych oraz danych Twojego dziecka jest
           <strong class="text-brand-navy"> Olga Trębicka, prowadząca Przedszkole Niepubliczne „Kolorowe Przedszkole"</strong>
           z siedzibą przy ul. Lotaryńskiej 18, 03-974 Warszawa, oraz Punkt Przedszkolny przy ul. Zakopiańskiej 8, 03-934 Warszawa.
+          NIP 1130750220, REGON 012228739.
         </p>
         <p class={`${p} mt-4`}>
           Kontakt w sprawach ochrony danych:
