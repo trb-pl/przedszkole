@@ -40,6 +40,11 @@ const CONFIG = {
 
   // Dane do umowy — zmieniane raz na rok.
   ROK_SZKOLNY: '2026/2027',
+
+  // Data podpisania umowy dla dzieci zapisanych przed rokiem szkolnym
+  // (zebranie rodziców). Dziecko, które dołącza w trakcie roku, dostaje
+  // własną datę: wystarczy dopisać w arkuszu kolumnę „Data umowy" i wpisać
+  // ją w wierszu tego dziecka. Pusta komórka = data poniżej.
   DATA_UMOWY: '31.08.2026 r.',
   CZESNE_PODSTAWOWE: 2350,
   CZESNE_RODZENSTWO: 2150,
@@ -695,6 +700,14 @@ function generujUmoweDlaWiersza(wiersz, folderGlowny, naglowki, tylkoBrakujace) 
     // skasowałoby te poprawki.
     if (tylkoBrakujace && teczka.getFilesByName(nazwa).hasNext()) return;
 
+    // Generowanie od nowa (np. po poprawce daty): stare wersje lądują
+    // w koszu Dysku. Bez tego Dysk pozwala trzymać dwa pliki o tej samej
+    // nazwie i w teczce zostałaby zarówno stara, jak i nowa umowa.
+    [nazwa, nazwa + '.pdf'].forEach(function (doKosza) {
+      const stare = teczka.getFilesByName(doKosza);
+      while (stare.hasNext()) stare.next().setTrashed(true);
+    });
+
     const szablon = szablonPoNazwie(folderSzablonow, pozycja);
     if (!szablon) throw new Error('Brak szablonu „' + pozycja.szablon + '" w folderze szablonów.');
 
@@ -879,6 +892,13 @@ function szablonPoNazwie(folder, pozycja) {
 function zbudujPodstawienia(d, dziecko) {
   const bezApostrofu = function (v) { return String(v || '').replace(/^'/, ''); };
 
+  // Data umowy z wiersza (kolumna „Data umowy") ma pierwszeństwo przed datą
+  // z konfiguracji — tak dziecko zapisane w trakcie roku dostaje własną datę,
+  // a reszcie zostaje data zebrania.
+  const dataUmowy = d['Data umowy']
+    ? formatujDate(d['Data umowy']) + ' r.'
+    : CONFIG.DATA_UMOWY;
+
   const stawka = Number(d['Stawka']) || CONFIG.CZESNE_PODSTAWOWE;
   const roczna = stawka === CONFIG.CZESNE_RODZENSTWO
     ? CONFIG.OPLATA_ROCZNA_RODZENSTWO
@@ -892,7 +912,7 @@ function zbudujPodstawienia(d, dziecko) {
 
   const pola = {
     '{{NR_UMOWY}}': d['Nr umowy'],
-    '{{DATA_UMOWY}}': CONFIG.DATA_UMOWY,
+    '{{DATA_UMOWY}}': dataUmowy,
     '{{ROK_SZKOLNY}}': CONFIG.ROK_SZKOLNY,
 
     '{{DZIECKO}}': dziecko,
