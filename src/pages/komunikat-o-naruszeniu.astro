@@ -1,0 +1,232 @@
+---
+// Breach notice for parents (art. 34 GDPR) after the Fakturownia incident
+// of 27–28 Sept 2026. Parents get the link in the notification e-mail, so
+// like the other parent pages it's hidden from search (noindex, out of the
+// sitemap) and not linked from the menu.
+//
+// The facts here must match the notification text declared to UODO —
+// when the supplementary notification changes the scope, update both.
+import { Icon } from 'astro-icon/components';
+import Layout from '~/layouts/PageLayout.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+
+const metadata = {
+  title: 'Komunikat o naruszeniu ochrony danych osobowych – Kolorowe Przedszkole',
+  description:
+    'Informacja dla rodziców o naruszeniu ochrony danych osobowych u dostawcy programu, w którym przedszkole wystawia rachunki.',
+  canonical: 'https://koloroweprzedszkole.com/komunikat-o-naruszeniu',
+  ignoreTitleTemplate: true,
+  robots: { index: false, follow: false },
+};
+
+// `my` marks our own steps, so the timeline shows who did what.
+const przebieg = [
+  {
+    kiedy: '27–28 września',
+    co: 'Nieuprawniona osoba ma dostęp do systemów Fakturowni i kopiuje część bazy danych.',
+  },
+  { kiedy: '28 września', co: 'Dostawca wykrywa zdarzenie i odcina napastnikowi dostęp.' },
+  { kiedy: '29 września', co: 'Dostawca zgłasza zdarzenie Prezesowi UODO, CERT Polska i policji.' },
+  {
+    kiedy: '5 października',
+    co: 'Dowiadujemy się o zdarzeniu z komunikatu w panelu programu. Zmieniamy hasło i sprawdzamy, że numer rachunku przedszkola jest prawidłowy.',
+    my: true,
+  },
+  {
+    kiedy: '6 października',
+    co: 'Włączamy logowanie dwuetapowe, zgłaszamy naruszenie Prezesowi UODO i zawiadamiamy rodziców.',
+    my: true,
+  },
+];
+
+const mogly = [
+  'imię i nazwisko rodzica',
+  'adres',
+  'adres e-mail i numer telefonu',
+  'kwoty rachunków',
+  'imię i nazwisko dziecka podane w opisie rachunku',
+];
+
+const nieMa = [
+  'numerów rachunków bankowych rodziców — nie rejestrujemy w nim wpłat',
+  'umów, ankiet o dziecku ani zgód',
+  'numerów PESEL',
+  'informacji o zdrowiu',
+];
+
+const rady = [
+  {
+    ikona: 'tabler:link-off',
+    tekst: 'Prosimy nie otwierać linków ani załączników w nieoczekiwanych wiadomościach.',
+  },
+  { ikona: 'tabler:lock', tekst: 'Nie prosimy o hasła ani kody z SMS — i nie robi tego żaden bank.' },
+  {
+    ikona: 'tabler:phone',
+    tekst: 'Przy telefonie rzekomo z przedszkola albo z banku najlepiej się rozłączyć i oddzwonić pod znany numer. Nasz to 605 657 366.',
+  },
+  {
+    ikona: 'tabler:message-report',
+    tekst: 'Podejrzany SMS można bezpłatnie przesłać do CERT Polska na numer 8080. Jeśli doszło do oszustwa — prosimy od razu zawiadomić bank i policję.',
+  },
+];
+
+const h2 = 'font-sans italic text-[clamp(1.6rem,2.8vw,2.3rem)] text-brand-navy leading-tight';
+const p = 'font-sans text-brand-navy/75 leading-relaxed';
+const card = 'bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-6 md:p-8';
+const link = 'text-brand-teal hover:text-brand-coral underline transition-colors duration-200';
+---
+
+<Layout metadata={metadata}>
+  <HeroMazy title="komunikat" seoHeading="Komunikat o naruszeniu ochrony danych osobowych — Kolorowe Przedszkole" />
+
+  <section class="bg-brand-cream pt-16 md:pt-24 pb-20">
+    <div class="max-w-3xl mx-auto px-6 flex flex-col gap-10">
+      <div>
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">
+          Warszawa, 6 października 2026 r.
+        </p>
+        <h2 class={h2}>Komunikat o naruszeniu ochrony danych osobowych</h2>
+        <p class={`${p} text-lg mt-5`}>
+          Szanowni Państwo, informujemy o naruszeniu ochrony danych osobowych u dostawcy programu, w którym
+          wystawiamy rachunki za pobyt dziecka — spółki Fakturownia sp. z o.o. Poniżej wyjaśniamy, co się stało,
+          jakich danych może to dotyczyć i na co warto teraz uważać.
+        </p>
+      </div>
+
+      <!-- Co się stało -->
+      <div class={card}>
+        <h2 class={h2}>Co się stało</h2>
+        <p class={`${p} mt-4`}>
+          Korzystamy z programu Fakturownia od lutego 2024 r. W dniach 27–28 września 2026 r. nieuprawniona osoba
+          uzyskała dostęp do systemów dostawcy i skopiowała część jego bazy danych. Dane w programie nie zostały
+          zmienione ani usunięte — chodzi o ich skopiowanie.
+        </p>
+
+        <ol class="mt-6 flex flex-col">
+          {
+            przebieg.map((k, i) => (
+              <li class="relative pl-8 pb-5 last:pb-0">
+                {i < przebieg.length - 1 && (
+                  <span class="absolute left-[7px] top-4 bottom-0 w-0.5 bg-brand-navy/10" aria-hidden="true" />
+                )}
+                <span
+                  class={`absolute left-0 top-1 w-4 h-4 rounded-full border-2 ${k.my ? 'bg-brand-coral border-brand-coral' : 'bg-white border-brand-navy/25'}`}
+                  aria-hidden="true"
+                />
+                <p class="font-sans text-sm font-bold text-brand-navy">
+                  {k.kiedy}
+                  {k.my && (
+                    <span class="ml-2 font-sans text-[10px] font-bold uppercase tracking-wider rounded-full px-2 py-0.5 bg-brand-coral/15 text-brand-coral">
+                      przedszkole
+                    </span>
+                  )}
+                </p>
+                <p class={`${p} text-sm mt-1`}>{k.co}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <!-- Zakres -->
+      <div class={card}>
+        <h2 class={h2}>Jakich danych może to dotyczyć</h2>
+        <p class={`${p} mt-4`}>
+          Do programu wprowadzamy tylko to, co jest potrzebne do wystawienia rachunku.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-6 mt-6">
+          <div>
+            <p class="font-sans font-bold text-brand-navy mb-3">W skopiowanej bazie mogły się znaleźć:</p>
+            <ul class="flex flex-col gap-2">
+              {
+                mogly.map((t) => (
+                  <li class="flex gap-2.5 font-sans text-sm text-brand-navy/75 leading-snug">
+                    <Icon name="tabler:alert-triangle" class="w-4 h-4 mt-0.5 shrink-0 text-brand-coral" aria-hidden="true" />
+                    {t}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <div>
+            <p class="font-sans font-bold text-brand-navy mb-3">W programie nie ma:</p>
+            <ul class="flex flex-col gap-2">
+              {
+                nieMa.map((t) => (
+                  <li class="flex gap-2.5 font-sans text-sm text-brand-navy/75 leading-snug">
+                    <Icon name="tabler:shield-check" class="w-4 h-4 mt-0.5 shrink-0 text-brand-teal" aria-hidden="true" />
+                    {t}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+
+        <p class={`${p} text-sm mt-6 pt-5 border-t border-brand-navy/8`}>
+          Dokumentację przedszkolną przechowujemy poza programem do rachunków i zdarzenie jej nie dotyczy.
+          Fakturownia przygotowuje dla każdego konta szczegółowe zestawienie skopiowanych danych — gdy je otrzymamy,
+          uzupełnimy ten komunikat.
+        </p>
+      </div>
+
+      <!-- Na co uważać -->
+      <div class="bg-brand-navy rounded-2xl shadow-sm p-6 md:p-8">
+        <h2 class="font-sans italic text-[clamp(1.6rem,2.8vw,2.3rem)] text-brand-cream leading-tight">
+          Na co teraz uważać
+        </h2>
+        <p class="font-sans text-brand-cream/80 leading-relaxed mt-4">
+          Skopiowane dane kontaktowe mogą posłużyć do prób oszustwa: wiadomości albo telefonów od osób, które podają
+          się za przedszkole lub bank. Najbardziej prawdopodobne są fałszywe wezwania do zapłaty za pobyt dziecka ze
+          wskazaniem innego numeru rachunku.
+        </p>
+
+        <p class="flex gap-3 items-start bg-brand-yellow text-brand-navy rounded-xl px-5 py-4 mt-6 font-sans font-bold leading-snug">
+          <Icon name="tabler:building-bank" class="w-6 h-6 shrink-0" aria-hidden="true" />
+          <span>
+            Numer rachunku przedszkola się nie zmienił. Wiadomość o jego zmianie to próba oszustwa — prosimy wtedy
+            o telefon do nas.
+          </span>
+        </p>
+
+        <ul class="flex flex-col gap-4 mt-6">
+          {
+            rady.map((r) => (
+              <li class="flex gap-3 font-sans text-brand-cream/85 leading-relaxed">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-brand-cream/10 shrink-0">
+                  <Icon name={r.ikona} class="w-4 h-4 text-brand-yellow" aria-hidden="true" />
+                </span>
+                <span class="pt-1">{r.tekst}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Kontakt -->
+      <div class={card}>
+        <h2 class={h2}>Kontakt</h2>
+        <p class={`${p} mt-4`}>
+          Administratorem danych jest
+          <strong class="text-brand-navy"> Olga Trębicka, prowadząca Przedszkole Niepubliczne „Kolorowe Przedszkole”</strong>,
+          ul. Lotaryńska 18, 03-974 Warszawa. Na pytania odpowiadamy pod adresem
+          <a href="mailto:przedszkole@kolorowe.eu" class={link}>przedszkole@kolorowe.eu</a>
+          i pod numerem <a href="tel:605657366" class={link}>605 657 366</a>.
+        </p>
+        <p class={`${p} mt-4`}>
+          Komunikat dostawcy:
+          <a href="https://fakturownia.pl/incydent" target="_blank" rel="noopener" class={link}>fakturownia.pl/incydent</a>.
+        </p>
+        <p class={`${p} mt-4`}>
+          Przysługuje Państwu prawo wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych,
+          ul. Moniuszki 1A, 00-014 Warszawa.
+        </p>
+        <p class="font-sans text-brand-navy mt-6">
+          Olga Trębicka<br />
+          <span class="text-brand-navy/60">Kolorowe Przedszkole</span>
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
