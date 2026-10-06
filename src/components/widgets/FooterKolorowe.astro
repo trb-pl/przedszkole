@@ -1,5 +1,12 @@
 ---
 import logoUrl from '~/assets/images/logo.svg?url';
+
+// Temporary link to the breach notice, for 7 days after parents were
+// notified (6–12 Oct 2026). The site only rebuilds on deploy, so the script
+// below hides it in the visitor's browser once the date passes; any build
+// after that date leaves it out of the HTML altogether.
+const KOMUNIKAT_DO = '2026-10-13T00:00:00+02:00';
+const pokazKomunikat = Date.now() < Date.parse(KOMUNIKAT_DO);
 ---
 
 <footer id="kontakt" class="bg-brand-navy">
@@ -90,6 +97,12 @@ import logoUrl from '~/assets/images/logo.svg?url';
         © {new Date().getFullYear()} Kolorowe Przedszkole. Wszelkie prawa zastrzeżone.
         <span class="text-brand-cream/20 mx-1">·</span>
         <a href="/polityka-prywatnosci" class="underline hover:text-brand-cream transition-colors duration-200">Polityka prywatności</a>
+        {pokazKomunikat && (
+          <span data-komunikat-do={KOMUNIKAT_DO} hidden>
+            <span class="text-brand-cream/20 mx-1">·</span>
+            <a href="/komunikat-o-naruszeniu" class="text-brand-yellow underline hover:text-brand-cream transition-colors duration-200">Komunikat o naruszeniu danych</a>
+          </span>
+        )}
       </p>
       <p class="font-sans text-xs text-brand-cream/40">
         Projekt i realizacja: <a href="https://trbk.pl" target="_blank" rel="noopener noreferrer" class="underline hover:text-brand-cream transition-colors duration-200">trbk.pl</a>
@@ -98,3 +111,12 @@ import logoUrl from '~/assets/images/logo.svg?url';
 
   </div>
 </footer>
+
+<script>
+  // Hidden by default, so an old cached page never shows it after the date.
+  // astro:page-load also fires after ClientRouter swaps in a new footer.
+  document.addEventListener('astro:page-load', () => {
+    const el = document.querySelector<HTMLElement>('[data-komunikat-do]');
+    if (el && Date.now() < Date.parse(el.dataset.komunikatDo ?? '')) el.hidden = false;
+  });
+</script>
