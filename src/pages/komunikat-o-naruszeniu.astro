@@ -23,16 +23,17 @@ const metadata = {
 const przebieg = [
   {
     kiedy: '27–28 września',
-    co: 'Nieuprawniona osoba ma dostęp do systemów Fakturowni i kopiuje część bazy danych.',
+    co: 'Nieuprawniona osoba ma dostęp do systemów Fakturowni i kopiuje dużą część bazy danych.',
   },
   {
     kiedy: '28 września',
     co: 'Dostawca wykrywa zdarzenie, odcina napastnikowi dostęp, przenosi program na nowe serwery i unieważnia wykradzione klucze dostępu.',
   },
   { kiedy: '29 września', co: 'Dostawca zgłasza zdarzenie Prezesowi UODO, CERT Polska i policji.' },
+  { kiedy: '1 października', co: 'Dostawca rozsyła zawiadomienia do swoich klientów.' },
   {
     kiedy: '5 października',
-    co: 'Dowiadujemy się o zdarzeniu z komunikatu w panelu programu. Zmieniamy hasło i sprawdzamy, że numer rachunku przedszkola jest prawidłowy.',
+    co: 'Zawiadomienie od dostawcy trafiło u nas do folderu spam, więc o zdarzeniu dowiadujemy się z komunikatu w panelu programu. Zmieniamy hasło i sprawdzamy, że numer rachunku przedszkola jest prawidłowy.',
     my: true,
   },
   {
@@ -42,12 +43,10 @@ const przebieg = [
   },
 ];
 
-const mogly = [
-  'imię i nazwisko rodzica',
-  'adres',
-  'adres e-mail i numer telefonu',
-  'kwoty rachunków',
-  'imię i nazwisko dziecka podane w opisie rachunku',
+const skopiowane = [
+  'kwoty wszystkich rachunków',
+  'opis rachunku, w którym podajemy imię i nazwisko dziecka',
+  'u rodziców wprowadzonych do programu przed 16 października 2024 r. także imię i nazwisko, adres, adres e-mail i numer telefonu',
 ];
 
 const nieMa = [
@@ -140,17 +139,19 @@ const link = 'text-brand-teal hover:text-brand-coral underline transition-colors
 
       <!-- Zakres -->
       <div class={card}>
-        <h2 class={h2}>Jakich danych może to dotyczyć</h2>
+        <h2 class={h2}>Jakich danych to dotyczy</h2>
         <p class={`${p} mt-4`}>
-          Do programu wprowadzamy tylko to, co jest potrzebne do wystawienia rachunku.
+          Incydent dotyczy wszystkich kont w Fakturowni, w tym konta przedszkola. Wśród skopiowanych danych znalazły
+          się dane, które powierzyliśmy Fakturowni do przetwarzania jako ich administrator. Do programu wprowadzamy
+          tylko to, co jest potrzebne do wystawienia rachunku.
         </p>
 
         <div class="grid md:grid-cols-2 gap-6 mt-6">
           <div>
-            <p class="font-sans font-bold text-brand-navy mb-3">W skopiowanej bazie mogły się znaleźć:</p>
+            <p class="font-sans font-bold text-brand-navy mb-3">Skopiowane zostały:</p>
             <ul class="flex flex-col gap-2">
               {
-                mogly.map((t) => (
+                skopiowane.map((t) => (
                   <li class="flex gap-2.5 font-sans text-sm text-brand-navy/75 leading-snug">
                     <Icon name="tabler:alert-triangle" class="w-4 h-4 mt-0.5 shrink-0 text-brand-coral" aria-hidden="true" />
                     {t}
@@ -176,8 +177,7 @@ const link = 'text-brand-teal hover:text-brand-coral underline transition-colors
 
         <p class={`${p} text-sm mt-6 pt-5 border-t border-brand-navy/8`}>
           Dokumentację przedszkolną przechowujemy poza programem do rachunków i zdarzenie jej nie dotyczy.
-          Fakturownia przygotowuje dla każdego konta szczegółowe zestawienie skopiowanych danych — gdy je otrzymamy,
-          uzupełnimy ten komunikat.
+          Jeśli dostawca przekaże nowe ustalenia, uzupełnimy ten komunikat.
         </p>
       </div>
 
@@ -187,9 +187,9 @@ const link = 'text-brand-teal hover:text-brand-coral underline transition-colors
           Na co teraz uważać
         </h2>
         <p class="font-sans text-brand-cream/80 leading-relaxed mt-4">
-          Skopiowane dane kontaktowe mogą posłużyć do prób oszustwa: wiadomości albo telefonów od osób, które podają
-          się za przedszkole lub bank. Najbardziej prawdopodobne są fałszywe wezwania do zapłaty za pobyt dziecka ze
-          wskazaniem innego numeru rachunku.
+          Skopiowane dane mogą posłużyć do prób oszustwa: wiadomości albo telefonów od osób, które podają się za
+          przedszkole lub bank i mogą brzmieć wiarygodnie, bo znają imię dziecka i kwotę rachunku. Najbardziej
+          prawdopodobne są fałszywe wezwania do zapłaty za pobyt dziecka ze wskazaniem innego numeru rachunku.
         </p>
 
         <p class="flex gap-3 items-start bg-brand-yellow text-brand-navy rounded-xl px-5 py-4 mt-6 font-sans font-bold leading-snug">
