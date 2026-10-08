@@ -57,6 +57,7 @@ export default defineConfig({
       // - /wydarzenia — monthly events shared with parents by link, same reasoning
       // - /jadlospis — weekly menu shared with parents by link, same reasoning
       // - /komunikat-o-naruszeniu — breach notice e-mailed to parents, same reasoning
+      // - /zgoda-stomatolog — one-off parent consent form, same reasoning
       // - /category/* and /tag/* — the blog template still generates these
       //   pages, but vercel.json 308-redirects them all to /porady, so
       //   listing them would put redirecting URLs in the sitemap
@@ -67,6 +68,7 @@ export default defineConfig({
         !page.includes('/wydarzenia') &&
         !page.includes('/jadlospis') &&
         !page.includes('/komunikat-o-naruszeniu') &&
+        !page.includes('/zgoda-stomatolog') &&
         !page.includes('/category/') &&
         !page.includes('/tag/'),
       serialize(item) {

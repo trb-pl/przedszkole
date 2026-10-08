@@ -1,0 +1,216 @@
+---
+// One-off consent form for the dental check-up on Mon 12 Oct 2026.
+//
+// Access: unlisted URL + robots noindex + excluded from the sitemap, like the
+// other parent pages. No access code: the online answer isn't binding — the
+// parent signs the printed consent at the preschool on Monday morning.
+//
+// Data flow: form → the same Apps Script Web App as /dla-rodzicow
+// (PUBLIC_FORM_ENDPOINT, `formularz: 'stomatolog'`) → its own tab in the
+// school's Google Sheet. The script turns the answers into a printable PDF
+// (docs/apps-script/Kod.gs, section 4).
+import Layout from '~/layouts/PageLayout.astro';
+import HeroMazy from '~/components/widgets/HeroMazy.astro';
+
+const metadata = {
+  title: 'Zgoda na przegląd stomatologiczny — Kolorowe Przedszkole',
+  description: 'Zgoda rodzica na krótki przegląd ząbków podczas spotkania z panią stomatolog.',
+  canonical: 'https://koloroweprzedszkole.com/zgoda-stomatolog',
+  ignoreTitleTemplate: true,
+  robots: { index: false, follow: false },
+};
+
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+
+// Must match STOMATOLOG.TERMIN in Kod.gs — the script rejects later answers.
+const TERMIN = '2026-10-11T21:00:00+02:00';
+const zamkniety = Date.now() > Date.parse(TERMIN);
+
+const inputCls =
+  'font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/25 focus:outline-none focus:border-brand-teal transition-colors duration-200 w-full';
+const cardCls = 'bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-6 md:p-8';
+const p = 'font-sans text-brand-navy/75 leading-relaxed';
+const opcjaCls =
+  'flex items-start gap-3 border border-brand-navy/15 rounded-xl px-4 py-3.5 cursor-pointer hover:border-brand-teal has-[:checked]:border-brand-teal has-[:checked]:bg-brand-teal/5 transition-colors duration-200';
+---
+
+<Layout metadata={metadata}>
+  <HeroMazy title="ząbki" seoHeading="Zgoda na przegląd stomatologiczny — Kolorowe Przedszkole" />
+
+  <section class="bg-brand-cream pt-16 md:pt-24 pb-20">
+    <div class="max-w-2xl mx-auto px-6 flex flex-col gap-8">
+      <div>
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-3">
+          Poniedziałek, 12 października 2026
+        </p>
+        <h2 class="font-sans italic text-[clamp(1.8rem,3.5vw,2.6rem)] text-brand-navy leading-tight">
+          Spotkanie z panią stomatolog
+        </h2>
+      </div>
+
+      <div class={`${cardCls} flex flex-col gap-4`}>
+        <p class={p}>Drodzy Rodzice,</p>
+        <p class={p}>
+          miło nam poinformować, że w najbliższy poniedziałek od godz. 12:15 jedna z mam z grupy „Gwiazdki”, która
+          jest stomatologiem dziecięcym, zgodziła się odwiedzić naszą grupę i porozmawiać z dziećmi o prawidłowym
+          dbaniu o zęby oraz higienie jamy ustnej.
+        </p>
+        <p class={p}>
+          Podczas spotkania Pani stomatolog może również przeprowadzić u dzieci krótki, nieinwazyjny przegląd ząbków.
+          Badanie będzie polegało wyłącznie na obejrzeniu jamy ustnej — bez wykonywania jakichkolwiek zabiegów.
+          Udział w przeglądzie jest oczywiście dobrowolny i wymaga zgody rodzica.
+        </p>
+        <p class={p}>
+          Prosimy o przekazanie informacji, czy wyrażają Państwo zgodę na obejrzenie ząbków dziecka podczas spotkania.
+        </p>
+      </div>
+
+      <!-- Closed after the deadline: rendered by builds after it, and toggled
+           by the script below for pages built before. -->
+      <div
+        id="zgoda-zamknieta"
+        hidden={!zamkniety}
+        class={`${cardCls} text-center`}
+      >
+        <p class="font-sans italic text-2xl text-brand-navy">Przyjmowanie odpowiedzi zakończyło się</p>
+        <p class={`${p} mt-3`}>
+          W razie pytań prosimy o kontakt: <a href="tel:605657366" class="text-brand-teal underline">605 657 366</a>.
+        </p>
+      </div>
+
+      <form id="zgoda-form" hidden={zamkniety} class={`${cardCls} flex flex-col gap-6`} novalidate>
+        <div class="flex flex-col gap-1.5">
+          <label class="font-sans text-sm font-semibold text-brand-navy" for="dziecko">
+            Imię i nazwisko dziecka <span class="text-brand-coral">*</span>
+          </label>
+          <input type="text" id="dziecko" name="dziecko" required maxlength="100" autocomplete="off" class={inputCls} />
+        </div>
+
+        <fieldset class="flex flex-col gap-3">
+          <legend class="font-sans text-sm font-semibold text-brand-navy mb-3">
+            Wyrażam / nie wyrażam zgody na przeprowadzenie krótkiego przeglądu stomatologicznego u mojego dziecka:
+            <span class="text-brand-coral">*</span>
+          </legend>
+          <label class={opcjaCls}>
+            <input type="radio" name="zgoda" value="TAK" required class="mt-1 accent-brand-teal" />
+            <span class="font-sans text-brand-navy"><strong>Wyrażam zgodę</strong></span>
+          </label>
+          <label class={opcjaCls}>
+            <input type="radio" name="zgoda" value="NIE" required class="mt-1 accent-brand-teal" />
+            <span class="font-sans text-brand-navy"><strong>Nie wyrażam zgody</strong></span>
+          </label>
+        </fieldset>
+
+        <p class="font-sans text-sm text-brand-navy/70 leading-relaxed bg-brand-sand rounded-xl px-4 py-3">
+          Jeśli wyrażają Państwo zgodę, w poniedziałek rano w przedszkolu będzie czekała wydrukowana zgoda do
+          podpisania. Odpowiedzi przyjmujemy do niedzieli 11 października, do godz. 21:00. Gdy zmienią Państwo
+          zdanie, wystarczy wysłać formularz jeszcze raz — liczy się ostatnia odpowiedź.
+        </p>
+
+        <!-- Honeypot -->
+        <input type="text" name="firma" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+        <p id="zgoda-blad" hidden class="font-sans text-sm font-semibold text-brand-coral bg-brand-coral/10 rounded-xl px-4 py-3"></p>
+
+        <button
+          type="submit"
+          id="zgoda-wyslij"
+          class="cta-pop w-full bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-4 rounded-lg hover:bg-brand-coral cursor-pointer"
+        >
+          Wyślij odpowiedź
+        </button>
+      </form>
+
+      <div id="zgoda-sukces" hidden class={`${cardCls} text-center flex flex-col items-center gap-3`}>
+        <p class="text-5xl text-brand-teal">✓</p>
+        <p class="font-sans italic text-2xl md:text-3xl text-brand-navy">Dziękujemy!</p>
+        <p class={`${p} max-w-md`} id="zgoda-sukces-tekst">Odpowiedź została zapisana.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script is:inline define:vars={{ endpoint, TERMIN }}>
+  document.addEventListener('astro:page-load', function () {
+    var form = document.getElementById('zgoda-form');
+    // ClientRouter keeps this listener across pages — act only on this one,
+    // and bind once even if the event fires again.
+    if (!form || form.dataset.gotowy) return;
+    form.dataset.gotowy = '1';
+
+    var zamknieta = document.getElementById('zgoda-zamknieta');
+    var blad = document.getElementById('zgoda-blad');
+    var btn = document.getElementById('zgoda-wyslij');
+    var sukces = document.getElementById('zgoda-sukces');
+
+    function zamknij() {
+      form.hidden = true;
+      zamknieta.hidden = false;
+    }
+    if (Date.now() > Date.parse(TERMIN)) zamknij();
+
+    function pokazBlad(tekst) {
+      blad.textContent = tekst;
+      blad.hidden = false;
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      blad.hidden = true;
+      if (form.querySelector('[name="firma"]').value) return;
+
+      var dziecko = form.dziecko.value.replace(/\s+/g, ' ').trim();
+      var wybor = form.querySelector('[name="zgoda"]:checked');
+      if (!dziecko || dziecko.indexOf(' ') === -1) {
+        pokazBlad('Prosimy wpisać imię i nazwisko dziecka.');
+        form.dziecko.focus();
+        return;
+      }
+      if (!wybor) {
+        pokazBlad('Prosimy zaznaczyć, czy wyrażają Państwo zgodę.');
+        return;
+      }
+      if (!endpoint) {
+        pokazBlad('Formularz nie jest jeszcze podłączony. Prosimy o telefon do przedszkola: 605 657 366');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Wysyłanie…';
+      function przywroc() {
+        btn.disabled = false;
+        btn.textContent = 'Wyślij odpowiedź';
+      }
+
+      try {
+        // text/plain avoids a CORS preflight — Apps Script parses the body.
+        var res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ formularz: 'stomatolog', dziecko: dziecko, zgoda: wybor.value }),
+        });
+        var wynik = JSON.parse(await res.text());
+
+        if (wynik.status === 'ok') {
+          form.hidden = true;
+          document.getElementById('zgoda-sukces-tekst').textContent =
+            wybor.value === 'TAK'
+              ? 'Odpowiedź została zapisana. W poniedziałek rano w przedszkolu będzie czekała wydrukowana zgoda do podpisania.'
+              : 'Odpowiedź została zapisana — dziecko nie będzie miało przeglądu.';
+          sukces.hidden = false;
+          sukces.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (wynik.status === 'closed') {
+          zamknij();
+        } else {
+          console.error('Błąd skryptu:', wynik);
+          pokazBlad('Zapis się nie powiódł. Prosimy spróbować ponownie albo zadzwonić: 605 657 366');
+          przywroc();
+        }
+      } catch (err) {
+        console.error('Błąd wysyłki:', err);
+        pokazBlad('Nie udało się wysłać odpowiedzi. Prosimy sprawdzić połączenie z internetem i spróbować ponownie albo zadzwonić: 605 657 366');
+        przywroc();
+      }
+    });
+  });
+</script>

@@ -13,6 +13,8 @@
  *  2. generujUmowy()  — z menu arkusza: dla zaznaczonych wierszy tworzy
  *                       na Dysku teczkę dziecka z kompletem dokumentów
  *                       (Google Doc + PDF), gotowych do wydruku.
+ *  3. generujZgodyStomatolog() — z menu arkusza: składa odpowiedzi ze strony
+ *                       /zgoda-stomatolog w jeden PDF do wydruku.
  *
  * Dane osobowe (PESEL, adresy) nie opuszczają Google Workspace.
  */
@@ -125,6 +127,11 @@ function doPost(e) {
     }
 
     const dane = JSON.parse(e.postData.contents);
+
+    // Zgody na przegląd stomatologiczny przychodzą z osobnej strony, bez
+    // kodu dostępu: odpowiedź kliknięta online nie jest wiążąca, bo rodzic
+    // i tak podpisuje wydruk w przedszkolu.
+    if (dane.formularz === 'stomatolog') return odpowiedz(zapiszZgodeStomatolog(dane));
 
     // Kod dostępu sprawdzamy po stronie serwera — brama na stronie tylko
     // odsłania formularz, nie chroni danych. Porównanie bez rozróżniania
@@ -499,6 +506,11 @@ function onOpen() {
     .addItem('Pokaż szablony', 'pokazSzablony')
     .addItem('Napraw komórki z #ERROR!', 'naprawBledneKomorki')
     .addItem('Sprawdź konfigurację', 'testKonfiguracji')
+    .addToUi();
+
+  SpreadsheetApp.getUi()
+    .createMenu('🦷 Przegląd zębów')
+    .addItem('Przygotuj PDF ze zgodami do wydruku', 'generujZgodyStomatolog')
     .addToUi();
 }
 
@@ -1016,4 +1028,162 @@ function slownie(kwota) {
 
   if (reszta) czesci.push(doTysiaca(reszta));
   return czesci.join(' ') || 'zero';
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// 4. ZGODY NA PRZEGLĄD STOMATOLOGICZNY (jednorazowo, październik 2026)
+// ─────────────────────────────────────────────────────────────────────────
+//
+// Rodzice zaznaczają na stronie /zgoda-stomatolog „wyrażam" albo „nie
+// wyrażam". W poniedziałek rano menu „🦷 Przegląd zębów" składa odpowiedzi
+// w jeden PDF: na pierwszej stronie lista dla pani stomatolog, dalej osobna
+// strona do podpisu dla każdego dziecka ze zgodą.
+
+const STOMATOLOG = {
+  ARKUSZ: 'Zgody — przegląd zębów',
+  // Po tej chwili skrypt odrzuca odpowiedzi; strona zamyka formularz sama.
+  TERMIN: new Date('2026-10-11T21:00:00+02:00'),
+  DATA_WIZYTY: '12.10.2026',
+  OPIS_WIZYTY: 'poniedziałek 12 października 2026 r., od godz. 12:15',
+  NAZWA_PDF: 'Zgody — przegląd stomatologiczny 12.10.2026',
+};
+
+function zapiszZgodeStomatolog(dane) {
+  if (new Date() > STOMATOLOG.TERMIN) return { status: 'closed' };
+
+  const dziecko = String(dane.dziecko || '').replace(/\s+/g, ' ').trim();
+  const zgoda = dane.zgoda === 'TAK' || dane.zgoda === 'NIE' ? dane.zgoda : '';
+  if (!dziecko || dziecko.length > 100 || !zgoda) {
+    return { status: 'error', message: 'brak imienia i nazwiska dziecka albo decyzji' };
+  }
+
+  // Dwa pierwsze zgłoszenia naraz mogłyby oba próbować założyć zakładkę.
+  const blokada = LockService.getScriptLock();
+  blokada.waitLock(10000);
+  try {
+    arkuszZgodStomatolog().appendRow([new Date(), dziecko, zgoda]);
+  } finally {
+    blokada.releaseLock();
+  }
+  return { status: 'ok' };
+}
+
+function arkuszZgodStomatolog() {
+  const plik = SpreadsheetApp.getActiveSpreadsheet();
+  let arkusz = plik.getSheetByName(STOMATOLOG.ARKUSZ);
+  if (!arkusz) {
+    arkusz = plik.insertSheet(STOMATOLOG.ARKUSZ);
+    arkusz.appendRow(['Data zgłoszenia', 'Imię i nazwisko dziecka', 'Zgoda']);
+    arkusz.getRange(1, 1, 1, 3).setFontWeight('bold');
+    arkusz.setFrozenRows(1);
+  }
+  return arkusz;
+}
+
+/**
+ * Jeden PDF do wydruku, zapisany obok arkusza. Kolejne uruchomienie
+ * przenosi poprzednią wersję do kosza, więc w poniedziałek rano wystarczy
+ * kliknąć jeszcze raz, jeśli ktoś dosłał odpowiedź albo poprawiono wiersz.
+ */
+function generujZgodyStomatolog() {
+  const ui = SpreadsheetApp.getUi();
+  const arkusz = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(STOMATOLOG.ARKUSZ);
+  if (!arkusz || arkusz.getLastRow() < 2) {
+    ui.alert('Nie ma jeszcze żadnych odpowiedzi rodziców.');
+    return;
+  }
+
+  // Rodzic może wysłać formularz kilka razy, np. gdy zmieni zdanie. Wiersze
+  // przybywają po kolei, więc późniejszy nadpisuje wcześniejszy — liczy się
+  // ostatnia odpowiedź. Imiona porównujemy bez wielkości liter.
+  const ostatnie = {};
+  arkusz.getRange(2, 1, arkusz.getLastRow() - 1, 3).getValues().forEach(function (w) {
+    const dziecko = String(w[1]).replace(/\s+/g, ' ').trim();
+    if (!dziecko) return;
+    ostatnie[dziecko.toLowerCase()] = { kiedy: w[0], dziecko: dziecko, zgoda: String(w[2]).trim().toUpperCase() };
+  });
+
+  // Rodzice wpisują „Imię Nazwisko", więc nazwisko to ostatnie słowo.
+  const nazwisko = function (z) { return z.dziecko.split(' ').slice(-1)[0]; };
+  const dzieci = Object.keys(ostatnie).map(function (k) { return ostatnie[k]; }).sort(function (a, b) {
+    return nazwisko(a).localeCompare(nazwisko(b), 'pl') || a.dziecko.localeCompare(b.dziecko, 'pl');
+  });
+  const zeZgoda = dzieci.filter(function (z) { return z.zgoda === 'TAK'; });
+
+  const doc = DocumentApp.create(STOMATOLOG.NAZWA_PDF);
+  const body = doc.getBody();
+  body.setMarginTop(56).setMarginBottom(56).setMarginLeft(64).setMarginRight(64);
+  const kiedy = function (d) {
+    return d instanceof Date ? Utilities.formatDate(d, 'Europe/Warsaw', 'dd.MM.yyyy, HH:mm') : String(d);
+  };
+
+  // Strona 1 — lista dla pani stomatolog i wychowawczyni.
+  body.getParagraphs()[0]
+    .setText('Przegląd stomatologiczny — ' + STOMATOLOG.DATA_WIZYTY)
+    .setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  body.appendParagraph(
+    'Odpowiedzi rodziców, stan na ' + kiedy(new Date()) + '. ' +
+    'Zgoda: ' + zeZgoda.length + ', brak zgody: ' + (dzieci.length - zeZgoda.length) + '.'
+  );
+  const tabela = body.appendTable([['Lp.', 'Imię i nazwisko dziecka', 'Zgoda rodzica', 'Wydruk podpisany']].concat(
+    dzieci.map(function (z, i) { return [String(i + 1), z.dziecko, z.zgoda === 'TAK' ? 'TAK' : 'NIE', '']; })
+  ));
+  tabela.getRow(0).editAsText().setBold(true);
+  body.appendParagraph(
+    'Przegląd tylko u dzieci ze zgodą TAK i podpisanym wydrukiem. ' +
+    'Dzieci, których nie ma na liście, nie mają zgody rodzica.'
+  ).editAsText().setItalic(true);
+
+  // Kolejne strony — zgoda do podpisu dla każdego dziecka ze zgodą.
+  const zdanie = 'Wyrażam / nie wyrażam zgody na przeprowadzenie krótkiego przeglądu stomatologicznego u mojego dziecka:';
+  const nieWyrazam = zdanie.indexOf('nie wyrażam');
+
+  zeZgoda.forEach(function (z) {
+    body.appendPageBreak();
+    body.appendParagraph('Kolorowe Przedszkole').editAsText().setFontSize(10).setForegroundColor('#666666');
+    body.appendParagraph('Zgoda na przegląd stomatologiczny').setHeading(DocumentApp.ParagraphHeading.HEADING1);
+    body.appendParagraph(
+      'Spotkanie z panią stomatolog: ' + STOMATOLOG.OPIS_WIZYTY + '. ' +
+      'Badanie polega wyłącznie na obejrzeniu jamy ustnej — bez wykonywania jakichkolwiek zabiegów. ' +
+      'Udział w przeglądzie jest dobrowolny.'
+    );
+
+    // Skreślamy „nie wyrażam", jak na papierowym druku.
+    const tekst = body.appendParagraph(zdanie).editAsText();
+    tekst.setBold(0, 'Wyrażam'.length - 1, true);
+    tekst.setStrikethrough(nieWyrazam, nieWyrazam + 'nie wyrażam'.length - 1, true);
+
+    body.appendParagraph(z.dziecko).editAsText().setFontSize(18).setBold(true);
+    body.appendParagraph('Odpowiedź z formularza online z ' + kiedy(z.kiedy) + '.')
+      .editAsText().setFontSize(9).setForegroundColor('#666666');
+
+    body.appendParagraph('Data: ' + STOMATOLOG.DATA_WIZYTY).setSpacingBefore(36);
+    body.appendParagraph('.................................................................')
+      .setAlignment(DocumentApp.HorizontalAlignment.RIGHT)
+      .setSpacingBefore(40);
+    body.appendParagraph('podpis rodzica (opiekuna prawnego)')
+      .setAlignment(DocumentApp.HorizontalAlignment.RIGHT)
+      .editAsText().setFontSize(9);
+  });
+
+  doc.saveAndClose();
+
+  const rodzice = DriveApp.getFileById(SpreadsheetApp.getActiveSpreadsheet().getId()).getParents();
+  const folder = rodzice.hasNext() ? rodzice.next() : DriveApp.getRootFolder();
+  const stare = folder.getFilesByName(STOMATOLOG.NAZWA_PDF + '.pdf');
+  while (stare.hasNext()) stare.next().setTrashed(true);
+
+  const plikDoc = DriveApp.getFileById(doc.getId());
+  const pdf = folder.createFile(plikDoc.getAs(MimeType.PDF).setName(STOMATOLOG.NAZWA_PDF + '.pdf'));
+  plikDoc.setTrashed(true);
+
+  ui.showModalDialog(
+    HtmlService.createHtmlOutput(
+      '<div style="font-family:sans-serif;font-size:14px;line-height:1.5">' +
+      '<p>Dzieci na liście: ' + dzieci.length + ' (zgoda: ' + zeZgoda.length + ').</p>' +
+      '<p><a href="' + pdf.getUrl() + '" target="_blank">Otwórz PDF do wydruku</a></p>' +
+      '<p style="color:#666">Plik leży w tym samym folderze co arkusz.</p></div>'
+    ).setWidth(360).setHeight(170),
+    '🦷 Zgody gotowe'
+  );
 }
