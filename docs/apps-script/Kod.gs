@@ -1139,62 +1139,157 @@ function generujZgodyStomatolog() {
   );
 }
 
+// Wygląd jak w umowie i załącznikach (docs/apps-script/szablon/): logo na
+// środku u góry, Nunito, granat na tekst, turkus na nagłówki, adres w stopce.
+const MARKA = {
+  FONT: 'Nunito',
+  GRANAT: '#2D346F',
+  TURKUS: '#34BBA8',
+  KORAL: '#F2795D',
+  SZARY: '#6B6F8C',
+  KREM: '#FCF6F0',
+  LINIA: '#CACCDB',
+};
+
+/**
+ * Logo bierzemy z szablonu umowy — jest tam już osadzone, więc skrypt nie
+ * potrzebuje dostępu do internetu ani nowych uprawnień. Brak logo nie może
+ * zatrzymać wydruku, dlatego każdy błąd kończy się po prostu brakiem logo.
+ */
+function logoZSzablonu() {
+  try {
+    const folder = DriveApp.getFolderById(czystyId(CONFIG.ID_FOLDERU_SZABLONOW));
+    const plik = szablonPoNazwie(folder, SZABLONY[0]);
+    if (!plik) return null;
+    const obrazy = DocumentApp.openById(plik.getId()).getBody().getImages() || [];
+    return obrazy.length ? obrazy[0].getBlob() : null;
+  } catch (e) {
+    console.warn('Nie udało się pobrać logo z szablonu umowy: ' + e.message);
+    return null;
+  }
+}
+
 function zlozDokumentZgod(doc, dzieci, zeZgoda) {
   const body = doc.getBody();
-  body.setMarginTop(56).setMarginBottom(56).setMarginLeft(64).setMarginRight(64);
+  // A4 i marginesy jak w szablonie umowy (2 cm).
+  body.setPageWidth(595.28).setPageHeight(841.89)
+    .setMarginTop(42).setMarginBottom(48).setMarginLeft(57).setMarginRight(57);
+  const SZEROKOSC = 595.28 - 2 * 57;
   const kiedy = function (d) {
     return d instanceof Date ? Utilities.formatDate(d, 'Europe/Warsaw', 'dd.MM.yyyy, HH:mm') : String(d);
   };
 
-  // Strona 1 — lista dla pani stomatolog i wychowawczyni. Paragraph.setText
-  // nic nie zwraca, więc nagłówek ustawiamy osobnym wywołaniem.
-  const tytul = body.getParagraphs()[0];
-  tytul.setText('Przegląd stomatologiczny — ' + STOMATOLOG.DATA_WIZYTY);
-  tytul.setHeading(DocumentApp.ParagraphHeading.HEADING1);
-  body.appendParagraph(
-    'Odpowiedzi rodziców, stan na ' + kiedy(new Date()) + '. ' +
-    'Zgoda: ' + zeZgoda.length + ', brak zgody: ' + (dzieci.length - zeZgoda.length) + '.'
+  // Paragraph.setText nic nie zwraca, więc styl nakładamy przez editAsText().
+  const stylizuj = function (akapit, o) {
+    akapit.editAsText()
+      .setFontFamily(MARKA.FONT)
+      .setFontSize(o.rozmiar || 10)
+      .setForegroundColor(o.kolor || MARKA.GRANAT)
+      .setBold(!!o.gruby)
+      .setItalic(!!o.kursywa);
+    akapit.setSpacingBefore(o.przed || 0);
+    akapit.setSpacingAfter(o.po === undefined ? 6 : o.po);
+    akapit.setLineSpacing(1.15);
+    if (o.wyrownanie) akapit.setAlignment(o.wyrownanie);
+    return akapit;
+  };
+  const akapit = function (tekst, o) { return stylizuj(body.appendParagraph(tekst), o || {}); };
+  const ramka = function (tekst) {
+    const t = body.appendTable([[tekst]]);
+    t.setBorderColor(MARKA.KREM);
+    t.getCell(0, 0).setBackgroundColor(MARKA.KREM)
+      .setPaddingTop(10).setPaddingBottom(10).setPaddingLeft(12).setPaddingRight(12);
+    t.editAsText().setFontFamily(MARKA.FONT).setFontSize(10).setForegroundColor(MARKA.GRANAT);
+    return t;
+  };
+
+  // Logo w nagłówku — dzięki temu jest na każdej stronie, także na każdej
+  // zgodzie wyjętej z pliku i wpiętej do teczki osobno.
+  try {
+    const logo = logoZSzablonu();
+    if (logo) {
+      const naglowek = doc.addHeader();
+      const akapity = naglowek.getParagraphs() || [];
+      const miejsce = akapity.length ? akapity[0] : naglowek.appendParagraph('');
+      const obraz = miejsce.appendInlineImage(logo);
+      const szer = 142;   // ok. 5 cm, jak w szablonie umowy
+      obraz.setHeight(Math.round(szer * obraz.getHeight() / obraz.getWidth()));
+      obraz.setWidth(szer);
+      miejsce.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+      miejsce.setSpacingAfter(4);
+    }
+  } catch (e) {
+    console.warn('Logo pominięte: ' + e.message);
+  }
+
+  const stopka = doc.addFooter();
+  const akapityStopki = stopka.getParagraphs() || [];
+  const linia = akapityStopki.length ? akapityStopki[0] : stopka.appendParagraph('');
+  linia.setText('Kolorowe Przedszkole · ul. Lotaryńska 18, 03-974 Warszawa · 605 657 366 · www.koloroweprzedszkole.com');
+  stylizuj(linia, { rozmiar: 8, kolor: MARKA.SZARY, po: 0, wyrownanie: DocumentApp.HorizontalAlignment.CENTER });
+
+  // ── Strona 1 — lista dla pani stomatolog i wychowawczyni ──
+  const pierwszy = body.getParagraphs()[0];
+  pierwszy.setText('LISTA ODPOWIEDZI RODZICÓW');
+  stylizuj(pierwszy, { rozmiar: 9, kolor: MARKA.TURKUS, gruby: true, po: 2 });
+  akapit('Przegląd stomatologiczny — ' + STOMATOLOG.DATA_WIZYTY, { rozmiar: 18, gruby: true, po: 4 });
+  akapit(
+    'Stan na ' + kiedy(new Date()) + '. Zgoda: ' + zeZgoda.length +
+    ', brak zgody: ' + (dzieci.length - zeZgoda.length) + '.',
+    { rozmiar: 9, kolor: MARKA.SZARY, po: 12 }
   );
+
   const tabela = body.appendTable([['Lp.', 'Imię i nazwisko dziecka', 'Zgoda rodzica', 'Wydruk podpisany']].concat(
     dzieci.map(function (z, i) { return [String(i + 1), z.dziecko, z.zgoda === 'TAK' ? 'TAK' : 'NIE', '']; })
   ));
-  tabela.getRow(0).editAsText().setBold(true);
-  body.appendParagraph(
-    'Przegląd tylko u dzieci ze zgodą TAK i podpisanym wydrukiem. ' +
-    'Dzieci, których nie ma na liście, nie mają zgody rodzica.'
-  ).editAsText().setItalic(true);
+  tabela.setBorderColor(MARKA.LINIA).setBorderWidth(0.5);
+  tabela.editAsText().setFontFamily(MARKA.FONT).setFontSize(10).setForegroundColor(MARKA.GRANAT);
+  [28, SZEROKOSC - 28 - 92 - 112, 92, 112].forEach(function (w, i) { tabela.setColumnWidth(i, w); });
+  const pierwszyWiersz = tabela.getRow(0);
+  for (let k = 0; k < pierwszyWiersz.getNumCells(); k++) pierwszyWiersz.getCell(k).setBackgroundColor(MARKA.KREM);
+  pierwszyWiersz.editAsText().setBold(true);
+  dzieci.forEach(function (z, i) {
+    tabela.getCell(i + 1, 2).editAsText().setBold(true)
+      .setForegroundColor(z.zgoda === 'TAK' ? MARKA.TURKUS : MARKA.KORAL);
+  });
 
-  // Kolejne strony — zgoda do podpisu dla każdego dziecka ze zgodą.
+  akapit(
+    'Przegląd tylko u dzieci ze zgodą TAK i podpisanym wydrukiem. ' +
+    'Dzieci, których nie ma na liście, nie mają zgody rodzica.',
+    { rozmiar: 9, kolor: MARKA.SZARY, kursywa: true, przed: 10 }
+  );
+
+  // ── Kolejne strony — zgoda do podpisu dla każdego dziecka ze zgodą ──
   const zdanie = 'Wyrażam / nie wyrażam zgody na przeprowadzenie krótkiego przeglądu stomatologicznego u mojego dziecka:';
   const nieWyrazam = zdanie.indexOf('nie wyrażam');
 
   zeZgoda.forEach(function (z) {
     body.appendPageBreak();
-    body.appendParagraph('Kolorowe Przedszkole').editAsText().setFontSize(10).setForegroundColor('#666666');
-    body.appendParagraph('Zgoda na przegląd stomatologiczny').setHeading(DocumentApp.ParagraphHeading.HEADING1);
-    body.appendParagraph(
+    akapit('ZGODA RODZICA', { rozmiar: 9, kolor: MARKA.TURKUS, gruby: true, po: 2 });
+    akapit('Przegląd stomatologiczny', { rozmiar: 18, gruby: true, po: 12 });
+    ramka(
       'Spotkanie z panią stomatolog: ' + STOMATOLOG.OPIS_WIZYTY + '. ' +
       'Badanie polega wyłącznie na obejrzeniu jamy ustnej — bez wykonywania jakichkolwiek zabiegów. ' +
       'Udział w przeglądzie jest dobrowolny.'
     );
 
     // Skreślamy „nie wyrażam", jak na papierowym druku.
-    const tekst = body.appendParagraph(zdanie).editAsText();
+    const tekst = akapit(zdanie, { rozmiar: 11, przed: 18 }).editAsText();
     tekst.setBold(0, 'Wyrażam'.length - 1, true);
     tekst.setStrikethrough(nieWyrazam, nieWyrazam + 'nie wyrażam'.length - 1, true);
 
-    body.appendParagraph(z.dziecko).editAsText().setFontSize(18).setBold(true);
-    body.appendParagraph('Odpowiedź z formularza online z ' + kiedy(z.kiedy) + '.')
-      .editAsText().setFontSize(9).setForegroundColor('#666666');
+    akapit('Imię i nazwisko dziecka', { rozmiar: 9, kolor: MARKA.TURKUS, gruby: true, przed: 16, po: 2 });
+    akapit(z.dziecko, { rozmiar: 18, gruby: true, po: 2 });
+    akapit('Odpowiedź z formularza online z ' + kiedy(z.kiedy) + '.', { rozmiar: 8, kolor: MARKA.SZARY });
 
-    body.appendParagraph('Data: ' + STOMATOLOG.DATA_WIZYTY).setSpacingBefore(36);
-    body.appendParagraph('.................................................................')
-      .setAlignment(DocumentApp.HorizontalAlignment.RIGHT)
-      .setSpacingBefore(40);
-    body.appendParagraph('podpis rodzica (opiekuna prawnego)')
-      .setAlignment(DocumentApp.HorizontalAlignment.RIGHT)
-      .editAsText().setFontSize(9);
+    akapit('Data: ' + STOMATOLOG.DATA_WIZYTY, { przed: 48 });
+    akapit('.................................................................',
+      { kolor: MARKA.SZARY, przed: 30, po: 2, wyrownanie: DocumentApp.HorizontalAlignment.RIGHT });
+    akapit('podpis rodzica (opiekuna prawnego)',
+      { rozmiar: 8, kolor: MARKA.SZARY, wyrownanie: DocumentApp.HorizontalAlignment.RIGHT });
   });
 
+  // Puste akapity, które Dokumenty dokładają same (np. za tabelą), też w Nunito.
+  body.editAsText().setFontFamily(MARKA.FONT);
   doc.saveAndClose();
 }
