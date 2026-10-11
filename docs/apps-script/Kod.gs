@@ -1111,16 +1111,46 @@ function generujZgodyStomatolog() {
   const zeZgoda = dzieci.filter(function (z) { return z.zgoda === 'TAK'; });
 
   const doc = DocumentApp.create(STOMATOLOG.NAZWA_PDF);
+  const plikDoc = DriveApp.getFileById(doc.getId());
+  // Dokument jest tylko roboczy — przy błędzie nie może zostać na Dysku.
+  try {
+    zlozDokumentZgod(doc, dzieci, zeZgoda);
+  } catch (e) {
+    plikDoc.setTrashed(true);
+    throw e;
+  }
+
+  const rodzice = DriveApp.getFileById(SpreadsheetApp.getActiveSpreadsheet().getId()).getParents();
+  const folder = rodzice.hasNext() ? rodzice.next() : DriveApp.getRootFolder();
+  const stare = folder.getFilesByName(STOMATOLOG.NAZWA_PDF + '.pdf');
+  while (stare.hasNext()) stare.next().setTrashed(true);
+
+  const pdf = folder.createFile(plikDoc.getAs(MimeType.PDF).setName(STOMATOLOG.NAZWA_PDF + '.pdf'));
+  plikDoc.setTrashed(true);
+
+  ui.showModalDialog(
+    HtmlService.createHtmlOutput(
+      '<div style="font-family:sans-serif;font-size:14px;line-height:1.5">' +
+      '<p>Dzieci na liście: ' + dzieci.length + ' (zgoda: ' + zeZgoda.length + ').</p>' +
+      '<p><a href="' + pdf.getUrl() + '" target="_blank">Otwórz PDF do wydruku</a></p>' +
+      '<p style="color:#666">Plik leży w tym samym folderze co arkusz.</p></div>'
+    ).setWidth(360).setHeight(170),
+    '🦷 Zgody gotowe'
+  );
+}
+
+function zlozDokumentZgod(doc, dzieci, zeZgoda) {
   const body = doc.getBody();
   body.setMarginTop(56).setMarginBottom(56).setMarginLeft(64).setMarginRight(64);
   const kiedy = function (d) {
     return d instanceof Date ? Utilities.formatDate(d, 'Europe/Warsaw', 'dd.MM.yyyy, HH:mm') : String(d);
   };
 
-  // Strona 1 — lista dla pani stomatolog i wychowawczyni.
-  body.getParagraphs()[0]
-    .setText('Przegląd stomatologiczny — ' + STOMATOLOG.DATA_WIZYTY)
-    .setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  // Strona 1 — lista dla pani stomatolog i wychowawczyni. Paragraph.setText
+  // nic nie zwraca, więc nagłówek ustawiamy osobnym wywołaniem.
+  const tytul = body.getParagraphs()[0];
+  tytul.setText('Przegląd stomatologiczny — ' + STOMATOLOG.DATA_WIZYTY);
+  tytul.setHeading(DocumentApp.ParagraphHeading.HEADING1);
   body.appendParagraph(
     'Odpowiedzi rodziców, stan na ' + kiedy(new Date()) + '. ' +
     'Zgoda: ' + zeZgoda.length + ', brak zgody: ' + (dzieci.length - zeZgoda.length) + '.'
@@ -1167,23 +1197,4 @@ function generujZgodyStomatolog() {
   });
 
   doc.saveAndClose();
-
-  const rodzice = DriveApp.getFileById(SpreadsheetApp.getActiveSpreadsheet().getId()).getParents();
-  const folder = rodzice.hasNext() ? rodzice.next() : DriveApp.getRootFolder();
-  const stare = folder.getFilesByName(STOMATOLOG.NAZWA_PDF + '.pdf');
-  while (stare.hasNext()) stare.next().setTrashed(true);
-
-  const plikDoc = DriveApp.getFileById(doc.getId());
-  const pdf = folder.createFile(plikDoc.getAs(MimeType.PDF).setName(STOMATOLOG.NAZWA_PDF + '.pdf'));
-  plikDoc.setTrashed(true);
-
-  ui.showModalDialog(
-    HtmlService.createHtmlOutput(
-      '<div style="font-family:sans-serif;font-size:14px;line-height:1.5">' +
-      '<p>Dzieci na liście: ' + dzieci.length + ' (zgoda: ' + zeZgoda.length + ').</p>' +
-      '<p><a href="' + pdf.getUrl() + '" target="_blank">Otwórz PDF do wydruku</a></p>' +
-      '<p style="color:#666">Plik leży w tym samym folderze co arkusz.</p></div>'
-    ).setWidth(360).setHeight(170),
-    '🦷 Zgody gotowe'
-  );
 }
