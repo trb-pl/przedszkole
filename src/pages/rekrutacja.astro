@@ -1,19 +1,19 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import SchemaBreadcrumbs from '~/components/seo/SchemaBreadcrumbs.astro';
-import ContactForm from '~/components/ContactForm.astro';
+import ListaRekrutacji from '~/components/widgets/ListaRekrutacji.astro';
 import HeroMazy from '~/components/widgets/HeroMazy.astro';
 import ScatteredLetters from '~/components/widgets/ScatteredLetters.astro';
 
 const metadata = {
-  title: 'Rekrutacja 2026/2027 – Kolorowe Przedszkole Saska Kępa',
-  description: 'Rekrutacja do Kolorowego Przedszkola na Saskiej Kępie otwarta. Przyjmujemy dzieci od 2,5 roku życia. Miejsca ograniczone — zgłoś się wcześniej.',
+  title: 'Rekrutacja 2027/2028 – Kolorowe Przedszkole Saska Kępa',
+  description: 'Rekrutacja na rok 2026/2027 zakończona. Zapisz się na listę — napiszemy, gdy ruszy rekrutacja na 2027/2028 albo zwolni się miejsce. Dzieci od 2,5 roku.',
   canonical: 'https://koloroweprzedszkole.com/rekrutacja',
   ignoreTitleTemplate: true,
   robots: { index: true, follow: true },
   openGraph: {
-    title: 'Rekrutacja 2026/2027 – Kolorowe Przedszkole Saska Kępa',
-    description: 'Rekrutacja do Kolorowego Przedszkola na Saskiej Kępie otwarta. Przyjmujemy dzieci od 2,5 roku życia. Miejsca ograniczone — zgłoś się wcześniej.',
+    title: 'Rekrutacja 2027/2028 – Kolorowe Przedszkole Saska Kępa',
+    description: 'Rekrutacja na rok 2026/2027 zakończona. Zapisz się na listę — napiszemy, gdy ruszy rekrutacja na 2027/2028 albo zwolni się miejsce. Dzieci od 2,5 roku.',
     type: 'website',
     url: 'https://koloroweprzedszkole.com/rekrutacja',
     site_name: 'Kolorowe Przedszkole',
@@ -26,8 +26,8 @@ const faqItems = [
     a: 'Przyjmujemy dzieci od 2,5 roku życia. Grupy są zróżnicowane wiekowo i kameralne — każde dziecko ma swoje tempo.',
   },
   {
-    q: 'Do kiedy trwa rekrutacja?',
-    a: 'Rekrutacja jest otwarta, ale liczba miejsc jest ograniczona. Co roku większość miejsc zostaje zajęta przed wakacjami. Warto zgłosić się jak najwcześniej.',
+    q: 'Czy są jeszcze wolne miejsca?',
+    a: 'Rekrutacja na rok szkolny 2026/2027 jest zakończona. Zapisz się na listę na tej stronie — napiszemy, gdy otworzymy rekrutację na rok 2027/2028 albo gdy w trakcie roku zwolni się miejsce.',
   },
   {
     q: 'Czy mogę przyjść z dzieckiem przed podjęciem decyzji?',
@@ -39,15 +39,15 @@ const faqItems = [
   },
   {
     q: 'Jak szybko odpowiadacie na zgłoszenia?',
-    a: 'Zazwyczaj tego samego dnia. Formularz trafia bezpośrednio do Cioci Oli i jej zespołu.',
+    a: 'Zazwyczaj tego samego dnia. Napisz na przedszkole@kolorowe.eu albo zadzwoń: 605 657 366 — odbiera Ciocia Ola i jej zespół.',
   },
 ];
 
 const kroki = [
   {
     n: '1',
-    title: 'Napisz lub zadzwoń',
-    desc: 'Wypełnij formularz poniżej albo zadzwoń pod numer 605 657 366. Odpiszemy tego samego dnia.',
+    title: 'Zapisz się na listę',
+    desc: 'Zostaw e-mail w formularzu poniżej — napiszemy, gdy otworzymy rekrutację albo zwolni się miejsce. Możesz też zadzwonić: 605 657 366.',
   },
   {
     n: '2',
@@ -81,8 +81,8 @@ const kroki = [
       },
       {
         "@type": "Question",
-        "name": "Do kiedy trwa rekrutacja na rok 2026/2027?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Rekrutacja jest otwarta, ale liczba miejsc jest ograniczona. Co roku większość miejsc zostaje zajęta przed wakacjami. Warto zgłosić się jak najwcześniej." }
+        "name": "Czy w Kolorowym Przedszkolu są jeszcze wolne miejsca?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Rekrutacja na rok szkolny 2026/2027 jest zakończona. Na stronie rekrutacji można zapisać się na listę — przedszkole napisze, gdy otworzy rekrutację na rok 2027/2028 albo gdy w trakcie roku zwolni się miejsce." }
       },
       {
         "@type": "Question",
@@ -97,38 +97,38 @@ const kroki = [
       {
         "@type": "Question",
         "name": "Jak szybko Kolorowe Przedszkole odpowiada na zgłoszenia rekrutacyjne?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Zazwyczaj tego samego dnia. Formularz trafia bezpośrednio do założycielki Olgi Trębickiej i jej zespołu." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Zazwyczaj tego samego dnia. Wiadomości i telefony odbiera założycielka Olga Trębicka i jej zespół." }
       }
     ]
   })} />
 
-  <HeroMazy title="rekrutacja" seoHeading="Rekrutacja 2026/2027 — Kolorowe Przedszkole na Saskiej Kępie" />
+  <HeroMazy title="rekrutacja" seoHeading="Rekrutacja 2027/2028 — Kolorowe Przedszkole na Saskiej Kępie" />
 
   <!-- ─── Intro + primary CTAs ─────────────────────────────── -->
   <!-- Hero lead + the two top-level CTAs from the old navy hero. Moved
        into the intro section under the mazy band so HeroMazy stays
        title-only (consistent pattern) while preserving the conversion
-       buttons and SEO copy (2026/2027, 2,5 roku życia). -->
+       buttons and SEO copy (2027/2028, 2,5 roku życia). -->
   <section class="relative bg-brand-cream py-16 md:py-20 overflow-hidden">
     <ScatteredLetters />
     <div class="relative max-w-3xl mx-auto px-6 text-center flex flex-col items-center gap-6">
-      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Rekrutacja 2026/2027</p>
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Rekrutacja 2027/2028</p>
 
       <!-- Live availability status — updated by the owner each season. -->
-      <p class="inline-flex items-center gap-2 bg-brand-teal/10 border border-brand-teal/40 rounded-full px-5 py-2 font-sans text-sm font-semibold text-brand-navy">
-        <span class="w-2 h-2 rounded-full bg-brand-teal animate-pulse" aria-hidden="true"></span>
-        Trwa rekrutacja uzupełniająca — mamy jeszcze miejsca od września 2026
+      <p class="inline-flex items-center gap-2 bg-brand-coral/10 border border-brand-coral/40 rounded-full px-5 py-2 font-sans text-sm font-semibold text-brand-navy">
+        <span class="w-2 h-2 rounded-full bg-brand-coral" aria-hidden="true"></span>
+        Rekrutacja na rok 2026/2027 jest zakończona
       </p>
 
       <p class="font-sans text-xl text-brand-navy/80 leading-relaxed">
-        Rekrutacja na rok szkolny <strong class="text-brand-navy">2026/2027</strong> jest otwarta. Przyjmujemy dzieci od 2,5 roku życia. Zapraszamy rodziców — najlepiej z dziećmi — do odwiedzin przed podjęciem decyzji.
+        Zapisz się na listę — napiszemy, gdy otworzymy rekrutację na rok szkolny <strong class="text-brand-navy">2027/2028</strong> albo gdy w trakcie roku zwolni się miejsce. Przyjmujemy dzieci od 2,5 roku życia.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 mt-2">
         <a
           href="#formularz"
           class="inline-block bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded-lg transition-colors duration-200 hover:bg-brand-coral"
         >
-          Przejdź do formularza
+          Zapisz się na listę
         </a>
         <a
           href="tel:605657366"
@@ -145,7 +145,7 @@ const kroki = [
     <div class="max-w-5xl mx-auto px-6">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {[
-          { emoji: '🗓️', title: 'Rok szkolny', line1: '2026/2027', line2: 'Rekrutacja otwarta' },
+          { emoji: '🗓️', title: 'Rok szkolny', line1: '2027/2028', line2: 'Zapisy na listę' },
           { emoji: '👶', title: 'Wiek dzieci', line1: 'Od 2,5 roku życia', line2: 'Kameralne grupy, dwie lokalizacje' },
           { emoji: '📍', title: 'Lokalizacje', line1: 'Lotaryńska 18 · Zakopiańska 8', line2: 'Saska Kępa, Warszawa' },
         ].map((card) => (
@@ -163,7 +163,7 @@ const kroki = [
   <!-- ─── 3. Urgency block ─────────────────────────────────── -->
   <section class="bg-brand-warm py-20">
     <div class="max-w-3xl mx-auto px-6 text-center">
-      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">Dlaczego warto się zgłosić teraz</p>
+      <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal mb-4">Dlaczego warto zapisać się już teraz</p>
       <h2 class="font-sans italic text-[clamp(1.9rem,3.5vw,3rem)] text-brand-navy leading-tight mb-8">
         Miejsc jest mało. Co roku kończą się przed wakacjami.
       </h2>
@@ -171,7 +171,7 @@ const kroki = [
         Kolorowe Przedszkole celowo utrzymuje małe grupy — żeby każde dziecko było zauważone, wysłuchane i bezpieczne. To oznacza, że dostępnych miejsc nie jest wiele.
       </p>
       <p class="font-sans text-brand-navy/70 text-lg leading-relaxed">
-        Jeśli myślisz o nas dla swojego dziecka na rok 2026/2027 — odezwij się teraz, póki możemy jeszcze powiedzieć „tak".
+        Jeśli myślisz o nas dla swojego dziecka na rok 2027/2028 — zapisz się na listę, a napiszemy, gdy tylko ruszy rekrutacja.
       </p>
     </div>
   </section>
@@ -197,19 +197,19 @@ const kroki = [
     </div>
   </section>
 
-  <!-- ─── 5. Contact form ──────────────────────────────────── -->
+  <!-- ─── 5. Waiting-list sign-up (replaces the contact form while recruitment is closed) ── -->
   <section id="formularz" class="bg-brand-warm py-20 scroll-mt-6">
     <div class="max-w-2xl mx-auto px-6">
       <div class="flex flex-col gap-3 text-center mb-10">
-        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Napisz do nas</p>
+        <p class="font-sans font-bold uppercase tracking-widest text-xs text-brand-teal">Lista zainteresowanych</p>
         <h2 class="font-sans italic text-[clamp(1.8rem,3vw,2.8rem)] text-brand-navy">
-          Zapytaj o wolne miejsce
+          Zapisz się na listę
         </h2>
         <p class="font-sans text-brand-navy/70">
-          Odpiszemy tak szybko jak to możliwe — zazwyczaj tego samego dnia.
+          Zostaw e-mail — napiszemy, gdy otworzymy rekrutację na rok 2027/2028 albo gdy w trakcie roku zwolni się miejsce.
         </p>
       </div>
-      <ContactForm formId="rekrutacja-form" submitLabel="Wyślij zapytanie" />
+      <ListaRekrutacji />
     </div>
   </section>
 

@@ -103,4 +103,4 @@ Wpisowe płacisz raz. Zajęcia dodatkowe — według wyboru, bez rocznych zobowi
 
 *Cennik zaktualizowany na rok szkolny 2026/2027 (sierpień 2026).*
 
-**Masz pytania o rekrutację lub chcesz umówić się na dzień otwarty?** [Sprawdź szczegóły rekrutacji 2026/2027](/rekrutacja) albo [napisz do nas](/kontakt) — odpiszemy i zaprosimy na spotkanie z naszą dyrekcją. Zobacz też, jak wyglądają nasze lokalizacje: [Lotaryńska 18](/lokalizacje/lotarynska-18) (od 2,5 roku) i [Zakopiańska 8](/lokalizacje/zakopianska-8) (4–6 lat).
+**Masz pytania o rekrutację lub chcesz umówić się na dzień otwarty?** [Zapisz się na listę na rok 2027/2028](/rekrutacja#formularz) albo [napisz do nas](/kontakt) — odpiszemy i zaprosimy na spotkanie z naszą dyrekcją. Zobacz też, jak wyglądają nasze lokalizacje: [Lotaryńska 18](/lokalizacje/lotarynska-18) (od 2,5 roku) i [Zakopiańska 8](/lokalizacje/zakopianska-8) (4–6 lat).

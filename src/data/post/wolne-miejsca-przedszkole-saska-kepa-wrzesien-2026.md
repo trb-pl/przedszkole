@@ -1,5 +1,6 @@
 ---
 publishDate: 2026-08-04T00:00:00Z
+updateDate: 2026-10-26T00:00:00Z
 author: Kolorowe Przedszkole
 title: "Wolne miejsca w przedszkolu na Saskiej Kępie i Gocławiu — wrzesień 2026"
 excerpt: "Szukasz miejsca w przedszkolu od września 2026? W Kolorowym Przedszkolu trwa rekrutacja uzupełniająca na rok 2026/2027. Sprawdź, jak zapisać dziecko w sierpniu."
@@ -32,6 +33,8 @@ metadata:
   "url": "https://koloroweprzedszkole.com/porady/wolne-miejsca-przedszkole-saska-kepa-wrzesien-2026"
 }
 </script>
+
+> **Aktualizacja, 26 października 2026:** rekrutacja na rok szkolny 2026/2027 jest zakończona. [Zapisz się na listę](/rekrutacja#formularz) — napiszemy, gdy otworzymy rekrutację na rok 2027/2028 albo gdy w trakcie roku zwolni się miejsce.
 
 Tak — w Kolorowym Przedszkolu na Saskiej Kępie trwa rekrutacja uzupełniająca na rok szkolny 2026/2027. Jeśli szukasz miejsca dla dziecka od września, sierpień to ostatni moment na spokojne zapisanie — bez stresu, z czasem na wizytę i adaptację. Zadzwoń pod **605 657 366** lub [wypełnij formularz rekrutacyjny](/rekrutacja), a powiemy Ci od ręki, jak wygląda dostępność miejsc w grupie wiekowej Twojego dziecka.
 

@@ -1,0 +1,148 @@
+---
+// Sign-up for the recruitment waiting list (recruitment for 2026/2027 is
+// closed). Posts to the same Apps Script Web App as the other parent forms
+// (PUBLIC_FORM_ENDPOINT, `formularz: 'lista-rekrutacji'`), which stores the
+// e-mail, the child's birth year and the consent text in its own sheet tab
+// (docs/apps-script/Kod.gs, section 5).
+//
+// Only what the school needs to write back: e-mail and birth year. Consent
+// is the legal basis, so the checkbox is required and its wording matches
+// LISTA_REKRUTACJI.ZGODA in the script and the privacy policy.
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+
+const biezacy = new Date().getFullYear();
+// Children from 2,5 years up to school age — computed at build, so the list
+// moves on by itself next year.
+const lata = Array.from({ length: 7 }, (_, i) => biezacy - i);
+
+const inputCls =
+  'font-sans bg-white border border-brand-navy/15 rounded-lg px-4 py-3 text-brand-navy placeholder:text-brand-navy/25 focus:outline-none focus:border-brand-teal transition-colors duration-200 w-full';
+const labelCls = 'font-sans text-sm font-semibold text-brand-navy';
+---
+
+<div class="bg-white rounded-2xl border border-brand-navy/6 shadow-sm p-6 md:p-8">
+  <form id="lista-form" class="flex flex-col gap-5" novalidate>
+    <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4">
+      <div class="flex flex-col gap-1.5">
+        <label class={labelCls} for="lista-email">E-mail <span class="text-brand-coral">*</span></label>
+        <input type="email" id="lista-email" name="email" required autocomplete="email" maxlength="200" class={inputCls} placeholder="jan@example.com" />
+      </div>
+      <div class="flex flex-col gap-1.5">
+        <label class={labelCls} for="lista-rok">Rok urodzenia dziecka <span class="text-brand-coral">*</span></label>
+        <select id="lista-rok" name="rok_urodzenia" required class={`${inputCls} sm:w-44`}>
+          <option value="">Wybierz</option>
+          {lata.map((rok) => <option value={rok}>{rok}</option>)}
+        </select>
+      </div>
+    </div>
+
+    <label class="flex items-start gap-3 cursor-pointer">
+      <input type="checkbox" name="zgoda" required class="mt-1 accent-brand-teal shrink-0" />
+      <span class="font-sans text-sm text-brand-navy/75 leading-relaxed">
+        Zgadzam się na otrzymanie wiadomości e-mail o otwarciu rekrutacji na rok szkolny 2027/2028 i o miejscach
+        zwolnionych w trakcie roku. Zgodę mogę wycofać w każdej chwili, pisząc na przedszkole@kolorowe.eu.
+        <a href="/polityka-prywatnosci" class="text-brand-teal underline hover:text-brand-coral">Polityka prywatności</a>
+        <span class="text-brand-coral">*</span>
+      </span>
+    </label>
+
+    <!-- Honeypot -->
+    <input type="text" name="firma" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+    <p id="lista-blad" hidden class="font-sans text-sm font-semibold text-brand-coral bg-brand-coral/10 rounded-xl px-4 py-3"></p>
+
+    <button
+      type="submit"
+      id="lista-wyslij"
+      class="cta-pop w-full bg-brand-teal text-brand-cream font-sans font-bold uppercase tracking-wider text-sm px-8 py-4 rounded-lg hover:bg-brand-coral cursor-pointer"
+    >
+      Zapisz mnie na listę
+    </button>
+  </form>
+
+  <div id="lista-sukces" hidden class="text-center flex flex-col items-center gap-3 py-6">
+    <p class="text-5xl text-brand-teal">✓</p>
+    <p class="font-sans italic text-2xl md:text-3xl text-brand-navy">Jesteś na liście!</p>
+    <p class="font-sans text-brand-navy/70 leading-relaxed max-w-md">
+      Napiszemy, gdy otworzymy rekrutację na rok 2027/2028 albo gdy w trakcie roku zwolni się miejsce.
+    </p>
+  </div>
+</div>
+
+<script is:inline define:vars={{ endpoint }}>
+  document.addEventListener('astro:page-load', function () {
+    var form = document.getElementById('lista-form');
+    // ClientRouter keeps this listener across pages — bind once, here only.
+    if (!form || form.dataset.gotowy) return;
+    form.dataset.gotowy = '1';
+
+    var blad = document.getElementById('lista-blad');
+    var btn = document.getElementById('lista-wyslij');
+
+    function pokazBlad(tekst) {
+      blad.textContent = tekst;
+      blad.hidden = false;
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      blad.hidden = true;
+      if (form.firma.value) return;
+
+      var email = form.email.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        pokazBlad('Wpisz poprawny adres e-mail.');
+        form.email.focus();
+        return;
+      }
+      if (!form.rok_urodzenia.value) {
+        pokazBlad('Wybierz rok urodzenia dziecka.');
+        form.rok_urodzenia.focus();
+        return;
+      }
+      if (!form.zgoda.checked) {
+        pokazBlad('Zaznacz zgodę — bez niej nie możemy do Ciebie napisać.');
+        return;
+      }
+      if (!endpoint) {
+        pokazBlad('Formularz nie jest jeszcze podłączony. Zadzwoń: 605 657 366');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Zapisywanie…';
+      function przywroc() {
+        btn.disabled = false;
+        btn.textContent = 'Zapisz mnie na listę';
+      }
+
+      try {
+        // text/plain avoids a CORS preflight — Apps Script parses the body.
+        var res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            formularz: 'lista-rekrutacji',
+            email: email,
+            rok_urodzenia: form.rok_urodzenia.value,
+            zgoda: true,
+          }),
+        });
+        var wynik = JSON.parse(await res.text());
+
+        if (wynik.status === 'ok') {
+          form.hidden = true;
+          document.getElementById('lista-sukces').hidden = false;
+        } else {
+          console.error('Błąd skryptu:', wynik);
+          pokazBlad('Zapis się nie powiódł. Spróbuj ponownie albo zadzwoń: 605 657 366');
+          przywroc();
+        }
+      } catch (err) {
+        console.error('Błąd wysyłki:', err);
+        pokazBlad('Nie udało się wysłać. Sprawdź połączenie z internetem i spróbuj ponownie albo zadzwoń: 605 657 366');
+        przywroc();
+      }
+    });
+  });
+</script>

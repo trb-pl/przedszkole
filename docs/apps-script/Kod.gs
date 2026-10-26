@@ -15,6 +15,8 @@
  *                       (Google Doc + PDF), gotowych do wydruku.
  *  3. generujZgodyStomatolog() — z menu arkusza: składa odpowiedzi ze strony
  *                       /zgoda-stomatolog w jeden PDF do wydruku.
+ *  4. zapiszNaListeRekrutacji() — zapisy ze strony /rekrutacja na listę
+ *                       osób czekających na rekrutację i wolne miejsca.
  *
  * Dane osobowe (PESEL, adresy) nie opuszczają Google Workspace.
  */
@@ -132,6 +134,10 @@ function doPost(e) {
     // kodu dostępu: odpowiedź kliknięta online nie jest wiążąca, bo rodzic
     // i tak podpisuje wydruk w przedszkolu.
     if (dane.formularz === 'stomatolog') return odpowiedz(zapiszZgodeStomatolog(dane));
+
+    // Zapis na listę zainteresowanych rekrutacją — publiczny formularz na
+    // /rekrutacja, więc też bez kodu dostępu.
+    if (dane.formularz === 'lista-rekrutacji') return odpowiedz(zapiszNaListeRekrutacji(dane));
 
     // Kod dostępu sprawdzamy po stronie serwera — brama na stronie tylko
     // odsłania formularz, nie chroni danych. Porównanie bez rozróżniania
@@ -1292,4 +1298,64 @@ function zlozDokumentZgod(doc, dzieci, zeZgoda) {
   // Puste akapity, które Dokumenty dokładają same (np. za tabelą), też w Nunito.
   body.editAsText().setFontFamily(MARKA.FONT);
   doc.saveAndClose();
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// 5. LISTA ZAINTERESOWANYCH REKRUTACJĄ (od października 2026)
+// ─────────────────────────────────────────────────────────────────────────
+//
+// Rekrutacja na 2026/2027 jest zamknięta. Rodzic zostawia na /rekrutacja
+// e-mail i rok urodzenia dziecka, a przedszkole pisze do wszystkich z listy,
+// gdy ruszy rekrutacja na 2027/2028 albo zwolni się miejsce w trakcie roku.
+// Podstawą jest zgoda — jej treść zapisujemy przy każdym wierszu, żeby było
+// wiadomo, na co dokładnie ktoś się zgodził.
+
+const LISTA_REKRUTACJI = {
+  ARKUSZ: 'Lista — rekrutacja 2027/2028',
+  ZGODA: 'Powiadomienie e-mailem o otwarciu rekrutacji na rok 2027/2028 i o miejscach zwolnionych w trakcie roku',
+};
+
+function zapiszNaListeRekrutacji(dane) {
+  const email = String(dane.email || '').trim().toLowerCase();
+  const rok = Number(dane.rok_urodzenia);
+  const biezacy = new Date().getFullYear();
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 200) {
+    return { status: 'error', message: 'nieprawidłowy adres e-mail' };
+  }
+  if (!(rok >= biezacy - 7 && rok <= biezacy + 1)) {
+    return { status: 'error', message: 'nieprawidłowy rok urodzenia dziecka' };
+  }
+  if (dane.zgoda !== true) return { status: 'error', message: 'brak zgody' };
+
+  const blokada = LockService.getScriptLock();
+  blokada.waitLock(10000);
+  try {
+    const arkusz = arkuszListyRekrutacji();
+    // Ten sam adres zapisany drugi raz nie dubluje wiersza — przy wysyłce
+    // przedszkole i tak pisze raz na adres. Dopisujemy tylko nowy rok
+    // urodzenia, jeśli to kolejne dziecko.
+    const wiersze = arkusz.getLastRow() > 1
+      ? arkusz.getRange(2, 2, arkusz.getLastRow() - 1, 2).getValues()
+      : [];
+    const juzJest = wiersze.some(function (w) {
+      return String(w[0]).toLowerCase() === email && Number(w[1]) === rok;
+    });
+    if (!juzJest) arkusz.appendRow([new Date(), email, rok, LISTA_REKRUTACJI.ZGODA]);
+  } finally {
+    blokada.releaseLock();
+  }
+  return { status: 'ok' };
+}
+
+function arkuszListyRekrutacji() {
+  const plik = SpreadsheetApp.getActiveSpreadsheet();
+  let arkusz = plik.getSheetByName(LISTA_REKRUTACJI.ARKUSZ);
+  if (!arkusz) {
+    arkusz = plik.insertSheet(LISTA_REKRUTACJI.ARKUSZ);
+    arkusz.appendRow(['Data zapisu', 'E-mail', 'Rok urodzenia dziecka', 'Zgoda']);
+    arkusz.getRange(1, 1, 1, 4).setFontWeight('bold');
+    arkusz.setFrozenRows(1);
+  }
+  return arkusz;
 }
