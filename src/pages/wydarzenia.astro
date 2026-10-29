@@ -18,6 +18,7 @@ import {
   plikPdfWydarzen,
   opisDaty,
   pokazGodzine,
+  opisCzasu,
   idWydarzenia,
   linkGoogle,
 } from '~/data/wydarzenia.mjs';
@@ -123,7 +124,7 @@ const opcjaCls = 'flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-brand-
 
                   <p class="font-sans text-sm text-brand-navy/60 flex items-center gap-1.5">
                     <Icon name="tabler:clock" class="w-4 h-4" aria-hidden="true" />
-                    godz. {pokazGodzine(w.godzina)}
+                    {opisCzasu(w)}
                   </p>
 
                   <h3 class="font-sans font-bold text-lg md:text-xl text-brand-navy leading-snug mt-3">{w.tytul}</h3>

@@ -22,7 +22,9 @@ import {
   tytulMiesiaca,
   plikPdfWydarzen,
   opisDaty,
+  opisCzasu,
   pokazGodzine,
+  WYDARZENIA_NASTEPNE,
 } from '../src/data/wydarzenia.mjs';
 import {
   KOLOR_WYDARZENIA,
@@ -33,7 +35,13 @@ import {
 } from '../src/data/ikony-wydarzen.mjs';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const KATALOG = path.join(ROOT, 'public/dokumenty');
+// Bez argumentów: bieżący miesiąc do public/dokumenty (link na stronie).
+// Z „--nastepny <katalog>": następny miesiąc (WYDARZENIA_NASTEPNE) do podanego
+// katalogu — PDF do rozesłania, zanim miesiąc trafi na stronę.
+const NASTEPNY = process.argv[2] === '--nastepny';
+const KATALOG = NASTEPNY
+  ? path.resolve(process.argv[3] || '.')
+  : path.join(ROOT, 'public/dokumenty');
 const FONTY = path.join(ROOT, 'scripts/fonty');
 const LOGO = path.join(ROOT, 'docs/apps-script/szablon/logo.png');
 
@@ -90,7 +98,7 @@ function rysujIkone(dok, sciezki, x, y, bok, kolor) {
 // UKŁAD
 // ─────────────────────────────────────────────────────────────────────────
 
-const wydarzenia = wydarzeniaPosortowane();
+const wydarzenia = wydarzeniaPosortowane(NASTEPNY ? WYDARZENIA_NASTEPNE : undefined);
 const tytul = tytulMiesiaca(wydarzenia);
 const plik = plikPdfWydarzen(wydarzenia);
 
@@ -212,7 +220,7 @@ function rysujKarte(w, y, h) {
   let ty = y + PAD;
   rysujIkone(dok, ikonaZestawu('tabler:clock'), TRESC_X, ty + 1.2, 9, SZARY);
   dok.font('Regular').fontSize(9).fillColor(SZARY)
-    .text(`godz. ${pokazGodzine(w.godzina)}`, TRESC_X + 12, ty, { lineBreak: false });
+    .text(opisCzasu(w), TRESC_X + 12, ty, { lineBreak: false });
   ty += 15;
 
   dok.font('Bold').fontSize(12.5).fillColor(BRAND.navy)
@@ -280,7 +288,8 @@ function rysujOs(kropki) {
 fs.mkdirSync(KATALOG, { recursive: true });
 
 // PDF poprzedniego miesiąca znika — na stronie jest link tylko do bieżącego.
-for (const stary of fs.readdirSync(KATALOG)) {
+// Tylko w public/dokumenty: w cudzym katalogu (np. na Biurku) nic nie kasujemy.
+for (const stary of NASTEPNY ? [] : fs.readdirSync(KATALOG)) {
   if (/^wydarzenia-.+\.pdf$/.test(stary) && stary !== plik) fs.rmSync(path.join(KATALOG, stary));
 }
 

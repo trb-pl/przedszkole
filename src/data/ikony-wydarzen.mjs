@@ -16,6 +16,15 @@ export const KOLOR_WYDARZENIA = {
   muzeum: 'forest',
   lisc: 'teal',
   dynia: 'coral',
+  flaga: 'coral',
+  prawa: 'teal',
+  mis: 'yellow',
+  andrzejki: 'navy',
+  spotkanie: 'teal',
+  prezent: 'coral',
+  wigilia: 'forest',
+  warsztaty: 'yellow',
+  przerwa: 'navy',
 };
 export const DOMYSLNY_KOLOR = 'teal';
 
@@ -28,6 +37,15 @@ export const IKONY_Z_ZESTAWU = {
   muzyka: 'tabler:music',
   muzeum: 'tabler:building-bank',
   halloween: 'tabler:ghost',
+  flaga: 'tabler:flag',
+  prawa: 'tabler:heart-handshake',
+  // Lanie wosku — świeca mówi „andrzejki" bez słów.
+  andrzejki: 'tabler:candle',
+  spotkanie: 'tabler:users-group',
+  prezent: 'tabler:gift',
+  wigilia: 'tabler:christmas-tree',
+  warsztaty: 'tabler:brush',
+  przerwa: 'tabler:snowflake',
 };
 export const DOMYSLNA_IKONA = 'tabler:star';
 
@@ -52,5 +70,13 @@ export const IKONY_WLASNE = {
     'M12 7c2.2 1.5 3.3 3.8 3.3 6.5s-1.1 5-3.3 6.5',
     'M12 7V4',
     'M12 5c1-1.5 2.8-2 4.5-1.5-.5 1.7-2.5 2.5-4.5 1.5z',
+  ],
+  // Pluszowy miś — Tabler ma tylko dzikie zwierzęta.
+  mis: [
+    'M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0',
+    'M4.6 8.4a2.6 2.6 0 1 1 3.4 -3.4',
+    'M16 5a2.6 2.6 0 1 1 3.4 3.4',
+    'M9.2 15.5a2.8 2.1 0 1 0 5.6 0a2.8 2.1 0 1 0 -5.6 0',
+    'M9.5 11h.01M14.5 11h.01M12 15v.01',
   ],
 };
