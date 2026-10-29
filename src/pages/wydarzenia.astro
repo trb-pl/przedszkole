@@ -22,7 +22,7 @@ import {
   idWydarzenia,
   linkGoogle,
 } from '~/data/wydarzenia.mjs';
-import { KOLOR_WYDARZENIA, DOMYSLNY_KOLOR } from '~/data/ikony-wydarzen.mjs';
+import { KOLOR_WYDARZENIA, DOMYSLNY_KOLOR, RODZAJE_NARODOWE, BARWY_NARODOWE } from '~/data/ikony-wydarzen.mjs';
 
 const wydarzenia = wydarzeniaPosortowane();
 const miesiac = miesiacWydarzen(wydarzenia);
@@ -89,11 +89,22 @@ const opcjaCls = 'flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-brand-
                 data-dzien={w.data}
               >
                 <div class="col-start-1 md:col-start-2 row-start-1 flex justify-center">
-                  <span
-                    class={`kropka relative z-10 flex items-center justify-center w-14 h-14 rounded-full border-4 border-brand-cream ring-brand-sand transition-all duration-300 ${k.kropka}`}
-                  >
-                    <IkonaWydarzenia nazwa={w.ikona} class="w-7 h-7" />
-                  </span>
+                  {RODZAJE_NARODOWE.has(w.ikona) ? (
+                    // Flaga zamiast ikony: biel u góry, czerwień u dołu; cienki
+                    // wewnętrzny cień, żeby biel nie zlała się z kremowym tłem.
+                    <span
+                      class="kropka relative z-10 w-14 h-14 rounded-full border-4 border-brand-cream ring-brand-sand transition-all duration-300 shadow-[inset_0_0_0_1px_rgba(45,52,111,0.18)]"
+                      style={`background: linear-gradient(${BARWY_NARODOWE.bialy} 50%, ${BARWY_NARODOWE.czerwony} 50%)`}
+                      role="img"
+                      aria-label="flaga Polski"
+                    />
+                  ) : (
+                    <span
+                      class={`kropka relative z-10 flex items-center justify-center w-14 h-14 rounded-full border-4 border-brand-cream ring-brand-sand transition-all duration-300 ${k.kropka}`}
+                    >
+                      <IkonaWydarzenia nazwa={w.ikona} class="w-7 h-7" />
+                    </span>
+                  )}
                 </div>
 
                 <article

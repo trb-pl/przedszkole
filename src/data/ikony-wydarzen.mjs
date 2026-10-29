@@ -28,6 +28,15 @@ export const KOLOR_WYDARZENIA = {
 };
 export const DOMYSLNY_KOLOR = 'teal';
 
+/**
+ * Wydarzenia narodowe (hymn, Święto Niepodległości, 3 Maja) mają zamiast
+ * kolorowej kropki z ikoną kropkę w barwach flagi: biel u góry, czerwień
+ * u dołu. Czerwień flagi to świadomy wyjątek od palety brandbooka — barwy
+ * narodowe mają własny odcień (czerwień flagi RP, RGB 220, 20, 60).
+ */
+export const RODZAJE_NARODOWE = new Set(['flaga']);
+export const BARWY_NARODOWE = { bialy: '#FFFFFF', czerwony: '#DC143C' };
+
 export const IKONY_Z_ZESTAWU = {
   teatr: 'tabler:masks-theater',
   lisc: 'tabler:leaf',

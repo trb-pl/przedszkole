@@ -32,6 +32,8 @@ import {
   IKONY_WLASNE,
   IKONY_Z_ZESTAWU,
   DOMYSLNA_IKONA,
+  RODZAJE_NARODOWE,
+  BARWY_NARODOWE,
 } from '../src/data/ikony-wydarzen.mjs';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -285,6 +287,16 @@ function rysujOs(kropki) {
     const kolor = BRAND[KOLOR_WYDARZENIA[w.ikona] ?? DOMYSLNY_KOLOR];
     // Biała obwódka odcina kropkowaną linię od kropki, jak kremowa ramka na stronie.
     dok.circle(OS_X, y, PROMIEN + 1.4 * MM).fill('#FFFFFF');
+    if (RODZAJE_NARODOWE.has(w.ikona)) {
+      // Flaga w kropce, jak na stronie: biel u góry, czerwień u dołu, cienka
+      // obwódka, żeby biała połowa odcinała się od białej ramki.
+      dok.save().circle(OS_X, y, PROMIEN).clip();
+      dok.rect(OS_X - PROMIEN, y - PROMIEN, 2 * PROMIEN, PROMIEN).fill(BARWY_NARODOWE.bialy);
+      dok.rect(OS_X - PROMIEN, y, 2 * PROMIEN, PROMIEN).fill(BARWY_NARODOWE.czerwony);
+      dok.restore();
+      dok.circle(OS_X, y, PROMIEN).lineWidth(0.8).strokeColor(LINIA).stroke();
+      continue;
+    }
     dok.circle(OS_X, y, PROMIEN).fill(kolor);
     const bok = 7.4 * MM;
     const kolorIkony = kolor === BRAND.yellow ? BRAND.navy : BRAND.cream;
