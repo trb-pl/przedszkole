@@ -30,7 +30,7 @@ export const WYDARZENIA = [
   },
   {
     data: '2026-11-10',
-    godzina: '11.00',
+    godzina: '11.11',
     tytul: 'Wspólne śpiewanie hymnu',
     opis: 'Uroczystość z okazji Dnia Niepodległości.',
     ikona: 'flaga',
