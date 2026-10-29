@@ -124,25 +124,36 @@ const TRESC_X = KARTA_X + PAD + KOL_DATY + 5 * MM;
 const TRESC_W = KARTA_X + KARTA_W - PAD - TRESC_X;
 const ODSTEP = 5 * MM;
 const DOL = H - 24 * MM; // niżej jest już stopka
+
+// Margines w pionie wewnątrz karty i odstęp między kartami — mniejsze, gdy
+// miesiąc nie mieści się na stronie (zob. „Jedna strona" niżej).
+let PAD_V = PAD;
+let ODSTEP_V = ODSTEP;
 const PLAKIETKA_H = 5.6 * MM;
 const PLAKIETKA_PAD = 2.6 * MM;
 const PLAKIETKA_IKONA = 3.4 * MM;
 const PLAKIETKA_ODSTEP = 1.6 * MM;
 
-/** Logo, tytuł i rok szkolny — jak w PDF-ach planu zajęć. Zwraca y pod nagłówkiem. */
-function naglowek() {
-  let y = 14 * MM;
-  if (fs.existsSync(LOGO)) {
-    const logo = dok.openImage(LOGO);
-    const szer = 44 * MM;
-    dok.image(logo, (W - szer) / 2, y, { width: szer });
-    y += szer * (logo.height / logo.width) + 7 * MM;
+const logo = fs.existsSync(LOGO) ? dok.openImage(LOGO) : null;
+
+/**
+ * Logo, tytuł i rok szkolny — jak w PDF-ach planu zajęć. Zwraca y pod
+ * nagłówkiem; z `rysuj: false` tylko liczy, ile miejsca zajmie.
+ */
+function naglowek({ zwarty = false, rysuj = true } = {}) {
+  let y = (zwarty ? 10 : 14) * MM;
+  if (logo) {
+    const szer = (zwarty ? 36 : 44) * MM;
+    if (rysuj) dok.image(logo, (W - szer) / 2, y, { width: szer });
+    y += szer * (logo.height / logo.width) + (zwarty ? 5 : 7) * MM;
   }
-  dok.font('Bold').fontSize(17).fillColor(BRAND.navy)
-    .text(tytul.toUpperCase(), MARGINES, y, { width: W - 2 * MARGINES, align: 'center' });
-  dok.font('Bold').fontSize(11).fillColor(BRAND.teal)
-    .text('rok szkolny ' + ROK_SZKOLNY, MARGINES, y + 8 * MM, { width: W - 2 * MARGINES, align: 'center' });
-  return y + 20 * MM;
+  if (rysuj) {
+    dok.font('Bold').fontSize(zwarty ? 15 : 17).fillColor(BRAND.navy)
+      .text(tytul.toUpperCase(), MARGINES, y, { width: W - 2 * MARGINES, align: 'center' });
+    dok.font('Bold').fontSize(zwarty ? 10 : 11).fillColor(BRAND.teal)
+      .text('rok szkolny ' + ROK_SZKOLNY, MARGINES, y + (zwarty ? 7 : 8) * MM, { width: W - 2 * MARGINES, align: 'center' });
+  }
+  return y + (zwarty ? 15 : 20) * MM;
 }
 
 function stopka() {
@@ -197,7 +208,7 @@ function wysokosc(w) {
   }
   const { rzedy } = plakietki(w);
   if (rzedy) h += 3 * MM + rzedy * PLAKIETKA_H + (rzedy - 1) * PLAKIETKA_ODSTEP;
-  return Math.max(h, 46) + 2 * PAD;
+  return Math.max(h, 46) + 2 * PAD_V;
 }
 
 function rysujKarte(w, y, h) {
@@ -208,16 +219,16 @@ function rysujKarte(w, y, h) {
   const d = opisDaty(w.data);
   const kolX = KARTA_X + PAD;
   dok.font('Bold').fontSize(26).fillColor(BRAND.navy)
-    .text(String(d.dzien), kolX, y + PAD - 3, { width: KOL_DATY, align: 'center', lineBreak: false });
+    .text(String(d.dzien), kolX, y + PAD_V - 3, { width: KOL_DATY, align: 'center', lineBreak: false });
   dok.font('Bold').fontSize(8.5).fillColor(BRAND.navy)
-    .text(d.miesiac, kolX, y + PAD + 30, { width: KOL_DATY, align: 'center', lineBreak: false });
+    .text(d.miesiac, kolX, y + PAD_V + 30, { width: KOL_DATY, align: 'center', lineBreak: false });
   dok.font('Regular').fontSize(8).fillColor(SZARY)
-    .text(d.tydzien, kolX, y + PAD + 41, { width: KOL_DATY, align: 'center', lineBreak: false });
+    .text(d.tydzien, kolX, y + PAD_V + 41, { width: KOL_DATY, align: 'center', lineBreak: false });
 
   const kreskaX = KARTA_X + PAD + KOL_DATY + 2.5 * MM;
-  dok.lineWidth(0.5).strokeColor(LINIA).moveTo(kreskaX, y + PAD).lineTo(kreskaX, y + h - PAD).stroke();
+  dok.lineWidth(0.5).strokeColor(LINIA).moveTo(kreskaX, y + PAD_V).lineTo(kreskaX, y + h - PAD_V).stroke();
 
-  let ty = y + PAD;
+  let ty = y + PAD_V;
   rysujIkone(dok, ikonaZestawu('tabler:clock'), TRESC_X, ty + 1.2, 9, SZARY);
   dok.font('Regular').fontSize(9).fillColor(SZARY)
     .text(opisCzasu(w), TRESC_X + 12, ty, { lineBreak: false });
@@ -299,28 +310,46 @@ const zapisany = new Promise((gotowe, blad) => {
   dok.pipe(strumien);
 });
 
-let y = naglowek();
-let kropki = [];
-let strony = 1;
+// ── Jedna strona, zawsze ──
+// Kartka trafia do rodziców i na tablicę, więc cały miesiąc ma się zmieścić
+// na jednej stronie A4. Najpierw zbijamy puste miejsca (nagłówek, marginesy
+// kart, odstępy); gdy to za mało, zmniejszamy całą listę równo — karty, oś
+// i ikony — jak „Dopasuj do strony" w drukarce, więc proporcje zostają.
+const wysokoscListy = () =>
+  wydarzenia.reduce((suma, w) => suma + wysokosc(w), 0) + (wydarzenia.length - 1) * ODSTEP_V;
 
+let zwarty = false;
+if (naglowek({ rysuj: false }) + wysokoscListy() > DOL) {
+  zwarty = true;
+  PAD_V = 3 * MM;
+  ODSTEP_V = 2.5 * MM;
+}
+const gora = naglowek({ zwarty });
+const potrzeba = wysokoscListy();
+const skala = Math.min(1, (DOL - gora) / potrzeba);
+
+dok.save();
+if (skala < 1) dok.translate(W / 2, gora).scale(skala).translate(-W / 2, -gora);
+// W skali lista „wychodzi" poza dół strony w swoich współrzędnych — bez tego
+// pdfkit dokładałby nowe strony w połowie karty.
+dok.page.margins.bottom = -2 * H;
+
+let y = gora;
+const kropki = [];
 for (const w of wydarzenia) {
   const h = wysokosc(w);
-  if (y + h > DOL && kropki.length) {
-    rysujOs(kropki);
-    stopka();
-    dok.addPage();
-    strony++;
-    y = 18 * MM;
-    kropki = [];
-  }
   rysujKarte(w, y, h);
-  kropki.push({ y: y + 9.5 * MM, w });
-  y += h + ODSTEP;
+  kropki.push({ y: y + PAD_V + 4.5 * MM, w });
+  y += h + ODSTEP_V;
 }
-
 rysujOs(kropki);
+
+dok.restore();
+dok.page.margins.bottom = 0;
 stopka();
 dok.end();
 await zapisany;
 
-console.log(`[wydarzenia] ${plik}: ${wydarzenia.length} wydarzeń, stron: ${strony}`);
+const opisSkali = skala < 1 ? `, pomniejszone do ${Math.round(skala * 100)}%` : '';
+console.log(`[wydarzenia] ${plik}: ${wydarzenia.length} wydarzeń na 1 stronie${zwarty ? ' (układ zwarty' + opisSkali + ')' : ''}`);
+if (skala < 0.7) console.warn(`[wydarzenia] Uwaga: przy ${wydarzenia.length} wydarzeniach tekst jest już mały — warto skrócić opisy.`);
