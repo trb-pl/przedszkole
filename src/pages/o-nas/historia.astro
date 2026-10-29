@@ -50,6 +50,10 @@ const sekcje = [
   },
   {
     img: imgAgnieszka,
+    // Zdjęcie jest prawie kwadratowe: w ramce 4:3 traciło czubki głów.
+    // Kwadrat pokazuje je w całości, a z dołu odpada tylko skrawek bluzki.
+    proporcje: 'aspect-square',
+    kadr: 'object-top',
     alt: 'Agnieszka Trębicka, pedagog i współzałożycielka Kolorowego Przedszkola',
     eyebrow: 'Drugie pokolenie',
     title: 'Agnieszka — pierwsze dziecko, drugi filar',
@@ -111,8 +115,8 @@ const sekcje = [
       <div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
 
-          <div class={`rounded-2xl overflow-hidden aspect-[4/3] ${s.flip ? 'md:order-2' : ''}`}>
-            <Image src={s.img} alt={s.alt} class="w-full h-full object-cover" widths={[640, 960, 1280]} sizes="(max-width: 768px) 100vw, 50vw" />
+          <div class={`rounded-2xl overflow-hidden ${s.proporcje ?? 'aspect-[4/3]'} ${s.flip ? 'md:order-2' : ''}`}>
+            <Image src={s.img} alt={s.alt} class={`w-full h-full object-cover ${s.kadr ?? ''}`} widths={[640, 960, 1280]} sizes="(max-width: 768px) 100vw, 50vw" />
           </div>
 
           <div class={`flex flex-col gap-5 ${s.flip ? 'md:order-1' : ''}`}>
