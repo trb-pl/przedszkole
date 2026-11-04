@@ -16,8 +16,14 @@ Skrypt czyta je z pliku poza projektem (patrz LISTA poniżej) w formacie:
 Uruchamianie:
     ./venv/bin/python scripts/przygotuj-fonty.py     # raz, jeśli brak fontów
     ./venv/bin/python scripts/make-listy-obecnosci.py
+    ./venv/bin/python scripts/make-listy-obecnosci.py --od 2026-11
+
+Z „--od RRRR-MM" powstają tylko miesiące od podanego do końca roku
+szkolnego, w osobnym pliku (…_od_listopada.pdf) — na zmianę listy w trakcie
+roku, bez nadpisywania wydrukowanych już miesięcy. Personel wtedy pomijamy.
 """
 import os
+import sys
 from datetime import date, timedelta
 
 from reportlab.lib import colors
@@ -54,6 +60,19 @@ DNI_SKROT = ['P', 'W', 'Ś', 'C', 'P', 'S', 'N']   # poniedziałek → niedziela
 
 # Rok szkolny: wrzesień 2026 → sierpień 2027
 OKRES = [(2026, m) for m in range(9, 13)] + [(2027, m) for m in range(1, 9)]
+
+# „--od 2026-11": tylko od listopada — po zmianie listy dzieci w trakcie roku.
+OD = None
+if '--od' in sys.argv:
+    try:
+        r, m = sys.argv[sys.argv.index('--od') + 1].split('-')
+        OD = (int(r), int(m))
+    except (IndexError, ValueError):
+        raise SystemExit('Użycie: --od RRRR-MM, np. --od 2026-11')
+    if OD not in OKRES:
+        raise SystemExit('Miesiąc %d-%02d jest poza rokiem szkolnym 2026/2027.' % OD)
+    OKRES = OKRES[OKRES.index(OD):]
+    WYNIK = WYNIK.replace('.pdf', '_od_%s.pdf' % MIESIACE[OD[1] - 1])
 
 
 def zakres(od, do):
@@ -300,6 +319,10 @@ def main():
     c.save()
     print('→ %s (%d stron, %d KB)' % (WYNIK, len(grupy) * len(OKRES),
                                       os.path.getsize(WYNIK) // 1024))
+
+    # Zmiana w trakcie roku dotyczy dzieci — listy personelu zostają, jak były.
+    if OD:
+        return
 
     if not os.path.exists(LISTA_PRACOWNIKOW):
         print('   (pominięto personel — brak pliku %s)' % LISTA_PRACOWNIKOW)
