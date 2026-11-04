@@ -17,10 +17,12 @@ Uruchamianie:
     ./venv/bin/python scripts/przygotuj-fonty.py     # raz, jeśli brak fontów
     ./venv/bin/python scripts/make-listy-obecnosci.py
     ./venv/bin/python scripts/make-listy-obecnosci.py --od 2026-11
+    ./venv/bin/python scripts/make-listy-obecnosci.py --od 2026-11 --do 2026-12
 
-Z „--od RRRR-MM" powstają tylko miesiące od podanego do końca roku
-szkolnego, w osobnym pliku (…_od_listopada.pdf) — na zmianę listy w trakcie
-roku, bez nadpisywania wydrukowanych już miesięcy. Personel wtedy pomijamy.
+Z „--od RRRR-MM" (i opcjonalnie „--do RRRR-MM") powstają tylko wybrane
+miesiące, w osobnym pliku (…_od_listopada.pdf, …_od_listopada_do_grudnia.pdf)
+— na zmianę listy w trakcie roku, bez nadpisywania wydrukowanych już
+miesięcy. Personel wtedy pomijamy.
 """
 import os
 import sys
@@ -61,18 +63,31 @@ DNI_SKROT = ['P', 'W', 'Ś', 'C', 'P', 'S', 'N']   # poniedziałek → niedziela
 # Rok szkolny: wrzesień 2026 → sierpień 2027
 OKRES = [(2026, m) for m in range(9, 13)] + [(2027, m) for m in range(1, 9)]
 
-# „--od 2026-11": tylko od listopada — po zmianie listy dzieci w trakcie roku.
-OD = None
-if '--od' in sys.argv:
+# „--od 2026-11 [--do 2026-12]": tylko wybrane miesiące — po zmianie listy
+# dzieci w trakcie roku.
+def miesiac_z_argumentu(nazwa):
+    if nazwa not in sys.argv:
+        return None
     try:
-        r, m = sys.argv[sys.argv.index('--od') + 1].split('-')
-        OD = (int(r), int(m))
+        r, m = sys.argv[sys.argv.index(nazwa) + 1].split('-')
+        wynik = (int(r), int(m))
     except (IndexError, ValueError):
-        raise SystemExit('Użycie: --od RRRR-MM, np. --od 2026-11')
-    if OD not in OKRES:
-        raise SystemExit('Miesiąc %d-%02d jest poza rokiem szkolnym 2026/2027.' % OD)
-    OKRES = OKRES[OKRES.index(OD):]
-    WYNIK = WYNIK.replace('.pdf', '_od_%s.pdf' % MIESIACE[OD[1] - 1])
+        raise SystemExit('Użycie: %s RRRR-MM, np. %s 2026-11' % (nazwa, nazwa))
+    if wynik not in OKRES:
+        raise SystemExit('Miesiąc %d-%02d jest poza rokiem szkolnym 2026/2027.' % wynik)
+    return wynik
+
+OD = miesiac_z_argumentu('--od')
+DO = miesiac_z_argumentu('--do')
+if DO and not OD:
+    raise SystemExit('„--do" działa razem z „--od", np. --od 2026-11 --do 2026-12')
+if OD:
+    koniec = OKRES.index(DO) + 1 if DO else len(OKRES)
+    if koniec <= OKRES.index(OD):
+        raise SystemExit('„--do" musi być nie wcześniej niż „--od".')
+    OKRES = OKRES[OKRES.index(OD):koniec]
+    WYNIK = WYNIK.replace('.pdf', '_od_%s%s.pdf' % (
+        MIESIACE[OD[1] - 1], '_do_%s' % MIESIACE[DO[1] - 1] if DO else ''))
 
 
 def zakres(od, do):
