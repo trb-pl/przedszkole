@@ -1,13 +1,13 @@
 {
-  "tytul": "Kolorowe Przedszkole - Jadłospis 02.11- 06.11.2026",
+  "tytul": "Kolorowe Przedszkole - Jadłospis 09.11. - 13.11.2026",
   "tydzien": {
-    "od": "2026-11-02",
-    "do": "2026-11-06"
+    "od": "2026-11-09",
+    "do": "2026-11-13"
   },
   "dni": [
     {
       "dzien": "poniedziałek",
-      "data": "2026-11-02",
+      "data": "2026-11-09",
       "alergeny": [
         1,
         3,
@@ -17,7 +17,7 @@
     },
     {
       "dzien": "wtorek",
-      "data": "2026-11-03",
+      "data": "2026-11-10",
       "alergeny": [
         1,
         3,
@@ -27,27 +27,23 @@
     },
     {
       "dzien": "środa",
-      "data": "2026-11-04",
-      "alergeny": [
-        1,
-        3,
-        7,
-        9
-      ]
+      "data": "2026-11-11",
+      "alergeny": []
     },
     {
       "dzien": "czwartek",
-      "data": "2026-11-05",
+      "data": "2026-11-12",
       "alergeny": [
         1,
         3,
+        4,
         7,
         9
       ]
     },
     {
       "dzien": "piątek",
-      "data": "2026-11-06",
+      "data": "2026-11-13",
       "alergeny": [
         1,
         3,
@@ -63,23 +59,20 @@
       "rodzaj": "sniadanie",
       "pozycje": [
         [
-          "Pieczywo żytnio-razowe z masłem, parówki z szynki, mix warzyw",
+          "Pieczywo żytnio-razowe z masłem, kiełbasa salami, mix warzyw",
           "Herbata z cytryną"
         ],
         [
-          "Pieczywo żytnio-razowe z masłem, jajko ugotowane na półtwardo/jajecznica, mix warzyw",
+          "Pieczywo żytnio-razowe z masłem, jajko ugotowane na półtwardo, mix warzyw",
           "Herbata z cytryną, kakao naturalne"
         ],
+        [],
         [
-          "Pieczywo żytnio-razowe z masłem, kiełbasa szynkowa, mix warzyw",
+          "Pieczywo żytnio-razowe z masłem, pasta rybna/ser żółty, mix warzyw",
           "Herbata z cytryną"
         ],
         [
-          "Pieczywo żytnio-razowe z masłem, twarożek z rzodkiewką i szczypiorkiem, mix warzyw",
-          "Herbata z cytryną"
-        ],
-        [
-          "Pieczywo żytnio-razowe z masłem, filet z indyka, mix warzyw",
+          "Pieczywo żytnio-razowe z maslem, szynka gotowana, mix warzyw",
           "Herbata z cytryną"
         ]
       ]
@@ -89,19 +82,17 @@
       "rodzaj": "zupa",
       "pozycje": [
         [
-          "Ogórkowa, zielenina"
+          "Rosół z makaronem, zielenina"
         ],
         [
-          "Krem z brokułów, groszek ptysiowy, zielenina"
+          "Kalafiorowa, zielenina"
+        ],
+        [],
+        [
+          "Krupnik z kaszy jęczmiennej, zielenina"
         ],
         [
-          "Barszcz ukraiński, zielenina"
-        ],
-        [
-          "Pomidorowa z ryżem, zielenina"
-        ],
-        [
-          "Zacierkowa, zielenina"
+          "Fasolowa z grzankami domowymi, zielenina"
         ]
       ]
     },
@@ -110,24 +101,23 @@
       "rodzaj": "obiad",
       "pozycje": [
         [
-          "Pieczone udko kurczaka, kalafior gotowany, surówka z kapusty pekińskiej, kukurydzy i papryki, ziemniaki",
+          "Pierś z kurczaka w sosie chrzanowym, jarzynka z czerwonej kapusty, ogórek kiszony z cebulką, ziemniaki",
           "Woda z cytryną"
         ],
         [
-          "Medaliony z polędwiczki wieprzowej w sosie własnym, pomidory z cebulą, kasza gryczana biała",
+          "Gulasz z szynki, fasolka szparagowa, surówka z pora i marchewki, kasza pęczak",
           "Woda z cytryną"
         ],
         [
-          "Makaron z czerwonej soczewicy z pesto, mix sałat z pomidorkami daktylowymi i pestkami dyni w sosie winegret, parmezan",
-          "Woda z cytryną"
+          "ŚWIĘTO NIEPODLEGŁOŚCI"
         ],
         [
-          "Kotlet mielony, jarzynka z buraków, ogórek konserwowy, ziemniaki",
-          "Woda z cytryną"
+          "Kotlet schabowy, brokuły, surówka z marchewki i jabłka, ziemniaki",
+          "Woda zcytryną"
         ],
         [
-          "Filet z morszczuka w delikatnej panierce, surówka z kiszonej kapusty, ziemniaki zapiekane",
-          "Woda z cytryną"
+          "Paluszki rybne, surówka colesław, ziemniaki",
+          "Woda zcytryną"
         ]
       ]
     },
@@ -136,19 +126,17 @@
       "rodzaj": "podwieczorek",
       "pozycje": [
         [
-          "Jogurt naturalny z bananem, wafle ryżowe, mix owoców, herbata owocowa"
-        ],
-        [
-          "Gofry, mix owoców, herbata owocowa"
+          "Płatki owsiane na mleku z rodzynkami i żurawiną, mix owoców, herbata owocowa"
         ],
         [
           "Chałka z masłem, mix owoców, herbata owocowa"
         ],
+        [],
         [
-          "Kasza manna na mleku z musem truskawkowym, mix owoców, herbata owocowa"
+          "Jogurt naturalny z bananem, biszkopty mix owoców, herbata owocowa"
         ],
         [
-          "Sandwich z tostowego pieczywa wieloziarnistego i żółtego sera, mix owoców, herbata owocowa"
+          "Grahamka z miodem, mix owoców, herbata owocowa"
         ]
       ]
     }
