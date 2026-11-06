@@ -10,6 +10,7 @@ import Layout from '~/layouts/PageLayout.astro';
 import HeroMazy from '~/components/widgets/HeroMazy.astro';
 import NawigacjaRodzica from '~/components/widgets/NawigacjaRodzica.astro';
 import jadlospis from '~/data/jadlospis.json';
+import { BARWY_NARODOWE } from '~/data/ikony-wydarzen.mjs';
 import {
   ALERGENY,
   WYGLAD_POSILKU,
@@ -122,26 +123,59 @@ const kartaCls = 'bg-white rounded-2xl border-2 border-transparent shadow-sm';
                       <span class="font-sans text-sm font-semibold text-brand-navy leading-tight">{p.nazwa}</span>
                     </span>
                   </th>
-                  {p.pozycje.map((linijki, i) => (
-                    <td
-                      class="align-top px-3 py-4 border-t border-l border-brand-navy/8"
-                      data-dzien={jadlospis.dni[i].data ?? undefined}
-                    >
-                      {linijki.length ? (
-                        linijki.map((l, k) => (
-                          <p
-                            class={`font-sans leading-snug ${k ? 'text-xs text-brand-navy/55 mt-1.5' : 'text-sm text-brand-navy'}`}
-                          >
-                            {l}
-                          </p>
-                        ))
-                      ) : (
-                        <span class="font-sans text-brand-navy/20" aria-hidden="true">
-                          —
-                        </span>
-                      )}
-                    </td>
-                  ))}
+                  {p.pozycje.map((linijki, i) => {
+                    const dzien = jadlospis.dni[i];
+                    // Dzień wolny to jedno pole na całą kolumnę, razem z alergenami —
+                    // rysowane w pierwszym wierszu, w kolejnych pomijane.
+                    if (dzien.wolne) {
+                      return n === 0 ? (
+                        <td
+                          rowspan={jadlospis.posilki.length + 1}
+                          class="h-px p-0 border-t border-l border-brand-navy/8"
+                          data-dzien={dzien.data ?? undefined}
+                        >
+                          {dzien.narodowe ? (
+                            <div class="h-full min-h-56 flex flex-col text-center">
+                              <div class="flex-1 flex items-center justify-center px-3 bg-white">
+                                <p class="font-sans font-bold text-brand-navy leading-snug">{dzien.wolne}</p>
+                              </div>
+                              <div
+                                class="flex-1 flex items-center justify-center px-3"
+                                style={`background-color: ${BARWY_NARODOWE.czerwony}`}
+                              >
+                                <p class="font-sans text-xs font-bold uppercase tracking-wider text-white">dzień wolny</p>
+                              </div>
+                            </div>
+                          ) : (
+                            <div class="h-full min-h-56 flex flex-col items-center justify-center gap-1.5 px-3 text-center bg-brand-sand/50">
+                              <p class="font-sans font-bold text-brand-navy leading-snug">{dzien.wolne}</p>
+                              <p class="font-sans text-xs font-bold uppercase tracking-wider text-brand-navy/50">dzień wolny</p>
+                            </div>
+                          )}
+                        </td>
+                      ) : null;
+                    }
+                    return (
+                      <td
+                        class="align-top px-3 py-4 border-t border-l border-brand-navy/8"
+                        data-dzien={dzien.data ?? undefined}
+                      >
+                        {linijki.length ? (
+                          linijki.map((l, k) => (
+                            <p
+                              class={`font-sans leading-snug ${k ? 'text-xs text-brand-navy/55 mt-1.5' : 'text-sm text-brand-navy'}`}
+                            >
+                              {l}
+                            </p>
+                          ))
+                        ) : (
+                          <span class="font-sans text-brand-navy/20" aria-hidden="true">
+                            —
+                          </span>
+                        )}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))
             }
@@ -155,7 +189,7 @@ const kartaCls = 'bg-white rounded-2xl border-2 border-transparent shadow-sm';
                 </span>
               </th>
               {
-                jadlospis.dni.map((d) => (
+                jadlospis.dni.map((d) => d.wolne ? null : (
                   <td class="align-top px-3 py-4 border-t border-l border-brand-navy/8" data-dzien={d.data ?? undefined}>
                     <p class="font-sans text-sm font-bold text-brand-navy">{d.alergeny.join(', ') || '—'}</p>
                     {d.alergeny.length > 0 && (
@@ -188,6 +222,25 @@ const kartaCls = 'bg-white rounded-2xl border-2 border-transparent shadow-sm';
                 </span>
               </div>
 
+              {d.wolne ? (
+                d.narodowe ? (
+                  <div class="rounded-xl overflow-hidden text-center border border-brand-navy/10">
+                    <p class="font-sans font-bold text-brand-navy bg-white py-5 px-3">{d.wolne}</p>
+                    <p
+                      class="font-sans text-xs font-bold uppercase tracking-wider text-white py-3"
+                      style={`background-color: ${BARWY_NARODOWE.czerwony}`}
+                    >
+                      dzień wolny
+                    </p>
+                  </div>
+                ) : (
+                  <div class="rounded-xl text-center bg-brand-sand/50 py-5 px-3">
+                    <p class="font-sans font-bold text-brand-navy">{d.wolne}</p>
+                    <p class="font-sans text-xs font-bold uppercase tracking-wider text-brand-navy/50 mt-1">dzień wolny</p>
+                  </div>
+                )
+              ) : (
+              <>
               <ul class="flex flex-col gap-4">
                 {jadlospis.posilki.map((p) => (
                   <li class="flex gap-3">
@@ -216,6 +269,8 @@ const kartaCls = 'bg-white rounded-2xl border-2 border-transparent shadow-sm';
                 <span class="font-bold text-brand-navy">Alergeny: {d.alergeny.join(', ') || '—'}</span>
                 {d.alergeny.length > 0 && <span> · {nazwyAlergenow(d.alergeny)}</span>}
               </p>
+              </>
+              )}
             </article>
           ))
         }

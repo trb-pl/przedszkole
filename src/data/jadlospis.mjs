@@ -16,6 +16,7 @@
  * wynik do src/data/jadlospis.json. Strona czyta już tylko ten plik.
  */
 import { DNI } from './plan-zajec.mjs';
+import { DNI_WOLNE } from './kalendarz-szkolny.mjs';
 
 /** 14 alergenów z rozporządzenia UE 1169/2011 — ta sama numeracja, której używa kuchnia. */
 export const ALERGENY = {
@@ -200,15 +201,41 @@ export function parsujJadlospis(csv) {
 
   if (!posilki.length) throw new Error('Arkusz nie zawiera żadnych posiłków');
 
-  return {
-    jadlospis: {
-      tytul,
-      tydzien,
-      dni: DNI.map((dzien, i) => ({ dzien, data: dataDnia(i), alergeny: alergeny[i] })),
-      posilki,
-    },
-    ostrzezenia,
-  };
+  const dni = DNI.map((dzien, i) => ({ dzien, data: dataDnia(i), alergeny: alergeny[i] }));
+  oznaczDniWolne(dni, posilki);
+
+  return { jadlospis: { tytul, tydzien, dni, posilki }, ostrzezenia };
+}
+
+/** Święta narodowe — na stronie i w PDF-ie w barwach flagi. */
+const SWIETA_NARODOWE = new Set(['05-03', '11-11']);
+
+/**
+ * Dzień wolny (święto, przerwa): kuchnia zostawia puste komórki i w jednej
+ * wpisuje nazwę, np. „ŚWIĘTO NIEPODLEGŁOŚCI". Taki dzień dostaje `wolne`
+ * z tą nazwą, a jego komórki i alergeny są czyszczone — strona i PDF rysują
+ * go jako jedno pole na całą kolumnę. Warunek podwójny: data z kalendarza
+ * przedszkola i najwyżej jeden wpis w kolumnie, więc pełny jadłospis w dniu
+ * z kalendarza (np. dyżur) nigdy nie zniknie.
+ */
+function oznaczDniWolne(dni, posilki) {
+  dni.forEach((d, i) => {
+    if (!d.data || !DNI_WOLNE.has(d.data)) return;
+    const wpisy = posilki.map((p) => p.pozycje[i].join(' ')).filter(Boolean);
+    if (wpisy.length > 1) return;
+
+    d.wolne = ladnaNazwa(wpisy[0] ?? '') || 'Dzień wolny';
+    d.narodowe = SWIETA_NARODOWE.has(d.data.slice(5));
+    d.alergeny = [];
+    for (const p of posilki) p.pozycje[i] = [];
+  });
+}
+
+/** „ŚWIĘTO NIEPODLEGŁOŚCI" → „Święto Niepodległości"; zwykły zapis zostaje. */
+function ladnaNazwa(tekst) {
+  const t = tekst.trim();
+  if (!t || t !== t.toUpperCase()) return t;
+  return t.toLowerCase().replace(/(^|\s)(\p{Ll})/gu, (_, odstep, litera) => odstep + litera.toUpperCase());
 }
 
 /** Pobiera i parsuje arkusz. Rzuca błędem — decyzję o planie B podejmuje wołający. */

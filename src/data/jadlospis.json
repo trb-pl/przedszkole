@@ -28,7 +28,9 @@
     {
       "dzien": "środa",
       "data": "2026-11-11",
-      "alergeny": []
+      "alergeny": [],
+      "wolne": "Święto Niepodległości",
+      "narodowe": true
     },
     {
       "dzien": "czwartek",
@@ -72,7 +74,7 @@
           "Herbata z cytryną"
         ],
         [
-          "Pieczywo żytnio-razowe z maslem, szynka gotowana, mix warzyw",
+          "Pieczywo żytnio-razowe z masłem, szynka gotowana, mix warzyw",
           "Herbata z cytryną"
         ]
       ]
@@ -108,16 +110,14 @@
           "Gulasz z szynki, fasolka szparagowa, surówka z pora i marchewki, kasza pęczak",
           "Woda z cytryną"
         ],
-        [
-          "ŚWIĘTO NIEPODLEGŁOŚCI"
-        ],
+        [],
         [
           "Kotlet schabowy, brokuły, surówka z marchewki i jabłka, ziemniaki",
-          "Woda zcytryną"
+          "Woda z cytryną"
         ],
         [
           "Paluszki rybne, surówka colesław, ziemniaki",
-          "Woda zcytryną"
+          "Woda z cytryną"
         ]
       ]
     },
@@ -133,7 +133,7 @@
         ],
         [],
         [
-          "Jogurt naturalny z bananem, biszkopty mix owoców, herbata owocowa"
+          "Jogurt naturalny z bananem, biszkopty, mix owoców, herbata owocowa"
         ],
         [
           "Grahamka z miodem, mix owoców, herbata owocowa"

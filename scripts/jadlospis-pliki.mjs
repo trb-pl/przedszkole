@@ -25,6 +25,7 @@ import {
   plikPdfJadlospisu,
   pobierzJadlospis,
 } from '../src/data/jadlospis.mjs';
+import { BARWY_NARODOWE } from '../src/data/ikony-wydarzen.mjs';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const MIGAWKA = path.join(ROOT, 'src/data/jadlospis.json');
@@ -167,6 +168,7 @@ function rysujPdf(dok, j) {
       .text(p.nazwa, margines + padX + 4.6 * MM, y + padY, { width: kolNazwy - padX - 5.5 * MM });
 
     p.pozycje.forEach((linijki, i) => {
+      if (j.dni[i].wolne) return; // dzień wolny rysujemy niżej, jednym polem
       let ty = y + padY;
       const x = margines + kolNazwy + i * szerDnia + padX;
       if (!linijki.length) {
@@ -187,6 +189,7 @@ function rysujPdf(dok, j) {
   dok.rect(margines, y, W - 2 * margines, hAlergenow).fill('#FDF3D2');
   dok.font('Bold').fontSize(9).fillColor(BRAND.navy).text('Alergeny', margines + padX, y + padY);
   j.dni.forEach((d, i) => {
+    if (d.wolne) return;
     const x = margines + kolNazwy + i * szerDnia + padX;
     dok.font('Bold').fontSize(rozmiar).fillColor(BRAND.navy)
       .text(d.alergeny.join(', ') || '—', x, y + padY, { width: szerDnia - 2 * padX });
@@ -207,6 +210,33 @@ function rysujPdf(dok, j) {
     const x = margines + kolNazwy + i * szerDnia;
     dok.moveTo(x, gora).lineTo(x, dol).stroke();
   }
+  // Dzień wolny: jedno pole przez całą kolumnę, od pierwszego posiłku po
+  // alergeny — na wierzchu siatki, żeby żadna linia go nie przecinała.
+  // Święto narodowe w barwach flagi: biel z nazwą, czerwień z „dzień wolny".
+  const gorneY = gora + wysNaglowka;
+  j.dni.forEach((d, i) => {
+    if (!d.wolne) return;
+    const x = margines + kolNazwy + i * szerDnia;
+    const h = dol - gorneY;
+    const pole = { width: szerDnia - 2 * padX, align: 'center' };
+    dok.font('Bold').fontSize(10.5);
+    const hNazwy = dok.heightOfString(d.wolne, pole);
+    if (d.narodowe) {
+      dok.rect(x + 0.25, gorneY + 0.25, szerDnia - 0.5, h / 2).fill(BARWY_NARODOWE.bialy);
+      dok.rect(x + 0.25, gorneY + h / 2, szerDnia - 0.5, h / 2 - 0.25).fill(BARWY_NARODOWE.czerwony);
+      dok.font('Bold').fontSize(10.5).fillColor(BRAND.navy)
+        .text(d.wolne, x + padX, gorneY + h / 4 - hNazwy / 2, pole);
+      dok.font('Bold').fontSize(8).fillColor('#FFFFFF')
+        .text('DZIEŃ WOLNY', x + padX, gorneY + (3 * h) / 4 - 4, { ...pole, characterSpacing: 0.6 });
+    } else {
+      dok.rect(x + 0.25, gorneY + 0.25, szerDnia - 0.5, h - 0.5).fill('#F3ECE0');
+      dok.font('Bold').fontSize(10.5).fillColor(BRAND.navy)
+        .text(d.wolne, x + padX, gorneY + h / 2 - hNazwy / 2 - 5, pole);
+      dok.font('Bold').fontSize(8).fillColor(SZARY)
+        .text('DZIEŃ WOLNY', x + padX, gorneY + h / 2 + hNazwy / 2 - 1, { ...pole, characterSpacing: 0.6 });
+    }
+  });
+
   dok.lineWidth(0.8).strokeColor(BRAND.navy);
   dok.rect(margines, gora, W - 2 * margines, dol - gora).stroke();
   dok.moveTo(margines, gora + wysNaglowka).lineTo(W - margines, gora + wysNaglowka).stroke();
