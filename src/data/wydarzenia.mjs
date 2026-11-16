@@ -99,10 +99,12 @@ export const WYDARZENIA = [
  */
 export const WYDARZENIA_NASTEPNE = [
   {
-    data: '2026-12-03',
-    godzina: '11.30',
-    tytul: 'Muzeum Narodowe: „Pory roku, pory dnia”',
-    ikona: 'muzeum',
+    data: '2026-12-02',
+    tytul: 'Teatr Kamienica: „Kreska i kropka na tropie św. Mikołaja”',
+    opis: 'Przedstawienie świąteczne.',
+    wyjazd: '11.15',
+    koszt: '130 zł (bilet 90 zł + przejazd 40 zł)',
+    ikona: 'teatr',
   },
   {
     data: '2026-12-04',
