@@ -100,6 +100,7 @@ export const WYDARZENIA = [
 export const WYDARZENIA_NASTEPNE = [
   {
     data: '2026-12-02',
+    godzina: '12.00',
     tytul: 'Teatr Kamienica: „Kreska i kropka na tropie św. Mikołaja”',
     opis: 'Przedstawienie świąteczne.',
     wyjazd: '11.15',
